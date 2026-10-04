@@ -133,6 +133,7 @@ def extract(config, asset_dir: Path) -> tuple[list[Question], list[Asset], list[
             current = {'number': number, 'rows': [(page, text[match.end():].strip(), bounds)], 'assets': assets}
         elif current:
             current['rows'].append((page, text, bounds))
+            current['assets'].extend(assets)
     if current:
         blocks.append(current)
 
