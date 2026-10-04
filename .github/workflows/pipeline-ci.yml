@@ -33,9 +33,9 @@ jobs:
           doc = fitz.open(pdf)
           text = "\n".join((p.get_text("text") or "") for p in doc)
           markers = {
-              "jee_main_2026": bool(re.search(r"JEE\\s*Main\\s*2026", text, re.I)),
-              "jan_28": bool(re.search(r"28\\s*(?:st|th)?\\s*(?:January|Jan)", text, re.I)),
-              "shift_1": bool(re.search(r"Shift\\s*1|Morning", text, re.I)),
+              "jee_main_2026": bool(re.search(r"JEE\s*Main\s*2026", text, re.I)),
+              "jan_28": bool(re.search(r"28\s*(?:st|th)?\s*(?:January|Jan)", text, re.I)),
+              "shift_1": bool(re.search(r"Shift\s*1|Morning", text, re.I)),
           }
           if not all(markers.values()):
               raise SystemExit(f"Representative PDF identity gate failed: {markers}")
