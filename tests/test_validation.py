@@ -8,17 +8,25 @@ def cfg(tmp_path, expected=1):
     key=tmp_path/'answers.json'
     key.write_text(json.dumps({'source_document':'paper.pdf','answers':{'1':'A'}}))
     return SimpleNamespace(
-        answer_key=key, source_pdf=Path('paper.pdf'), page_range=(1,1),
+        answer_key=key,
+        source_pdf=Path('paper.pdf'),
+        page_range=(1,1),
         expected_question_count=expected,
         expected_question_numbers=tuple(range(1, expected+1)),
-        source_has_solutions=False, source_solutions=None
+        source_has_solutions=False,
+        source_solutions=None,
     )
 
 def question(**overrides):
     q=Question(
-        'id-1',1,'Question content long enough to validate.',
-        {'A':'one','B':'two','C':'three','D':'four'},None,[1],[0,0,1,1],
-        {'source_sha256':'a'}
+        'id-1',
+        1,
+        'Question content long enough to validate.',
+        {'A':'one','B':'two','C':'three','D':'four'},
+        None,
+        [1],
+        [0,0,1,1],
+        {'source_sha256':'a'},
     )
     for k,v in overrides.items():
         setattr(q,k,v)
@@ -31,7 +39,8 @@ def test_green_record(tmp_path):
     assert not validate(cfg(tmp_path),[question()],1)
 
 def test_missing_answer_file(tmp_path):
-    c=cfg(tmp_path); c.answer_key.unlink()
+    c=cfg(tmp_path)
+    c.answer_key.unlink()
     assert 'INVALID_ANSWER_KEY' in codes(c,[question()])
 
 def test_truncated_question(tmp_path):
@@ -60,7 +69,7 @@ def test_duplicate_source_number(tmp_path):
     assert 'DUPLICATE_SOURCE_NUMBER' in codes(cfg(tmp_path),[question(),question(id='id-2')])
 
 def test_count_mismatch(tmp_path):
-    assert 'COUNT_MISMATCH' in codes(cfg(tmp_path,2),[question()],2)
+    assert 'COUNT_MISMATCH' in {i.code for i in validate(cfg(tmp_path,2),[question()],2)}
 
 def test_invalid_provenance(tmp_path):
     assert 'INVALID_PROVENANCE' in codes(cfg(tmp_path),[question(pages=[2])])
