@@ -1,8 +1,7 @@
 from pathlib import Path
-import json
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections
+from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections, _page_words
 from jee_pyq_pipeline.validate import validate
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
@@ -89,6 +88,24 @@ def test_source_answer_and_solution_split():
     assert answer=='2'
     assert solution=='Source solution text'
     assert qopts=={'1':'x','2':'y','3':'z','4':'w'}
+
+def test_ocr_page_fallback():
+    class FakePage:
+        def __init__(self):
+            self.ocr_calls=0
+        def get_text(self, kind='text', textpage=None):
+            if kind == 'words' and textpage is None:
+                return []
+            return [(0,0,20,10,'Physics',0,0,0)]
+        def get_textpage_ocr(self, **kwargs):
+            self.ocr_calls += 1
+            assert kwargs == {'language':'eng','dpi':250,'full':True}
+            return object()
+    page=FakePage()
+    words,used_ocr=_page_words(page)
+    assert used_ocr is True
+    assert words[0][4] == 'Physics'
+    assert page.ocr_calls == 1
 
 def test_end_to_end_source_pdf(tmp_path):
     import fitz
