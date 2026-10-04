@@ -17,50 +17,76 @@ jobs:
           python-version: "3.11"
       - name: Install
         run: python -m pip install -e .
-      - name: Run tests
+      - name: Run unit tests
         run: python -m pytest -q
 
-      - name: Probe uploaded representative PDF
+      - name: Prepare representative dry-run config
         if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
         run: |
           python - <<'PY'
-          import json, re, fitz
+          import json
+          import re
+          import fitz
           from pathlib import Path
-          pdf=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          doc=fitz.open(pdf)
-          pages=[]
-          qnums=[]
-          for i,p in enumerate(doc,1):
-              txt=p.get_text("text") or ""
-              pages.append({
-                  "page": i,
-                  "chars": len(txt),
-                  "head": txt[:1200],
-                  "tail": txt[-800:],
-                  "question_candidates": [int(x) for x in re.findall(r'(?m)^\\s*(\\d{1,3})[.)]\\s', txt)]
-              })
-              qnums.extend(pages[-1]["question_candidates"])
-          probe={
-              "filename": pdf.name,
+
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc = fitz.open(pdf)
+          text = "\n".join((p.get_text("text") or "") for p in doc)
+          markers = {
+              "jee_main_2026": bool(re.search(r"JEE\\s*Main\\s*2026", text, re.I)),
+              "jan_28": bool(re.search(r"28\\s*(?:st|th)?\\s*(?:January|Jan)", text, re.I)),
+              "shift_1": bool(re.search(r"Shift\\s*1|Morning", text, re.I)),
+          }
+          if not all(markers.values()):
+              raise SystemExit(f"Representative PDF identity gate failed: {markers}")
+
+          expected = (
+              [f"Physics:{n}" for n in range(1, 26)] +
+              [f"Chemistry:{n}" for n in range(1, 26)] +
+              [f"Mathematics:{n}" for n in range(1, 26)]
+          )
+
+          cfg = {
+              "source_pdf": str(pdf),
+              "release": "2026-01",
+              "exam": "JEE-MAIN",
+              "year": 2026,
+              "session": "Session 1 • Jan • 28 Jan • Shift 1",
+              "paper": "Paper 1 • B.E./B.Tech",
+              "subject": "PCM",
+              "page_range": [1, len(doc)],
+              "expected_question_count": 75,
+              "expected_question_numbers": expected,
+              "source_has_solutions": True
+          }
+          Path("representative-config.json").write_text(
+              json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps({
+              "pdf": pdf.name,
               "size_bytes": pdf.stat().st_size,
               "page_count": len(doc),
-              "question_candidate_unique": sorted(set(qnums)),
-              "pages": pages,
-          }
-          Path("pdf-probe.json").write_text(json.dumps(probe, ensure_ascii=False, indent=2), encoding="utf-8")
-          print(f"PDF={pdf.name} SIZE={pdf.stat().st_size} PAGES={len(doc)}")
-          print("QUESTION_CANDIDATES=" + ",".join(map(str, sorted(set(qnums)))))
-          for p in pages:
-              print(f"PAGE {p['page']}: chars={p['chars']}")
-              for line in (p["head"] + "\n" + p["tail"]).splitlines():
-                  s=line.strip()
-                  if s and ("answer" in s.lower() or "solution" in s.lower() or "question" in s.lower() or re.match(r'^\\d{1,3}[.)]', s)):
-                      print("  " + s[:240])
+              "identity_markers": markers,
+              "expected_questions": len(expected),
+          }, indent=2))
+          doc.close()
           PY
 
-      - name: Upload PDF probe
-        if: always() && hashFiles('pdf-probe.json') != ''
+      - name: Run strict representative dry-run
+        if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
+        run: |
+          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
+            --config representative-config.json \
+            --output pipeline-output \
+            --max-pages 150 \
+            --timeout-seconds 1200
+
+      - name: Upload representative dry-run artifacts
+        if: always() && hashFiles('representative-config.json') != ''
         uses: actions/upload-artifact@v4
         with:
-          name: representative-pdf-probe
-          path: pdf-probe.json
+          name: representative-pdf-dry-run
+          path: |
+            representative-config.json
+            pipeline-output/
+          if-no-files-found: warn
