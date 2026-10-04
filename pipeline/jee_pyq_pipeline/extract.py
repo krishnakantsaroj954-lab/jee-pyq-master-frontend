@@ -111,32 +111,30 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
     srows=[]
     answer=None
     answer_count=0
+    answer_seen=False
     solution_seen=False
     for page,text,bounds in rows:
-        am=ANSWER_MARKER.search(text) if not solution_seen else None
-        sm=SOLUTION_MARKER.search(text)
-        if not solution_seen and am:
-            prefix=text[:am.start()].strip()
-            if prefix:
-                qrows.append((page,prefix,bounds))
+        am=ANSWER_MARKER.match(text) if not answer_seen else None
+        sm=SOLUTION_MARKER.match(text)
+        if am:
             token=_parse_answer(text[am.end():])
             if token:
                 answer=token
             answer_count+=1
-            solution_seen=True if sm else False
+            answer_seen=True
             if sm:
-                srows.append((page,text[sm.end():].strip(),bounds))
+                solution_seen=True
+                suffix=text[sm.end():].strip()
+                if suffix:
+                    srows.append((page,suffix,bounds))
             continue
-        if not solution_seen and sm:
-            prefix=text[:sm.start()].strip()
-            if prefix:
-                qrows.append((page,prefix,bounds))
+        if sm and not solution_seen:
             solution_seen=True
             suffix=text[sm.end():].strip()
             if suffix:
                 srows.append((page,suffix,bounds))
             continue
-        if solution_seen:
+        if solution_seen or answer_seen:
             srows.append((page,text,bounds))
         else:
             qrows.append((page,text,bounds))
@@ -184,12 +182,10 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         if number is not None and current is None and subject is None:
             continue
         if number is not None and subject is not None:
-            key=f'{subject}:{number}'
-            if key in expected:
-                if current:
-                    blocks.append(current)
-                current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
-                continue
+            if current:
+                blocks.append(current)
+            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            continue
         if current:
             current['rows'].append((page,text,bounds))
             current['pages'].add(page)
