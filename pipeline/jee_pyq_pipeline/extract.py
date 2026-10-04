@@ -5,10 +5,14 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.):])(?:\s|$)', re.I)
+QUESTION_PREFIX = re.compile(
+    r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*)?(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
+    re.I,
+)
+QUESTION_PLAIN = re.compile(r'^\s*(\d{1,3})\s*[\[\]():.\-]\s*')
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
-ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]\s*', re.I)
-SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]\s*', re.I)
+ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
+SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
@@ -37,6 +41,15 @@ def _page_words(page):
             'Install Tesseract-OCR and keep the batch quarantined.'
         ) from error
     return words, True
+
+def _question_start(text:str):
+    match=QUESTION_PREFIX.match(text)
+    if match:
+        return match, int(match.group(1))
+    match=QUESTION_PLAIN.match(text)
+    if match:
+        return match, int(match.group(1))
+    return None, None
 
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
@@ -85,8 +98,16 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
 
 def _subject_line(text:str)->str|None:
     t=safe_normalize(text).strip().upper()
-    t=re.sub(r'\s+(SECTION|PAPER|SUBJECT)$','',t)
-    return SUBJECTS.get(t)
+    compact=re.sub(r'[^A-Z]+',' ',t).strip()
+    direct=SUBJECTS.get(compact)
+    if direct:
+        return direct
+    tokens=compact.split()
+    if len(tokens)<=6:
+        for key,value in SUBJECTS.items():
+            if key in tokens:
+                return value
+    return None
 
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
@@ -163,12 +184,10 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     doc=fitz.open(config.source_pdf)
     page_count=len(doc)
     all_assets=[]
-    page_assets={}
     raw=[]
     extraction_issues=[]
     ocr_pages=set()
     source_hash=sha256_file(config.source_pdf)
-    expected=set(config.expected_question_numbers)
     current_subject=None
     try:
         for page_no in range(config.page_range[0],config.page_range[1]+1):
@@ -176,7 +195,6 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
             page=doc[page_no-1]
             pa=_assets(page,page_no,asset_dir,source_hash)
-            page_assets[page_no]=pa
             all_assets.extend(pa)
             try:
                 words,used_ocr=_page_words(page)
@@ -200,8 +218,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     blocks=[]
     current=None
     for page,text,bounds,subject in raw:
-        match=QUESTION_START.match(text)
-        number=int(match.group(1)) if match else None
+        match,number=_question_start(text)
         if number is not None and current is None and subject is None:
             continue
         if number is not None and subject is not None:
@@ -225,10 +242,13 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         spages=sorted({r[0] for r in srows})
         if not qpages:
             qpages=sorted(block['pages'])
-        q_bounds=[
-            min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
-            max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
-        ]
+        if qrows:
+            q_bounds=[
+                min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
+                max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
+            ]
+        else:
+            q_bounds=[0.0,0.0,0.0,0.0]
         s_bounds=None
         if srows:
             s_bounds=[
