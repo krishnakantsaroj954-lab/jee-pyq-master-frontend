@@ -1,4 +1,4 @@
-name: Pipeline CI
+name: Pipeline CI # representative-pdf-probe
 on:
   pull_request:
     branches: [main]
