@@ -88,4 +88,4 @@ def test_source_answer_and_solution_split():
     ])
     assert answer=='2'
     assert solution=='Source solution text'
-    assert qopts=={}
+    assert qopts=={'1':'x','2':'y','3':'z','4':'w'}
