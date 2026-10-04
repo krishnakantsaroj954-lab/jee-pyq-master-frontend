@@ -5,11 +5,11 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\\.?\\s*)?(\\d{1,3})(?:[.)])(?:\\s|$)', re.I)
-OPTION_LABEL = re.compile(r'(?<![\\w.])(?:\\(([A-D]|[1-4])\\)|([A-D]|[1-4])[.)])(?=\\s|$)')
-ANSWER_MARKER = re.compile(r'(?:^|\\s)(?:answer|ans\\.?|correct\\s+answer)\\s*[:\\-]\\s*', re.I)
-SOLUTION_MARKER = re.compile(r'(?:^|\\s)(?:solution|sol\\.?)(?:\\s*\\([^)]*\\))?\\s*[:\\-]?\\s*', re.I)
-FIGURE = re.compile(r'\\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\\b|\\b(shown|following)\\s+(?:below|above|is|are)\\b', re.I)
+QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.)])(?:\s|$)', re.I)
+OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
+ANSWER_MARKER = re.compile(r'(?:^|\s)(?:answer|ans\.?|correct\s+answer)\s*[:\-]\s*', re.I)
+SOLUTION_MARKER = re.compile(r'(?:^|\s)(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
+FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
     'CHEMISTRY':'Chemistry',
@@ -71,7 +71,7 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
 
 def _subject_line(text:str)->str|None:
     t=safe_normalize(text).strip().upper()
-    t=re.sub(r'\\s+(SECTION|PAPER|SUBJECT)$','',t)
+    t=re.sub(r'\s+(SECTION|PAPER|SUBJECT)$','',t)
     return SUBJECTS.get(t)
 
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
@@ -103,7 +103,7 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
-    token=re.match(r'\\s*([A-D]|[1-4]|-?\\d+(?:\\.\\d+)?(?:\\s*/\\s*-?\\d+(?:\\.\\d+)?)?)\\b',text,re.I)
+    token=re.match(r'\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\b',text,re.I)
     return token.group(1) if token else None
 
 def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
