@@ -5,10 +5,10 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.)])(?:\s|$)', re.I)
+QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.):])(?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
-ANSWER_MARKER = re.compile(r'(?:^|\s)(?:answer|ans\.?|correct\s+answer)\s*[:\-]\s*', re.I)
-SOLUTION_MARKER = re.compile(r'(?:^|\s)(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
+ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]\s*', re.I)
+SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
