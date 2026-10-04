@@ -3,24 +3,30 @@
 ## Implemented
 
 - One-paper, configuration-selected intake/extraction/validation/review-batch pipeline.
-- Source and optional ZIP checksums; deterministic batch identity; per-asset object keys, source page/bounds and checksums.
-- Layout-aware question extraction with stricter question-start parsing and support for multiple option labels in one visual row.
-- Fail-closed validation for count, numbering, provenance, four-option structure, suspiciously short content, unsafe notation, required figures, answer-key provenance/scope, and source-solution scope.
+- Source and optional ZIP checksums; deterministic batch identity; per-asset page/bounds/checksums.
+- Layout-aware extraction with side-by-side option support and subject-aware question keys.
+- Combined JEE Main papers can use `Physics:1` ... `Chemistry:25` ... `Mathematics:25`, so repeated per-subject numbering is not treated as a duplicate.
+- Source PDFs that contain questions + solutions are split at source Answer/Solution markers. The answer and solution evidence is emitted from the same PDF; no guessed/manual answer map is required.
+- MCQ and numerical (Section B style) questions are both validated. Source option labels may remain A-D or 1-4; numerical questions are not forced into a four-option shape.
+- Required source figures are associated from page geometry with bounded padding; solution assets are kept separately.
 - Validated batch hand-off through `IMPORT_READY.json`; **no D1/API import code exists in this repository**.
-- Successful batches are reusable by source hash + page range; the runner refuses silent re-extraction.
+- Successful batches are reusable by source PDF hash + page range; the runner refuses silent re-extraction.
 
-## Verified locally
+## Representative dry-run wiring
 
-- Python compilation succeeds after repairing the broken `extract.py`.
-- Validator test suite: **13/13 passed**.
-- No live D1/API/website data is touched by this pipeline.
+The repository now contains CI wiring that, when the uploaded `cEDaK5Wn5ILe4nOdotd6.pdf` is present, verifies that the PDF identifies itself as JEE Main 2026 / Jan 28 / Shift 1, creates the exact 75-question PCM scope, runs the strict pipeline, and uploads the review batch as a workflow artifact. The dry-run never touches D1/API/live website.
 
-## Representative paper status
+## Verification boundary
 
-The uploaded repository PDF is now present, but a live representative extraction has **not** been claimed yet because the pipeline input contract still requires reviewed source answer-key/solution maps and exact page scope. Those must be prepared from the same source PDF before the first extraction is accepted.
+The source PDF binary is stored in GitHub, but the connected GitHub file API available to this session cannot stream that binary into the local runtime, so the actual 28 Jan Shift 1 extraction result cannot honestly be marked green from this interface alone. The repository workflow is the execution gate for the real source file.
 
-## Run
+A green representative run must contain:
+- `status: VALIDATED`
+- 75 validated records
+- 25 Physics + 25 Chemistry + 25 Mathematics
+- MCQ/numerical type counts consistent with the source
+- source answer and source solution evidence for every question
+- no blocking validation issues
+- `IMPORT_READY.json`
 
-`PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli --config /secure/config/representative-paper.json --output ./pipeline-output --max-pages 50 --timeout-seconds 1200`
-
-A nonzero (2) status means quarantine/early failure. A green run must contain both `status: VALIDATED` and `IMPORT_READY.json`.
+No live import should occur until that gate is green and the batch artifact is reviewed.

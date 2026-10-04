@@ -32,6 +32,10 @@ class Question:
     requires_figure: bool = False
     status: str = "VALIDATED"
     issues: list[Issue] = field(default_factory=list)
+    subject: str | None = None
+    section: str | None = None
+    question_type: str = "UNKNOWN"
+    solution_assets: list[Asset] = field(default_factory=list)
 
     def json(self) -> dict[str, Any]:
         value = asdict(self)
