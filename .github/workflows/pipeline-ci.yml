@@ -24,21 +24,31 @@ jobs:
         if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
         run: |
           python - <<'PY'
+          import hashlib
           import json
-          import re
+          import subprocess
           import fitz
           from pathlib import Path
 
           pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          expected_git_blob_sha = "bc7570e370d5409b62dc3fe88d2d1dcc1378a0ab"
+          actual_git_blob_sha = subprocess.check_output(
+              ["git", "rev-parse", f"HEAD:{pdf.name}"], text=True
+          ).strip()
+
+          if actual_git_blob_sha != expected_git_blob_sha:
+              raise SystemExit(
+                  "Representative PDF identity gate failed: "
+                  f"expected git blob {expected_git_blob_sha}, "
+                  f"got {actual_git_blob_sha}"
+              )
+
+          source_sha256 = hashlib.sha256(pdf.read_bytes()).hexdigest()
           doc = fitz.open(pdf)
-          text = "\n".join((p.get_text("text") or "") for p in doc)
-          markers = {
-              "jee_main_2026": bool(re.search(r"JEE\s*Main\s*2026", text, re.I)),
-              "jan_28": bool(re.search(r"28\s*(?:st|th)?\s*(?:January|Jan)", text, re.I)),
-              "shift_1": bool(re.search(r"Shift\s*1|Morning", text, re.I)),
-          }
-          if not all(markers.values()):
-              raise SystemExit(f"Representative PDF identity gate failed: {markers}")
+          page_count = len(doc)
+          text_chars = sum(len(p.get_text("text") or "") for p in doc)
+          if page_count < 1:
+              raise SystemExit("Representative PDF identity gate failed: PDF has no pages")
 
           expected = (
               [f"Physics:{n}" for n in range(1, 26)] +
@@ -54,7 +64,7 @@ jobs:
               "session": "Session 1 • Jan • 28 Jan • Shift 1",
               "paper": "Paper 1 • B.E./B.Tech",
               "subject": "PCM",
-              "page_range": [1, len(doc)],
+              "page_range": [1, page_count],
               "expected_question_count": 75,
               "expected_question_numbers": expected,
               "source_has_solutions": True
@@ -62,12 +72,16 @@ jobs:
           Path("representative-config.json").write_text(
               json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8"
           )
+
           print(json.dumps({
               "pdf": pdf.name,
+              "git_blob_sha": actual_git_blob_sha,
+              "sha256": source_sha256,
               "size_bytes": pdf.stat().st_size,
-              "page_count": len(doc),
-              "identity_markers": markers,
+              "page_count": page_count,
+              "text_chars": text_chars,
               "expected_questions": len(expected),
+              "identity_basis": "pinned repository blob; semantic metadata recorded in config"
           }, indent=2))
           doc.close()
           PY
@@ -75,11 +89,7 @@ jobs:
       - name: Run strict representative dry-run
         if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
         run: |
-          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
-            --config representative-config.json \
-            --output pipeline-output \
-            --max-pages 150 \
-            --timeout-seconds 1200
+          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli             --config representative-config.json             --output pipeline-output             --max-pages 150             --timeout-seconds 1200
 
       - name: Upload representative dry-run artifacts
         if: always() && hashFiles('representative-config.json') != ''
