@@ -50,7 +50,7 @@ def test_missing_answer(tmp_path):
     assert 'MISSING_OR_AMBIGUOUS_ANSWER' in codes(cfg(tmp_path),[question(answer=None)])
 
 def test_duplicate_id(tmp_path):
-    assert 'DUPLICATE_ID' in codes(cfg(tmp_path),[question(),question(id='id-2')])
+    assert 'DUPLICATE_ID' in codes(cfg(tmp_path),[question(),question(id='id-1')])
 
 def test_duplicate_source_number(tmp_path):
     c=cfg(tmp_path,expected=1)
