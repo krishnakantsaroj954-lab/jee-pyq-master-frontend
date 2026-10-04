@@ -24,6 +24,20 @@ def _fitz():
     except ImportError as error:
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
+def _page_words(page):
+    words = page.get_text('words')
+    if words:
+        return words, False
+    try:
+        textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
+        words = page.get_text('words', textpage=textpage)
+    except Exception as error:
+        raise RuntimeError(
+            'OCR was required because the page has no text layer, but OCR failed. '
+            'Install Tesseract-OCR and keep the batch quarantined.'
+        ) from error
+    return words, True
+
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
         return []
@@ -151,6 +165,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     all_assets=[]
     page_assets={}
     raw=[]
+    extraction_issues=[]
+    ocr_pages=set()
     source_hash=sha256_file(config.source_pdf)
     expected=set(config.expected_question_numbers)
     current_subject=None
@@ -162,7 +178,14 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             pa=_assets(page,page_no,asset_dir,source_hash)
             page_assets[page_no]=pa
             all_assets.extend(pa)
-            for row in _lines(page.get_text('words'),page.rect.width):
+            try:
+                words,used_ocr=_page_words(page)
+            except RuntimeError as error:
+                extraction_issues.append(Issue('OCR_FAILED',f'Page {page_no}: {error}'))
+                continue
+            if used_ocr:
+                ocr_pages.add(page_no)
+            for row in _lines(words,page.rect.width):
                 text=' '.join(w[4] for w in row).strip()
                 if not text:
                     continue
@@ -193,7 +216,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         blocks.append(current)
 
     questions=[]
-    issues=[]
+    issues=extraction_issues
     for block in blocks:
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
         if split_error:
@@ -240,9 +263,14 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 'source_document':config.source_pdf.name,
                 'source_sha256':source_hash,
             }}
+        extraction_method='ocr' if any(page in ocr_pages for page in block['pages']) else 'text'
         questions.append(Question(
             qid,block['number'],q_text,q_opts,answer,qpages,q_bounds,
-            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release},
+            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release,'extraction_method':extraction_method},
             qassets,solution,bool(FIGURE.search(q_text)),'VALIDATED',[],block['subject'],None,question_type,sassets
         ))
+    if not raw and not extraction_issues:
+        issues.append(Issue('NO_TEXT_EXTRACTED','No source text could be extracted, including OCR fallback'))
+    if len(ocr_pages) > 0:
+        issues.append(Issue('OCR_USED','One or more pages required OCR; content still must pass all source validators',blocking=False))
     return questions,all_assets,issues,page_count
