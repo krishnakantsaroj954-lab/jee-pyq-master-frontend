@@ -9,12 +9,15 @@ description = "Fail-closed representative-paper source PDF pipeline"
 requires-python = ">=3.11"
 dependencies = ["PyMuPDF>=1.24,<2"]
 
+[project.optional-dependencies]
+test = ["pytest>=8,<9"]
+
 [project.scripts]
 jee-pyq-pipeline = "jee_pyq_pipeline.cli:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = ["-q"]
 
 [tool.setuptools]
 package-dir = {"" = "pipeline"}
