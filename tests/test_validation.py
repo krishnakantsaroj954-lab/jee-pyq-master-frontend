@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import _split_options, _split_source_sections
+from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections
 from jee_pyq_pipeline.validate import validate
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
@@ -89,3 +89,55 @@ def test_source_answer_and_solution_split():
     assert answer=='2'
     assert solution=='Source solution text'
     assert qopts=={'1':'x','2':'y','3':'z','4':'w'}
+
+def test_end_to_end_source_pdf(tmp_path):
+    import fitz
+
+    pdf_path = tmp_path / 'paper.pdf'
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    lines = [
+        'Physics',
+        'Question 1:',
+        'A sample question with four source options.',
+        '(1) one',
+        '(2) two',
+        '(3) three',
+        '(4) four',
+        'Answer: 2',
+        'Solution: Source solution for question one.',
+        'Question 2:',
+        'Calculate the source value.',
+        'Answer: 42',
+        'Solution: Source solution for question two.',
+    ]
+    y=40
+    for line in lines:
+        page.insert_text((40,y),line,fontsize=11)
+        y += 24
+    doc.save(pdf_path)
+    doc.close()
+
+    cfg = SimpleNamespace(
+        source_pdf=pdf_path,
+        release='test',
+        exam='JEE-MAIN',
+        year=2026,
+        session='Test',
+        paper='Test',
+        subject='Physics',
+        page_range=(1,1),
+        expected_question_count=2,
+        expected_question_numbers=('Physics:1','Physics:2'),
+        source_has_solutions=True,
+        source_zip=None,
+    )
+    questions, assets, extraction_issues, page_count = extract(cfg, tmp_path / 'assets')
+    assert page_count == 1
+    assert not extraction_issues
+    assert [(q.subject,q.source_question_number,q.question_type,q.answer) for q in questions] == [
+        ('Physics',1,'MCQ','2'),
+        ('Physics',2,'NUMERICAL','42'),
+    ]
+    assert all(q.solution and q.solution['text'] for q in questions)
+    assert questions[0].options == {'1':'one','2':'two','3':'three','4':'four'}
