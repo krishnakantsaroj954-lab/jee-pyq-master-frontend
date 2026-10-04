@@ -116,7 +116,7 @@ def extract(config, asset_dir: Path) -> tuple[list[Question], list[Asset], list[
             tokens=text.split()
             label=OPT.match(tokens[0]) if tokens else None
             if label and tokens[0].strip('().:') in set('ABCD'):
-                current_option=label.group(1)
+                current_option=label.group(1) or label.group(2)
                 remainder=' '.join(tokens[1:])
                 options[current_option]=safe_normalize(remainder)
                 continue
