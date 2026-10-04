@@ -2,6 +2,7 @@ from pathlib import Path
 import json
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
+from jee_pyq_pipeline.extract import _split_options
 from jee_pyq_pipeline.validate import validate
 
 def cfg(tmp_path, expected=1):
@@ -81,3 +82,9 @@ def test_answer_key_source_mismatch(tmp_path):
     c=cfg(tmp_path)
     c.answer_key.write_text(json.dumps({'source_document':'else.pdf','answers':{'1':'A'}}))
     assert 'ANSWER_KEY_SOURCE_MISMATCH' in codes(c,[question()])
+
+
+def test_split_side_by_side_options():
+    text, options = _split_options([(1, '(A) one (B) two', [0,0,1,1]), (1, '(C) three (D) four', [0,0,1,1])])
+    assert text == ''
+    assert options == {'A':'one','B':'two','C':'three','D':'four'}
