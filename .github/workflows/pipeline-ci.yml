@@ -1,30 +1,44 @@
 name: Pipeline CI
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main]
-  push:
-    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install
+
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr
+          python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
+
       - name: Run unit tests
         run: python -m pytest -q
 
+      - name: Require representative source PDF
+        run: |
+          test -f cEDaK5Wn5ILe4nOdotd6.pdf
+          echo "Representative PDF present."
+          git cat-file -e "HEAD:cEDaK5Wn5ILe4nOdotd6.pdf"
+
       - name: Prepare representative dry-run config
-        if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
         run: |
           python - <<'PY'
           import hashlib
@@ -50,6 +64,7 @@ jobs:
           doc = fitz.open(pdf)
           page_count = len(doc)
           text_chars = sum(len(p.get_text("text") or "") for p in doc)
+
           if page_count < 1:
               raise SystemExit("Representative PDF identity gate failed: PDF has no pages")
 
@@ -72,8 +87,10 @@ jobs:
               "expected_question_numbers": expected,
               "source_has_solutions": True
           }
+
           Path("representative-config.json").write_text(
-              json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8"
+              json.dumps(cfg, ensure_ascii=False, indent=2),
+              encoding="utf-8"
           )
 
           print(json.dumps({
@@ -86,15 +103,71 @@ jobs:
               "expected_questions": len(expected),
               "identity_basis": "pinned repository blob; semantic metadata recorded in config"
           }, indent=2))
+
           doc.close()
           PY
 
       - name: Run strict representative dry-run
-        if: hashFiles('cEDaK5Wn5ILe4nOdotd6.pdf') != ''
         run: |
           PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli             --config representative-config.json             --output pipeline-output             --max-pages 150             --timeout-seconds 1200
 
-      - name: Summarize strict dry-run result
+      - name: Enforce green-batch contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
+          if len(reports) != 1:
+              raise SystemExit(f"Expected exactly one validation report, found {len(reports)}")
+
+          report_path = reports[0]
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+
+          if report.get("status") != "VALIDATED":
+              raise SystemExit(f"Batch is not VALIDATED: {report.get('status')}")
+
+          counts = report.get("counts") or {}
+          subjects = report.get("subject_counts") or {}
+          blocking = report.get("blocking_issue_count")
+
+          if counts.get("validated") != 75 or counts.get("quarantined") != 0 or counts.get("rejected") != 0:
+              raise SystemExit(f"Invalid batch counts: {counts}")
+
+          expected_subjects = {"Physics": 25, "Chemistry": 25, "Mathematics": 25}
+          if subjects != expected_subjects:
+              raise SystemExit(f"Invalid subject counts: {subjects}")
+
+          if blocking != 0:
+              raise SystemExit(f"Blocking validation issues remain: {blocking}")
+
+          batch_dir = report_path.parent
+          for required in (
+              "validated.json",
+              "source-answers.json",
+              "source-solutions.json",
+              "batch-manifest.json",
+              "IMPORT_READY.json",
+          ):
+              path = batch_dir / required
+              if not path.is_file():
+                  raise SystemExit(f"Required green-batch file is missing: {path}")
+
+          marker = json.loads((batch_dir / "IMPORT_READY.json").read_text(encoding="utf-8"))
+          if marker.get("status") != "VALIDATED":
+              raise SystemExit("IMPORT_READY.json does not confirm VALIDATED status")
+
+          print("GREEN BATCH CONTRACT PASSED")
+          print(json.dumps({
+              "status": report["status"],
+              "counts": counts,
+              "subject_counts": subjects,
+              "blocking_issue_count": blocking,
+              "batch": str(batch_dir),
+          }, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Summarize dry-run result
         if: always()
         run: |
           python - <<'PY'
@@ -102,20 +175,19 @@ jobs:
           from pathlib import Path
 
           reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
-          if not reports:
-              raise SystemExit("No validation-report.json was produced")
           for path in reports:
               report = json.loads(path.read_text(encoding="utf-8"))
-              summary = {
+              print(json.dumps({
                   "report": str(path),
                   "status": report.get("status"),
                   "counts": report.get("counts"),
                   "question_type_counts": report.get("question_type_counts"),
                   "subject_counts": report.get("subject_counts"),
                   "blocking_issue_count": report.get("blocking_issue_count"),
-                  "issue_codes": sorted({i.get("code") for i in report.get("issues", [])}),
-              }
-              print(json.dumps(summary, indent=2, ensure_ascii=False))
+                  "issue_codes": sorted({
+                      i.get("code") for i in report.get("issues", [])
+                  }),
+              }, indent=2, ensure_ascii=False))
           PY
 
       - name: Upload representative dry-run reports
@@ -134,4 +206,4 @@ jobs:
             pipeline-output/*/quarantined.json
             pipeline-output/*/rejected.json
             pipeline-output/*/IMPORT_READY.json
-          if-no-files-found: warn
+          if-no-files-found: error
