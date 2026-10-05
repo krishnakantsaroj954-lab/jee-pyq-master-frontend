@@ -130,6 +130,8 @@ def test_end_to_end_source_pdf(tmp_path):
         '(4) four',
         'Answer: 2',
         'Solution: Source solution for question one.',
+        '1. numbered calculation step',
+        '2. another numbered calculation step',
         'Question 2:',
         'Calculate the source value.',
         'Answer: 42',

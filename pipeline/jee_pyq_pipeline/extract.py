@@ -6,7 +6,7 @@ from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
 QUESTION_PREFIX = re.compile(
-    r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*)?(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
+    r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*\.?\s*)?(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
     re.I,
 )
 QUESTION_PLAIN = re.compile(r'^\s*(\d{1,3})\s*[\[\]():.\-]\s*')
@@ -215,20 +215,80 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     finally:
         doc.close()
 
+    # Question starts must follow the source's per-subject sequence.
+    # The previous implementation treated every numbered OCR row as a new
+    # question. That makes numbered solution/calculation lines become fake
+    # questions. We now require the next expected subject/question key.
+    expected_by_subject={}
+    for item in config.expected_question_numbers:
+        if isinstance(item,str) and ':' in item:
+            sname,num=item.split(':',1)
+            if num.isdigit():
+                expected_by_subject.setdefault(sname.strip(),[]).append(int(num))
+    expected_by_subject={k:sorted(v) for k,v in expected_by_subject.items()}
+    next_expected={k:(v[0] if v else None) for k,v in expected_by_subject.items()}
+    completed_subjects=set()
+
     blocks=[]
     current=None
     for page,text,bounds,subject in raw:
         match,number=_question_start(text)
-        if number is not None and current is None and subject is None:
-            continue
-        if number is not None and subject is not None:
+        explicit=bool(re.match(
+            r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*\.?\s*)\d',
+            text,
+            re.I,
+        ))
+
+        candidate=False
+        if number is not None and subject in expected_by_subject:
+            target=next_expected.get(subject)
+            if target is not None and number == target:
+                # Once an Answer/Solution marker has appeared, a plain
+                # numbered row on the same page is much more likely to be a
+                # solution step than the next question. Explicit Question/Q
+                # headers remain accepted; a plain header is accepted again
+                # on a new page. Ambiguous rows are intentionally ignored so
+                # validation can fail closed instead of inventing questions.
+                blocked_plain = (
+                    current is not None
+                    and current.get('solution_barrier',False)
+                    and page == current.get('last_page')
+                    and not explicit
+                )
+                candidate = not blocked_plain
+
+        if candidate:
             if current:
                 blocks.append(current)
-            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            current={
+                'number':number,
+                'subject':subject,
+                'rows':[(page,text[match.end():].strip(),bounds)],
+                'pages':{page},
+                'solution_barrier':False,
+                'last_page':page,
+            }
+            expected_list=expected_by_subject[subject]
+            try:
+                pos=expected_list.index(number)
+                next_expected[subject] = (
+                    expected_list[pos+1] if pos+1 < len(expected_list) else None
+                )
+            except ValueError:
+                # Should be unreachable because candidate requires equality
+                # with target; keep fail-closed state if configuration changes.
+                next_expected[subject]=None
+            if next_expected.get(subject) is None:
+                completed_subjects.add(subject)
             continue
+
         if current:
             current['rows'].append((page,text,bounds))
             current['pages'].add(page)
+            current['last_page']=page
+            if ANSWER_MARKER.match(text) or SOLUTION_MARKER.match(text):
+                current['solution_barrier']=True
+
     if current:
         blocks.append(current)
 
@@ -286,7 +346,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         extraction_method='ocr' if any(page in ocr_pages for page in block['pages']) else 'text'
         questions.append(Question(
             qid,block['number'],q_text,q_opts,answer,qpages,q_bounds,
-            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release,'extraction_method':extraction_method},
+            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release,'extraction_method':extraction_method,'question_boundary':'expected-subject-sequence'},
             qassets,solution,bool(FIGURE.search(q_text)),'VALIDATED',[],block['subject'],None,question_type,sassets
         ))
     if not raw and not extraction_issues:
