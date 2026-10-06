@@ -1,31 +1,41 @@
 # Image-first PDF pipeline v2
 
-This directory is intentionally independent from the existing pipeline.
+This is a completely isolated pipeline. It does not modify or call the existing
+pipeline or its workflow.
 
-## Fixed behavior
+## Exact source
 
-- Source: `../cEDaK5Wn5ILe4nOdotd6.pdf` is the only PDF processed.
-- Question content: exact rendered PDF page image(s).
-- Options: exactly `A`, `B`, `C`, `D`; no option text is extracted.
-- Solution content: exact rendered PDF page image(s).
-- Stored question/solution text: none.
-- Missing or ambiguous question/solution boundaries: fail closed.
-- Writes to API/D1/Cloudflare/live site: none.
-- Output is an Actions artifact for review; nothing is imported automatically.
+The workflow pins the requested file `cEDaK5Wn5ILe4nOdotd6.pdf` to its known Git
+blob and verifies the PDF has exactly 24 pages and zero searchable text
+characters. The source is therefore treated as a scanned/image-only PDF.
 
-The renderer uses full source pages rather than per-question crops. When multiple questions share a PDF page, each question references the same exact page image. This avoids accidental clipping or reconstruction.
+## Output contract
 
-The pipeline accepts both common 75-question numbering layouts:
-1. global `1..75`
-2. three subject runs of `1..25`
+For each of the 75 questions:
 
-Solutions may be numbered in the same way or may be unnumbered, but there must be exactly 75 solution starts.
+- `question_text` is `null`.
+- `solution_text` is `null`.
+- `options` are exactly A, B, C, D.
+- `question.image_refs` points to the exact rendered source-PDF page image.
+- `solution.image_refs` points to the exact rendered source-PDF page image.
+- No question or solution content is invented, paraphrased, or OCR-reconstructed.
 
-## Local command
+The 75-question page map is explicitly checked in
+`question-page-map.json` and comes from visual verification of this exact
+source PDF.
 
-```bash
-python pipeline/image_first_pdf_v2/pipeline.py --self-test
-python pipeline/image_first_pdf_v2/pipeline.py --pdf cEDaK5Wn5ILe4nOdotd6.pdf --output image-first-output
-```
+## Safety boundary
 
-The GitHub Actions workflow runs the self-test and then validates the real PDF. It is scoped to the `image-first-pdf-v2` branch so the old `pipeline-ci.yml` is not changed or invoked by this pipeline's pushes.
+This pipeline only prepares a review artifact. It never writes to the API,
+D1, Cloudflare, or the live website. `IMPORT_READY.json` is only a review
+marker and requires independent checksum/source verification before any future
+import implementation.
+
+## Files
+
+`pipeline/image_first_pdf_v2/pipeline.py` — isolated renderer/validator.
+
+`.github/workflows/image-first-pdf-v2.yml` — isolated GitHub Actions workflow.
+
+The existing `pipeline/jee_pyq_pipeline/*` and
+`.github/workflows/pipeline-ci.yml` are not part of this pipeline.
