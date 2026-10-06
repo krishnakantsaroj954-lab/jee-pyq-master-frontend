@@ -35,6 +35,7 @@ def _fitz():
         raise RuntimeError("PyMuPDF is required") from exc
 
 def _line_records(page):
+    """Build text lines without merging left/right visual columns."""
     words = page.get_text("words")
     if not words:
         try:
@@ -45,20 +46,33 @@ def _line_records(page):
     if not words:
         return []
 
-    words = sorted(words, key=lambda w: (float(w[1]), float(w[0])))
+    width = float(page.rect.width)
+    words = sorted(words, key=lambda w: (float(w[0]), float(w[1])))
+    xs = sorted(float(w[0]) for w in words)
+    gaps = [(xs[i + 1] - xs[i], i) for i in range(len(xs) - 1)]
+    gap, idx = max(gaps, default=(0.0, 0))
+    groups = [words]
+    if gap >= width * 0.10:
+        split_x = (xs[idx] + xs[idx + 1]) / 2.0
+        left = [w for w in words if float(w[0]) < split_x]
+        right = [w for w in words if float(w[0]) >= split_x]
+        if len(left) >= 8 and len(right) >= 8:
+            groups = [left, right]
+
     lines = []
-    current = []
-    current_y = None
-    for word in words:
-        y = float(word[1])
-        if current and abs(y - current_y) > 3.5:
+    for group in groups:
+        group = sorted(group, key=lambda w: (float(w[1]), float(w[0])))
+        current, current_y = [], None
+        for word in group:
+            y = float(word[1])
+            if current and abs(y - current_y) > 3.5:
+                lines.append(_make_line(current))
+                current = []
+            current.append(word)
+            current_y = y
+        if current:
             lines.append(_make_line(current))
-            current = []
-        current.append(word)
-        current_y = y
-    if current:
-        lines.append(_make_line(current))
-    return lines
+    return sorted(lines, key=lambda l: (l["y0"], l["x0"]))
 
 def _make_line(words):
     return {
