@@ -37,38 +37,6 @@ jobs:
           test "$actual" = "$expected"
           echo "Exact source PDF blob verified: $actual"
 
-      - name: Probe source PDF structure
-        run: |
-          python - <<'PY'
-          import fitz
-          from pathlib import Path
-          pdf=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          doc=fitz.open(pdf)
-          print("PAGE_COUNT", len(doc))
-          print("TOC", doc.get_toc())
-          for i,p in enumerate(doc,1):
-              txt=(p.get_text("text") or "").replace("\n"," ")[:180]
-              print(f"PAGE {i:03d}: text_chars={len(p.get_text('text') or '')} images={len(p.get_images(full=True))} rect={round(p.rect.width,1)}x{round(p.rect.height,1)} text={txt!r}")
-          doc.close()
-          PY
-
-      - name: Render all source pages for visual-boundary verification
-        run: |
-          python - <<'PY'
-          import fitz
-          from pathlib import Path
-          pdf=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          out=Path("source-page-probe")
-          out.mkdir(exist_ok=True)
-          doc=fitz.open(pdf)
-          matrix=fitz.Matrix(0.35,0.35)
-          for n,p in enumerate(doc,1):
-              pix=p.get_pixmap(matrix=matrix,alpha=False)
-              pix.save(str(out/f"page-{n:02d}.jpg"),output="jpeg",jpg_quality=86)
-          doc.close()
-          print("Rendered", len(list(out.glob("page-*.jpg"))), "source pages")
-          PY
-
       - name: Run isolated pipeline self-test
         run: |
           python pipeline/image_first_pdf_v2/pipeline.py --self-test
@@ -92,6 +60,14 @@ jobs:
           if len(rows) != 75:
               raise SystemExit(f"Expected 75 records, got {len(rows)}")
 
+          intake = json.loads((out / "source-intake.json").read_text(encoding="utf-8"))
+          if intake.get("source_page_count") != 24:
+              raise SystemExit(f"Expected 24 source pages, got {intake.get('source_page_count')}")
+          if intake.get("source_text_characters") != 0:
+              raise SystemExit("Source is not image-only")
+          if not intake.get("page_map_verified"):
+              raise SystemExit("Verified page map flag is missing")
+
           expected_opts = [{"key": c, "label": c} for c in "ABCD"]
           for i, row in enumerate(rows, 1):
               if row.get("question_text") is not None:
@@ -114,6 +90,8 @@ jobs:
                           raise SystemExit(f"Missing referenced asset: {ref}")
 
           marker = json.loads((out / "IMPORT_READY.json").read_text(encoding="utf-8"))
+          if marker.get("record_count") != 75:
+              raise SystemExit("IMPORT_READY.json record count mismatch")
           if marker.get("status") != "VALIDATED":
               raise SystemExit("IMPORT_READY.json is not VALIDATED")
           if marker.get("database_write") or marker.get("cloudflare_write"):
@@ -140,14 +118,6 @@ jobs:
               cat image-first-output/validation-report.json
             fi
           } >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Upload source-page probe
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: image-first-pdf-v2-source-page-probe
-          path: source-page-probe/
-          if-no-files-found: warn
 
       - name: Upload image-first review artifact
         if: always()
