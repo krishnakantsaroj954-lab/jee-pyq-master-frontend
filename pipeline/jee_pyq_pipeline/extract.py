@@ -89,6 +89,8 @@ def _question_starts(page_data):
     for page_no, data in enumerate(page_data, 1):
         columns = data["columns"]
         for line in data["lines"]:
+            if SOLUTION_SECTION_RE.match(line["text"]):
+                break
             m = QUESTION_RE.match(line["text"])
             if not m:
                 continue
@@ -139,9 +141,12 @@ def _segments_for_item(item, next_item, page_data, page_count):
     if same_column_next:
         end_page = start_page
         end_y = next_item["y0"]
-    elif next_item is not None:
+    elif next_item is not None and next_item["page"] > start_page and next_item["column"] == start_col:
         end_page = next_item["page"]
-        end_y = next_item["y0"] if next_item["column"] == start_col else 0.0
+        end_y = next_item["y0"]
+    else:
+        end_page = start_page
+        end_y = float(page_data[start_page - 1]["page"].rect.height)
     else:
         end_page = page_count
         end_y = float(page_data[-1]["page"].rect.height)
