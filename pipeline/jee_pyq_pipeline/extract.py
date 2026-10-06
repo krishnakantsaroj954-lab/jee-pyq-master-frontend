@@ -9,17 +9,19 @@ from .models import Issue, Question
 from .util import normalize_line, safe_name, sha256_file
 
 QUESTION_PREFIX_RE = re.compile(
-    r"^\\s*(?:question|ques|q)\\.?\\s*(?:no\\.?|number|num\\.?|#)?\\s*([0-9]{1,2}|[IL])\\b",
+    r"^\s*(?:question|ques|q)\.?\s*(?:no\.?|number|num\.?|#)?\s*([0-9]{1,2}|[IL])"
+    r"\s*(?=$|[:.)\-]|\s)",
     re.I,
 )
-QUESTION_BARE_RE = re.compile(r"^\\s*([0-9]{1,2})\\s*(?=[:.)\\-])")
+QUESTION_BARE_RE = re.compile(r"^\s*([0-9]{1,2})\s*(?=[:.)\-]|\s|$)")
 SUBJECT_RE = re.compile(r"^(Physics|Chemistry|Mathematics|Maths)$", re.I)
 SOLUTION_SECTION_RE = re.compile(
     r"^(?:detailed\s+)?(?:solutions?|answers?\s+and\s+solutions?|answer\s+key)\b", re.I
 )
 SOLUTION_Q_RE = re.compile(
-    r"^(?:solution\s*(?:for|of)?\s*)?(?:question\s*|ques\.?\s*|q\.?\s*)([0-9]{1,2})\b"
-    r"|^solution\s*[:#\-]?\s*([0-9]{1,2})\b",
+    r"^\s*(?:solution|sol\.?|answer|ans\.?)\s*(?:for|of)?\s*"
+    r"(?:question|ques\.?|q\.?)?\s*(?:no\.?|number|num\.?|#)?\s*([0-9]{1,2}|[IL])"
+    r"\s*(?=$|[:.)\-]|\s)",
     re.I,
 )
 ANSWER_RE = re.compile(
