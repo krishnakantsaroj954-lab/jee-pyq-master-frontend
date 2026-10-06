@@ -52,7 +52,7 @@ jobs:
           doc.close()
           PY
 
-      - name: Render source-page probe images
+      - name: Render all source pages for visual-boundary verification
         run: |
           python - <<'PY'
           import fitz
@@ -61,14 +61,12 @@ jobs:
           out=Path("source-page-probe")
           out.mkdir(exist_ok=True)
           doc=fitz.open(pdf)
-          selected=[1,2,3,10,11,12,13,14,15,22,23,24]
           matrix=fitz.Matrix(0.35,0.35)
-          for n in selected:
-              if n <= len(doc):
-                  pix=doc[n-1].get_pixmap(matrix=matrix,alpha=False)
-                  pix.save(str(out/f"page-{n:02d}.jpg"),output="jpeg",jpg_quality=86)
+          for n,p in enumerate(doc,1):
+              pix=p.get_pixmap(matrix=matrix,alpha=False)
+              pix.save(str(out/f"page-{n:02d}.jpg"),output="jpeg",jpg_quality=86)
           doc.close()
-          print("Rendered probe pages:", sorted(p.name for p in out.iterdir()))
+          print("Rendered", len(list(out.glob("page-*.jpg"))), "source pages")
           PY
 
       - name: Run isolated pipeline self-test
