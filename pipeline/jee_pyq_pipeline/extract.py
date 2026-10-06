@@ -109,13 +109,22 @@ def _solution_starts(page_data):
     solution_seen = False
     for page_no, data in enumerate(page_data, 1):
         for line in data["lines"]:
-            if SOLUTION_SECTION_RE.match(line["text"]):
+            # Match numbered solution headers before matching the generic "Solution" section heading.
+            m = SOLUTION_Q_RE.match(line["text"])
+            if solution_seen and m:
+                number = next((int(g) for g in m.groups() if g), None)
+                if number and 1 <= number <= 25:
+                    column = 0
+                    if len(data["columns"]) == 2 and line["x0"] >= data["columns"][1][0]:
+                        column = 1
+                    found.append({"page": page_no, "number": number, "column": column, **line})
+                continue
+
+            if SOLUTION_SECTION_RE.fullmatch(line["text"]) or SOLUTION_SECTION_RE.match(line["text"]):
                 solution_seen = True
                 continue
+
             if not solution_seen:
-                continue
-            m = SOLUTION_Q_RE.match(line["text"])
-            if not m:
                 continue
             number = next((int(g) for g in m.groups() if g), None)
             if not number or not 1 <= number <= 25:
