@@ -3,32 +3,89 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JEE PYQ Master — Image First Test</title>
+<title>JEE PYQ Master — Image-First Preview</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#f4f7fb;color:#172033}
-.top{background:#fff;border-bottom:1px solid #e5eaf2;padding:14px 16px;position:sticky;top:0;z-index:3}
-.brand{font-weight:800;font-size:18px}.meta{font-size:12px;color:#667085;margin-top:3px}
-.wrap{max-width:760px;margin:auto;padding:16px}.card{background:#fff;border:1px solid #e1e7ef;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px rgba(20,35,60,.06)}
-.head{padding:16px;border-bottom:1px solid #edf0f5;display:flex;justify-content:space-between;gap:12px}.qno{font-weight:800}.sub{font-size:12px;color:#667085;margin-top:3px}
-.source{margin:16px;border-radius:12px;overflow:hidden;background:#eef2f7;min-height:420px;display:flex;align-items:center;justify-content:center;border:1px solid #dce3ed}
-.source img{width:100%;display:block}.placeholder{text-align:center;padding:40px;color:#667085}.placeholder b{display:block;color:#344054;margin-bottom:6px}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}.opt{padding:14px;border:1px solid #dce3ed;border-radius:12px;background:#fff;font-weight:700;text-align:left}
-.sol{margin:0 16px 16px;border-top:1px solid #edf0f5;padding-top:16px}.soltitle{font-weight:800;margin-bottom:10px}.nav{display:flex;gap:10px;padding:16px;border-top:1px solid #edf0f5}.btn{flex:1;border:0;border-radius:12px;padding:13px;font-weight:700;background:#172033;color:#fff}.btn.secondary{background:#eef2f7;color:#172033}
-.note{margin-top:12px;font-size:12px;color:#667085;line-height:1.5}
-@media(max-width:520px){.source{min-height:330px}.opts{grid-template-columns:1fr}}
+  *{box-sizing:border-box}
+  body{margin:0;background:#f4f7fb;color:#172033;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .app{max-width:760px;margin:0 auto;background:#fff;min-height:100vh}
+  .top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid #e5eaf2;padding:14px 16px}
+  .brand{font-size:18px;font-weight:800}
+  .meta{font-size:12px;color:#667085;margin-top:4px}
+  .content{padding:16px}
+  .card{border:1px solid #dfe5ee;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(20,35,60,.06)}
+  .head{display:flex;justify-content:space-between;gap:12px;padding:16px;border-bottom:1px solid #edf0f5}
+  .qno{font-weight:800;font-size:16px}
+  .sub{font-size:12px;color:#667085;margin-top:3px}
+  .section{padding:16px}
+  .label{font-size:13px;font-weight:800;margin:0 0 10px}
+  .pdf{width:100%;height:620px;border:1px solid #dce3ed;border-radius:12px;background:#eef2f7}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 16px}
+  .opt{border:1px solid #dce3ed;background:#fff;border-radius:12px;padding:16px;text-align:left;font-size:15px;font-weight:800}
+  .opt span{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#f0f2f6;margin-right:10px}
+  .note{margin:12px 16px 16px;padding:11px 12px;border-radius:10px;background:#f5f7fa;color:#667085;font-size:12px;line-height:1.45}
+  .open{display:inline-block;margin-top:10px;color:#1d4ed8;text-decoration:none;font-weight:700}
+  @media(max-width:520px){.pdf{height:500px}.opts{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<header class="top"><div class="brand">JEE PYQ Master</div><div class="meta">IMAGE-FIRST TEST • 28 Jan 2026 • Shift 1</div></header>
-<main class="wrap">
-<section class="card">
-<div class="head"><div><div class="qno">Question 1</div><div class="sub">Mathematics • Source PDF image</div></div><div class="sub">1 / 75</div></div>
-<div class="source"><div class="placeholder"><b>EXACT SOURCE PDF PAGE IMAGE</b>Question image is rendered directly from the supplied PDF.<br>No OCR / reconstructed question text.</div></div>
-<div class="opts"><button class="opt">A</button><button class="opt">B</button><button class="opt">C</button><button class="opt">D</button></div>
-<div class="sol"><div class="soltitle">Solution</div><div class="source" style="margin:0;min-height:260px"><div class="placeholder"><b>EXACT SOURCE PDF PAGE IMAGE</b>Solution is shown as the original PDF page image.</div></div></div>
-<div class="nav"><button class="btn secondary">← Previous</button><button class="btn">Next →</button></div>
-</section>
-<div class="note">TEST ONLY • This preview represents the final UI contract. The live API/D1 is not touched.</div>
-</main>
+<div class="app">
+  <header class="top">
+    <div class="brand">JEE PYQ Master</div>
+    <div class="meta">NEW IMAGE-FIRST PIPELINE PREVIEW • 28 Jan 2026 • Shift 1</div>
+  </header>
+
+  <main class="content">
+    <section class="card">
+      <div class="head">
+        <div>
+          <div class="qno">Question 1</div>
+          <div class="sub">Mathematics • Source PDF page image</div>
+        </div>
+        <div class="sub">1 / 75</div>
+      </div>
+
+      <div class="section">
+        <div class="label">Question</div>
+        <iframe
+          class="pdf"
+          src="https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/blob/image-first-pdf-v2/cEDaK5Wn5ILe4nOdotd6.pdf?raw=1#page=2&view=FitH"
+          title="Exact source PDF page for Question 1">
+        </iframe>
+        <a class="open"
+           href="https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/blob/image-first-pdf-v2/cEDaK5Wn5ILe4nOdotd6.pdf?raw=1#page=2"
+           target="_blank" rel="noopener">
+          Open exact source page
+        </a>
+      </div>
+
+      <div class="opts" aria-label="Options">
+        <button class="opt"><span>A</span>A</button>
+        <button class="opt"><span>B</span>B</button>
+        <button class="opt"><span>C</span>C</button>
+        <button class="opt"><span>D</span>D</button>
+      </div>
+
+      <div class="section" style="border-top:1px solid #edf0f5">
+        <div class="label">Solution</div>
+        <iframe
+          class="pdf"
+          src="https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/blob/image-first-pdf-v2/cEDaK5Wn5ILe4nOdotd6.pdf?raw=1#page=2&view=FitH"
+          title="Exact source PDF page for the solution">
+        </iframe>
+        <a class="open"
+           href="https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/blob/image-first-pdf-v2/cEDaK5Wn5ILe4nOdotd6.pdf?raw=1#page=2"
+           target="_blank" rel="noopener">
+          Open exact solution page
+        </a>
+      </div>
+
+      <div class="note">
+        Preview only. Question/solution text is not reconstructed and no sample question
+        content is inserted. The displayed source is the exact pinned PDF used by the
+        new image-first pipeline.
+      </div>
+    </section>
+  </main>
+</div>
 </body>
 </html>
