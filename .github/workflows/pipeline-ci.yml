@@ -7,6 +7,11 @@ on:
 permissions:
   contents: read
 
+# Never keep an obsolete OCR run alive after a pipeline fix lands.
+concurrency:
+  group: pipeline-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
