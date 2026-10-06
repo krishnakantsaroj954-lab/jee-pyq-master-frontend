@@ -181,3 +181,9 @@ def test_lines_preserve_two_columns_with_word_metadata():
     texts = [' '.join(w[4] for w in row) for row in parsed]
     assert texts[:2] == ['Question 1', 'left']
     assert texts[2:] == ['Question 2', 'right']
+
+def test_source_question_numbers_are_global():
+    assert _question_start('25. Final mathematics question')[1] == 25
+    assert _question_start('26. First physics question')[1] == 26
+    assert _question_start('51. First chemistry question')[1] == 51
+    assert _question_start('75. Final chemistry question')[1] == 75
