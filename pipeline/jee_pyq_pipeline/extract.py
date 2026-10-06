@@ -5,11 +5,14 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_PREFIX = re.compile(
-    r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*)?(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
+QUESTION_STRONG = re.compile(
+    r'^\s*(?:question|q)\s*(?:no\.?|number|#)?\s*(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
     re.I,
 )
-QUESTION_PLAIN = re.compile(r'^\s*(\d{1,3})\s*[\[\]():.\-]\s*')
+QUESTION_PLAIN = re.compile(
+    r'^\s*([1-9]|1\d|2[0-5])\s*[\[\]():.\-]\s+(?=[A-Za-z(])',
+    re.I,
+)
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
 ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
@@ -29,12 +32,18 @@ def _fitz():
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
 def _page_words(page):
-    words = page.get_text('words')
+    try:
+        words = page.get_text('words', sort=True)
+    except TypeError:
+        words = page.get_text('words')
     if words:
         return words, False
     try:
-        textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
-        words = page.get_text('words', textpage=textpage)
+        textpage = page.get_textpage_ocr(language='eng', dpi=300, full=True)
+        try:
+            words = page.get_text('words', textpage=textpage, sort=True)
+        except TypeError:
+            words = page.get_text('words', textpage=textpage)
     except Exception as error:
         raise RuntimeError(
             'OCR was required because the page has no text layer, but OCR failed. '
@@ -43,7 +52,7 @@ def _page_words(page):
     return words, True
 
 def _question_start(text:str):
-    match=QUESTION_PREFIX.match(text)
+    match=QUESTION_STRONG.match(text)
     if match:
         return match, int(match.group(1))
     match=QUESTION_PLAIN.match(text)
@@ -54,28 +63,93 @@ def _question_start(text:str):
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
         return []
-    ordered=sorted(words,key=lambda w:w[0])
-    gaps=[(ordered[i+1][0]-ordered[i][2],i) for i in range(len(ordered)-1)]
-    split_gap,split_i=max(gaps,default=(0.0,0))
-    columns=[ordered]
-    if split_gap>width*0.12 and 0<split_i<len(ordered)-1:
-        left,right=ordered[:split_i+1],ordered[split_i+1:]
-        if (
-            max(w[2] for w in left)-min(w[0] for w in left)>width*0.20
-            and max(w[2] for w in right)-min(w[0] for w in right)>width*0.20
-        ):
-            columns=[left,right]
-    result=[]
-    for col in columns:
-        col=sorted(col,key=lambda w:(w[1],w[0]))
-        rows=[]
-        for w in col:
-            if not rows or abs(w[1]-rows[-1][0][1])>4.0:
+
+    # PyMuPDF words normally expose block_no/line_no in positions 5/6.
+    # OCR pages benefit greatly from retaining those boundaries instead of
+    # rebuilding lines from x/y gaps, which can merge the two PDF columns.
+    rich = all(len(w) >= 7 for w in words)
+    if rich:
+        groups = {}
+        for w in words:
+            key = (w[5], w[6])
+            groups.setdefault(key, []).append(w)
+        rows = [sorted(row, key=lambda w: w[0]) for row in groups.values()]
+    else:
+        ordered = sorted(words, key=lambda w: (w[1], w[0]))
+        rows = []
+        for w in ordered:
+            if not rows or abs(w[1] - rows[-1][0][1]) > 4.0:
                 rows.append([w])
             else:
                 rows[-1].append(w)
-        result.extend(sorted((sorted(row,key=lambda w:w[0]) for row in rows),key=lambda row:row[0][1]))
-    return result
+
+    if len(rows) < 4:
+        return rows
+
+    # Detect a genuine two-column page from line centres. Full-width headers
+    # and footers are kept out of the clustering so they do not distort it.
+    def bounds(row):
+        return (
+            min(w[0] for w in row),
+            min(w[1] for w in row),
+            max(w[2] for w in row),
+            max(w[3] for w in row),
+        )
+
+    row_bounds = [bounds(row) for row in rows]
+    column_rows = [row for row, b in zip(rows, row_bounds) if (b[2] - b[0]) < width * 0.60]
+    if len(column_rows) < 4:
+        return rows
+
+    centers = sorted(((
+        (b[0] + b[2]) / 2.0,
+        i
+    ) for i, b in enumerate([bounds(r) for r in column_rows])), key=lambda x: x[0])
+    best_gap = 0.0
+    best_i = None
+    for j in range(len(centers) - 1):
+        gap = centers[j + 1][0] - centers[j][0]
+        if gap > best_gap:
+            best_gap, best_i = gap, j
+
+    if best_i is None or best_gap < width * 0.12:
+        return rows
+
+    threshold = (centers[best_i][0] + centers[best_i + 1][0]) / 2.0
+    left_ids = {centers[j][1] for j in range(best_i + 1)}
+    right_ids = {centers[j][1] for j in range(best_i + 1, len(centers))}
+
+    left = []
+    right = []
+    full = []
+    for original, b in zip(rows, [bounds(r) for r in rows]):
+        span = b[2] - b[0]
+        if span >= width * 0.60:
+            full.append(original)
+            continue
+        center = (b[0] + b[2]) / 2.0
+        if center <= threshold:
+            left.append(original)
+        else:
+            right.append(original)
+
+    key_y = lambda row: (min(w[1] for w in row), min(w[0] for w in row))
+    left.sort(key=key_y)
+    right.sort(key=key_y)
+    full.sort(key=key_y)
+
+    if not left or not right:
+        return rows
+
+    # Most source papers put a full-width title/subject line at the top and
+    # a page footer at the bottom. Preserve those around the two-column body.
+    first_body_y = min(min(w[1] for w in r) for r in left + right)
+    last_body_y = max(max(w[3] for w in r) for r in left + right)
+    top_full = [r for r in full if min(w[1] for w in r) <= first_body_y + 80]
+    bottom_full = [r for r in full if min(w[1] for w in r) > first_body_y + 80]
+    bottom_full.sort(key=key_y)
+
+    return top_full + left + right + bottom_full
 
 def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
     found=[]
@@ -217,15 +291,46 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
 
     blocks=[]
     current=None
+    seen_by_subject={s:set() for s in SUBJECTS.values()}
     for page,text,bounds,subject in raw:
-        match,number=_question_start(text)
-        if number is not None and current is None and subject is None:
+        # A standalone subject heading marks a new section; it must not become
+        # question text or bleed into the previous subject.
+        if subject and text.strip().upper() in SUBJECTS:
+            if current and current['subject'] != subject:
+                blocks.append(current)
+                current=None
+            current_subject=subject
             continue
-        if number is not None and subject is not None:
+
+        match,number=_question_start(text)
+        if number is not None:
+            candidate_subject=subject or (current['subject'] if current else current_subject)
+            if candidate_subject is None or number < 1 or number > 25:
+                continue
+
+            seen=seen_by_subject.setdefault(candidate_subject,set())
+            is_strong=bool(QUESTION_STRONG.match(text))
+            max_seen=max(seen,default=0)
+
+            # Accept only a new subject-local question number. Repeated OCR
+            # numbers inside solution/formula text are continuation content.
+            if number in seen or (seen and number <= max_seen):
+                continue
+            if current and candidate_subject == current['subject'] and number <= current['number']:
+                continue
+
             if current:
                 blocks.append(current)
-            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            seen.add(number)
+            current={
+                'number':number,
+                'subject':candidate_subject,
+                'rows':[(page,text[match.end():].strip(),bounds)],
+                'pages':{page},
+                'strong_header':is_strong,
+            }
             continue
+
         if current:
             current['rows'].append((page,text,bounds))
             current['pages'].add(page)
