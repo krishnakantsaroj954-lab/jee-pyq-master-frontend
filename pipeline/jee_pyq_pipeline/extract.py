@@ -10,12 +10,14 @@ from .util import normalize_line, safe_name, sha256_file
 
 QUESTION_PREFIX_RE = re.compile(
     r"^\s*(?:question|ques|q)\.?\s*(?:no\.?|number|num\.?|#)?\s*([0-9]{1,2}|[IL])"
-    r"\s*(?=$|[:.)\-])",
+    r"\s*(?=$|[:.)\-]|\s)",
     re.I,
 )
-# Bare question headers must carry an explicit header delimiter; this prevents
-# equation/list/body numbers from being treated as new questions.
-QUESTION_BARE_RE = re.compile(r"^\s*([0-9]{1,2})\s*(?=[:.)\-])")
+QUESTION_BARE_RE = re.compile(r"^\s*([0-9]{1,2})\s*(?=[:.)\-]|\s|$)")
+QUESTION_NOISE_RE = re.compile(
+    r"^\s*[0-9]{1,2}\s*(?:[:.)\-]\s*)?(?:ans(?:wer)?|sol(?:ution)?|figure|number)\b",
+    re.I,
+)
 SUBJECT_RE = re.compile(r"^(Physics|Chemistry|Mathematics|Maths)$", re.I)
 SOLUTION_SECTION_RE = re.compile(
     r"^(?:detailed\s+)?(?:solutions?|answers?\s+and\s+solutions?|answer\s+key)\b", re.I
@@ -128,22 +130,47 @@ def _page_columns(page, lines):
     width = float(page.rect.width)
     if not lines:
         return [(0.0, width)]
-    left_lines = [l for l in lines if l["x0"] < width * 0.48]
-    right_lines = [l for l in lines if l["x0"] > width * 0.52]
-    if not left_lines or not right_lines:
-        return [(0.0, width)]
-    left_max = max(l["x1"] for l in left_lines)
-    right_min = min(l["x0"] for l in right_lines)
-    if right_min - left_max < width * 0.08:
-        return [(0.0, width)]
-    mid = (left_max + right_min) / 2.0
-    return [(0.0, mid), (mid, width)]
+
+    # Detect visual columns from line start positions (x0), not line extents.
+    # Long equations/figures can span across the page and would otherwise make
+    # a genuine two-column page look like a single column.
+    x0s = sorted(float(l["x0"]) for l in lines)
+    gaps = [(x0s[i + 1] - x0s[i], i) for i in range(len(x0s) - 1)]
+    gap, idx = max(gaps, default=(0.0, -1))
+    if idx >= 0 and gap >= width * 0.12:
+        left_count = idx + 1
+        right_count = len(x0s) - left_count
+        if left_count >= 8 and right_count >= 8:
+            split_x = (x0s[idx] + x0s[idx + 1]) / 2.0
+            return [(0.0, split_x), (split_x, width)]
+
+    return [(0.0, width)]
 
 def _line_column(data, line):
     columns = data["columns"]
     if len(columns) == 2 and line["x0"] >= columns[1][0]:
         return 1
     return 0
+
+
+def _is_question_candidate(data, column, line):
+    text = normalize_line(line["text"])
+    if QUESTION_NOISE_RE.match(text):
+        return False
+
+    number = _question_number(text)
+    if number is None or not 1 <= number <= 25:
+        return False
+
+    if QUESTION_PREFIX_RE.match(text):
+        return True
+
+    # Bare numeric headers are accepted only near the column's reading margin
+    # and when enough alphabetic content remains to resemble a question line.
+    x0, x1 = data["columns"][column]
+    margin_limit = x0 + max(48.0, (x1 - x0) * 0.08)
+    alpha_count = len(re.findall(r"[A-Za-z]", text))
+    return float(line["x0"]) <= margin_limit and alpha_count >= 3
 
 
 def _question_starts(page_data):
@@ -161,9 +188,9 @@ def _question_starts(page_data):
                     continue
                 if blocked:
                     continue
-                number = _question_number(line["text"])
-                if number is None or not 1 <= number <= 25:
+                if not _is_question_candidate(data, column, line):
                     continue
+                number = _question_number(line["text"])
                 starts.append({"page": page_no, "number": number, "column": column, **line})
     starts.sort(key=lambda x: (x["page"], x["column"], x["y0"], x["x0"]))
     return starts
