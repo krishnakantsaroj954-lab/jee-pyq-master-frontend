@@ -10,9 +10,10 @@ QUESTION_STRONG = re.compile(
     re.I,
 )
 QUESTION_PLAIN = re.compile(
-    r'^\s*([1-9]|1\d|2[0-5])\s*[\[\]():.\-]\s+(?=[A-Za-z(])',
+    r'^\s*(\d{1,2})\s*[\[\]():.\-]\s+(?=[A-Za-z(])',
     re.I,
 )
+
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
 ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
@@ -64,92 +65,32 @@ def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
         return []
 
-    # PyMuPDF words normally expose block_no/line_no in positions 5/6.
-    # OCR pages benefit greatly from retaining those boundaries instead of
-    # rebuilding lines from x/y gaps, which can merge the two PDF columns.
-    rich = all(len(w) >= 7 for w in words)
-    if rich:
-        groups = {}
-        for w in words:
-            key = (w[5], w[6])
-            groups.setdefault(key, []).append(w)
-        rows = [sorted(row, key=lambda w: w[0]) for row in groups.values()]
-    else:
-        ordered = sorted(words, key=lambda w: (w[1], w[0]))
+    # The supplied scan has a stable vertical divider near the page midpoint.
+    # Split words into physical columns before rebuilding visual rows; OCR
+    # block/line IDs can merge the two columns on image-only pages.
+    midpoint = width / 2.0
+    margin = max(20.0, width * 0.01)
+
+    left_words = []
+    right_words = []
+    for w in words:
+        x0, x1 = float(w[0]), float(w[2])
+        if x1 <= midpoint - margin:
+            left_words.append(w)
+        elif x0 >= midpoint + margin:
+            right_words.append(w)
+
+    def rows_for_column(column_words):
+        ordered = sorted(column_words, key=lambda w: (w[1], w[0]))
         rows = []
         for w in ordered:
-            if not rows or abs(w[1] - rows[-1][0][1]) > 4.0:
+            if not rows or abs(w[1] - rows[-1][0][1]) > 9.0:
                 rows.append([w])
             else:
                 rows[-1].append(w)
+        return [sorted(row, key=lambda w: w[0]) for row in rows]
 
-    if len(rows) < 4:
-        return rows
-
-    # Detect a genuine two-column page from line centres. Full-width headers
-    # and footers are kept out of the clustering so they do not distort it.
-    def bounds(row):
-        return (
-            min(w[0] for w in row),
-            min(w[1] for w in row),
-            max(w[2] for w in row),
-            max(w[3] for w in row),
-        )
-
-    row_bounds = [bounds(row) for row in rows]
-    column_rows = [row for row, b in zip(rows, row_bounds) if (b[2] - b[0]) < width * 0.60]
-    if len(column_rows) < 4:
-        return rows
-
-    centers = sorted(((
-        (b[0] + b[2]) / 2.0,
-        i
-    ) for i, b in enumerate([bounds(r) for r in column_rows])), key=lambda x: x[0])
-    best_gap = 0.0
-    best_i = None
-    for j in range(len(centers) - 1):
-        gap = centers[j + 1][0] - centers[j][0]
-        if gap > best_gap:
-            best_gap, best_i = gap, j
-
-    if best_i is None or best_gap < width * 0.12:
-        return rows
-
-    threshold = (centers[best_i][0] + centers[best_i + 1][0]) / 2.0
-    left_ids = {centers[j][1] for j in range(best_i + 1)}
-    right_ids = {centers[j][1] for j in range(best_i + 1, len(centers))}
-
-    left = []
-    right = []
-    full = []
-    for original, b in zip(rows, [bounds(r) for r in rows]):
-        span = b[2] - b[0]
-        if span >= width * 0.60:
-            full.append(original)
-            continue
-        center = (b[0] + b[2]) / 2.0
-        if center <= threshold:
-            left.append(original)
-        else:
-            right.append(original)
-
-    key_y = lambda row: (min(w[1] for w in row), min(w[0] for w in row))
-    left.sort(key=key_y)
-    right.sort(key=key_y)
-    full.sort(key=key_y)
-
-    if not left or not right:
-        return rows
-
-    # Most source papers put a full-width title/subject line at the top and
-    # a page footer at the bottom. Preserve those around the two-column body.
-    first_body_y = min(min(w[1] for w in r) for r in left + right)
-    last_body_y = max(max(w[3] for w in r) for r in left + right)
-    top_full = [r for r in full if min(w[1] for w in r) <= first_body_y + 80]
-    bottom_full = [r for r in full if min(w[1] for w in r) > first_body_y + 80]
-    bottom_full.sort(key=key_y)
-
-    return top_full + left + right + bottom_full
+    return rows_for_column(left_words) + rows_for_column(right_words)
 
 def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
     found=[]
@@ -173,15 +114,7 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
 def _subject_line(text:str)->str|None:
     t=safe_normalize(text).strip().upper()
     compact=re.sub(r'[^A-Z]+',' ',t).strip()
-    direct=SUBJECTS.get(compact)
-    if direct:
-        return direct
-    tokens=compact.split()
-    if len(tokens)<=6:
-        for key,value in SUBJECTS.items():
-            if key in tokens:
-                return value
-    return None
+    return SUBJECTS.get(compact)
 
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
@@ -212,8 +145,14 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
-    token=re.match(r'\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\b',text,re.I)
-    return token.group(1) if token else None
+    token=re.match(
+        r'\s*[\(\[]?\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?'
+        r'(?:\s*/\s*-?\d+(?:\.\d+)?)?)'
+        r'\s*[\)\]\.,:;]?',
+        text,
+        re.I,
+    )
+    return token.group(1).strip() if token else None
 
 def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
     qrows=[]
@@ -289,12 +228,12 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     finally:
         doc.close()
 
+    expected_keys = set(getattr(config, 'expected_question_numbers', ()))
     blocks=[]
     current=None
-    seen_by_subject={s:set() for s in SUBJECTS.values()}
+    seen_keys=set()
+
     for page,text,bounds,subject in raw:
-        # A standalone subject heading marks a new section; it must not become
-        # question text or bleed into the previous subject.
         if subject and text.strip().upper() in SUBJECTS:
             if current and current['subject'] != subject:
                 blocks.append(current)
@@ -305,35 +244,30 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         match,number=_question_start(text)
         if number is not None:
             candidate_subject=subject or (current['subject'] if current else current_subject)
-            if candidate_subject is None or number < 1 or number > 25:
+            if candidate_subject is None:
                 continue
 
-            seen=seen_by_subject.setdefault(candidate_subject,set())
-            is_strong=bool(QUESTION_STRONG.match(text))
-            max_seen=max(seen,default=0)
-
-            # Accept only a new subject-local question number. Repeated OCR
-            # numbers inside solution/formula text are continuation content.
-            if number in seen or (seen and number <= max_seen):
-                continue
-            if current and candidate_subject == current['subject'] and number <= current['number']:
+            key=f'{candidate_subject}:{number}'
+            if key not in expected_keys or key in seen_keys:
                 continue
 
             if current:
                 blocks.append(current)
-            seen.add(number)
+
+            seen_keys.add(key)
             current={
                 'number':number,
                 'subject':candidate_subject,
                 'rows':[(page,text[match.end():].strip(),bounds)],
                 'pages':{page},
-                'strong_header':is_strong,
+                'strong_header':bool(QUESTION_STRONG.match(text)),
             }
             continue
 
         if current:
             current['rows'].append((page,text,bounds))
             current['pages'].add(page)
+
     if current:
         blocks.append(current)
 
