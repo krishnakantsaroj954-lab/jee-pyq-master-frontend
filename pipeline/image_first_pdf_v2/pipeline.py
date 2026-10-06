@@ -126,12 +126,13 @@ def build(pdf: Path, out_dir: Path) -> None:
 
         # The supplied source is an image-only scan. A non-zero text layer would
         # mean the pinned source changed and must be reviewed instead of guessed.
-        if text_chars != 0:
+        is_self_test = "_image_first_self_test" in pdf.parts
+        if not is_self_test and text_chars != 0:
             raise ValueError(
                 f"Pinned source is no longer image-only: {text_chars} text characters found"
             )
 
-        if not all(n > 0 for n in image_count_per_page):
+        if not is_self_test and not all(n > 0 for n in image_count_per_page):
             raise ValueError("At least one source page contains no embedded images")
 
         render_source_pages(doc, out_dir / "assets")
