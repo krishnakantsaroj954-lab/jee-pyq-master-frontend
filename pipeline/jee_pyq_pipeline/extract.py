@@ -69,7 +69,7 @@ def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     # Split words into physical columns before rebuilding visual rows; OCR
     # block/line IDs can merge the two columns on image-only pages.
     midpoint = width / 2.0
-    margin = max(20.0, width * 0.01)
+    margin = max(6.0, width * 0.002)
 
     left_words = []
     right_words = []
@@ -146,8 +146,7 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
 
 def _parse_answer(text:str)->str|None:
     token=re.match(
-        r'\s*[\(\[]?\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?'
-        r'(?:\s*/\s*-?\d+(?:\.\d+)?)?)'
+        r'\s*[\(\[]?\s*(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?|[A-D])'
         r'\s*[\)\]\.,:;]?',
         text,
         re.I,
