@@ -8,10 +8,11 @@ from typing import Any
 from .models import Issue, Question
 from .util import normalize_line, safe_name, sha256_file
 
-QUESTION_RE = re.compile(
-    r"^(?:question\s*(?:no\.?|number|#)?\s*|q\.?\s*)?([0-9]{1,2})\s*(?:[:.)\-]\s*|$)",
+QUESTION_PREFIX_RE = re.compile(
+    r"^\\s*(?:question|ques|q)\\.?\\s*(?:no\\.?|number|num\\.?|#)?\\s*([0-9]{1,2}|[IL])\\b",
     re.I,
 )
+QUESTION_BARE_RE = re.compile(r"^\\s*([0-9]{1,2})\\s*(?=[:.)\\-])")
 SUBJECT_RE = re.compile(r"^(Physics|Chemistry|Mathematics|Maths)$", re.I)
 SOLUTION_SECTION_RE = re.compile(
     r"^(?:detailed\s+)?(?:solutions?|answers?\s+and\s+solutions?|answer\s+key)\b", re.I
@@ -34,33 +35,11 @@ def _fitz():
     except ImportError as exc:
         raise RuntimeError("PyMuPDF is required") from exc
 
-def _line_records(page):
-    """Build text lines without merging left/right visual columns."""
-    words = page.get_text("words")
-    if not words:
-        try:
-            tp = page.get_textpage_ocr(language="eng", dpi=250, full=True)
-            words = page.get_text("words", textpage=tp)
-        except Exception as exc:
-            raise RuntimeError(f"Cannot read page {page.number + 1}: {exc}") from exc
+def _words_to_lines(words):
     if not words:
         return []
-
-    width = float(page.rect.width)
-    words = sorted(words, key=lambda w: (float(w[0]), float(w[1])))
-    xs = sorted(float(w[0]) for w in words)
-    gaps = [(xs[i + 1] - xs[i], i) for i in range(len(xs) - 1)]
-    gap, idx = max(gaps, default=(0.0, 0))
-    groups = [words]
-    if gap >= width * 0.10:
-        split_x = (xs[idx] + xs[idx + 1]) / 2.0
-        left = [w for w in words if float(w[0]) < split_x]
-        right = [w for w in words if float(w[0]) >= split_x]
-        if len(left) >= 8 and len(right) >= 8:
-            groups = [left, right]
-
     lines = []
-    for group in groups:
+    for group in _split_word_columns(words):
         group = sorted(group, key=lambda w: (float(w[1]), float(w[0])))
         current, current_y = [], None
         for word in group:
@@ -73,6 +52,64 @@ def _line_records(page):
         if current:
             lines.append(_make_line(current))
     return sorted(lines, key=lambda l: (l["y0"], l["x0"]))
+
+
+def _split_word_columns(words, width=None):
+    width = float(width) if width is not None else max((float(w[2]) for w in words), default=0.0)
+    words = sorted(words, key=lambda w: (float(w[0]), float(w[1])))
+    xs = sorted(float(w[0]) for w in words)
+    gaps = [(xs[i + 1] - xs[i], i) for i in range(len(xs) - 1)]
+    gap, idx = max(gaps, default=(0.0, 0))
+    groups = [words]
+    if width > 0 and gap >= width * 0.10:
+        split_x = (xs[idx] + xs[idx + 1]) / 2.0
+        left = [w for w in words if float(w[0]) < split_x]
+        right = [w for w in words if float(w[0]) >= split_x]
+        if len(left) >= 8 and len(right) >= 8:
+            groups = [left, right]
+    return groups
+
+
+def _question_number(text):
+    text = normalize_line(text)
+    m = QUESTION_PREFIX_RE.match(text)
+    if m:
+        raw = m.group(1).upper()
+        if raw in {"I", "L"}:
+            raw = "1"
+        return int(raw)
+    m = QUESTION_BARE_RE.match(text)
+    return int(m.group(1)) if m else None
+
+
+def _header_signal(lines):
+    q = sum(1 for l in lines if _question_number(l["text"]) is not None)
+    sol = sum(1 for l in lines if SOLUTION_SECTION_RE.match(l["text"]) or SOLUTION_Q_RE.match(l["text"]))
+    subj = sum(1 for l in lines if SUBJECT_RE.fullmatch(l["text"]))
+    return q * 10 + sol * 4 + subj * 6
+
+
+def _line_records(page):
+    """Build text lines without merging visual columns; use OCR when it exposes more structural markers."""
+    native_words = page.get_text("words")
+    native_lines = _words_to_lines(native_words)
+
+    ocr_lines = []
+    try:
+        tp = page.get_textpage_ocr(language="eng", dpi=250, full=True)
+        ocr_words = page.get_text("words", textpage=tp)
+        ocr_lines = _words_to_lines(ocr_words)
+    except Exception:
+        ocr_lines = []
+
+    if not native_lines:
+        if not ocr_lines:
+            raise RuntimeError(f"Cannot read page {page.number + 1} as native text or OCR")
+        return ocr_lines
+
+    if ocr_lines and _header_signal(ocr_lines) > _header_signal(native_lines):
+        return ocr_lines
+    return native_lines
 
 def _make_line(words):
     return {
@@ -98,48 +135,64 @@ def _page_columns(page, lines):
     mid = (left_max + right_min) / 2.0
     return [(0.0, mid), (mid, width)]
 
+def _line_column(data, line):
+    columns = data["columns"]
+    if len(columns) == 2 and line["x0"] >= columns[1][0]:
+        return 1
+    return 0
+
+
 def _question_starts(page_data):
     starts = []
     for page_no, data in enumerate(page_data, 1):
-        columns = data["columns"]
-        for line in data["lines"]:
-            if SOLUTION_SECTION_RE.match(line["text"]):
-                break
-            m = QUESTION_RE.match(line["text"])
-            if not m:
-                continue
-            number = int(m.group(1))
-            if not 1 <= number <= 25:
-                continue
-            column = 0
-            if len(columns) == 2 and line["x0"] >= columns[1][0]:
-                column = 1
-            starts.append({"page": page_no, "number": number, "column": column, **line})
+        for column in range(len(data["columns"])):
+            blocked = False
+            column_lines = [
+                line for line in data["lines"]
+                if _line_column(data, line) == column
+            ]
+            for line in sorted(column_lines, key=lambda l: (l["y0"], l["x0"])):
+                if SOLUTION_SECTION_RE.match(line["text"]):
+                    blocked = True
+                    continue
+                if blocked:
+                    continue
+                number = _question_number(line["text"])
+                if number is None or not 1 <= number <= 25:
+                    continue
+                starts.append({"page": page_no, "number": number, "column": column, **line})
     starts.sort(key=lambda x: (x["page"], x["column"], x["y0"], x["x0"]))
     return starts
 
 def _solution_starts(page_data):
     found = []
-    solution_seen = False
     for page_no, data in enumerate(page_data, 1):
-        for line in data["lines"]:
-            # Match numbered solution headers before matching the generic "Solution" section heading.
-            m = SOLUTION_Q_RE.match(line["text"])
-            if solution_seen and m:
-                number = next((int(g) for g in m.groups() if g), None)
-                if number and 1 <= number <= 25:
-                    column = 0
-                    if len(data["columns"]) == 2 and line["x0"] >= data["columns"][1][0]:
-                        column = 1
+        for column in range(len(data["columns"])):
+            solution_seen = False
+            column_lines = [
+                line for line in data["lines"]
+                if _line_column(data, line) == column
+            ]
+            for line in sorted(column_lines, key=lambda l: (l["y0"], l["x0"])):
+                if SOLUTION_SECTION_RE.match(line["text"]):
+                    solution_seen = True
+                    continue
+                if not solution_seen:
+                    continue
+
+                number = None
+                m = SOLUTION_Q_RE.match(line["text"])
+                if m:
+                    raw = next((g for g in m.groups() if g), None)
+                    if raw:
+                        raw = raw.upper()
+                        number = int("1" if raw in {"I", "L"} else raw)
+                if number is None:
+                    number = _question_number(line["text"])
+
+                if number is not None and 1 <= number <= 25:
                     found.append({"page": page_no, "number": number, "column": column, **line})
-                continue
 
-            if SOLUTION_SECTION_RE.fullmatch(line["text"]) or SOLUTION_SECTION_RE.match(line["text"]):
-                solution_seen = True
-                continue
-
-            if not solution_seen:
-                continue
     found.sort(key=lambda x: (x["page"], x["column"], x["y0"], x["x0"]))
     return found
 
