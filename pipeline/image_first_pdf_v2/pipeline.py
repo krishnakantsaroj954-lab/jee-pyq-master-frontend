@@ -55,14 +55,17 @@ def markers(texts: list[str], rx: re.Pattern[str]) -> list[Marker]:
 
 
 def question_starts(items: list[Marker], expected: int) -> list[Marker]:
-    # Keep the first explicit occurrence of each number. Line anchoring prevents
-    # ordinary "Question 4" mentions inside prose from becoming new questions.
+    # Deduplicate only an accidental repeat of the same numbered heading on the
+    # same page. JEE papers commonly restart numbering at 1 for each subject.
     seen = set()
     out = []
     for item in sorted(items, key=lambda x: (x.page, x.offset)):
-        if item.number is None or item.number in seen:
+        if item.number is None:
             continue
-        seen.add(item.number)
+        key = (item.page, item.number)
+        if key in seen:
+            continue
+        seen.add(key)
         out.append(item)
     if len(out) != expected:
         raise ValueError(f"Expected {expected} question starts, detected {len(out)}")
