@@ -1,5 +1,5 @@
 name: JEE PYQ Image-First Pipeline CI
-# image-first validation trigger v6
+# image-first validation trigger v7
 
 on:
   workflow_dispatch:
