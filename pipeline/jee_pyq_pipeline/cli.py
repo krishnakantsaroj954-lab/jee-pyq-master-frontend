@@ -22,6 +22,12 @@ def _build_batch(config, output_dir: Path):
     for q in questions:
         q.status = "VALIDATED" if status == "VALIDATED" else "QUARANTINED"
         q.issues.extend([i for i in issues if i.question_id == q.id])
+        for asset in q.assets + q.solution_assets:
+            p = Path(asset["path"])
+            if p.is_absolute():
+                asset["path"] = str(p.resolve().relative_to(output_dir.resolve())).replace("\\", "/")
+            else:
+                asset["path"] = str(p).replace("\\", "/")
 
     records = {
         "validated": [q.json() for q in questions if q.status == "VALIDATED"],
