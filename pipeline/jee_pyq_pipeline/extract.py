@@ -10,10 +10,12 @@ from .util import normalize_line, safe_name, sha256_file
 
 QUESTION_PREFIX_RE = re.compile(
     r"^\s*(?:question|ques|q)\.?\s*(?:no\.?|number|num\.?|#)?\s*([0-9]{1,2}|[IL])"
-    r"\s*(?=$|[:.)\-]|\s)",
+    r"\s*(?=$|[:.)\-])",
     re.I,
 )
-QUESTION_BARE_RE = re.compile(r"^\s*([0-9]{1,2})\s*(?=[:.)\-]|\s|$)")
+# Bare question headers must carry an explicit header delimiter; this prevents
+# equation/list/body numbers from being treated as new questions.
+QUESTION_BARE_RE = re.compile(r"^\s*([0-9]{1,2})\s*(?=[:.)\-])")
 SUBJECT_RE = re.compile(r"^(Physics|Chemistry|Mathematics|Maths)$", re.I)
 SOLUTION_SECTION_RE = re.compile(
     r"^(?:detailed\s+)?(?:solutions?|answers?\s+and\s+solutions?|answer\s+key)\b", re.I
