@@ -43,7 +43,9 @@ jobs:
 
       - name: Run real 75-question source-PDF extraction
         run: |
-          python pipeline/image_first_pdf_v2/pipeline.py             --pdf cEDaK5Wn5ILe4nOdotd6.pdf             --output image-first-output             --expected-count 75             --max-pages 150
+          python pipeline/image_first_pdf_v2/pipeline.py \
+            --pdf cEDaK5Wn5ILe4nOdotd6.pdf \
+            --output image-first-output
 
       - name: Enforce image-first contract
         run: |
