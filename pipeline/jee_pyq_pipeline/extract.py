@@ -176,22 +176,27 @@ def _solution_starts(page_data):
                 if _line_column(data, line) == column
             ]
             for line in sorted(column_lines, key=lambda l: (l["y0"], l["x0"])):
-                if SOLUTION_SECTION_RE.match(line["text"]):
-                    solution_seen = True
-                    continue
-                if not solution_seen:
-                    continue
-
-                number = None
+                # Numbered solution headers must be tested before the generic section heading,
+                # because "Solution 1" also matches the word "Solution".
                 m = SOLUTION_Q_RE.match(line["text"])
-                if m:
+                if solution_seen and m:
                     raw = next((g for g in m.groups() if g), None)
                     if raw:
                         raw = raw.upper()
                         number = int("1" if raw in {"I", "L"} else raw)
-                if number is None:
-                    number = _question_number(line["text"])
+                        if 1 <= number <= 25:
+                            found.append({"page": page_no, "number": number, "column": column, **line})
+                    continue
 
+                if SOLUTION_SECTION_RE.match(line["text"]):
+                    solution_seen = True
+                    continue
+
+                if not solution_seen:
+                    continue
+
+                # Some sources repeat a bare "Question N" marker inside the solution block.
+                number = _question_number(line["text"])
                 if number is not None and 1 <= number <= 25:
                     found.append({"page": page_no, "number": number, "column": column, **line})
 
