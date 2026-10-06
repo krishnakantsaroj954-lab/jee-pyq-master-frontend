@@ -147,9 +147,6 @@ def _segments_for_item(item, next_item, page_data, page_count):
     else:
         end_page = start_page
         end_y = float(page_data[start_page - 1]["page"].rect.height)
-    else:
-        end_page = page_count
-        end_y = float(page_data[-1]["page"].rect.height)
 
     for page_no in range(start_page, end_page + 1):
         data = page_data[page_no - 1]
