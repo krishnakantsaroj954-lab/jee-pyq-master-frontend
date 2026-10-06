@@ -140,7 +140,7 @@ def _page_columns(page, lines):
     if idx >= 0 and gap >= width * 0.12:
         left_count = idx + 1
         right_count = len(x0s) - left_count
-        if left_count >= 8 and right_count >= 8:
+        if left_count >= 4 and right_count >= 4:
             split_x = (x0s[idx] + x0s[idx + 1]) / 2.0
             return [(0.0, split_x), (split_x, width)]
 
