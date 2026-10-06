@@ -127,8 +127,9 @@ def write_json(path: Path, obj: object) -> None:
 def build(pdf: Path, out_dir: Path, expected_count: int, max_pages: int) -> None:
     if not pdf.is_file():
         raise FileNotFoundError(pdf)
-    if pdf.stat().st_size < 100_000:
-        raise ValueError("Source PDF is unexpectedly small")
+    with pdf.open("rb") as _f:
+        if _f.read(5) != b"%PDF-":
+            raise ValueError("Source is not a valid PDF file")
 
     doc = fitz.open(pdf)
     try:
