@@ -126,13 +126,6 @@ def _solution_starts(page_data):
 
             if not solution_seen:
                 continue
-            number = next((int(g) for g in m.groups() if g), None)
-            if not number or not 1 <= number <= 25:
-                continue
-            column = 0
-            if len(data["columns"]) == 2 and line["x0"] >= data["columns"][1][0]:
-                column = 1
-            found.append({"page": page_no, "number": number, "column": column, **line})
     found.sort(key=lambda x: (x["page"], x["column"], x["y0"], x["x0"]))
     return found
 
