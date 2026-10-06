@@ -3,7 +3,7 @@ name: JEE PYQ Image-First Pipeline CI
 on:
   workflow_dispatch:
   push:
-    branches: [image-first-pipeline]
+    branches: [image-first-pipeline, fix/image-first-column-aware]
   pull_request:
     branches: [main]
 
