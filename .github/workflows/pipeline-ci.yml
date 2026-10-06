@@ -67,6 +67,81 @@ jobs:
           doc.close()
           PY
 
+      - name: Capture source PDF layout diagnostic
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+          import fitz
+
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc = fitz.open(pdf)
+          out = {"page_count": len(doc), "pages": []}
+          kw = re.compile(r"question|ques|solution|sol\\.?|answer|ans\\.?|physics|chemistry|mathematics|maths|options?|correct|subject", re.I)
+
+          for pno, page in enumerate(doc, 1):
+              native = page.get_text("dict")
+              native_lines = []
+              for block in native.get("blocks", []):
+                  for line in block.get("lines", []):
+                      spans = line.get("spans", [])
+                      if not spans:
+                          continue
+                      text = "".join(sp.get("text", "") for sp in spans).strip()
+                      if not text:
+                          continue
+                      bbox = line.get("bbox", [0,0,0,0])
+                      sizes = [float(sp.get("size", 0)) for sp in spans]
+                      flags = [int(sp.get("flags", 0)) for sp in spans]
+                      native_lines.append({
+                          "text": text[:500],
+                          "x0": round(float(bbox[0]),2), "y0": round(float(bbox[1]),2),
+                          "x1": round(float(bbox[2]),2), "y1": round(float(bbox[3]),2),
+                          "max_font_size": round(max(sizes or [0]),2),
+                          "flags": flags[:8],
+                      })
+
+              try:
+                  tp = page.get_textpage_ocr(language="eng", dpi=250, full=True)
+                  ocr_words = page.get_text("words", textpage=tp)
+              except Exception:
+                  ocr_words = []
+
+              # Simple OCR line reconstruction for diagnostic purposes only.
+              ocr = []
+              for w in sorted(ocr_words, key=lambda z:(float(z[1]),float(z[0]))):
+                  if ocr and abs(float(w[1]) - ocr[-1]["y"]) <= 3.5:
+                      ocr[-1]["words"].append(w[4])
+                      ocr[-1]["x1"] = max(ocr[-1]["x1"], float(w[2]))
+                  else:
+                      ocr.append({"y":float(w[1]),"x0":float(w[0]),"x1":float(w[2]),"words":[w[4]]})
+              ocr_lines = []
+              for ln in ocr:
+                  txt = " ".join(ln["words"]).strip()
+                  if txt:
+                      ocr_lines.append({
+                          "text": txt[:500],
+                          "x0": round(ln["x0"],2), "y0": round(ln["y"],2), "x1": round(ln["x1"],2)
+                      })
+
+              out["pages"].append({
+                  "page": pno,
+                  "size": [round(float(page.rect.width),2), round(float(page.rect.height),2)],
+                  "native_keyword_lines": [x for x in native_lines if kw.search(x["text"])],
+                  "ocr_keyword_lines": [x for x in ocr_lines if kw.search(x["text"])],
+                  "native_numberish_lines": [x for x in native_lines if re.match(r"^\\s*[0-9]{1,2}(?:\\s|[.):\\-])", x["text"])][:80],
+                  "ocr_numberish_lines": [x for x in ocr_lines if re.match(r"^\\s*[0-9]{1,2}(?:\\s|[.):\\-])", x["text"])][:80],
+                  "native_line_count": len(native_lines),
+                  "ocr_line_count": len(ocr_lines),
+              })
+
+          Path("pdf-layout-diagnostic.json").write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+          print(f"pages={len(doc)}")
+          print(f"diagnostic_bytes={Path('pdf-layout-diagnostic.json').stat().st_size}")
+          doc.close()
+          PY
+
       - name: Run image-first extraction
         run: |
           PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
@@ -149,4 +224,5 @@ jobs:
             pipeline-output/*/rejected.json
             pipeline-output/*/IMPORT_READY.json
             pipeline-output/*/assets/**
+pdf-layout-diagnostic.json
           if-no-files-found: error
