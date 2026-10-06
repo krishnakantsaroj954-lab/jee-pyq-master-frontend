@@ -21,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -112,62 +113,6 @@ jobs:
           doc.close()
           PY
 
-      - name: Generate source PDF layout diagnostics
-        run: |
-          python - <<'PY'
-          import json
-          import fitz
-          from pathlib import Path
-
-          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          out = Path("pdf-debug")
-          images = out / "pages"
-          images.mkdir(parents=True, exist_ok=True)
-
-          doc = fitz.open(pdf)
-          diagnostics = {"page_count": len(doc), "pages": []}
-          try:
-              for page_no, page in enumerate(doc, 1):
-                  try:
-                      tp = page.get_textpage_ocr(language="eng", dpi=300, full=True)
-                      words = page.get_text("words", textpage=tp)
-                      blocks = page.get_text("blocks", textpage=tp)
-                  except Exception as e:
-                      diagnostics["pages"].append({"page": page_no, "ocr_error": str(e)})
-                      continue
-
-                  p = {
-                      "page": page_no,
-                      "width": page.rect.width,
-                      "height": page.rect.height,
-                      "word_count": len(words),
-                      "block_count": len(blocks),
-                      "blocks": [
-                          {
-                              "bbox": [round(x, 1) for x in b[:4]],
-                              "text": (b[4] or "").strip()[:1200]
-                          }
-                          for b in blocks
-                      ],
-                  }
-                  diagnostics["pages"].append(p)
-
-                  pix = page.get_pixmap(matrix=fitz.Matrix(0.45, 0.45), alpha=False)
-                  pix.save(images / f"page-{page_no:02d}.png")
-          finally:
-              doc.close()
-
-          (out / "ocr-blocks.json").write_text(
-              json.dumps(diagnostics, ensure_ascii=False, indent=2),
-              encoding="utf-8",
-          )
-          print(json.dumps({
-              "page_count": diagnostics["page_count"],
-              "pages_with_ocr_errors": sum(1 for p in diagnostics["pages"] if "ocr_error" in p),
-              "first_page_blocks": len(diagnostics["pages"][0].get("blocks", [])) if diagnostics["pages"] else 0,
-          }, indent=2))
-          PY
-
       - name: Run strict representative dry-run
         run: |
           PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli             --config representative-config.json             --output pipeline-output             --max-pages 150             --timeout-seconds 1200
@@ -198,6 +143,10 @@ jobs:
           expected_subjects = {"Physics": 25, "Chemistry": 25, "Mathematics": 25}
           if subjects != expected_subjects:
               raise SystemExit(f"Invalid subject counts: {subjects}")
+
+          types = report.get("question_type_counts") or {}
+          if types != {"MCQ": 60, "NUMERICAL": 15, "UNKNOWN": 0}:
+              raise SystemExit(f"Invalid question type counts: {types}")
 
           if blocking != 0:
               raise SystemExit(f"Blocking validation issues remain: {blocking}")

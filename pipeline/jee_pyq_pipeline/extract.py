@@ -10,7 +10,7 @@ QUESTION_STRONG = re.compile(
     re.I,
 )
 QUESTION_PLAIN = re.compile(
-    r'^\s*(\d{1,2})\s*[\[\]():.\-]\s+(?=[A-Za-z(])',
+    r'^\s*(\d{1,2})\s*[\[\]():.\-]\s+(?=[A-Za-z0-9(])',
     re.I,
 )
 
@@ -229,9 +229,15 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         doc.close()
 
     expected_keys = set(getattr(config, 'expected_question_numbers', ()))
+    expected_by_number = {}
+    for key in expected_keys:
+        subject_name, number_text = str(key).rsplit(':', 1)
+        if number_text.isdigit():
+            expected_by_number[int(number_text)] = str(key)
+
     blocks=[]
     current=None
-    seen_keys=set()
+    next_number=1
 
     for page,text,bounds,subject in raw:
         if subject and text.strip().upper() in SUBJECTS:
@@ -248,13 +254,15 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 continue
 
             key=f'{candidate_subject}:{number}'
-            if key not in expected_keys or key in seen_keys:
+            # Source questions are globally sequential in visual reading order.
+            # Require the next exact configured key so numbered solution steps
+            # cannot become fake question boundaries.
+            if number != next_number or expected_by_number.get(number) != key:
                 continue
 
             if current:
                 blocks.append(current)
 
-            seen_keys.add(key)
             current={
                 'number':number,
                 'subject':candidate_subject,
@@ -262,6 +270,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 'pages':{page},
                 'strong_header':bool(QUESTION_STRONG.match(text)),
             }
+            next_number += 1
             continue
 
         if current:
@@ -270,7 +279,6 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
 
     if current:
         blocks.append(current)
-
     questions=[]
     issues=extraction_issues
     for block in blocks:

@@ -4,7 +4,7 @@
 The runner processes exactly the configured paper. It uses PyMuPDF word geometry and source-page image assets, has no network access, no database code, no Worker code, and cannot import. A batch receives IMPORT_READY.json only when every validation gate is green.
 
 ## Input contract
-Supply an authorized source PDF and exact identity metadata. The source PDF may contain both questions and solutions. Answers and solutions are extracted from that same source PDF; they are not generated or manually guessed. For a combined JEE Main paper, expected question keys use `Subject:Number` (for example `Physics:1`, `Chemistry:1`, `Mathematics:1`).
+Supply an authorized source PDF and exact identity metadata. The source PDF may contain both questions and solutions. Answers and solutions are extracted from that same source PDF; they are not generated or manually guessed. For this JEE Main 2026 source, the source-global keys are `Mathematics:1` … `Mathematics:25`, `Physics:26` … `Physics:50`, and `Chemistry:51` … `Chemistry:75`. The source question number is preserved exactly.
 
 ## Run
 ```bash
@@ -13,7 +13,7 @@ PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli --config ./representative-con
 
 ## Stages
 1. Intake records PDF/ZIP checksums, identity and page count.
-2. Layout-aware extraction reconstructs rows/columns and identifies subject/question boundaries.
+2. Layout-aware extraction reads the source's physical two-column layout and identifies subject/question boundaries in source order.
 3. Question text/options are separated from source Answer/Solution sections.
 4. Images are extracted with page, bounds, stable object keys and checksums; question and solution assets are kept separately.
 5. Validation checks count, subject/question scope, provenance, MCQ/numerical type, answers, required figures, notation and source solutions.

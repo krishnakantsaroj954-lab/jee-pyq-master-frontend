@@ -1,8 +1,6 @@
 name: PDF Layout Debug
 
 on:
-  push:
-    branches: [verify/pipeline-real-pdf-2026-10-06]
   workflow_dispatch:
 
 permissions:

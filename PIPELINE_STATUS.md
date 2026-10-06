@@ -5,7 +5,7 @@
 - One-paper, configuration-selected intake/extraction/validation/review-batch pipeline.
 - Source and optional ZIP checksums; deterministic batch identity; per-asset page/bounds/checksums.
 - Layout-aware extraction with side-by-side option support and subject-aware question keys.
-- Combined JEE Main papers can use `Physics:1` ... `Chemistry:25` ... `Mathematics:25`, so repeated per-subject numbering is not treated as a duplicate.
+- This representative JEE Main 2026 source uses global source numbering: Mathematics 1–25, Physics 26–50, Chemistry 51–75; stable keys preserve that exact scope.
 - Source PDFs that contain questions + solutions are split at source Answer/Solution markers. The answer and solution evidence is emitted from the same PDF; no guessed/manual answer map is required.
 - MCQ and numerical (Section B style) questions are both validated. Source option labels may remain A-D or 1-4; numerical questions are not forced into a four-option shape.
 - Required source figures are associated from page geometry with bounded padding; solution assets are kept separately.
@@ -14,7 +14,7 @@
 
 ## Representative dry-run wiring
 
-The repository now contains CI wiring that, when the uploaded `cEDaK5Wn5ILe4nOdotd6.pdf` is present, verifies that the PDF identifies itself as JEE Main 2026 / Jan 28 / Shift 1, creates the exact 75-question PCM scope, runs the strict pipeline, and uploads the review batch as a workflow artifact. The dry-run never touches D1/API/live website.
+The repository CI verifies the pinned `cEDaK5Wn5ILe4nOdotd6.pdf` as JEE Main 2026 / Jan 28 / Shift 1, uses the exact source-global 1–75 scope, runs the strict pipeline, and uploads the review batch as a workflow artifact. It never touches D1/API/live website.
 
 ## Verification boundary
 
@@ -24,7 +24,7 @@ A green representative run must contain:
 - `status: VALIDATED`
 - 75 validated records
 - 25 Physics + 25 Chemistry + 25 Mathematics
-- MCQ/numerical type counts consistent with the source
+- 60 MCQ + 15 numerical records, matching the source's 20 + 5 structure per subject
 - source answer and source solution evidence for every question
 - no blocking validation issues
 - `IMPORT_READY.json`
