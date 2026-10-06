@@ -1,7 +1,7 @@
 from pathlib import Path
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections, _page_words, _question_start
+from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections, _page_words, _question_start, _lines, _parse_answer
 from jee_pyq_pipeline.validate import validate
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
@@ -95,6 +95,9 @@ def test_question_header_detection():
     assert _question_start('Q1. Find the value') [1] == 1
     assert _question_start('1. Find the value') [1] == 1
     assert _question_start('1) Find the value') [1] == 1
+    assert _question_start('0. Find the value') [1] is None
+    assert _question_start('28. Find the value') [1] == 28
+    assert _question_start('2026. Shift 1') [1] is None
 
 def test_ocr_page_fallback():
     class FakePage:
@@ -106,7 +109,7 @@ def test_ocr_page_fallback():
             return [(0,0,20,10,'Physics',0,0,0)]
         def get_textpage_ocr(self, **kwargs):
             self.ocr_calls += 1
-            assert kwargs == {'language':'eng','dpi':250,'full':True}
+            assert kwargs == {'language':'eng','dpi':300,'full':True}
             return object()
     page=FakePage()
     words,used_ocr=_page_words(page)
@@ -165,3 +168,28 @@ def test_end_to_end_source_pdf(tmp_path):
     ]
     assert all(q.solution and q.solution['text'] for q in questions)
     assert questions[0].options == {'1':'one','2':'two','3':'three','4':'four'}
+
+def test_lines_preserve_two_columns_with_word_metadata():
+    rows = [
+        [(10, 10, 40, 20, 'Question', 0, 0, 0), (42, 10, 55, 20, '1', 0, 0, 1)],
+        [(10, 35, 40, 45, 'left', 0, 1, 0)],
+        [(310, 10, 340, 20, 'Question', 1, 0, 0), (342, 10, 355, 20, '2', 1, 0, 1)],
+        [(310, 35, 340, 45, 'right', 1, 1, 0)],
+    ]
+    words = [w for row in rows for w in row]
+    parsed = _lines(words, 600)
+    texts = [' '.join(w[4] for w in row) for row in parsed]
+    assert texts[:2] == ['Question 1', 'left']
+    assert texts[2:] == ['Question 2', 'right']
+
+def test_source_question_numbers_are_global():
+    assert _question_start('25. Final mathematics question')[1] == 25
+    assert _question_start('26. First physics question')[1] == 26
+    assert _question_start('51. First chemistry question')[1] == 51
+    assert _question_start('75. Final chemistry question')[1] == 75
+
+
+def test_parse_answer_parenthesized():
+    assert _parse_answer('(3)') == '3'
+    assert _parse_answer('(37)') == '37'
+    assert _parse_answer('  4 ') == '4'

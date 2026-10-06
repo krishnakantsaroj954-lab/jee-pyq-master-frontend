@@ -7,6 +7,11 @@ on:
 permissions:
   contents: read
 
+# Never keep an obsolete OCR run alive after a pipeline fix lands.
+concurrency:
+  group: pipeline-ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -69,9 +75,9 @@ jobs:
               raise SystemExit("Representative PDF identity gate failed: PDF has no pages")
 
           expected = (
-              [f"Physics:{n}" for n in range(1, 26)] +
-              [f"Chemistry:{n}" for n in range(1, 26)] +
-              [f"Mathematics:{n}" for n in range(1, 26)]
+              [f"Mathematics:{n}" for n in range(1, 26)] +
+              [f"Physics:{n}" for n in range(26, 51)] +
+              [f"Chemistry:{n}" for n in range(51, 76)]
           )
 
           cfg = {
@@ -137,6 +143,10 @@ jobs:
           expected_subjects = {"Physics": 25, "Chemistry": 25, "Mathematics": 25}
           if subjects != expected_subjects:
               raise SystemExit(f"Invalid subject counts: {subjects}")
+
+          types = report.get("question_type_counts") or {}
+          if types != {"MCQ": 60, "NUMERICAL": 15, "UNKNOWN": 0}:
+              raise SystemExit(f"Invalid question type counts: {types}")
 
           if blocking != 0:
               raise SystemExit(f"Blocking validation issues remain: {blocking}")

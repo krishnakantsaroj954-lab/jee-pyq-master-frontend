@@ -5,11 +5,15 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_PREFIX = re.compile(
-    r'^\s*(?:Q(?:uestion)?(?:\s*(?:No\.?|#))?\s*)?(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
+QUESTION_STRONG = re.compile(
+    r'^\s*(?:question|q)\s*(?:no\.?|number|#)?\s*(\d{1,3})(?:\s*[\[\]():.\-]\s*|\s+|$)',
     re.I,
 )
-QUESTION_PLAIN = re.compile(r'^\s*(\d{1,3})\s*[\[\]():.\-]\s*')
+QUESTION_PLAIN = re.compile(
+    r'^\s*([1-9]\d?)\s*[\[\]():.\-]\s+(?=[A-Za-z0-9(])',
+    re.I,
+)
+
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
 ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]?\s*', re.I)
@@ -29,12 +33,18 @@ def _fitz():
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
 def _page_words(page):
-    words = page.get_text('words')
+    try:
+        words = page.get_text('words', sort=True)
+    except TypeError:
+        words = page.get_text('words')
     if words:
         return words, False
     try:
-        textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
-        words = page.get_text('words', textpage=textpage)
+        textpage = page.get_textpage_ocr(language='eng', dpi=300, full=True)
+        try:
+            words = page.get_text('words', textpage=textpage, sort=True)
+        except TypeError:
+            words = page.get_text('words', textpage=textpage)
     except Exception as error:
         raise RuntimeError(
             'OCR was required because the page has no text layer, but OCR failed. '
@@ -43,7 +53,7 @@ def _page_words(page):
     return words, True
 
 def _question_start(text:str):
-    match=QUESTION_PREFIX.match(text)
+    match=QUESTION_STRONG.match(text)
     if match:
         return match, int(match.group(1))
     match=QUESTION_PLAIN.match(text)
@@ -54,28 +64,33 @@ def _question_start(text:str):
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
         return []
-    ordered=sorted(words,key=lambda w:w[0])
-    gaps=[(ordered[i+1][0]-ordered[i][2],i) for i in range(len(ordered)-1)]
-    split_gap,split_i=max(gaps,default=(0.0,0))
-    columns=[ordered]
-    if split_gap>width*0.12 and 0<split_i<len(ordered)-1:
-        left,right=ordered[:split_i+1],ordered[split_i+1:]
-        if (
-            max(w[2] for w in left)-min(w[0] for w in left)>width*0.20
-            and max(w[2] for w in right)-min(w[0] for w in right)>width*0.20
-        ):
-            columns=[left,right]
-    result=[]
-    for col in columns:
-        col=sorted(col,key=lambda w:(w[1],w[0]))
-        rows=[]
-        for w in col:
-            if not rows or abs(w[1]-rows[-1][0][1])>4.0:
+
+    # The supplied scan has a stable vertical divider near the page midpoint.
+    # Split words into physical columns before rebuilding visual rows; OCR
+    # block/line IDs can merge the two columns on image-only pages.
+    midpoint = width / 2.0
+    margin = max(6.0, width * 0.002)
+
+    left_words = []
+    right_words = []
+    for w in words:
+        x0, x1 = float(w[0]), float(w[2])
+        if x1 <= midpoint - margin:
+            left_words.append(w)
+        elif x0 >= midpoint + margin:
+            right_words.append(w)
+
+    def rows_for_column(column_words):
+        ordered = sorted(column_words, key=lambda w: (w[1], w[0]))
+        rows = []
+        for w in ordered:
+            if not rows or abs(w[1] - rows[-1][0][1]) > 9.0:
                 rows.append([w])
             else:
                 rows[-1].append(w)
-        result.extend(sorted((sorted(row,key=lambda w:w[0]) for row in rows),key=lambda row:row[0][1]))
-    return result
+        return [sorted(row, key=lambda w: w[0]) for row in rows]
+
+    return rows_for_column(left_words) + rows_for_column(right_words)
 
 def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
     found=[]
@@ -99,15 +114,7 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
 def _subject_line(text:str)->str|None:
     t=safe_normalize(text).strip().upper()
     compact=re.sub(r'[^A-Z]+',' ',t).strip()
-    direct=SUBJECTS.get(compact)
-    if direct:
-        return direct
-    tokens=compact.split()
-    if len(tokens)<=6:
-        for key,value in SUBJECTS.items():
-            if key in tokens:
-                return value
-    return None
+    return SUBJECTS.get(compact)
 
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
@@ -138,8 +145,13 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
-    token=re.match(r'\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\b',text,re.I)
-    return token.group(1) if token else None
+    token=re.match(
+        r'\s*[\(\[]?\s*(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?|[A-D])'
+        r'\s*[\)\]\.,:;]?',
+        text,
+        re.I,
+    )
+    return token.group(1).strip() if token else None
 
 def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
     qrows=[]
@@ -215,23 +227,57 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     finally:
         doc.close()
 
+    expected_keys = set(getattr(config, 'expected_question_numbers', ()))
+    expected_by_number = {}
+    for key in expected_keys:
+        subject_name, number_text = str(key).rsplit(':', 1)
+        if number_text.isdigit():
+            expected_by_number[int(number_text)] = str(key)
+
     blocks=[]
     current=None
+    next_number=1
+
     for page,text,bounds,subject in raw:
-        match,number=_question_start(text)
-        if number is not None and current is None and subject is None:
+        if subject and text.strip().upper() in SUBJECTS:
+            if current and current['subject'] != subject:
+                blocks.append(current)
+                current=None
+            current_subject=subject
             continue
-        if number is not None and subject is not None:
+
+        match,number=_question_start(text)
+        if number is not None:
+            candidate_subject=subject or (current['subject'] if current else current_subject)
+            if candidate_subject is None:
+                continue
+
+            key=f'{candidate_subject}:{number}'
+            # Source questions are globally sequential in visual reading order.
+            # Require the next exact configured key so numbered solution steps
+            # cannot become fake question boundaries.
+            if number != next_number or expected_by_number.get(number) != key:
+                continue
+
             if current:
                 blocks.append(current)
-            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+
+            current={
+                'number':number,
+                'subject':candidate_subject,
+                'rows':[(page,text[match.end():].strip(),bounds)],
+                'pages':{page},
+                'strong_header':bool(QUESTION_STRONG.match(text)),
+            }
+            next_number += 1
             continue
+
         if current:
             current['rows'].append((page,text,bounds))
             current['pages'].add(page)
+
     if current:
         blocks.append(current)
-
     questions=[]
     issues=extraction_issues
     for block in blocks:
