@@ -1,0 +1,89 @@
+name: PDF Layout Debug
+
+on:
+  push:
+    branches: [verify/pipeline-real-pdf-2026-10-06]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PyMuPDF and Tesseract
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --upgrade pip
+          python -m pip install "PyMuPDF>=1.24,<2"
+
+      - name: Render and inspect source PDF
+        run: |
+          python - <<'PY'
+          import json
+          import fitz
+          from pathlib import Path
+
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          out = Path("pdf-layout-debug")
+          img = out / "pages"
+          img.mkdir(parents=True, exist_ok=True)
+
+          doc = fitz.open(pdf)
+          result = {"page_count": len(doc), "pages": []}
+          try:
+              for page_no, page in enumerate(doc, 1):
+                  tp = page.get_textpage_ocr(language="eng", dpi=300, full=True)
+                  words = page.get_text("words", textpage=tp)
+                  blocks = page.get_text("blocks", textpage=tp)
+
+                  result["pages"].append({
+                      "page": page_no,
+                      "width": page.rect.width,
+                      "height": page.rect.height,
+                      "word_count": len(words),
+                      "blocks": [
+                          {
+                              "bbox": [round(v, 1) for v in b[:4]],
+                              "text": (b[4] or "").strip()[:1800]
+                          }
+                          for b in blocks
+                      ]
+                  })
+
+                  pix = page.get_pixmap(matrix=fitz.Matrix(0.35, 0.35), alpha=False)
+                  pix.save(img / f"page-{page_no:02d}.png")
+          finally:
+              doc.close()
+
+          (out / "ocr-blocks.json").write_text(
+              json.dumps(result, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+          print(json.dumps({
+              "page_count": result["page_count"],
+              "pages": [
+                  {"page": p["page"], "words": p["word_count"], "blocks": len(p["blocks"])}
+                  for p in result["pages"]
+              ]
+          }, indent=2, ensure_ascii=False))
+          PY
+
+      - name: Upload layout diagnostics
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-layout-debug
+          path: pdf-layout-debug/
+          if-no-files-found: error
+          compression-level: 6
