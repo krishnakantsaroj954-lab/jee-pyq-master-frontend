@@ -320,6 +320,18 @@ def extract(config, asset_dir: Path):
     expected = list(config.expected_question_numbers)
     starts = _question_starts(page_data)
     if len(starts) != len(expected):
+        diagnostic = [
+            {
+                "page": item["page"],
+                "column": item["column"],
+                "number": item["number"],
+                "x0": round(item["x0"], 2),
+                "y0": round(item["y0"], 2),
+                "text": item["text"],
+            }
+            for item in starts
+        ]
+        print("QUESTION_HEADER_DIAGNOSTIC=" + repr(diagnostic))
         doc.close()
         raise ValueError(f"Question header count mismatch: expected {len(expected)}, found {len(starts)}")
 
