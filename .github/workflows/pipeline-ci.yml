@@ -224,5 +224,5 @@ jobs:
             pipeline-output/*/rejected.json
             pipeline-output/*/IMPORT_READY.json
             pipeline-output/*/assets/**
-pdf-layout-diagnostic.json
+            pdf-layout-diagnostic.json
           if-no-files-found: error
