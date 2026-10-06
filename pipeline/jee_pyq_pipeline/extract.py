@@ -10,7 +10,7 @@ QUESTION_STRONG = re.compile(
     re.I,
 )
 QUESTION_PLAIN = re.compile(
-    r'^\s*(\d{1,2})\s*[\[\]():.\-]\s+(?=[A-Za-z0-9(])',
+    r'^\s*([1-9]\d?)\s*[\[\]():.\-]\s+(?=[A-Za-z0-9(])',
     re.I,
 )
 
