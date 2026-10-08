@@ -32,6 +32,16 @@
       "status": "BLOCKED",
       "production_import_allowed": false,
       "reason": "README states the questions were reverse engineered from API endpoints of a subscription site; repository software license does not establish rights to redistribute the underlying question content."
+    },
+    {
+      "source": "datavorous/entrance-exam-dataset",
+      "size_verified": "97.4k total rows",
+      "jee_main_store": "search_MAIN.parquet (32.6 MB)",
+      "jee_advanced_store": "search_ADVANCED.parquet (801 kB)",
+      "dataset_license": "CC BY 4.0 (self-declared)",
+      "status": "CANDIDATE_PENDING_CONTENT_RIGHTS_AND_DATA_QUALITY",
+      "production_import_allowed": false,
+      "reason": "This is the first source found that meets the scale target and declares a permissive dataset license, but its underlying question-content provenance/redistribution rights and row-level quality must still be verified before production import."
     }
   ],
   "next_admissible_source": "A 10k+ JEE Main/Advanced dataset with explicit commercial redistribution permission and clear provenance for question text, options, answers, solutions, and images."
