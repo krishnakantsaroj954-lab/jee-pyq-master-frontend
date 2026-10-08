@@ -1,0 +1,38 @@
+{
+  "format": "jee-pyq-source-admission/v1",
+  "production_import_allowed": false,
+  "required": {
+    "minimum_validated_questions": 10000,
+    "commercial_use_cleared": true,
+    "redistribution_cleared": true,
+    "underlying_content_provenance_cleared": true,
+    "question_solution_image_rights_cleared": true
+  },
+  "sources": [
+    {
+      "source": "eQOURSE/jee-main-questions",
+      "size_verified": 2307,
+      "dataset_license": "CC BY 4.0",
+      "status": "INSUFFICIENT_SIZE",
+      "production_import_allowed": false,
+      "reason": "Only 2,307 JEE Main records; below the 10,000-question production target."
+    },
+    {
+      "source": "Samkarya/online-exam-questions",
+      "size_verified": "14k+ claimed",
+      "dataset_license": "ExamOven Non-Commercial Open Source License",
+      "status": "BLOCKED",
+      "production_import_allowed": false,
+      "reason": "Commercial use is not permitted by the stated repository license."
+    },
+    {
+      "source": "HostServer001/jee_mains_pyqs_data_base",
+      "size_verified": "14k+ claimed",
+      "dataset_license": "MIT for repository software; underlying data provenance not commercially cleared",
+      "status": "BLOCKED",
+      "production_import_allowed": false,
+      "reason": "README states the questions were reverse engineered from API endpoints of a subscription site; repository software license does not establish rights to redistribute the underlying question content."
+    }
+  ],
+  "next_admissible_source": "A 10k+ JEE Main/Advanced dataset with explicit commercial redistribution permission and clear provenance for question text, options, answers, solutions, and images."
+}
