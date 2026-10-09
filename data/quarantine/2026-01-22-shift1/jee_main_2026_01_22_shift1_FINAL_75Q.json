@@ -997,7 +997,8 @@
       "question_type": "single_correct_mcq",
       "question_text": "If the line ax + 2y = 1, where a © R, does not meet the hyperbola x’ — 9y° = 9, then a possible value of o is :",
       "question_ocr_raw": "10.\n\nIf the line ax + 2y = 1, where a © R, does not\n\nmeet the hyperbola x’ — 9y° = 9, then a possible\n\nvalue of o is :\n\n(1) 0.6 (2) 0.8\n(3) 0.5 (4) 0.7",
-      "options": {        "A": "0.6",
+      "options": {
+        "A": "0.6",
         "B": "0.8",
         "C": "0.5",
         "D": "0.7"
@@ -1996,7 +1997,8 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review",        "solution_text_ocr_missing_but_image_attached"
+        "math_ocr_requires_review",
+        "solution_text_ocr_missing_but_image_attached"
       ]
     },
     {
@@ -2995,7 +2997,8 @@
       "question_number": 45,
       "exam": "JEE Main",
       "year": 2026,
-      "session": "Session 1",      "exam_date": "2026-01-22",
+      "session": "Session 1",
+      "exam_date": "2026-01-22",
       "shift": 1,
       "paper_type": "Paper 1 (B.E./B.Tech)",
       "subject": "Physics",
@@ -3994,7 +3997,8 @@
         "question_pdf_page": 21,
         "question_column": "R",
         "solution_pdf_page": 21,
-        "cover_claims": {          "exam": "JEE Main",
+        "cover_claims": {
+          "exam": "JEE Main",
           "year": 2026,
           "session": "Session 1",
           "date": "2026-01-22",
