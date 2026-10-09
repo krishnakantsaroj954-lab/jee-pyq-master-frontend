@@ -1,12 +1,12 @@
 {
-  "manifest_version": "1.0.0",
+  "manifest_version": "1.1.0",
   "paper_id": "jee-main-2026-01-22-s1",
   "dataset_json": "jee_main_2026_01_22_shift1_FINAL_75Q.json",
-  "dataset_sha256": "c492398b8e23b1802cc61fe50d64cfa02337c7c5ccf37592646c3c80513acf94",
+  "dataset_sha256": "80f3af6ce8e5190c1d13ff27b5842fd590b13a0350cefd6958ed6b2ad1c30256",
   "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
   "bundle_sha256": "b1c2358ef30469ed3ab16995f303e2d72cdfb78c26af58500b7229f805f40783",
-  "asset_count": 25,
-  "assets_total_bytes": 10044888,
+  "asset_count": 50,
+  "assets_total_bytes": 11033640,
   "assets": [
     {
       "path": "images/pages/page_01.jpg",
@@ -153,12 +153,163 @@
       "mime_type": "image/jpeg"
     },
     {
+      "path": "images/questions/q007_figure.jpg",
+      "bytes": 19975,
+      "sha256": "874b4ca8173985d2abac9ecd2a509115a56b1bbf8affe6652743ab52799c0cc1",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q028_figure.jpg",
+      "bytes": 23902,
+      "sha256": "7d016d22cf9a4c8ca229369fcfa5c36993c77fb8417d5e35e23afa7bed4e01f0",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q029_figure.jpg",
+      "bytes": 14459,
+      "sha256": "f94572fd6db14dd6bfbc0e317724e6314b2ef704214701135a8625a2b10a0512",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q031_figure.jpg",
+      "bytes": 14527,
+      "sha256": "807d0a0967f58a5ac31c987aed11ae00c7eab1b6a4a80fb1427ecda5f837c73d",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q034_figure.jpg",
+      "bytes": 15294,
+      "sha256": "a2cdb1d6117482b95a6a7308ccf730e97fcdbad4a55d585b398c1ef6a9431712",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q035_figure.jpg",
+      "bytes": 10982,
+      "sha256": "d0d267e15d6df6b71ec6faa13e63fd94f4b4754b72c2ec957cab8a32354b6b3a",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q037_figure.jpg",
+      "bytes": 13690,
+      "sha256": "9a66427637b39fd8e8c1bf7bfca5e47af5642c103d30bbfd1676ea73ca9c2a25",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q038_figure.jpg",
+      "bytes": 13852,
+      "sha256": "d0de9dc460a6c9ef99cd79e4aea39a3e199f0004f74fcad106f71f0bdd248728",
+      "mime_type": "image/jpeg"
+    },
+    {
       "path": "images/questions/q039_question.jpg",
       "bytes": 108417,
       "sha256": "9270696905f90a7f2de33eb9380bb8772cefd47e016c4307de9bea8f7a6c4a44",
       "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q044_figure.jpg",
+      "bytes": 54882,
+      "sha256": "9126e40df769d35a2e88252e61b3b3397a5199652cf547bf492a18487dacf526",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q045_figure.jpg",
+      "bytes": 17966,
+      "sha256": "8f993664888a53a4b4c2010dc7ba96f55b9ca1bbcdec5a2617e18f335a3b19d4",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q046_figure.jpg",
+      "bytes": 13645,
+      "sha256": "8c41f72c1a21b8e1bed52e1e44a4229caa551e3ab0706562f5378bb53c44a4a5",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q052_figure.jpg",
+      "bytes": 10843,
+      "sha256": "23628b0eec7889815e5a41997a16538e91ed677fe3d8258e37e3093b44775ddd",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q057_figure.jpg",
+      "bytes": 22974,
+      "sha256": "8ab5918c1b5e481d8715c6765fcef57d63b3bee5fe9c6448b03c7fa3e7e47bed",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q060_figure.jpg",
+      "bytes": 179922,
+      "sha256": "c50da8c3095c6e2f284b3810165908d411c4ce94a44bea00fb53a0640dd75848",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q061_figure.jpg",
+      "bytes": 7392,
+      "sha256": "a237312b3af5679fb4ebf25fdea57fea21fbe7b24f882ef8f0654618353c4bde",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q063_figure.jpg",
+      "bytes": 89387,
+      "sha256": "d765bf5d01f0fed6a7166c09ae7939158d23371287113c9048e736772a16b784",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q066_figure.jpg",
+      "bytes": 43822,
+      "sha256": "c5374c990c8620b38a3c4013f8947a095b8153d499b81d981fc12a80600aec90",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q067_figure.jpg",
+      "bytes": 22023,
+      "sha256": "73442ed2027dd197c7d15a907e1a4f98cf15ffaeb3905517771ff1824748cdb0",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/questions/q075_figure.jpg",
+      "bytes": 17217,
+      "sha256": "957a150d83e2838f713115ee6fe290391f6f2021bfcc9244b59b344e11fec15a",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q018_solution.jpg",
+      "bytes": 55455,
+      "sha256": "938b3807c93d99ee50b8308c0e91ad0c7c79106a8656bc93a2aedebc483cd8ed",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q027_solution.jpg",
+      "bytes": 77048,
+      "sha256": "72f7b558860483f4ae07bd12ff7cec2ce9d7d270dd184037e6216d34e8a9dd67",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q032_solution.jpg",
+      "bytes": 36871,
+      "sha256": "13ecb9649e83db0b18e4e5110858034dc1918a2fc7f8958186d6ca24c2990639",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q038_solution.jpg",
+      "bytes": 73172,
+      "sha256": "c42e1c51455685c2cce883fa65f6f0bf545ea0f6a15e5054bb4b0c81f793f91c",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q045_solution.jpg",
+      "bytes": 69707,
+      "sha256": "ee5f48744e16b8dc59eb57ff826bce3c836eec322a4d68ca7979e5d9e19ee6ae",
+      "mime_type": "image/jpeg"
+    },
+    {
+      "path": "images/solutions/q060_solution.jpg",
+      "bytes": 69745,
+      "sha256": "47174b8a4d0735f8cfc2d424867915a7673d1805bc5766c3f2a17de801945827",
+      "mime_type": "image/jpeg"
     }
   ],
-  "status": "ASSETS_EXTRACTED_AND_HASH_VERIFIED",
+  "crop_manifest": "image-crop-manifest.json",
+  "status": "QUESTION_SPECIFIC_CROPS_GENERATED_REVIEW_REQUIRED",
   "production_import": "NOT_PERFORMED"
 }

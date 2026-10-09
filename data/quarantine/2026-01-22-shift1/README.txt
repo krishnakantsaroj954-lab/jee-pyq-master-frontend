@@ -1,16 +1,14 @@
-JEE Main 2026 — 22 January Shift 1 — 75-question JSON bundle
+# JEE Main 2026 — 22 January Shift 1 (Quarantined Dataset)
 
-Main data: jee_main_2026_01_22_shift1_FINAL_75Q.json
+## Current status
+- 75 question records remain in source order; Q39 remains present and marked Dropped without an invented answer.
+- 24 original full-page source images are retained under images/pages/.
+- Question-specific crops: 19 figure/table/graph crops plus the pre-existing Q39 question crop.
+- Six printed-solution crops were created for questions whose solution text is missing/unreadable in the JSON.
+- question_image_path and solution_image_path now point only to specific crops or null; source_page_image_path preserves the full-page source.
+- All 50 JPEG assets are listed with SHA-256 values in asset-manifest.json; crop coordinates/metadata are in image-crop-manifest.json.
 
-Q39 is retained at question number 39. The original source PDF prints "Ans. (Dropped)" beneath it.
-The JSON contains the transcribed question and all four options, question_status="Dropped",
-answer_text="Dropped", and correct_answer=null. No answer or solution is invented.
+## Important review gate
+The crop boxes were estimated from source-page previews and are not claimed to be perfect. Review each crop for cut-off labels, stray text, and correct question association, then review all OCR/transcription, options, answers, and solution text against the original PDF. Several dataset records remain incomplete or OCR-only. This is not production-ready and must stay under data/quarantine/.
 
-Images:
-- images/pages/page_01.jpg ... page_24.jpg: actual rendered source pages.
-- images/questions/q039_question.jpg: Q39 crop showing its question, options, and printed Dropped line.
-- Image paths in the JSON are relative to this bundle root.
-
-Source PDF SHA-256: 7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3
-
-Important data-quality note: other records were carried forward from the existing JSON. Its previous OCR/notation review flags are preserved and the dataset is not marked production-ready. This bundle only repairs Q39 and makes the referenced image locations resolvable.
+No Cloudflare Worker/D1 import, production database change, or website deployment was performed. The repository still needs a separate reviewed frontend integration change.

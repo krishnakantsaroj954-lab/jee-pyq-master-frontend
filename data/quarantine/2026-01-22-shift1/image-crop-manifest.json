@@ -1,0 +1,560 @@
+{
+  "schema_version": 1,
+  "source_pdf": "BPD4dLYdvGj7xm8cDL66.pdf",
+  "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
+  "coordinate_note": "Crops were generated from bundled full-page JPEGs using manually estimated boxes in 1024x1450 preview coordinates, scaled to the source JPEGs. They are question-specific best-effort crops and require visual review before production use. Original question text/options/answers/solutions were not edited.",
+  "question_figures": [
+    {
+      "question_number": 7,
+      "path": "images/questions/q007_figure.jpg",
+      "description": "Probability distribution table in the question",
+      "source_page": "images/pages/page_03.jpg",
+      "source_bbox_preview": [
+        557.42,
+        164.72,
+        968.55,
+        234.98
+      ],
+      "native_bbox": [
+        945,
+        279,
+        1642,
+        398
+      ],
+      "width": 697,
+      "height": 119,
+      "bytes": 19975,
+      "sha256": "874b4ca8173985d2abac9ecd2a509115a56b1bbf8affe6652743ab52799c0cc1"
+    },
+    {
+      "question_number": 28,
+      "path": "images/questions/q028_figure.jpg",
+      "description": "Six-point charge diagram",
+      "source_page": "images/pages/page_09.jpg",
+      "source_bbox_preview": [
+        625.84,
+        345.97,
+        960.88,
+        543.75
+      ],
+      "native_bbox": [
+        1061,
+        586,
+        1629,
+        921
+      ],
+      "width": 568,
+      "height": 335,
+      "bytes": 23902,
+      "sha256": "7d016d22cf9a4c8ca229369fcfa5c36993c77fb8417d5e35e23afa7bed4e01f0"
+    },
+    {
+      "question_number": 29,
+      "path": "images/questions/q029_figure.jpg",
+      "description": "Sliding rod and conducting loop diagram",
+      "source_page": "images/pages/page_10.jpg",
+      "source_bbox_preview": [
+        167.52,
+        405.6,
+        403.47,
+        576.81
+      ],
+      "native_bbox": [
+        284,
+        687,
+        684,
+        977
+      ],
+      "width": 400,
+      "height": 290,
+      "bytes": 14459,
+      "sha256": "f94572fd6db14dd6bfbc0e317724e6314b2ef704214701135a8625a2b10a0512"
+    },
+    {
+      "question_number": 31,
+      "path": "images/questions/q031_figure.jpg",
+      "description": "Meter bridge circuit diagram",
+      "source_page": "images/pages/page_10.jpg",
+      "source_bbox_preview": [
+        615.82,
+        785.81,
+        859.43,
+        953.48
+      ],
+      "native_bbox": [
+        1044,
+        1331,
+        1457,
+        1615
+      ],
+      "width": 413,
+      "height": 284,
+      "bytes": 14527,
+      "sha256": "807d0a0967f58a5ac31c987aed11ae00c7eab1b6a4a80fb1427ecda5f837c73d"
+    },
+    {
+      "question_number": 34,
+      "path": "images/questions/q034_figure.jpg",
+      "description": "Logic-gate and LED circuit",
+      "source_page": "images/pages/page_11.jpg",
+      "source_bbox_preview": [
+        625.84,
+        1000.71,
+        878.89,
+        1176.65
+      ],
+      "native_bbox": [
+        1061,
+        1695,
+        1490,
+        1993
+      ],
+      "width": 429,
+      "height": 298,
+      "bytes": 15294,
+      "sha256": "a2cdb1d6117482b95a6a7308ccf730e97fcdbad4a55d585b398c1ef6a9431712"
+    },
+    {
+      "question_number": 35,
+      "path": "images/questions/q035_figure.jpg",
+      "description": "Square with four corner masses",
+      "source_page": "images/pages/page_12.jpg",
+      "source_bbox_preview": [
+        179.91,
+        575.63,
+        368.66,
+        700.79
+      ],
+      "native_bbox": [
+        305,
+        975,
+        625,
+        1187
+      ],
+      "width": 320,
+      "height": 212,
+      "bytes": 10982,
+      "sha256": "d0d267e15d6df6b71ec6faa13e63fd94f4b4754b72c2ec957cab8a32354b6b3a"
+    },
+    {
+      "question_number": 37,
+      "path": "images/questions/q037_figure.jpg",
+      "description": "Rotating gas-filled cylindrical tube",
+      "source_page": "images/pages/page_12.jpg",
+      "source_bbox_preview": [
+        595.76,
+        930.46,
+        858.84,
+        1051.49
+      ],
+      "native_bbox": [
+        1010,
+        1576,
+        1456,
+        1781
+      ],
+      "width": 446,
+      "height": 205,
+      "bytes": 13690,
+      "sha256": "9a66427637b39fd8e8c1bf7bfca5e47af5642c103d30bbfd1676ea73ca9c2a25"
+    },
+    {
+      "question_number": 38,
+      "path": "images/questions/q038_figure.jpg",
+      "description": "Thermal-conduction rod network",
+      "source_page": "images/pages/page_13.jpg",
+      "source_bbox_preview": [
+        100.87,
+        920.42,
+        433.55,
+        1063.88
+      ],
+      "native_bbox": [
+        171,
+        1559,
+        735,
+        1802
+      ],
+      "width": 564,
+      "height": 243,
+      "bytes": 13852,
+      "sha256": "d0de9dc460a6c9ef99cd79e4aea39a3e199f0004f74fcad106f71f0bdd248728"
+    },
+    {
+      "question_number": 44,
+      "path": "images/questions/q044_figure.jpg",
+      "description": "List-I/List-II dimensions table",
+      "source_page": "images/pages/page_15.jpg",
+      "source_bbox_preview": [
+        80.81,
+        140.51,
+        513.77,
+        321.76
+      ],
+      "native_bbox": [
+        137,
+        238,
+        871,
+        545
+      ],
+      "width": 734,
+      "height": 307,
+      "bytes": 54882,
+      "sha256": "9126e40df769d35a2e88252e61b3b3397a5199652cf547bf492a18487dacf526"
+    },
+    {
+      "question_number": 45,
+      "path": "images/questions/q045_figure.jpg",
+      "description": "Three coaxial coils with current directions",
+      "source_page": "images/pages/page_15.jpg",
+      "source_bbox_preview": [
+        580.42,
+        85.61,
+        793.95,
+        283.98
+      ],
+      "native_bbox": [
+        984,
+        145,
+        1346,
+        481
+      ],
+      "width": 362,
+      "height": 336,
+      "bytes": 17966,
+      "sha256": "8f993664888a53a4b4c2010dc7ba96f55b9ca1bbcdec5a2617e18f335a3b19d4"
+    },
+    {
+      "question_number": 46,
+      "path": "images/questions/q046_figure.jpg",
+      "description": "Two loudspeakers and recorder positions",
+      "source_page": "images/pages/page_15.jpg",
+      "source_bbox_preview": [
+        630.56,
+        1025.51,
+        878.89,
+        1213.84
+      ],
+      "native_bbox": [
+        1069,
+        1737,
+        1490,
+        2056
+      ],
+      "width": 421,
+      "height": 319,
+      "bytes": 13645,
+      "sha256": "8c41f72c1a21b8e1bed52e1e44a4229caa551e3ab0706562f5378bb53c44a4a5"
+    },
+    {
+      "question_number": 52,
+      "path": "images/questions/q052_figure.jpg",
+      "description": "HNO3 Lewis structure with numbered atoms",
+      "source_page": "images/pages/page_18.jpg",
+      "source_bbox_preview": [
+        95.56,
+        838.95,
+        245.97,
+        968.83
+      ],
+      "native_bbox": [
+        162,
+        1421,
+        417,
+        1641
+      ],
+      "width": 255,
+      "height": 220,
+      "bytes": 10843,
+      "sha256": "23628b0eec7889815e5a41997a16538e91ed677fe3d8258e37e3093b44775ddd"
+    },
+    {
+      "question_number": 57,
+      "path": "images/questions/q057_figure.jpg",
+      "description": "Four candidate graphs",
+      "source_page": "images/pages/page_19.jpg",
+      "source_bbox_preview": [
+        569.81,
+        890.9,
+        942.6,
+        1188.46
+      ],
+      "native_bbox": [
+        966,
+        1509,
+        1598,
+        2013
+      ],
+      "width": 632,
+      "height": 504,
+      "bytes": 22974,
+      "sha256": "8ab5918c1b5e481d8715c6765fcef57d63b3bee5fe9c6448b03c7fa3e7e47bed"
+    },
+    {
+      "question_number": 60,
+      "path": "images/questions/q060_figure.jpg",
+      "description": "Thermodynamic process matching table",
+      "source_page": "images/pages/page_20.jpg",
+      "source_bbox_preview": [
+        545.62,
+        135.79,
+        953.81,
+        1004.85
+      ],
+      "native_bbox": [
+        925,
+        230,
+        1617,
+        1702
+      ],
+      "width": 692,
+      "height": 1472,
+      "bytes": 179922,
+      "sha256": "c50da8c3095c6e2f284b3810165908d411c4ce94a44bea00fb53a0640dd75848"
+    },
+    {
+      "question_number": 61,
+      "path": "images/questions/q061_figure.jpg",
+      "description": "Substituted benzene structure shown in Statement I",
+      "source_page": "images/pages/page_21.jpg",
+      "source_bbox_preview": [
+        321.47,
+        725.59,
+        489.0,
+        823.6
+      ],
+      "native_bbox": [
+        545,
+        1229,
+        829,
+        1395
+      ],
+      "width": 284,
+      "height": 166,
+      "bytes": 7392,
+      "sha256": "a237312b3af5679fb4ebf25fdea57fea21fbe7b24f882ef8f0654618353c4bde"
+    },
+    {
+      "question_number": 63,
+      "path": "images/questions/q063_figure.jpg",
+      "description": "Reagents/reaction-name matching table",
+      "source_page": "images/pages/page_21.jpg",
+      "source_bbox_preview": [
+        545.62,
+        615.78,
+        971.5,
+        1017.83
+      ],
+      "native_bbox": [
+        925,
+        1043,
+        1647,
+        1724
+      ],
+      "width": 722,
+      "height": 681,
+      "bytes": 89387,
+      "sha256": "d765bf5d01f0fed6a7166c09ae7939158d23371287113c9048e736772a16b784"
+    },
+    {
+      "question_number": 66,
+      "path": "images/questions/q066_figure.jpg",
+      "description": "Four organic compound structures",
+      "source_page": "images/pages/page_22.jpg",
+      "source_bbox_preview": [
+        553.88,
+        565.59,
+        967.96,
+        860.79
+      ],
+      "native_bbox": [
+        939,
+        958,
+        1641,
+        1458
+      ],
+      "width": 702,
+      "height": 500,
+      "bytes": 43822,
+      "sha256": "c5374c990c8620b38a3c4013f8947a095b8153d499b81d981fc12a80600aec90"
+    },
+    {
+      "question_number": 67,
+      "path": "images/questions/q067_figure.jpg",
+      "description": "Four substrate structures for SN1 comparison",
+      "source_page": "images/pages/page_23.jpg",
+      "source_bbox_preview": [
+        105.59,
+        335.93,
+        513.77,
+        483.53
+      ],
+      "native_bbox": [
+        179,
+        569,
+        871,
+        819
+      ],
+      "width": 692,
+      "height": 250,
+      "bytes": 22023,
+      "sha256": "73442ed2027dd197c7d15a907e1a4f98cf15ffaeb3905517771ff1824748cdb0"
+    },
+    {
+      "question_number": 75,
+      "path": "images/questions/q075_figure.jpg",
+      "description": "Standard Gibbs-energy data table",
+      "source_page": "images/pages/page_24.jpg",
+      "source_bbox_preview": [
+        550.93,
+        680.72,
+        803.98,
+        773.41
+      ],
+      "native_bbox": [
+        934,
+        1153,
+        1363,
+        1310
+      ],
+      "width": 429,
+      "height": 157,
+      "bytes": 17217,
+      "sha256": "957a150d83e2838f713115ee6fe290391f6f2021bfcc9244b59b344e11fec15a"
+    }
+  ],
+  "solution_crops": [
+    {
+      "question_number": 18,
+      "path": "images/solutions/q018_solution.jpg",
+      "description": "Printed solution block for Q18",
+      "source_page": "images/pages/page_06.jpg",
+      "source_bbox_preview": [
+        520.85,
+        30.7,
+        968.55,
+        513.64
+      ],
+      "native_bbox": [
+        883,
+        52,
+        1642,
+        870
+      ],
+      "width": 759,
+      "height": 818,
+      "bytes": 55455,
+      "sha256": "938b3807c93d99ee50b8308c0e91ad0c7c79106a8656bc93a2aedebc483cd8ed"
+    },
+    {
+      "question_number": 27,
+      "path": "images/solutions/q027_solution.jpg",
+      "description": "Printed solution block for Q27, including explanatory scattering diagram",
+      "source_page": "images/pages/page_09.jpg",
+      "source_bbox_preview": [
+        40.7,
+        845.44,
+        503.74,
+        1238.64
+      ],
+      "native_bbox": [
+        69,
+        1432,
+        854,
+        2098
+      ],
+      "width": 785,
+      "height": 666,
+      "bytes": 77048,
+      "sha256": "72f7b558860483f4ae07bd12ff7cec2ce9d7d270dd184037e6216d34e8a9dd67"
+    },
+    {
+      "question_number": 32,
+      "path": "images/solutions/q032_solution.jpg",
+      "description": "Printed solution block for Q32",
+      "source_page": "images/pages/page_11.jpg",
+      "source_bbox_preview": [
+        520.85,
+        30.7,
+        968.55,
+        473.49
+      ],
+      "native_bbox": [
+        883,
+        52,
+        1642,
+        802
+      ],
+      "width": 759,
+      "height": 750,
+      "bytes": 36871,
+      "sha256": "13ecb9649e83db0b18e4e5110858034dc1918a2fc7f8958186d6ca24c2990639"
+    },
+    {
+      "question_number": 38,
+      "path": "images/solutions/q038_solution.jpg",
+      "description": "Printed solution block for Q38",
+      "source_page": "images/pages/page_13.jpg",
+      "source_bbox_preview": [
+        515.54,
+        30.7,
+        968.55,
+        758.65
+      ],
+      "native_bbox": [
+        874,
+        52,
+        1642,
+        1285
+      ],
+      "width": 768,
+      "height": 1233,
+      "bytes": 73172,
+      "sha256": "c42e1c51455685c2cce883fa65f6f0bf545ea0f6a15e5054bb4b0c81f793f91c"
+    },
+    {
+      "question_number": 45,
+      "path": "images/solutions/q045_solution.jpg",
+      "description": "Printed solution block for Q45",
+      "source_page": "images/pages/page_15.jpg",
+      "source_bbox_preview": [
+        515.54,
+        50.77,
+        968.55,
+        583.9
+      ],
+      "native_bbox": [
+        874,
+        86,
+        1642,
+        989
+      ],
+      "width": 768,
+      "height": 903,
+      "bytes": 69707,
+      "sha256": "ee5f48744e16b8dc59eb57ff826bce3c836eec322a4d68ca7979e5d9e19ee6ae"
+    },
+    {
+      "question_number": 60,
+      "path": "images/solutions/q060_solution.jpg",
+      "description": "Printed solution block for Q60",
+      "source_page": "images/pages/page_21.jpg",
+      "source_bbox_preview": [
+        40.7,
+        30.7,
+        503.74,
+        618.73
+      ],
+      "native_bbox": [
+        69,
+        52,
+        854,
+        1048
+      ],
+      "width": 785,
+      "height": 996,
+      "bytes": 69745,
+      "sha256": "47174b8a4d0735f8cfc2d424867915a7673d1805bc5766c3f2a17de801945827"
+    }
+  ]
+}
