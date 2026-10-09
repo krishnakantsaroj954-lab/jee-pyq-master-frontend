@@ -1,8 +1,12 @@
-# JEE Main 2026 — 22 January Shift 1 (Quarantined JSON)
+# JEE Main 2026 — 22 January Shift 1 (Quarantined Dataset)
 
-## Status: NOT PRODUCTION READY
+## Status
 
-This folder preserves the generated 75-record JSON export from the source PDF. It is intentionally stored under `data/quarantine/`; do not import it into Cloudflare D1 or serve it as production question data yet.
+- Image assets: `ASSETS_EXTRACTED_AND_HASH_VERIFIED`
+- Production readiness: `NOT PRODUCTION READY`
+- GitHub Actions verification run: https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/actions/runs/37977318124
+
+This dataset remains under `data/quarantine/`. It must not be imported into Cloudflare D1 or served as production question data yet.
 
 ## Source identity
 
@@ -13,38 +17,35 @@ This folder preserves the generated 75-record JSON export from the source PDF. I
 - Source PDF SHA-256: `7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3`
 - Source PDF pages: 24
 
-## Dataset check
+## Dataset checks
 
 - Question records: 75, retained in source order
 - Q39: retained in position 39; `question_status = "Dropped"`; `answer_text = "Dropped"`; no invented correct answer
 - Records with a correct-answer value: 74
 - Records with options: 60
 - Records with solution text: 68
-- Some transcription, notation, options, answer, and solution fields still need visual review against source pages.
+- Some transcription, notation, options, answer, and solution fields still need visual review against the source pages.
 
-## Image bundle and path warning
+## Image assets — restored and verified
 
-The source export's image paths are relative paths intended to resolve beside the JSON within its companion ZIP bundle. The ZIP contains 24 full-page JPEGs and the Q39 question crop (`images/questions/q039_question.jpg`); its SHA-256 is:
+- Bundle SHA-256: `b1c2358ef30469ed3ab16995f303e2d72cdfb78c26af58500b7229f805f40783`
+- Bundle integrity: passed
+- JSON records checked: 75
+- Referenced image paths checked: 25
+- JPEG assets extracted and committed: 25 (24 full-page images + `images/questions/q039_question.jpg`)
+- Asset hashes: recorded in `asset-manifest.json`
 
-`b1c2358ef30469ed3ab16995f303e2d72cdfb78c26af58500b7229f805f40783`
-
-**Important:** that ZIP has not been committed/extracted into this repository by this commit. Therefore the JSON's image paths are not yet resolvable from the repository checkout. Do not treat the JSON-only commit as a complete image-backed website dataset.
+The JSON's relative image paths now resolve from this directory in the repository. The bundle has the expected source identity and Q39 remains marked as dropped. The verification run completed successfully.
 
 ## Release gate
 
 Before any Cloudflare production import or deployment:
-1. Add the companion images beside this JSON, preserving the relative paths.
-2. Visually compare every question, option, answer, and solution against the source page images; confirm the source and rights to reproduce the material.
-3. Run schema, path-existence, completeness, answer/solution, duplicate, and question-number checks.
-4. Keep the batch blocked until review is complete. Do not change the existing Worker, D1 binding, or production database as part of this quarantine commit.
 
+1. Visually compare every question, option, answer, and solution against the source page images; confirm source identity and rights to reproduce the material.
+2. Run schema, path-existence, completeness, answer/solution, duplicate, and question-number checks after visual review.
+3. Keep the batch blocked until all review checks pass.
+4. Do not change the existing Worker, D1 binding, or production database as part of this quarantine dataset step.
 
-## One-time asset restore step
+## Website integration boundary
 
-A guarded GitHub Actions workflow has been added at [unpack-jan22-image-bundle.yml](../../../.github/workflows/unpack-jan22-image-bundle.yml). The connected repository tools can write text files, but cannot transfer local binary image files directly. To finish the image restore without using Termux or changing Cloudflare:
-
-1. Download the companion ZIP from the ChatGPT conversation attachment named `JEE_Main_2026_01_22_Shift1_FINAL_75Q_BUNDLE.zip`.
-2. On the repository's GitHub **Upload files** page, upload it into this folder with the exact filename `jee_main_2026_01_22_shift1_FINAL_75Q_BUNDLE.zip`: https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/upload/main/data/quarantine/2026-01-22-shift1
-3. The workflow will check the ZIP SHA-256 and source identity, validate all 75 records and Q39, extract 25 JPEG assets, verify referenced paths, create `asset-manifest.json`, and commit the extracted assets to `main`.
-
-The workflow does **not** deploy the website or import into Cloudflare D1. After the upload, review the Actions run and confirm it succeeds before treating image paths as restored.
+The repository currently contains the source/PDF pipeline, not the frontend application code. Restoring the JSON and matching image assets does not publish them on the live website. The website frontend still needs to be connected to this dataset in a separate, reviewed change. No Cloudflare Worker/D1 import or website deployment was performed by this workflow.
