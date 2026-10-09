@@ -41,9 +41,9 @@ Before any Cloudflare production import or deployment:
 
 ## One-time asset restore step
 
-A guarded GitHub Actions workflow has been added at [unpack-jan22-image-bundle.yml](../../../../.github/workflows/unpack-jan22-image-bundle.yml). The connected repository tools can write text files, but cannot transfer local binary image files directly. To finish the image restore without using Termux or changing Cloudflare:
+A guarded GitHub Actions workflow has been added at [unpack-jan22-image-bundle.yml](../../../.github/workflows/unpack-jan22-image-bundle.yml). The connected repository tools can write text files, but cannot transfer local binary image files directly. To finish the image restore without using Termux or changing Cloudflare:
 
-1. Download the exact companion ZIP: [JEE_Main_2026_01_22_Shift1_FINAL_75Q_BUNDLE.zip](sandbox:/mnt/data/JEE_Main_2026_01_22_Shift1_FINAL_75Q_BUNDLE.zip).
+1. Download the companion ZIP from the ChatGPT conversation attachment named `JEE_Main_2026_01_22_Shift1_FINAL_75Q_BUNDLE.zip`.
 2. On the repository's GitHub **Upload files** page, upload it into this folder with the exact filename `jee_main_2026_01_22_shift1_FINAL_75Q_BUNDLE.zip`: https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/upload/main/data/quarantine/2026-01-22-shift1
 3. The workflow will check the ZIP SHA-256 and source identity, validate all 75 records and Q39, extract 25 JPEG assets, verify referenced paths, create `asset-manifest.json`, and commit the extracted assets to `main`.
 
