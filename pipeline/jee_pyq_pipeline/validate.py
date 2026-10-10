@@ -5,13 +5,17 @@ from pathlib import Path
 from .models import Issue, Question
 
 NOTATION = re.compile(r'[□�]')
-# These phrases only identify known template/sample output patterns. They are
-# deliberately checked across question, option, answer, and solution fields.
-PLACEHOLDER = re.compile(
+# Phrase-level signatures for known template output, plus exact-value signatures
+# for generic placeholders. Avoid treating normal worked solutions mentioning
+# "Option A" or the mathematical term "placeholder" as false positives.
+PLACEHOLDER_PHRASE = re.compile(
     r'validated source statement|step-by-step mathematical proof|'
-    r'\bplaceholder\b|\blorem ipsum\b|\btodo\b|\btbd\b|'
-    r'question content long enough|sample question with four source options|'
-    r'\boption\s+[A-D]\b|\banswer\s+not available\b',
+    r'\blorem ipsum\b|question content long enough|'
+    r'sample question with four source options|answer not available',
+    re.I,
+)
+PLACEHOLDER_EXACT = re.compile(
+    r'^(?:option\s+[A-D]|placeholder|todo|tbd|n/?a|not available)\s*[.!]?$',
     re.I,
 )
 
@@ -85,13 +89,16 @@ def validate(config, questions: list[Question], page_count: int) -> list[Issue]:
 
         if not isinstance(q.text, str) or len(q.text.strip()) < 12:
             local.append(Issue('TRUNCATED_CONTENT', 'Question content is missing or suspiciously short', question_id=q.id))
-        source_text = ' '.join([
+        source_fields = [
             q.text or '',
-            ' '.join((q.options or {}).values()),
+            *[(value if isinstance(value, str) else str(value)) for value in (q.options or {}).values()],
             str(q.answer or ''),
-            ' '.join(((q.solution or {}).get('text', '') or '').split()),
-        ])
-        if PLACEHOLDER.search(source_text):
+            ((q.solution or {}).get('text', '') or ''),
+        ]
+        if any(
+            PLACEHOLDER_PHRASE.search(value) or PLACEHOLDER_EXACT.fullmatch(value.strip())
+            for value in source_fields
+        ):
             local.append(Issue(
                 'PLACEHOLDER_CONTENT',
                 'Template/sample text is not accepted as source evidence',
