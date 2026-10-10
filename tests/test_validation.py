@@ -325,3 +325,42 @@ def test_scan_ocr_dpi_matches_embedded_scan_resolution():
     page.insert_image(page.rect,pixmap=pix)
     assert _ocr_dpi(page) == 72
     pdf.close()
+
+
+def test_solution_continuation_across_columns_uses_separate_narrow_crops(tmp_path):
+    import fitz
+
+    pdf=fitz.open()
+    page=pdf.new_page(width=1000,height=1200)
+    pix=fitz.Pixmap(fitz.csRGB,fitz.IRect(0,0,1000,1200),0)
+    pix.clear_with(255)
+    page.insert_image(page.rect,pixmap=pix)
+
+    block={
+        'subject':'Mathematics','number':2,'pages':{1},
+        'rows':[
+            (1,'2. Question stem',[100,300,430,330]),
+            (1,'Ans. (2)',[100,450,180,470]),
+            (1,'Sol. left-column working',[100,480,450,500]),
+            (1,'right-column solution continuation',[600,100,900,120]),
+        ],
+    }
+    next_block={
+        'subject':'Mathematics','number':3,'pages':{1},
+        'rows':[(1,'3. Next question',[600,200,900,230])],
+    }
+    assets=_crop_scan_regions(
+        pdf,block,[block['rows'][2],block['rows'][3]],
+        [block,next_block],0,tmp_path/'assets','b'*64,'solution',{1:72}
+    )
+    assert len(assets)==2
+    left=[asset for asset in assets if asset.bounds[0]<500]
+    right=[asset for asset in assets if asset.bounds[0]>=500]
+    assert len(left)==1 and len(right)==1
+    assert left[0].bounds[2] < 500
+    assert right[0].bounds[3] < 200
+    for asset in assets:
+        image=fitz.Pixmap(str(tmp_path/asset.path))
+        assert image.width < 500
+        assert image.height < 250
+    pdf.close()
