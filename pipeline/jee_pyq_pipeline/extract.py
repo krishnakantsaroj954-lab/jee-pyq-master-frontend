@@ -114,7 +114,7 @@ def _word_rows(words: list[tuple]) -> list[list[tuple]]:
 
 
 def _column_split_x(words: list[tuple], width: float) -> float | None:
-    """Detect a real two-column gutter only when question headers exist on both sides."""
+    """Find a two-column gutter efficiently; examine only the strongest central gaps."""
     if not words or width <= 0:
         return None
     page_height = max(float(w[3]) for w in words)
@@ -125,12 +125,19 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
         and float(w[2]) - float(w[0]) < width * 0.80
     ]
     ordered = sorted(body, key=lambda w: float(w[0]))
-    candidates = []
+    gaps = []
     for idx in range(len(ordered) - 1):
         gap = float(ordered[idx + 1][0]) - float(ordered[idx][2])
         cut = (float(ordered[idx][2]) + float(ordered[idx + 1][0])) / 2.0
-        if gap < width * 0.015 or not width * 0.28 < cut < width * 0.72:
-            continue
+        # This source uses a near-centre gutter. A narrow range also avoids cutting
+        # through long formula lines or wide question stems within either column.
+        if gap >= width * 0.015 and width * 0.40 < cut < width * 0.60:
+            gaps.append((gap, cut))
+    # Testing every central token gap by re-grouping all page words is quadratic on
+    # scan-heavy pages. A small shortlist captures the actual gutter without that cost.
+    shortlist = sorted(gaps, key=lambda item: item[0], reverse=True)[:6]
+    candidates = []
+    for gap, cut in shortlist:
         crossing = sum(1 for w in body if float(w[0]) < cut < float(w[2]))
         if crossing > max(3, len(body) * 0.03):
             continue
@@ -147,9 +154,9 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
             if _question_start(" ".join(str(w[4]) for w in row).strip())[1] is not None
         )
         if left_headers and right_headers:
-            candidates.append((gap - crossing * 5.0, cut))
+            score = gap - crossing * 5.0 - abs(cut - width * 0.5) * 0.02
+            candidates.append((score, cut))
     return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
-
 
 def _page_words(page, page_no: int = 1, image_info: list[dict] | None = None):
     """Return word coordinates, applying source-resolution OCR when the page is scanned."""
