@@ -5,7 +5,7 @@ from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
-    _has_center_divider,
+    _question_header_candidate, _infer_missing_top_question_header, _has_center_divider,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -249,6 +249,51 @@ def test_midpoint_gutter_ignores_narrow_ocr_divider_fragments():
     for j, y in enumerate(range(140, 340, 8)):
         words.append(word(499, y, 501, y + 5, "|", n + j))
     assert _column_split_x(words, 1000) == 500
+
+
+def test_ocr_question_header_recovers_expected_number_after_leading_debris():
+    match, number = _question_header_candidate(
+        "1 2. The value of the series is:", [21, 2287, 982, 2418], 2479, 2
+    )
+    assert number == 2
+    assert match is not None
+    assert "The value" in "1 2. The value of the series is:"[match.end():]
+
+    match, number = _question_header_candidate(
+        "I 46. The displacement of a particle", [55, 318, 1245, 375], 2550, 46
+    )
+    assert number == 46
+    match, number = _question_header_candidate(
+        "| 50. The equivalent resistance", [1268, 824, 2495, 873], 2550, 50
+    )
+    assert number == 50
+    match, number = _question_header_candidate(
+        "| 75. Consider the dissociation equilibrium", [1232, 269, 2331, 319], 2479, 75
+    )
+    assert number == 75
+
+    # A fractional option misread as “7. 7” is not in the number gutter.
+    assert _question_header_candidate("7. 7", [343, 942, 866, 1010], 2479, 2) == (None, None)
+
+
+def test_infer_missing_question_number_only_from_complete_top_of_column_block():
+    raw = [
+        (3, "tan(A-B) expression and the statement", [149, 273, 1207, 315], "Mathematics"),
+        (3, "then", [149, 335, 400, 370], "Mathematics"),
+        (3, "(1) choice one", [149, 480, 600, 515], "Mathematics"),
+        (3, "Ans. (1)", [149, 771, 317, 848], "Mathematics"),
+        (3, "Sol. Rearranging the stated relation", [149, 842, 900, 880], "Mathematics"),
+        (3, "5. Let z be a complex number", [149, 1726, 1207, 1874], "Mathematics"),
+    ]
+    assert _infer_missing_top_question_header(
+        raw, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics"}
+    ) is True
+
+    # Without the complete Answer + Solution sequence, do not infer or shift numbering.
+    incomplete = raw[:3] + raw[5:]
+    assert _infer_missing_top_question_header(
+        incomplete, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics"}
+    ) is False
 
 
 def test_unique_expected_printed_numbers_define_subject_mapping():

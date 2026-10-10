@@ -611,6 +611,85 @@ def _expected_subject_by_number(expected: set[str]) -> dict[int, str]:
     }
 
 
+
+def _question_header_candidate(text: str, bounds: list[float], page_width: float, expected_number: int | None = None):
+    """Recognize a printed question number despite a small OCR prefix, but only in a column's number gutter."""
+    x0 = float(bounds[0])
+    midpoint = float(page_width) * 0.5
+    in_number_gutter = (
+        x0 <= float(page_width) * 0.105
+        or midpoint - float(page_width) * 0.008 <= x0 <= midpoint + float(page_width) * 0.105
+    )
+    if not in_number_gutter:
+        return None, None
+
+    direct_match, direct_number = _question_start(text)
+    if direct_number is not None and (expected_number is None or direct_number == expected_number):
+        return direct_match, direct_number
+
+    # Examples from the source scan include "1 2. The value...", "I 46. ...",
+    # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
+    # only short OCR debris / one stray digit before the expected printed number.
+    marker = re.compile(r'(?<!\\d)(\\d{1,3})\\s*[.):](?=\\s|$)')
+    for match in marker.finditer(text[:40]):
+        number = int(match.group(1))
+        if expected_number is not None and number != expected_number:
+            continue
+        prefix = text[:match.start()].strip()
+        debris = not prefix or bool(re.fullmatch(r'[|Iil!.,;:\\-]+', prefix)) or bool(re.fullmatch(r'\\d{1,3}', prefix))
+        if len(prefix) <= 6 and debris:
+            return match, number
+    return None, None
+
+
+def _infer_missing_top_question_header(raw, row_index: int, expected_number: int, page_dimensions: dict[int, tuple[float, float]], expected_subject_by_number: dict[int, str]) -> bool:
+    """Infer a completely OCR-missed number only at a column top with answer/solution markers and the next numbered question in the same column."""
+    if expected_number + 1 not in expected_subject_by_number:
+        return False
+    page_no, text, bounds, _subject = raw[row_index]
+    dimensions = page_dimensions.get(page_no)
+    if not dimensions:
+        return False
+    width, height = dimensions
+    if float(bounds[1]) > height * 0.12:
+        return False
+    x0 = float(bounds[0])
+    midpoint = width * 0.5
+    in_number_gutter = (
+        x0 <= width * 0.105
+        or midpoint - width * 0.008 <= x0 <= midpoint + width * 0.105
+    )
+    if not in_number_gutter or len(text.strip()) < 12:
+        return False
+    if ANSWER_MARKER.match(text) or SOLUTION_MARKER.match(text) or text.lstrip().startswith(("=", "∴", "⇒", "→")):
+        return False
+
+    same_column_left = x0 < midpoint
+    saw_answer = False
+    saw_solution = False
+    for future_index in range(row_index + 1, len(raw)):
+        future_page, future_text, future_bounds, _future_subject = raw[future_index]
+        if future_page != page_no:
+            break
+        future_x0 = float(future_bounds[0])
+        if (future_x0 < midpoint) != same_column_left:
+            break
+        if ANSWER_MARKER.match(future_text):
+            saw_answer = True
+        if SOLUTION_MARKER.match(future_text):
+            saw_solution = True
+        next_match, next_number = _question_header_candidate(
+            future_text, future_bounds, width, expected_number + 1
+        )
+        if next_number is not None:
+            return saw_answer and saw_solution
+        other_match, other_number = _question_header_candidate(future_text, future_bounds, width, None)
+        if other_number is not None and other_number > expected_number:
+            # Do not infer across an unexpected or larger numbering gap.
+            return False
+    return False
+
+
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
     candidates={}
@@ -690,6 +769,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     all_assets=[]
     page_assets={}
     raw=[]
+    page_dimensions={}
     scan_only_pages=set()
     scan_dpi_by_page={}
     source_hash=sha256_file(config.source_pdf)
@@ -703,6 +783,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if page_no>page_count:
                 return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
             page=doc[page_no-1]
+            page_dimensions[page_no]=(float(page.rect.width),float(page.rect.height))
             page_image_info=_page_image_info(page)
             pa=_assets(page,page_no,asset_dir,source_hash,page_image_info)
             page_assets[page_no]=pa
@@ -751,21 +832,29 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     next_expected_index = 0
     blocks=[]
     current=None
-    for page,text,bounds,subject in raw:
-        match, number = _question_start(text)
+    for raw_index,(page,text,bounds,subject) in enumerate(raw):
+        expected_next = (
+            expected_number_sequence[next_expected_index]
+            if strict_sequential_numbering and next_expected_index < len(expected_number_sequence)
+            else None
+        )
+        page_width = page_dimensions.get(page, (0.0, 0.0))[0]
+        match, number = _question_header_candidate(text, bounds, page_width, expected_next)
+        if number is None and strict_sequential_numbering and expected_next is not None:
+            if _infer_missing_top_question_header(raw,raw_index,expected_next,page_dimensions,expected_subject_by_number):
+                # The source has a distinct top-of-column stem, then its own Answer
+                # and Solution markers, followed by the next printed number. The
+                # printed number itself was missed by OCR; keep the stem text intact.
+                match = re.match(r"", text)
+                number = expected_next
         if number is not None and strict_sequential_numbering:
-            # A formula or option line can look like a numbered question (e.g. “7.”).
-            # In a source with global numbering, only the next expected printed number
-            # may start a block. Out-of-sequence candidates stay with the current source
-            # question/solution; missing real headers still cause count/scope validation
-            # to fail closed rather than silently creating misaligned records.
             if next_expected_index >= len(expected_number_sequence) or number != expected_number_sequence[next_expected_index]:
                 match, number = None, None
             else:
                 subject = expected_subject_by_number[number]
         elif number is not None and number in expected_subject_by_number:
             subject = expected_subject_by_number[number]
-        if number is not None and current is None and subject is None:
+        if number is not None and subject is None:
             continue
         if number is not None and subject is not None:
             if current:
