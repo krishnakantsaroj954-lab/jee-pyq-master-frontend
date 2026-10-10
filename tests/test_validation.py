@@ -1,7 +1,7 @@
 from pathlib import Path
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import extract, _assets, _split_options, _split_source_sections, _page_words, _question_start
+from jee_pyq_pipeline.extract import extract, _assets, _parse_answer, _split_options, _split_source_sections, _page_words, _question_start
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
 
@@ -74,6 +74,11 @@ def test_numeric_question():
     q=question(options={},answer='42',question_type='NUMERICAL')
     c=cfg(Path('.'))
     assert not validate(c,[q],1)
+
+def test_answer_parser_preserves_multi_digit_and_option_answers():
+    assert _parse_answer('42') == '42'
+    assert _parse_answer('2') == '2'
+    assert _parse_answer('(A) Only I is true') == 'A'
 
 def test_split_side_by_side_options():
     text,options=_split_options([(1,'(A) one (B) two',[0,0,1,1]),(1,'(C) three (D) four',[0,0,1,1])])
