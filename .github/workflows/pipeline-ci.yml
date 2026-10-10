@@ -50,6 +50,45 @@ jobs:
           print(json.dumps({"filename":report["filename"],"bytes":report["bytes"],"sha256":report["sha256"],"pages":report["pages"],"metadata":report["metadata"],"page_probe":report["page_probe"][:3]},ensure_ascii=False,indent=2))
           doc.close()
           PY
+      - name: Diagnose OCR word rows and question boundaries
+        run: |
+          PYTHONPATH=pipeline python - <<'PY'
+          import json
+          from pathlib import Path
+          import fitz
+          from jee_pyq_pipeline.extract import (
+              _page_image_info, _page_words, _has_center_divider, _lines,
+              _join_word_tokens, _question_start, _column_split_x,
+          )
+          source=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc=fitz.open(source)
+          selected={1,2,3,4,10,15,16,20,24}
+          report={"source_pdf":source.name,"pages":len(doc),"samples":[]}
+          summary=[]
+          for page_no in sorted(selected):
+              if page_no>len(doc):
+                  continue
+              page=doc[page_no-1]
+              image_info=_page_image_info(page)
+              words,used_ocr=_page_words(page,page_no,image_info)
+              divider=bool(used_ocr and _has_center_divider(page))
+              split_x=_column_split_x(words,float(page.rect.width))
+              rows=[]
+              for row in _lines(words,float(page.rect.width),force_midpoint=divider):
+                  text=_join_word_tokens(row).strip()
+                  if not text:
+                      continue
+                  match,number=_question_start(text)
+                  bounds=[round(min(w[0] for w in row),2),round(min(w[1] for w in row),2),round(max(w[2] for w in row),2),round(max(w[3] for w in row),2)]
+                  rows.append({"text":text[:260],"question_number":number,"bounds":bounds})
+              candidates=[r for r in rows if r["question_number"] is not None]
+              item={"page":page_no,"width":page.rect.width,"height":page.rect.height,"words":len(words),"used_ocr":used_ocr,"center_divider_detected":divider,"geometry_split_x":split_x,"row_count":len(rows),"candidate_headers":candidates,"rows":rows[:160]}
+              report["samples"].append(item)
+              summary.append({"page":page_no,"used_ocr":used_ocr,"center_divider_detected":divider,"geometry_split_x":split_x,"word_count":len(words),"candidate_headers":[{"n":r["question_number"],"text":r["text"][:100]} for r in candidates]})
+          Path("extractor-layout-diagnostic.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          doc.close()
+          PY
       - name: Run source PDF extraction dry-run (no import)
         run: |
           python - <<'PY'
@@ -133,6 +172,7 @@ jobs:
           name: uploaded-source-pdf-probe
           path: |
             pdf-probe.json
+            extractor-layout-diagnostic.json
             pdf-page-*.png
             representative-config.json
             pipeline-output/
