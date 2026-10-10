@@ -630,13 +630,13 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     # Examples from the source scan include "1 2. The value...", "I 46. ...",
     # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
     # only short OCR debris / one stray digit before the expected printed number.
-    marker = re.compile(r'(?<!\\d)(\\d{1,3})\\s*[.):](?=\\s|$)')
+    marker = re.compile(r'(?<!\d)(\d{1,3})\s*[.):](?=\s|$)')
     for match in marker.finditer(text[:40]):
         number = int(match.group(1))
         if expected_number is not None and number != expected_number:
             continue
         prefix = text[:match.start()].strip()
-        debris = not prefix or bool(re.fullmatch(r'[|Iil!.,;:\\-]+', prefix)) or bool(re.fullmatch(r'\\d{1,3}', prefix))
+        debris = not prefix or bool(re.fullmatch(r'[|Iil!.,;:-]+', prefix)) or bool(re.fullmatch(r'\d{1,3}', prefix))
         if len(prefix) <= 6 and debris:
             return match, number
     return None, None
