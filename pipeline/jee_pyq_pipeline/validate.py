@@ -1,10 +1,17 @@
 from __future__ import annotations
+import math
 import re
+from pathlib import Path
 from .models import Issue, Question
 
 NOTATION = re.compile(r'[□�]')
+# These phrases only identify known template/sample output patterns. They are
+# deliberately checked across question, option, answer, and solution fields.
 PLACEHOLDER = re.compile(
-    r'validated source statement with mathematical precision|step-by-step mathematical proof',
+    r'validated source statement|step-by-step mathematical proof|'
+    r'\bplaceholder\b|\blorem ipsum\b|\btodo\b|\btbd\b|'
+    r'question content long enough|sample question with four source options|'
+    r'\boption\s+[A-D]\b|\banswer\s+not available\b',
     re.I,
 )
 
@@ -30,8 +37,10 @@ def validate(config, questions: list[Question], page_count: int) -> list[Issue]:
         key = _expected_key(q)
         is_dropped = q.status == 'Dropped'
 
-        if not q.id or q.id in seen_ids:
-            local.append(Issue('DUPLICATE_OR_MISSING_ID', 'Question ID is missing or duplicated', question_id=q.id))
+        if not q.id:
+            local.append(Issue('MISSING_ID', 'Question ID is missing', question_id=q.id))
+        elif q.id in seen_ids:
+            local.append(Issue('DUPLICATE_ID', 'Question ID is duplicated', question_id=q.id))
         seen_ids.add(q.id)
         if key in seen_keys:
             local.append(Issue('DUPLICATE_SOURCE_NUMBER', f'Duplicate subject/question key: {key}', question_id=q.id))
@@ -39,12 +48,55 @@ def validate(config, questions: list[Question], page_count: int) -> list[Issue]:
 
         if not q.subject or q.subject not in {'Physics', 'Chemistry', 'Mathematics'}:
             local.append(Issue('MISSING_SUBJECT', 'Question subject could not be resolved from the source', question_id=q.id))
-        if not q.pages or any(p < config.page_range[0] or p > config.page_range[1] or p > page_count for p in q.pages):
+        if not q.pages or any(
+            not isinstance(p, int) or p < config.page_range[0]
+            or p > config.page_range[1] or p > page_count
+            for p in q.pages
+        ):
             local.append(Issue('INVALID_PROVENANCE', 'Invalid source pages', question_id=q.id))
+
+        provenance = q.provenance if isinstance(q.provenance, dict) else {}
+        source_sha = provenance.get('source_sha256')
+        source_document = provenance.get('source_document')
+        expected_document = Path(config.source_pdf).name
+        if (
+            not isinstance(source_sha, str)
+            or not re.fullmatch(r'[0-9a-f]{64}', source_sha)
+            or source_document != expected_document
+        ):
+            local.append(Issue(
+                'INVALID_SOURCE_LINEAGE',
+                'Source SHA-256 and matching source document name are required',
+                question_id=q.id,
+            ))
+
+        bounds = q.bounds
+        valid_bounds = (
+            isinstance(bounds, (list, tuple)) and len(bounds) == 4
+            and all(isinstance(v, (int, float)) and math.isfinite(v) for v in bounds)
+            and bounds[2] > bounds[0] and bounds[3] > bounds[1]
+        )
+        if not valid_bounds:
+            local.append(Issue(
+                'INVALID_QUESTION_BOUNDS',
+                'Question bounding box must contain finite, positive-area coordinates',
+                question_id=q.id,
+            ))
+
         if not isinstance(q.text, str) or len(q.text.strip()) < 12:
             local.append(Issue('TRUNCATED_CONTENT', 'Question content is missing or suspiciously short', question_id=q.id))
-        if PLACEHOLDER.search(q.text or '') or PLACEHOLDER.search(' '.join((q.solution or {}).get('text', '').split())):
-            local.append(Issue('PLACEHOLDER_CONTENT', 'Placeholder text is not accepted as source evidence', question_id=q.id))
+        source_text = ' '.join([
+            q.text or '',
+            ' '.join((q.options or {}).values()),
+            str(q.answer or ''),
+            ' '.join(((q.solution or {}).get('text', '') or '').split()),
+        ])
+        if PLACEHOLDER.search(source_text):
+            local.append(Issue(
+                'PLACEHOLDER_CONTENT',
+                'Template/sample text is not accepted as source evidence',
+                question_id=q.id,
+            ))
         if NOTATION.search((q.text or '') + ' '.join((q.options or {}).values())):
             local.append(Issue('UNPRESERVED_NOTATION', 'Unsafe/unpreserved notation detected', question_id=q.id))
 
@@ -66,8 +118,19 @@ def validate(config, questions: list[Question], page_count: int) -> list[Issue]:
 
             if getattr(config, 'source_has_solutions', False):
                 solution = q.solution or {}
-                if not str(solution.get('text', '')).strip() or not solution.get('pages'):
-                    local.append(Issue('MISSING_SOURCE_SOLUTION', 'Source solutions were declared but no source solution text/page reference exists', question_id=q.id))
+                source_ref = solution.get('source_reference') if isinstance(solution, dict) else None
+                if (
+                    not str(solution.get('text', '')).strip()
+                    or not solution.get('pages')
+                    or not isinstance(source_ref, dict)
+                    or source_ref.get('source_sha256') != source_sha
+                    or source_ref.get('source_document') != source_document
+                ):
+                    local.append(Issue(
+                        'MISSING_SOURCE_SOLUTION',
+                        'Solution text, page lineage, and matching source reference are required',
+                        question_id=q.id,
+                    ))
 
         if q.requires_figure and not q.assets:
             local.append(Issue('MISSING_REQUIRED_IMAGE', 'Question needs a figure but no bounded source image crop was associated', question_id=q.id))
