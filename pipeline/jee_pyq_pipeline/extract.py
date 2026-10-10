@@ -231,7 +231,7 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
-    token=re.match(r'\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\b',text,re.I)
+    token=re.match(r'\s*[\(\[]?\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\s*[\)\]]?',text,re.I)
     return token.group(1) if token else None
 
 def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
@@ -378,11 +378,11 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         # MCQ must have four parsed choices; an absent answer is not guessed.
         if len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
             question_type='MCQ'
-        elif not q_opts and answer is not None and re.fullmatch(r'-?\\d+(?:\\.\\d+)?(?:\\s*/\\s*-?\\d+(?:\\.\\d+)?)?',str(answer).strip()):
+        elif not q_opts and answer is not None and re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?',str(answer).strip()):
             question_type='NUMERICAL'
         else:
             question_type='UNKNOWN'
-        dropped=bool(re.search(r'\\b(?:question\\s+(?:has\\s+been\\s+)?dropped|dropped\\s+(?:question|by\\s+NTA|from\\s+evaluation)|question\\s+is\\s+dropped)\\b',q_text+' '+solution_text,re.I))
+        dropped=bool(re.search(r'\b(?:question\s+(?:has\s+been\s+)?dropped|dropped\s+(?:question|by\s+NTA|from\s+evaluation)|question\s+is\s+dropped)\b',q_text+' '+solution_text,re.I))
         qid=f'{source_hash[:16]}-{block["subject"].lower()}-q-{block["number"]:03d}'
         solution=None
         if solution_text:
