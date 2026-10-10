@@ -304,7 +304,7 @@ def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
     sx = rect.width / max(float(pix.width), 1.0)
     sy = rect.height / max(float(pix.height), 1.0)
     words = []
-    reader = csv.DictReader(io.StringIO(result.stdout.decode("utf-8", errors="replace")), delimiter="\\t")
+    reader = csv.DictReader(io.StringIO(result.stdout.decode("utf-8", errors="replace")), delimiter="\t")
     for row in reader:
         try:
             if int(row.get("level", "0")) != 5:
