@@ -83,17 +83,23 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
         if not payload:
             continue
         data=payload['image']
+        rects=[]
+        for rect in page.get_image_rects(xref):
+            # Full-page scans are source context, not question images. Never attach them
+            # to every question; individual question crops must be created from geometry.
+            if rect.width >= float(page.rect.width) * 0.85 and rect.height >= float(page.rect.height) * 0.80:
+                continue
+            rects.append(rect)
+        # Do not even persist an orphan full-page image under the assets directory.
+        if not rects:
+            continue
         digest=hashlib.sha256(data).hexdigest()
         ext=payload.get('ext','bin')
         object_key=f'{source_hash[:16]}/page-{page_no}/image-{n}-{digest[:16]}.{ext}'
         file=asset_dir/object_key
         file.parent.mkdir(parents=True,exist_ok=True)
         file.write_bytes(data)
-        for rect in page.get_image_rects(xref):
-            # Full-page scans are source context, not question images. Never attach them
-            # to every question; individual question crops must be created from geometry.
-            if rect.width >= float(page.rect.width) * 0.85 and rect.height >= float(page.rect.height) * 0.80:
-                continue
+        for rect in rects:
             bounds=[round(rect.x0,2),round(rect.y0,2),round(rect.x1,2),round(rect.y1,2)]
             found.append(Asset(object_key,page_no,bounds,digest,str(file.relative_to(asset_dir.parent))))
     return found
@@ -260,7 +266,9 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
-    token=re.match(r'\s*[\(\[]?\s*([A-D]|[1-4]|-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?)\s*[\)\]]?',text,re.I)
+    # Match a complete numerical token before single-digit MCQ labels, otherwise 42
+    # would be incorrectly read as 4.
+    token=re.match(r'\s*[\(\[]?\s*(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?|[A-D])\s*[\)\]]?',text,re.I)
     return token.group(1) if token else None
 
 def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
