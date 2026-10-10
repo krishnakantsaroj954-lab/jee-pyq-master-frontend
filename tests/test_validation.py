@@ -607,3 +607,22 @@ def test_infer_missing_question_after_noisy_answer_marker():
     assert _infer_missing_top_question_header(
         raw, 0, 7, {4: (2479.0, 3508.0)}, {7: "Mathematics", 8: "Mathematics"}
     ) is True
+
+
+def test_ocr_question_header_comma_separator():
+    assert _question_start("20, Let y = y(x) be the solution of the differential equation")[1] == 20
+    match, number = _question_header_candidate(
+        "20, Let y = y(x) be the solution of the differential equation",
+        [21, 2238, 1208, 2334], 2479, 20
+    )
+    assert number == 20
+    assert match is not None
+    assert "Let y" in "20, Let y = y(x) be the solution of the differential equation"[match.end():]
+
+
+def test_ocr_question_header_comma_with_prefix_noise():
+    match, number = _question_header_candidate(
+        ", 22. For some theta > 0, let the eccentricity", [21, 278, 1208, 349], 2479, 22
+    )
+    assert number == 22
+    assert match is not None

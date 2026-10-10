@@ -5,7 +5,7 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):](?:\s|$)', re.I)
+QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(\s*([A-D]|[1-4])\s*\)|([A-D]|[1-4])\s*[.)])(?=\s|$)', re.I)
 ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:[Il]\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*\.)(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
@@ -630,7 +630,7 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     # Examples from the source scan include "1 2. The value...", "I 46. ...",
     # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
     # only short OCR debris / one stray digit before the expected printed number.
-    marker = re.compile(r'(?<!\d)(\d{1,3})\s*[.):](?=\s|$)')
+    marker = re.compile(r'(?<!\d)(\d{1,3})\s*[.):,](?=\s|$)')
     for match in marker.finditer(text[:40]):
         number = int(match.group(1))
         if expected_number is not None and number != expected_number:
