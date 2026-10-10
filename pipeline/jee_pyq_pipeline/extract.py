@@ -169,6 +169,9 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
         1 for w in body
         if float(w[0]) < midpoint + width * 0.006
         and float(w[2]) > midpoint - width * 0.006
+        # Tiny OCR boxes are often fragments of the scanned divider, not prose
+        # crossing the gutter. Count only substantial text boxes as crossings.
+        and float(w[2]) - float(w[0]) > max(12.0, width * 0.006)
     )
     if (
         left_header_count and right_header_count

@@ -212,6 +212,26 @@ def test_midpoint_gutter_fallback_survives_unreadable_header_tokens():
     assert _column_split_x(words, 1000) == 500
 
 
+def test_midpoint_gutter_ignores_narrow_ocr_divider_fragments():
+    def word(x0, y0, x1, y1, text, n):
+        return (x0, y0, x1, y1, text, 0, 0, n)
+
+    words = []
+    n = 0
+    for y in (200, 280, 360, 440):
+        for idx in range(5):
+            lx = 70 + idx * 34
+            rx = 650 + idx * 34
+            words.append(word(lx, y, lx + 22, y + 12, f"left{n}", n))
+            n += 1
+            words.append(word(rx, y, rx + 22, y + 12, f"right{n}", n))
+            n += 1
+    # OCR can turn a long vertical scan divider into many short narrow boxes.
+    for j, y in enumerate(range(140, 340, 8)):
+        words.append(word(499, y, 501, y + 5, "|", n + j))
+    assert _column_split_x(words, 1000) == 500
+
+
 def test_unique_expected_printed_numbers_define_subject_mapping():
     assert _expected_subject_by_number({
         "Mathematics:1", "Physics:26", "Chemistry:51"
