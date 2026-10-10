@@ -25,30 +25,39 @@ def _fitz():
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
 
-def _ocr_dpi(page) -> int:
-    """Choose OCR DPI from the actual embedded scan, avoiding wasteful upscaling."""
+def _page_image_info(page) -> list[dict]:
+    """Return only image placements actually painted on this page."""
+    try:
+        return page.get_image_info(xrefs=True)
+    except (AttributeError, TypeError):
+        return []
+
+
+def _ocr_dpi(page, image_info: list[dict] | None = None) -> int:
+    """Choose OCR DPI from the actual embedded full-page scan, without decoding unused XObjects."""
+    if image_info is None:
+        image_info = _page_image_info(page)
     page_width, page_height = float(page.rect.width), float(page.rect.height)
     estimates = []
-    seen = set()
-    for item in page.get_images(full=True):
-        xref = int(item[0])
-        if xref in seen:
+    for image in image_info:
+        bbox = image.get("bbox")
+        if not bbox or len(bbox) != 4:
             continue
-        seen.add(xref)
-        try:
-            image = page.parent.extract_image(xref)
-            image_width = float(image.get("width") or 0)
-            image_height = float(image.get("height") or 0)
-            if image_width <= 0 or image_height <= 0:
-                continue
-            for rect in page.get_image_rects(xref):
-                if rect.width >= page_width * 0.85 and rect.height >= page_height * 0.80:
-                    estimates.append(72.0 * min(
-                        image_width / max(float(rect.width), 1.0),
-                        image_height / max(float(rect.height), 1.0),
-                    ))
-        except Exception:
+        x0, y0, x1, y1 = (float(v) for v in bbox)
+        placed_width, placed_height = x1 - x0, y1 - y0
+        if (
+            placed_width < page_width * 0.85
+            or placed_height < page_height * 0.80
+        ):
             continue
+        image_width = float(image.get("width") or 0)
+        image_height = float(image.get("height") or 0)
+        if image_width <= 0 or image_height <= 0:
+            continue
+        estimates.append(72.0 * min(
+            image_width / max(placed_width, 1.0),
+            image_height / max(placed_height, 1.0),
+        ))
     if not estimates:
         return 200
     return int(max(72, min(250, min(estimates))))
@@ -142,13 +151,13 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
     return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
 
 
-def _page_words(page, page_no: int = 1):
+def _page_words(page, page_no: int = 1, image_info: list[dict] | None = None):
     """Return word coordinates, applying source-resolution OCR when the page is scanned."""
     words = page.get_text("words")
     if words:
         return words, False
     try:
-        textpage = page.get_textpage_ocr(language="eng", dpi=_ocr_dpi(page), full=True)
+        textpage = page.get_textpage_ocr(language="eng", dpi=_ocr_dpi(page, image_info), full=True)
         words = page.get_text("words", textpage=textpage)
     except Exception as error:
         raise RuntimeError(
@@ -180,33 +189,38 @@ def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     # printed at the same y coordinate, from being fused into one question.
     return _word_rows(left) + _word_rows(right)
 
-def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
+def _assets(page, page_no:int, asset_dir:Path, source_hash:str,
+            image_info:list[dict]|None=None)->list[Asset]:
+    """Extract only genuinely placed, bounded images; skip full-page scans before decoding."""
     found=[]
-    for n,item in enumerate(page.get_images(full=True)):
-        xref=item[0]
+    if image_info is None:
+        image_info=_page_image_info(page)
+    for n,item in enumerate(image_info):
+        bbox=item.get('bbox')
+        if not bbox or len(bbox)!=4:
+            continue
+        rect=[float(v) for v in bbox]
+        width=rect[2]-rect[0]
+        height=rect[3]-rect[1]
+        # A full-page raster is original-page context, not a question figure. Reject it
+        # before extract_image(): scans can contain many unplaced XObject references.
+        if width >= float(page.rect.width)*0.85 and height >= float(page.rect.height)*0.80:
+            continue
+        xref=int(item.get('xref') or 0)
+        if xref <= 0:
+            continue
         payload=page.parent.extract_image(xref)
         if not payload:
             continue
         data=payload['image']
-        rects=[]
-        for rect in page.get_image_rects(xref):
-            # Full-page scans are source context, not question images. Never attach them
-            # to every question; individual question crops must be created from geometry.
-            if rect.width >= float(page.rect.width) * 0.85 and rect.height >= float(page.rect.height) * 0.80:
-                continue
-            rects.append(rect)
-        # Do not even persist an orphan full-page image under the assets directory.
-        if not rects:
-            continue
         digest=hashlib.sha256(data).hexdigest()
         ext=payload.get('ext','bin')
         object_key=f'{source_hash[:16]}/page-{page_no}/image-{n}-{digest[:16]}.{ext}'
         file=asset_dir/object_key
         file.parent.mkdir(parents=True,exist_ok=True)
         file.write_bytes(data)
-        for rect in rects:
-            bounds=[round(rect.x0,2),round(rect.y0,2),round(rect.x1,2),round(rect.y1,2)]
-            found.append(Asset(object_key,page_no,bounds,digest,str(file.relative_to(asset_dir.parent))))
+        bounds=[round(v,2) for v in rect]
+        found.append(Asset(object_key,page_no,bounds,digest,str(file.relative_to(asset_dir.parent))))
     return found
 
 
@@ -518,10 +532,11 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if page_no>page_count:
                 return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
             page=doc[page_no-1]
-            pa=_assets(page,page_no,asset_dir,source_hash)
+            page_image_info=_page_image_info(page)
+            pa=_assets(page,page_no,asset_dir,source_hash,page_image_info)
             page_assets[page_no]=pa
             all_assets.extend(pa)
-            words, used_ocr = _page_words(page,page_no)
+            words, used_ocr = _page_words(page,page_no,page_image_info)
             if used_ocr:
                 scan_only_pages.add(page_no)
                 scan_dpi_by_page[page_no]=_ocr_dpi(page)
