@@ -36,19 +36,93 @@ jobs:
               raise SystemExit("Uploaded source PDF is missing")
           doc=fitz.open(pdf)
           report={"filename":pdf.name,"bytes":pdf.stat().st_size,"sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"pages":len(doc),"metadata":doc.metadata,"page_probe":[]}
+          sample_pages={1,2,3,10,15,20,len(doc)}
           for i,p in enumerate(doc,1):
               native=p.get_text("text",sort=True) or ""
               used_ocr=len(native.strip())<80
-              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=72,full=True),sort=True) if used_ocr else native
+              sampled=i in sample_pages
+              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=72,full=True),sort=True) if used_ocr and sampled else native
               lines=[line.strip() for line in text.splitlines() if line.strip()]
-              report["page_probe"].append({"page":i,"width":p.rect.width,"height":p.rect.height,"native_chars":len(native),"ocr_used":used_ocr,"chars":len(text),"subject_headings":[s for s in ["PHYSICS","CHEMISTRY","MATHEMATICS","MATHS"] if re.search(r"\\b"+s+r"\\b",text,re.I)],"question_headers":[line[:160] for line in lines if re.match(r"^\\s*(?:Question\\s*)?\\d{1,3}[.):]\\s+\\S",line,re.I)],"first_lines":lines[:18] if i<=3 else lines[:4]})
-              if i in {1,2,3,10,15,20,len(doc)}:
+              report["page_probe"].append({"page":i,"width":p.rect.width,"height":p.rect.height,"native_chars":len(native),"ocr_used":used_ocr,"sampled":sampled,"chars":len(text),"subject_headings":[s for s in ["PHYSICS","CHEMISTRY","MATHEMATICS","MATHS"] if re.search(r"\b"+s+r"\b",text,re.I)],"question_headers":[line[:160] for line in lines if re.match(r"^\s*(?:Question\s*)?\d{1,3}[.):]\s+\S",line,re.I)],"first_lines":lines[:18] if i<=3 else (lines[:4] if sampled else [])})
+              if sampled:
                   Path(f"pdf-page-{i:02}.png").write_bytes(p.get_pixmap(dpi=72,alpha=False).tobytes("png"))
           Path("pdf-probe.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
           print(json.dumps({"filename":report["filename"],"bytes":report["bytes"],"sha256":report["sha256"],"pages":report["pages"],"metadata":report["metadata"],"page_probe":report["page_probe"][:3]},ensure_ascii=False,indent=2))
           doc.close()
           PY
-      - name: Upload source PDF probe only (diagnostic, not import data)
+      - name: Run source PDF extraction dry-run (no import)
+        run: |
+          python - <<'PY'
+          import fitz, json
+          from pathlib import Path
+          source=Path("cEDaK5Wn5ILe4nOdotd6.pdf").resolve()
+          if not source.is_file():
+              raise SystemExit(f"Expected source PDF is missing: {source.name}")
+          doc=fitz.open(source)
+          expected=[f"{subject}:{number}" for subject in ("Physics","Chemistry","Mathematics") for number in range(1,26)]
+          config={
+              "source_pdf":str(source),
+              "release":"2026-01-28-session-1-shift-1",
+              "exam":"JEE-MAIN",
+              "year":2026,
+              "session":"Session 1 • January • 28 January • Shift 1",
+              "paper":"Paper 1 • B.E./B.Tech",
+              "subject":"PCM",
+              "page_range":[1,len(doc)],
+              "expected_question_count":75,
+              "expected_question_numbers":expected,
+              "source_has_solutions":True
+          }
+          Path("representative-config.json").write_text(json.dumps(config,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps({"source_pdf":source.name,"pages":len(doc),"expected_questions":len(expected),"source_identity":config["session"]},ensure_ascii=False))
+          doc.close()
+          PY
+          set +e
+          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli --config representative-config.json --output pipeline-output --max-pages 50 --timeout-seconds 1200
+          pipeline_exit=$?
+          set -e
+          if [ "$pipeline_exit" -ne 0 ] && [ "$pipeline_exit" -ne 2 ]; then
+            exit "$pipeline_exit"
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          reports=sorted(Path("pipeline-output").glob("*/validation-report.json"))
+          if len(reports)!=1:
+              raise SystemExit(f"Expected one complete extraction report, found {len(reports)}")
+          report_path=reports[0]
+          report=json.loads(report_path.read_text(encoding="utf-8"))
+          manifest_path=report_path.parent/"batch-manifest.json"
+          manifest=json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+          summary={
+              "source_status":report.get("status"),
+              "subject_counts":report.get("subject_counts"),
+              "question_type_counts":report.get("question_type_counts"),
+              "record_counts":report.get("counts"),
+              "asset_count":manifest.get("asset_count"),
+              "blocking_issue_count":report.get("blocking_issue_count"),
+              "top_issue_codes":{},
+              "import_ready_exists":(report_path.parent/"IMPORT_READY.json").is_file()
+          }
+          for issue in report.get("issues",[]):
+              code=issue.get("code","UNKNOWN")
+              summary["top_issue_codes"][code]=summary["top_issue_codes"].get(code,0)+1
+          summary["top_issue_codes"]=dict(sorted(summary["top_issue_codes"].items(),key=lambda item:(-item[1],item[0]))[:15])
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          status=report.get("status")
+          ready=summary["import_ready_exists"]
+          if status not in {"VALIDATED","REVIEW_REQUIRED","QUARANTINED"}:
+              raise SystemExit(f"Unexpected extraction status: {status}")
+          if status=="VALIDATED" and not ready:
+              raise SystemExit("Safety failure: VALIDATED report has no IMPORT_READY.json")
+          if status!="VALIDATED" and ready:
+              raise SystemExit("Safety failure: unreviewed batch emitted IMPORT_READY.json")
+          if (status=="VALIDATED") != (int(__import__("os").environ.get("PIPELINE_EXIT_CODE","0"))==0):
+              pass
+          if status!="VALIDATED":
+              print("::warning title=Manual source review required::Dry-run completed without import approval; inspect validation-report.json and the crop assets.")
+          PY
+      - name: Upload source probe and extraction artifacts (no production import)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -56,4 +130,6 @@ jobs:
           path: |
             pdf-probe.json
             pdf-page-*.png
+            representative-config.json
+            pipeline-output/
           if-no-files-found: warn
