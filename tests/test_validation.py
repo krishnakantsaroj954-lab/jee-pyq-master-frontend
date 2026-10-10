@@ -193,6 +193,25 @@ def test_midpoint_gutter_is_preferred_when_both_columns_have_question_headers():
     assert _column_split_x(words, 1000) == 500
 
 
+def test_midpoint_gutter_fallback_survives_unreadable_header_tokens():
+    def word(x0, y0, x1, y1, text, n):
+        return (x0, y0, x1, y1, text, 0, 0, n)
+
+    words = []
+    n = 0
+    # Simulate OCR losing both printed question numbers while preserving the strong
+    # two-column layout and center gutter from the source scan.
+    for y in (200, 300, 400, 500):
+        for idx in range(5):
+            lx = 80 + idx * 35
+            rx = 650 + idx * 35
+            words.append(word(lx, y, lx + 22, y + 12, f"left{n}", n))
+            n += 1
+            words.append(word(rx, y, rx + 22, y + 12, f"right{n}", n))
+            n += 1
+    assert _column_split_x(words, 1000) == 500
+
+
 def test_unique_expected_printed_numbers_define_subject_mapping():
     assert _expected_subject_by_number({
         "Mathematics:1", "Physics:26", "Chemistry:51"

@@ -176,6 +176,24 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
     ):
         return midpoint
 
+    # Some scanned equations destroy the printed header token boundaries even when
+    # the page clearly has two columns. As a second, geometry-only fallback, require
+    # dense text on both sides, a genuinely wide center gutter, and few boxes crossing
+    # the gutter. Do not split balanced full-width prose when the center gap is narrow.
+    left_body = [w for w in body if (float(w[0]) + float(w[2])) / 2.0 < midpoint]
+    right_body = [w for w in body if (float(w[0]) + float(w[2])) / 2.0 >= midpoint]
+    left_extent = max((float(w[2]) for w in left_body), default=midpoint)
+    right_extent = min((float(w[0]) for w in right_body), default=midpoint)
+    gutter_width = right_extent - left_extent
+    word_balance = min(len(left_body), len(right_body)) / max(len(left_body), len(right_body), 1)
+    if (
+        len(left_body) >= 8 and len(right_body) >= 8
+        and word_balance >= 0.20
+        and gutter_width >= width * 0.015
+        and central_crossings <= max(6, len(body) * 0.04)
+    ):
+        return midpoint
+
     gaps = []
     for idx in range(len(ordered) - 1):
         gap = float(ordered[idx + 1][0]) - float(ordered[idx][2])
