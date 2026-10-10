@@ -16,8 +16,8 @@ PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli --config ./representative-con
 ## Stages
 1. Intake records the PDF/optional ZIP checksums, identity and page count.
 2. Layout-aware extraction uses word coordinates to segment rows, columns, subjects and question boundaries.
-3. Question text/options are separated from source Answer/Solution sections. OCR is used only when a page has no text layer, and empty OCR output fails closed.
-4. Image extraction preserves page, bounds, stable object key and checksum. Full-page embedded scans are excluded from question image attachments; bounded figure crops may be created for text-detected diagrams. Question and solution assets remain distinct.
+3. Question text/options are separated from source Answer/Solution sections, including inline “Ans.” and “Sol.” labels. OCR is used only on pages without a text layer, at a DPI derived from the embedded scan resolution; empty OCR output fails closed.
+4. Two-column detection requires question headers on both sides of a central gutter and processes a complete left column before the right. Page-level centered subject headings are applied before column traversal. Full-page scans are never attached as question images; instead, each question and its source solution get distinct bounded PDF-rendered crops, while text/vector papers use bounded figure crops.
 5. Structural validation checks count/scope, SHA-256 source lineage, bounding boxes, MCQ/numerical type, options, answers, notation, required figures, and source solution references.
 6. If structure passes but no valid review manifest exists, the batch status is `REVIEW_REQUIRED` and `review-manifest-template.json` is emitted. The template binds each review to a question content hash.
 7. A full review manifest must cover every question exactly once, match the paper identity/source checksum/content fingerprint, record reviewer and timestamp, and mark every applicable check true. Only then can the batch be `VALIDATED` and include `IMPORT_READY.json`.
