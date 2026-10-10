@@ -573,3 +573,15 @@ def test_solution_continuation_across_columns_uses_separate_narrow_crops(tmp_pat
         assert image.width < 500
         assert image.height < 250
     pdf.close()
+
+
+def test_infer_missing_top_question_when_ocr_misses_sol_label():
+    raw = [
+        (3, "tan(A-B) expression continues", [334, 273, 1207, 315], "Mathematics"),
+        (3, "Ans. (1)", [148, 771, 317, 848], "Mathematics"),
+        (3, "| tan A - tan B = relation", [21, 842, 887, 930], "Mathematics"),
+        (3, "5. Let z be a complex number", [149, 1726, 1207, 1874], "Mathematics"),
+    ]
+    assert _infer_missing_top_question_header(
+        raw, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics"}
+    ) is True

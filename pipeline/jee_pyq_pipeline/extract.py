@@ -676,9 +676,11 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
         future_x0 = float(future_bounds[0])
         if (future_x0 < midpoint) != same_column_left:
             break
-        if ANSWER_MARKER.match(future_text):
+        answer_row = bool(ANSWER_MARKER.match(future_text))
+        solution_label = bool(SOLUTION_MARKER.match(future_text))
+        if answer_row:
             saw_answer = True
-        if SOLUTION_MARKER.match(future_text):
+        if solution_label:
             saw_solution = True
         next_match, next_number = _question_header_candidate(
             future_text, future_bounds, width, expected_number + 1
@@ -690,6 +692,11 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
             # Do not infer from a continuation row before an already visible
             # expected question, or skip ahead across an unexpected number.
             return False
+        # OCR sometimes misses the literal "Sol." prefix on scanned math working.
+        # After a source Answer row, non-empty non-question text in the same
+        # column is source-solution evidence; never count a later question header.
+        if saw_answer and future_text.strip() and not answer_row and not solution_label:
+            saw_solution = True
     return False
 
 
