@@ -1,8 +1,9 @@
 from pathlib import Path
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import extract, _split_options, _split_source_sections, _page_words, _question_start
+from jee_pyq_pipeline.extract import extract, _assets, _split_options, _split_source_sections, _page_words, _question_start
 from jee_pyq_pipeline.validate import validate
+from jee_pyq_pipeline.cli import _build_batch
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
     return SimpleNamespace(
@@ -17,14 +18,19 @@ def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
     )
 
 def question(**overrides):
+    source_hash='a'*64
     q=Question(
-        'id-1',1,'Question content long enough to validate.',
-        {'A':'one','B':'two','C':'three','D':'four'},'A',[1],[0,0,1,1],
-        {'source_sha256':'a'}
+        'id-1',1,'A particle moves in a straight line with constant velocity.',
+        {'A':'one','B':'two','C':'three','D':'four'},'A',[1],[0,0,120,18],
+        {'source_sha256':source_hash,'source_document':'paper.pdf','source_release':'test'}
     )
     q.subject='Physics'
     q.question_type='MCQ'
-    q.solution={'text':'source solution text','pages':[1]} 
+    q.solution={
+        'text':'Substitute the stated values into the relation to obtain the result.',
+        'pages':[1],
+        'source_reference':{'source_sha256':source_hash,'source_document':'paper.pdf'},
+    }
     for k,v in overrides.items():
         setattr(q,k,v)
     return q
@@ -123,17 +129,17 @@ def test_end_to_end_source_pdf(tmp_path):
     lines = [
         'Physics',
         'Question 1:',
-        'A sample question with four source options.',
+        'A particle moves in a straight line with constant velocity.',
         '(1) one',
         '(2) two',
         '(3) three',
         '(4) four',
         'Answer: 2',
-        'Solution: Source solution for question one.',
+        'Solution: Substitute the given values into the relation to find the required quantity.',
         'Question 2:',
         'Calculate the source value.',
         'Answer: 42',
-        'Solution: Source solution for question two.',
+        'Solution: Rearranging the stated relation gives the required value.',
     ]
     y=40
     for line in lines:
@@ -155,6 +161,7 @@ def test_end_to_end_source_pdf(tmp_path):
         expected_question_numbers=('Physics:1','Physics:2'),
         source_has_solutions=True,
         source_zip=None,
+        review_manifest=None,
     )
     questions, assets, extraction_issues, page_count = extract(cfg, tmp_path / 'assets')
     assert page_count == 1
@@ -165,3 +172,45 @@ def test_end_to_end_source_pdf(tmp_path):
     ]
     assert all(q.solution and q.solution['text'] for q in questions)
     assert questions[0].options == {'1':'one','2':'two','3':'three','4':'four'}
+
+    # Extraction may be structurally clean, but it must not be marked source-verified
+    # or emit IMPORT_READY until a complete per-question review manifest is supplied.
+    batch_dir = tmp_path / 'batch'
+    status = _build_batch(cfg, batch_dir, timeout_seconds=60)
+    assert status == 'REVIEW_REQUIRED'
+    assert not (batch_dir / 'IMPORT_READY.json').exists()
+    report = __import__('json').loads((batch_dir / 'validation-report.json').read_text(encoding='utf-8'))
+    assert report['status'] == 'REVIEW_REQUIRED'
+    assert report['review_gate']['status'] == 'PENDING'
+    assert report['counts']['review_required'] == 2
+    assert (batch_dir / 'review-manifest-template.json').is_file()
+
+
+def test_full_page_scan_is_not_emitted_as_question_image(tmp_path):
+    import fitz
+
+    doc = fitz.open()
+    page = doc.new_page(width=200, height=300)
+    pix = fitz.Pixmap(fitz.csRGB, fitz.IRect(0, 0, 200, 300), 0)
+    pix.clear_with(255)
+    page.insert_image(page.rect, pixmap=pix)
+    assets = _assets(page, 1, tmp_path / 'assets', 'b' * 64)
+    assert assets == []
+    doc.close()
+
+
+def test_placeholder_record_is_quarantined():
+    q = question(text='Question 1 (Physics): Validated source statement with mathematical precision.')
+    q.solution = {
+        'text':'Step-by-step mathematical proof...',
+        'pages':[1],
+        'source_reference':{'source_sha256':'a'*64,'source_document':'paper.pdf'},
+    }
+    found = codes(cfg(Path('.'), solutions=True), [q])
+    assert 'PLACEHOLDER_CONTENT' in found
+
+
+def test_invalid_source_lineage_is_rejected():
+    q = question(provenance={'source_sha256':'a','source_document':'other.pdf'})
+    assert 'INVALID_SOURCE_LINEAGE' in codes(cfg(Path('.')), [q])
+
