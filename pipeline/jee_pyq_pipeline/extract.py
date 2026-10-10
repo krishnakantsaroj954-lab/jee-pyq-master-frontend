@@ -612,6 +612,12 @@ def _expected_subject_by_number(expected: set[str]) -> dict[int, str]:
 
 
 
+def _question_type_from_ranges(number: int, ranges) -> str | None:
+    """Return an explicitly configured source-paper question type, if covered exactly once."""
+    matches = [kind for start, end, kind in ranges if int(start) <= number <= int(end)]
+    return matches[0] if len(matches) == 1 else None
+
+
 def _question_header_candidate(text: str, bounds: list[float], page_width: float, expected_number: int | None = None):
     """Recognize a printed question number despite a small OCR prefix, but only in a column's number gutter."""
     x0 = float(bounds[0])
@@ -952,8 +958,15 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if solution_crops:
                 sassets.extend(solution_crops)
                 all_assets.extend(solution_crops)
-        # MCQ must have four parsed choices; an absent answer is not guessed.
-        if len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
+        # Explicit section bands in the source-paper config outrank OCR heuristics.
+        # Incomplete options/answers still fail structural validation below.
+        configured_type = _question_type_from_ranges(
+            int(block['number']), getattr(config, 'question_type_ranges', ())
+        )
+        if configured_type is not None:
+            question_type = configured_type
+        # Otherwise retain content-based classification, without inventing missing fields.
+        elif len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
             question_type='MCQ'
         elif not q_opts and answer is not None and re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?',str(answer).strip()):
             question_type='NUMERICAL'

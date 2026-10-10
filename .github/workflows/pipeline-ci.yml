@@ -113,6 +113,15 @@ jobs:
               "page_range":[1,len(doc)],
               "expected_question_count":75,
               "expected_question_numbers":expected,
+              # Grounded in this PDF's printed section ranges: A is MCQ; B is numerical.
+              "question_type_ranges":[
+                  {"start":1,"end":20,"type":"MCQ"},
+                  {"start":21,"end":25,"type":"NUMERICAL"},
+                  {"start":26,"end":45,"type":"MCQ"},
+                  {"start":46,"end":50,"type":"NUMERICAL"},
+                  {"start":51,"end":70,"type":"MCQ"},
+                  {"start":71,"end":75,"type":"NUMERICAL"}
+              ],
               "source_has_solutions":True
           }
           Path("representative-config.json").write_text(json.dumps(config,ensure_ascii=False,indent=2),encoding="utf-8")

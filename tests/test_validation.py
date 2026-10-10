@@ -6,6 +6,7 @@ from jee_pyq_pipeline.extract import (
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
     _question_header_candidate, _infer_missing_top_question_header, _has_center_divider,
+    _question_type_from_ranges,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -626,3 +627,65 @@ def test_ocr_question_header_comma_with_prefix_noise():
     )
     assert number == 22
     assert match is not None
+
+
+def test_explicit_question_type_ranges_are_source_grounded():
+    ranges=((1,20,'MCQ'),(21,25,'NUMERICAL'),(26,45,'MCQ'),
+            (46,50,'NUMERICAL'),(51,70,'MCQ'),(71,75,'NUMERICAL'))
+    assert _question_type_from_ranges(1,ranges) == 'MCQ'
+    assert _question_type_from_ranges(20,ranges) == 'MCQ'
+    assert _question_type_from_ranges(21,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(25,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(26,ranges) == 'MCQ'
+    assert _question_type_from_ranges(45,ranges) == 'MCQ'
+    assert _question_type_from_ranges(46,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(50,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(51,ranges) == 'MCQ'
+    assert _question_type_from_ranges(70,ranges) == 'MCQ'
+    assert _question_type_from_ranges(71,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(75,ranges) == 'NUMERICAL'
+    assert _question_type_from_ranges(76,ranges) is None
+
+
+def test_configured_question_type_ranges_reject_overlap(tmp_path):
+    import json
+    from jee_pyq_pipeline.config import load
+    value={
+        'source_pdf':'paper.pdf','release':'test-release','exam':'JEE-MAIN','year':2026,
+        'session':'Session 1','paper':'Paper 1','subject':'PCM','page_range':[1,1],
+        'expected_question_count':3,
+        'expected_question_numbers':['Mathematics:1','Mathematics:2','Mathematics:3'],
+        'source_has_solutions':True,
+        'question_type_ranges':[
+            {'start':1,'end':2,'type':'MCQ'},
+            {'start':2,'end':3,'type':'NUMERICAL'}
+        ]
+    }
+    path=tmp_path/'config.json'
+    path.write_text(json.dumps(value),encoding='utf-8')
+    try:
+        load(path)
+    except ValueError as error:
+        assert 'must not overlap' in str(error)
+    else:
+        raise AssertionError('overlapping question type bands must be rejected')
+
+
+def test_configured_question_type_ranges_load(tmp_path):
+    import json
+    from jee_pyq_pipeline.config import load
+    value={
+        'source_pdf':'paper.pdf','release':'test-release','exam':'JEE-MAIN','year':2026,
+        'session':'Session 1','paper':'Paper 1','subject':'PCM','page_range':[1,1],
+        'expected_question_count':3,
+        'expected_question_numbers':['Mathematics:1','Mathematics:2','Mathematics:3'],
+        'source_has_solutions':True,
+        'question_type_ranges':[
+            {'start':1,'end':2,'type':'MCQ'},
+            {'start':3,'end':3,'type':'NUMERICAL'}
+        ]
+    }
+    path=tmp_path/'config.json'
+    path.write_text(json.dumps(value),encoding='utf-8')
+    config=load(path)
+    assert config.question_type_ranges == ((1,2,'MCQ'),(3,3,'NUMERICAL'))
