@@ -278,7 +278,9 @@ def test_ocr_question_header_recovers_expected_number_after_leading_debris():
 
 def test_infer_missing_question_number_only_from_complete_top_of_column_block():
     raw = [
-        (3, "tan(A-B) expression and the statement", [149, 273, 1207, 315], "Mathematics"),
+        # In the real scan, OCR misses the question number and the first
+        # mathematical token begins inside the column instead of the number gutter.
+        (3, "tan(A-B) expression and the statement", [334, 273, 1207, 315], "Mathematics"),
         (3, "then", [149, 335, 400, 370], "Mathematics"),
         (3, "(1) choice one", [149, 480, 600, 515], "Mathematics"),
         (3, "Ans. (1)", [149, 771, 317, 848], "Mathematics"),

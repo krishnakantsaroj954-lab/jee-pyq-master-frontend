@@ -655,11 +655,13 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
         return False
     x0 = float(bounds[0])
     midpoint = width * 0.5
-    in_number_gutter = (
-        x0 <= width * 0.105
-        or midpoint - width * 0.008 <= x0 <= midpoint + width * 0.105
-    )
-    if not in_number_gutter or len(text.strip()) < 12:
+    # OCR can lose only the printed number while keeping the mathematical stem
+    # farther to the right (for example, an opening trigonometric expression).
+    # A top-of-column row is inferred only when a later numbered question in the
+    # same column is preceded by this block's own Answer and Solution markers.
+    # Those source-order checks are stronger evidence than the x-position of the
+    # first legible token, so do not require that token to lie in the number gutter.
+    if len(text.strip()) < 12:
         return False
     if ANSWER_MARKER.match(text) or SOLUTION_MARKER.match(text) or text.lstrip().startswith(("=", "∴", "⇒", "→")):
         return False
