@@ -287,7 +287,7 @@ def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
     pix = page.get_pixmap(dpi=dpi, clip=rect, alpha=False)
     try:
         result = subprocess.run(
-            ["tesseract", "stdin", "stdout", "--psm", "6", "tsv", "-l", "eng"],
+            ["tesseract", "stdin", "stdout", "-l", "eng", "--psm", "6", "tsv"],
             input=pix.tobytes("png"),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
