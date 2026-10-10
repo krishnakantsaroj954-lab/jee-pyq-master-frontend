@@ -5,10 +5,10 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
-QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.):])(?:\s|$)', re.I)
-OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
-ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
-SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.)(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
+QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):](?:\s|$)', re.I)
+OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(\s*([A-D]|[1-4])\s*\)|([A-D]|[1-4])\s*[.)])(?=\s|$)', re.I)
+ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
+SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*\.)(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
@@ -78,6 +78,15 @@ def _clean_ocr_words(words: list[tuple], width: float, height: float) -> list[tu
             float(x0) <= width * 0.012 or float(x1) >= width * 0.988
             or float(y0) <= height * 0.008 or float(y1) >= height * 0.992
         )
+        center_x = (float(x0) + float(x1)) / 2.0
+        tall_narrow_rule = (
+            box_width <= max(12.0, width * 0.006)
+            and box_height >= height * 0.20
+            and token in rule_tokens | {"I", "l", "!", "1"}
+            and (at_edge or width * 0.35 <= center_x <= width * 0.65)
+        )
+        if tall_narrow_rule:
+            continue
         if box_width >= width * 0.80 and len(token) <= 5:
             continue
         if token in rule_tokens and box_width <= 12.0 and box_height >= height * 0.30:
@@ -86,6 +95,22 @@ def _clean_ocr_words(words: list[tuple], width: float, height: float) -> list[tu
             continue
         cleaned.append(word)
     return cleaned
+
+
+def _join_word_tokens(words: list[tuple]) -> str:
+    """Join OCR tokens without breaking punctuation-only question/option markers."""
+    value = ""
+    for word in words:
+        token = str(word[4]).strip()
+        if not token:
+            continue
+        if not value:
+            value = token
+        elif token[0] in ".,;:!?%)]}»’”\\"'" or value[-1] in "([{\\\"'‘“":
+            value += token
+        else:
+            value += " " + token
+    return value
 
 
 def _word_rows(words: list[tuple]) -> list[list[tuple]]:
@@ -147,15 +172,24 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
             continue
         left_headers = sum(
             1 for row in _word_rows(left)
-            if _question_start(" ".join(str(w[4]) for w in row).strip())[1] is not None
+            if _question_start(_join_word_tokens(row).strip())[1] is not None
         )
         right_headers = sum(
             1 for row in _word_rows(right)
-            if _question_start(" ".join(str(w[4]) for w in row).strip())[1] is not None
+            if _question_start(_join_word_tokens(row).strip())[1] is not None
         )
-        if left_headers and right_headers:
-            score = gap - crossing * 5.0 - abs(cut - width * 0.5) * 0.02
-            candidates.append((score, cut))
+        headers_on_both_sides = bool(left_headers and right_headers)
+        left_count, right_count = len(left), len(right)
+        balance = min(left_count, right_count) / max(left_count, right_count, 1)
+        # OCR can miss a printed question number. A strong central gutter plus
+        # substantial text on both sides is still better evidence than allowing
+        # same-height rows from two columns to merge into one question.
+        if not headers_on_both_sides and (gap < width * 0.025 or balance < 0.20):
+            continue
+        score = gap - crossing * 5.0 - abs(cut - width * 0.5) * 0.02
+        if headers_on_both_sides:
+            score += width * 0.01
+        candidates.append((score, cut))
     return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
 
 def _page_words(page, page_no: int = 1, image_info: list[dict] | None = None):
@@ -549,6 +583,21 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     scan_dpi_by_page={}
     source_hash=sha256_file(config.source_pdf)
     expected=set(config.expected_question_numbers)
+    subject_candidates={}
+    for key in expected:
+        if ':' not in key:
+            continue
+        subject_name, number_text = key.rsplit(':', 1)
+        if number_text.isdigit() and subject_name.strip():
+            subject_candidates.setdefault(int(number_text), set()).add(subject_name.strip())
+    # An explicitly configured, unique printed-number-to-subject mapping handles
+    # source PDFs that number a whole paper consecutively. Ambiguous repeated local
+    # numbers (e.g. 1-25 in each subject) are deliberately not mapped.
+    expected_subject_by_number={
+        number: next(iter(subject_names))
+        for number, subject_names in subject_candidates.items()
+        if len(subject_names)==1
+    }
     current_subject=None
     try:
         for page_no in range(config.page_range[0],config.page_range[1]+1):
@@ -565,7 +614,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 scan_dpi_by_page[page_no]=_ocr_dpi(page)
             page_rows=[]
             for row in _lines(words, page.rect.width):
-                text=' '.join(w[4] for w in row).strip()
+                text=_join_word_tokens(row).strip()
                 if not text:
                     continue
                 subject=_subject_line(text)
@@ -594,6 +643,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     current=None
     for page,text,bounds,subject in raw:
         match, number = _question_start(text)
+        if number is not None and number in expected_subject_by_number:
+            subject = expected_subject_by_number[number]
         if number is not None and current is None and subject is None:
             continue
         if number is not None and subject is not None:
