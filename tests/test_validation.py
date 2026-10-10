@@ -585,3 +585,25 @@ def test_infer_missing_top_question_when_ocr_misses_sol_label():
     assert _infer_missing_top_question_header(
         raw, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics"}
     ) is True
+
+
+def test_answer_marker_tolerates_leading_scan_noise():
+    parsed = _split_source_sections([
+        (1, "A statement with four options", [100, 100, 400, 120]),
+        (1, "] Ans. (3)", [100, 140, 180, 160]),
+        (1, "Sol. x + 2 = 5, so x = 3.", [100, 180, 400, 200]),
+    ])
+    assert parsed[2] == "3"
+    assert parsed[3] == "x + 2 = 5, so x = 3."
+
+
+def test_infer_missing_question_after_noisy_answer_marker():
+    raw = [
+        (4, "Let S be the set of digits and x be the count", [149, 269, 1207, 319], "Mathematics"),
+        (4, "] Ans. (3)", [21, 1021, 317, 1061], "Mathematics"),
+        (4, "Sol. Counting the cases gives the required relation.", [150, 1095, 639, 1176], "Mathematics"),
+        (4, "8. Let S= {x^2 + bx + c: ...}", [149, 1817, 1207, 1882], "Mathematics"),
+    ]
+    assert _infer_missing_top_question_header(
+        raw, 0, 7, {4: (2479.0, 3508.0)}, {7: "Mathematics", 8: "Mathematics"}
+    ) is True
