@@ -500,6 +500,22 @@ def _subject_line(text:str)->str|None:
     return SUBJECTS.get(t)
 
 
+def _expected_subject_by_number(expected: set[str]) -> dict[int, str]:
+    """Map printed question numbers to subjects only when the config makes them unique."""
+    candidates: dict[int, set[str]] = {}
+    for key in expected:
+        if ':' not in key:
+            continue
+        subject_name, number_text = key.rsplit(':', 1)
+        if number_text.isdigit() and subject_name.strip():
+            candidates.setdefault(int(number_text), set()).add(subject_name.strip())
+    return {
+        number: next(iter(subject_names))
+        for number, subject_names in candidates.items()
+        if len(subject_names) == 1
+    }
+
+
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
     candidates={}
@@ -583,21 +599,9 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     scan_dpi_by_page={}
     source_hash=sha256_file(config.source_pdf)
     expected=set(config.expected_question_numbers)
-    subject_candidates={}
-    for key in expected:
-        if ':' not in key:
-            continue
-        subject_name, number_text = key.rsplit(':', 1)
-        if number_text.isdigit() and subject_name.strip():
-            subject_candidates.setdefault(int(number_text), set()).add(subject_name.strip())
-    # An explicitly configured, unique printed-number-to-subject mapping handles
-    # source PDFs that number a whole paper consecutively. Ambiguous repeated local
-    # numbers (e.g. 1-25 in each subject) are deliberately not mapped.
-    expected_subject_by_number={
-        number: next(iter(subject_names))
-        for number, subject_names in subject_candidates.items()
-        if len(subject_names)==1
-    }
+    # Only override headings when config explicitly provides a unique subject for
+    # a printed number; ambiguous per-subject numbering remains heading-led.
+    expected_subject_by_number = _expected_subject_by_number(expected)
     current_subject=None
     try:
         for page_no in range(config.page_range[0],config.page_range[1]+1):
