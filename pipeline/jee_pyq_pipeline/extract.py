@@ -106,7 +106,7 @@ def _join_word_tokens(words: list[tuple]) -> str:
             continue
         if not value:
             value = token
-        elif token[0] in ".,;:!?%)]}»’”\\"'" or value[-1] in "([{\\\"'‘“":
+        elif token[0] in ".,;:!?%)]}»’”" or value[-1] in "([{":
             value += token
         else:
             value += " " + token
