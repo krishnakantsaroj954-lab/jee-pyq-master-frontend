@@ -215,6 +215,16 @@ def test_placeholder_record_is_quarantined():
     assert 'PLACEHOLDER_CONTENT' in found
 
 
+def test_legitimate_option_reference_is_not_misclassified_as_placeholder():
+    q = question()
+    q.solution = {
+        'text':'Option A is correct because it satisfies the given condition.',
+        'pages':[1],
+        'source_reference':{'source_sha256':'a'*64,'source_document':'paper.pdf'},
+    }
+    assert 'PLACEHOLDER_CONTENT' not in codes(cfg(Path('.'), solutions=True), [q])
+
+
 def test_invalid_source_lineage_is_rejected():
     q = question(provenance={'source_sha256':'a','source_document':'other.pdf'})
     assert 'INVALID_SOURCE_LINEAGE' in codes(cfg(Path('.')), [q])
