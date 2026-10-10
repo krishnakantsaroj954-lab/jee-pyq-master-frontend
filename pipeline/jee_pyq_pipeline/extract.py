@@ -686,8 +686,9 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
         if next_number is not None:
             return saw_answer and saw_solution
         other_match, other_number = _question_header_candidate(future_text, future_bounds, width, None)
-        if other_number is not None and other_number > expected_number:
-            # Do not infer across an unexpected or larger numbering gap.
+        if other_number is not None and other_number >= expected_number:
+            # Do not infer from a continuation row before an already visible
+            # expected question, or skip ahead across an unexpected number.
             return False
     return False
 

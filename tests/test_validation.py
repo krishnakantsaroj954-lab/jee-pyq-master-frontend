@@ -286,10 +286,18 @@ def test_infer_missing_question_number_only_from_complete_top_of_column_block():
         (3, "Ans. (1)", [149, 771, 317, 848], "Mathematics"),
         (3, "Sol. Rearranging the stated relation", [149, 842, 900, 880], "Mathematics"),
         (3, "5. Let z be a complex number", [149, 1726, 1207, 1874], "Mathematics"),
+        (3, "Ans. (2)", [149, 2110, 300, 2140], "Mathematics"),
+        (3, "Sol. Replacing the stated value gives the result.", [149, 2145, 900, 2180], "Mathematics"),
+        (3, "6. Find the next value", [149, 2250, 900, 2290], "Mathematics"),
     ]
     assert _infer_missing_top_question_header(
-        raw, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics"}
+        raw, 0, 4, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics", 6: "Mathematics"}
     ) is True
+    # A continuation line from Q4 must not be mistaken for missing Q5 merely
+    # because Q4 and the real Q5 both have Answer/Solution markers before Q6.
+    assert _infer_missing_top_question_header(
+        raw, 1, 5, {3: (2479.0, 3508.0)}, {4: "Mathematics", 5: "Mathematics", 6: "Mathematics"}
+    ) is False
 
     # Without the complete Answer + Solution sequence, do not infer or shift numbering.
     incomplete = raw[:3] + raw[5:]
