@@ -26,20 +26,23 @@ def _build_batch(config,output_dir:Path,timeout_seconds:int):
     issues=extraction_issues+validate(config,questions,page_count)
     status='VALIDATED' if not any(i.blocking for i in issues) else 'QUARANTINED'
     for q in questions:
-        if status!='VALIDATED':
+        if status!='VALIDATED' and q.status!='Dropped':
             q.status='QUARANTINED'
 
+    # Dropped questions remain in the validated paper payload with status="Dropped";
+    # they are never silently omitted from the 75-question paper.
     records={
-        'validated':[q.json() for q in questions if q.status=='VALIDATED'],
+        'validated':[q.json() for q in questions if q.status in ('VALIDATED','Dropped')],
         'quarantined':[q.json() for q in questions if q.status=='QUARANTINED'],
         'rejected':[],
+        'dropped':[q.json() for q in questions if q.status=='Dropped'],
     }
     checksums={name:write_json(output_dir/f'{name}.json',values) for name,values in records.items()}
 
     answer_evidence={
         'source_document':config.source_pdf.name,
         'source_sha256':source_hash,
-        'answers':{f'{q.subject}:{q.source_question_number}':q.answer for q in questions if q.answer is not None},
+        'answers':{f'{q.subject}:{q.source_question_number}':q.answer for q in questions if q.answer is not None and q.status!='Dropped'},
         'question_types':{f'{q.subject}:{q.source_question_number}':q.question_type for q in questions},
     }
     solution_evidence={
@@ -65,6 +68,11 @@ def _build_batch(config,output_dir:Path,timeout_seconds:int):
         'validator_version':VERSION,
         'status':status,
         'counts':{k:len(v) for k,v in records.items()},
+        'status_counts':{
+            'VALIDATED':sum(1 for q in questions if q.status=='VALIDATED'),
+            'Dropped':sum(1 for q in questions if q.status=='Dropped'),
+            'QUARANTINED':sum(1 for q in questions if q.status=='QUARANTINED'),
+        },
         'question_type_counts':{
             'MCQ':sum(1 for q in questions if q.question_type=='MCQ'),
             'NUMERICAL':sum(1 for q in questions if q.question_type=='NUMERICAL'),
@@ -98,6 +106,7 @@ def _build_batch(config,output_dir:Path,timeout_seconds:int):
             'validated_json_sha256':checksums['validated'],
             'source_answers_sha256':checksums['source_answers'],
             'source_solutions_sha256':checksums['source_solutions'],
+            'dropped_json_sha256':checksums['dropped'],
             'status':'VALIDATED',
             'instruction':'Import must consume this exact batch directory/artifact and reverify all checksums; do not re-extract the source PDF.',
         })
