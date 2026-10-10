@@ -1,6 +1,9 @@
 from __future__ import annotations
+import csv
 import hashlib
+import io
 import re
+import subprocess
 from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
@@ -277,14 +280,79 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
         candidates.append((score, cut))
     return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
 
+def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
+    """OCR one source-page region as a single text block and map TSV boxes to PDF coordinates."""
+    fitz = _fitz()
+    rect = fitz.Rect(clip)
+    pix = page.get_pixmap(dpi=dpi, clip=rect, alpha=False)
+    try:
+        result = subprocess.run(
+            ["tesseract", "stdin", "stdout", "--psm", "6", "tsv", "-l", "eng"],
+            input=pix.tobytes("png"),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+            timeout=120,
+        )
+    except Exception as error:
+        raise RuntimeError(f"Tesseract region OCR failed on source page {page_no}") from error
+    if result.returncode != 0:
+        detail = result.stderr.decode("utf-8", errors="replace")[-1200:]
+        raise RuntimeError(
+            f"Tesseract region OCR failed on source page {page_no}: {detail}"
+        )
+    sx = rect.width / max(float(pix.width), 1.0)
+    sy = rect.height / max(float(pix.height), 1.0)
+    words = []
+    reader = csv.DictReader(io.StringIO(result.stdout.decode("utf-8", errors="replace")), delimiter="\\t")
+    for row in reader:
+        try:
+            if int(row.get("level", "0")) != 5:
+                continue
+            token = (row.get("text") or "").strip()
+            if not token:
+                continue
+            left, top = int(row["left"]), int(row["top"])
+            width, height = int(row["width"]), int(row["height"])
+            if width <= 0 or height <= 0:
+                continue
+            words.append((
+                rect.x0 + left * sx, rect.y0 + top * sy,
+                rect.x0 + (left + width) * sx, rect.y0 + (top + height) * sy,
+                token, int(row.get("block_num", 0)), int(row.get("line_num", 0)),
+                int(row.get("word_num", 0)),
+            ))
+        except (KeyError, TypeError, ValueError):
+            continue
+    if not words:
+        raise RuntimeError(f"Tesseract produced no word boxes on source page {page_no}")
+    return words
+
+
 def _page_words(page, page_no: int = 1, image_info: list[dict] | None = None):
-    """Return word coordinates, applying source-resolution OCR when the page is scanned."""
+    """Return source-grounded word coordinates; isolate scanned columns before OCR."""
     words = page.get_text("words")
     if words:
         return words, False
     try:
-        textpage = page.get_textpage_ocr(language="eng", dpi=_ocr_dpi(page, image_info), full=True)
-        words = page.get_text("words", textpage=textpage)
+        dpi = _ocr_dpi(page, image_info)
+        if _has_center_divider(page):
+            # This source uses two side-by-side question/solution columns. Full-page
+            # OCR merges their baselines and frequently loses option labels/Ans.
+            # OCR each side as an independent text block; preserve original PDF boxes.
+            width = float(page.rect.width)
+            height = float(page.rect.height)
+            midpoint = float(page.rect.x0) + width * 0.5
+            margin = max(2.0, width * 0.006)
+            left_clip = (float(page.rect.x0), float(page.rect.y0), midpoint - margin, float(page.rect.y1))
+            right_clip = (midpoint + margin, float(page.rect.y0), float(page.rect.x1), float(page.rect.y1))
+            words = (
+                _ocr_clip_words(page, page_no, left_clip, dpi)
+                + _ocr_clip_words(page, page_no, right_clip, dpi)
+            )
+        else:
+            textpage = page.get_textpage_ocr(language="eng", dpi=dpi, full=True)
+            words = page.get_text("words", textpage=textpage)
     except Exception as error:
         raise RuntimeError(
             f"OCR required on source page {page_no} but unavailable; refusing placeholder output"
