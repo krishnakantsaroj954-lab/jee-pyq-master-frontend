@@ -4,6 +4,7 @@ from jee_pyq_pipeline.models import Question
 from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
+    _clean_ocr_words, _join_word_tokens, _expected_subject_by_number,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -109,6 +110,77 @@ def test_question_header_detection():
     assert _question_start('Q1. Find the value') [1] == 1
     assert _question_start('1. Find the value') [1] == 1
     assert _question_start('1) Find the value') [1] == 1
+
+def test_ocr_joining_preserves_question_and_option_markers():
+    def word(text, index):
+        return (10 + index * 18, 100, 24 + index * 18, 112, text, 0, 0, index)
+
+    words = [word(text, index) for index, text in enumerate([
+        "2", ".", "The", "value", "is", "(", "1", ")", "."
+    ])]
+    assert _join_word_tokens(words) == "2. The value is (1)."
+    assert _question_start("2 . The value of x is equal to:")[1] == 2
+
+    text, options = _split_options([
+        (1, "( 1 ) one ( 2 ) two", [0, 0, 100, 12]),
+        (1, "( 3 ) three ( 4 ) four", [0, 20, 100, 32]),
+    ])
+    assert text == ""
+    assert options == {"1": "one", "2": "two", "3": "three", "4": "four"}
+
+
+def test_tall_center_scan_divider_is_removed_before_column_detection():
+    words = [
+        (498, 150, 502, 850, "I", 0, 0, 0),
+        (100, 200, 110, 212, "1", 0, 0, 1),
+        (113, 200, 116, 212, ".", 0, 0, 2),
+        (130, 200, 170, 212, "Left", 0, 0, 3),
+    ]
+    cleaned = _clean_ocr_words(words, 1000, 1000)
+    assert not any(w[4] == "I" and w[0] >= 490 and w[2] <= 510 for w in cleaned)
+    assert any(w[4] == "1" for w in cleaned)
+
+
+def test_two_column_split_handles_center_rule_and_split_number_punctuation():
+    def word(x0, y0, x1, y1, text, n):
+        return (x0, y0, x1, y1, text, 0, 0, n)
+
+    words = [word(498, 150, 502, 850, "I", 0)]
+    n = 1
+    for y, number, side, label in [
+        (200, "1", 100, "Left"),
+        (350, "2", 100, "Left"),
+        (200, "3", 650, "Right"),
+        (350, "4", 650, "Right"),
+    ]:
+        words.extend([
+            word(side, y, side + 10, y + 12, number, n),
+            word(side + 13, y, side + 16, y + 12, ".", n + 1),
+            word(side + 30, y, side + 75, y + 12, label, n + 2),
+            word(side + 82, y, side + 132, y + 12, "question", n + 3),
+        ])
+        n += 4
+    words.extend([
+        word(100, 800, 150, 812, "bottom", n),
+        word(650, 800, 700, 812, "bottom", n + 1),
+    ])
+    words = _clean_ocr_words(words, 1000, 1000)
+    lines = [_join_word_tokens(row) for row in _lines(words, 1000)]
+    left_one = next(i for i, line in enumerate(lines) if line.startswith("1. Left"))
+    left_two = next(i for i, line in enumerate(lines) if line.startswith("2. Left"))
+    right_three = next(i for i, line in enumerate(lines) if line.startswith("3. Right"))
+    right_four = next(i for i, line in enumerate(lines) if line.startswith("4. Right"))
+    assert left_one < left_two < right_three < right_four
+
+
+def test_unique_expected_printed_numbers_define_subject_mapping():
+    assert _expected_subject_by_number({
+        "Mathematics:1", "Physics:26", "Chemistry:51"
+    }) == {1: "Mathematics", 26: "Physics", 51: "Chemistry"}
+    assert _expected_subject_by_number({
+        "Physics:1", "Chemistry:1", "Mathematics:1"
+    }) == {}
+
 
 def test_ocr_page_fallback():
     class FakePage:
