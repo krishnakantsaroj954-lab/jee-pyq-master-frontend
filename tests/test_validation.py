@@ -221,6 +221,7 @@ def test_end_to_end_source_pdf(tmp_path):
         '(4) four',
         'Answer: 2',
         'Solution: Substitute the given values into the relation to find the required quantity.',
+        '7. This is a derivation line, not another question.',
         'Question 2:',
         'Calculate the source value.',
         'Answer: 42',
@@ -256,6 +257,7 @@ def test_end_to_end_source_pdf(tmp_path):
         ('Physics',2,'NUMERICAL','42'),
     ]
     assert all(q.solution and q.solution['text'] for q in questions)
+    assert '7. This is a derivation line, not another question.' in questions[0].solution['text']
     assert questions[0].options == {'1':'one','2':'two','3':'three','4':'four'}
 
     # Extraction may be structurally clean, but it must not be marked source-verified
@@ -382,6 +384,8 @@ def test_scan_crop_helper_produces_separate_bounded_question_and_solution_region
         image=fitz.Pixmap(str(image_path))
         assert image.width < 1000 and image.height < 1400
         assert asset.bounds[2]-asset.bounds[0] < 850
+    assert question_assets[0].bounds[0] >= 30
+    assert question_assets[0].bounds[2] < 500
     assert question_assets[0].bounds[3] < 500
     assert solution_assets[0].bounds[1] < 560
     assert solution_assets[0].bounds[3] < 800

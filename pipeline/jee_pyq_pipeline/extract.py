@@ -441,6 +441,16 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             column_box = _rect_union([row[2] for row in column_rows]) or region_box
             x0 = max(0.0, column_box[0] - 12.0)
             x1 = min(page_width, column_box[2] + 12.0)
+            # This source uses two columns separated at the page midpoint. Clip each
+            # crop to its own side so overlapping vertical bands cannot include a
+            # neighboring question or a full-page border in the wrong question asset.
+            column_margin = min(36.0, page_width * 0.03)
+            if side == "left":
+                x0 = max(x0, column_margin)
+                x1 = min(x1, midpoint - 6.0)
+            else:
+                x0 = max(x0, midpoint + 6.0)
+                x1 = min(x1, page_width - column_margin)
             y0 = max(0.0, min(row[2][1] for row in region_rows) - 8.0)
             y1 = min(page_height, max(row[2][3] for row in region_rows) + 8.0)
 
@@ -643,11 +653,31 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     finally:
         doc.close()
 
+    expected_number_sequence = sorted(expected_subject_by_number)
+    strict_sequential_numbering = (
+        len(expected_number_sequence) == config.expected_question_count
+        and bool(expected_number_sequence)
+        and expected_number_sequence == list(range(
+            expected_number_sequence[0],
+            expected_number_sequence[0] + len(expected_number_sequence),
+        ))
+    )
+    next_expected_index = 0
     blocks=[]
     current=None
     for page,text,bounds,subject in raw:
         match, number = _question_start(text)
-        if number is not None and number in expected_subject_by_number:
+        if number is not None and strict_sequential_numbering:
+            # A formula or option line can look like a numbered question (e.g. “7.”).
+            # In a source with global numbering, only the next expected printed number
+            # may start a block. Out-of-sequence candidates stay with the current source
+            # question/solution; missing real headers still cause count/scope validation
+            # to fail closed rather than silently creating misaligned records.
+            if next_expected_index >= len(expected_number_sequence) or number != expected_number_sequence[next_expected_index]:
+                match, number = None, None
+            else:
+                subject = expected_subject_by_number[number]
+        elif number is not None and number in expected_subject_by_number:
             subject = expected_subject_by_number[number]
         if number is not None and current is None and subject is None:
             continue
@@ -655,6 +685,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if current:
                 blocks.append(current)
             current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            if strict_sequential_numbering:
+                next_expected_index += 1
             continue
         if current:
             current['rows'].append((page,text,bounds))
@@ -665,6 +697,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     questions=[]
     issues=[]
     crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
+    source_placed_assets = tuple(all_assets)
     for block_index, block in enumerate(blocks):
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
         if split_error:
@@ -693,7 +726,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             ]
         qassets=[]
         sassets=[]
-        for asset in all_assets:
+        for asset in source_placed_assets:
             if asset.page in qpages:
                 ax=asset.bounds
                 bx=q_bounds
