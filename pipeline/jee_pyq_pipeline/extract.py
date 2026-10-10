@@ -8,7 +8,7 @@ from .util import safe_normalize, sha256_file
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})(?:[.):])(?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(([A-D]|[1-4])\)|([A-D]|[1-4])[.)])(?=\s|$)')
 ANSWER_MARKER = re.compile(r'^\s*(?:answer|ans\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
-SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.?)(?:\s*\([^)]*\))?\s*[:\-]\s*', re.I)
+SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\.)(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
@@ -25,23 +25,140 @@ def _fitz():
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
 
+def _ocr_dpi(page) -> int:
+    """Choose OCR DPI from the actual embedded scan, avoiding wasteful upscaling."""
+    page_width, page_height = float(page.rect.width), float(page.rect.height)
+    estimates = []
+    seen = set()
+    for item in page.get_images(full=True):
+        xref = int(item[0])
+        if xref in seen:
+            continue
+        seen.add(xref)
+        try:
+            image = page.parent.extract_image(xref)
+            image_width = float(image.get("width") or 0)
+            image_height = float(image.get("height") or 0)
+            if image_width <= 0 or image_height <= 0:
+                continue
+            for rect in page.get_image_rects(xref):
+                if rect.width >= page_width * 0.85 and rect.height >= page_height * 0.80:
+                    estimates.append(72.0 * min(
+                        image_width / max(float(rect.width), 1.0),
+                        image_height / max(float(rect.height), 1.0),
+                    ))
+        except Exception:
+            continue
+    if not estimates:
+        return 200
+    return int(max(72, min(250, min(estimates))))
+
+
+def _clean_ocr_words(words: list[tuple], width: float, height: float) -> list[tuple]:
+    """Remove long scan rules and border artefacts that can break column detection."""
+    cleaned = []
+    rule_tokens = {"|", "¦", "‖", "_", "—", "/", "\\", "]", "["}
+    for word in words:
+        if len(word) < 5:
+            continue
+        x0, y0, x1, y1, raw_text = word[:5]
+        token = str(raw_text).strip()
+        box_width = max(0.0, float(x1) - float(x0))
+        box_height = max(0.0, float(y1) - float(y0))
+        at_edge = (
+            float(x0) <= width * 0.012 or float(x1) >= width * 0.988
+            or float(y0) <= height * 0.008 or float(y1) >= height * 0.992
+        )
+        if box_width >= width * 0.80 and len(token) <= 5:
+            continue
+        if token in rule_tokens and box_width <= 12.0 and box_height >= height * 0.30:
+            continue
+        if token in {"I", "l", "!", '"', "'", "~"} and at_edge and box_height > 20:
+            continue
+        cleaned.append(word)
+    return cleaned
+
+
+def _word_rows(words: list[tuple]) -> list[list[tuple]]:
+    """Group word boxes into horizontal text lines using adaptive vertical tolerance."""
+    if not words:
+        return []
+    heights = sorted(
+        max(1.0, float(w[3]) - float(w[1]))
+        for w in words if len(w) >= 4 and float(w[3]) > float(w[1])
+    )
+    median_height = heights[len(heights) // 2] if heights else 8.0
+    tolerance = max(4.0, min(14.0, median_height * 0.25))
+    ordered = sorted(words, key=lambda w: (float(w[1]), float(w[0])))
+    rows = []
+    for word in ordered:
+        if not rows:
+            rows.append([word])
+            continue
+        anchor_values = sorted(float(item[1]) for item in rows[-1])
+        anchor = anchor_values[len(anchor_values) // 2]
+        if abs(float(word[1]) - anchor) > tolerance:
+            rows.append([word])
+        else:
+            rows[-1].append(word)
+    return [sorted(row, key=lambda w: float(w[0])) for row in rows]
+
+
+def _column_split_x(words: list[tuple], width: float) -> float | None:
+    """Detect a real two-column gutter only when question headers exist on both sides."""
+    if not words or width <= 0:
+        return None
+    page_height = max(float(w[3]) for w in words)
+    body = [
+        w for w in words
+        if float(w[1]) >= page_height * 0.12
+        and float(w[3]) <= page_height * 0.96
+        and float(w[2]) - float(w[0]) < width * 0.80
+    ]
+    ordered = sorted(body, key=lambda w: float(w[0]))
+    candidates = []
+    for idx in range(len(ordered) - 1):
+        gap = float(ordered[idx + 1][0]) - float(ordered[idx][2])
+        cut = (float(ordered[idx][2]) + float(ordered[idx + 1][0])) / 2.0
+        if gap < width * 0.015 or not width * 0.28 < cut < width * 0.72:
+            continue
+        crossing = sum(1 for w in body if float(w[0]) < cut < float(w[2]))
+        if crossing > max(3, len(body) * 0.03):
+            continue
+        left = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 < cut]
+        right = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 >= cut]
+        if len(left) < 8 or len(right) < 8:
+            continue
+        left_headers = sum(
+            1 for row in _word_rows(left)
+            if _question_start(" ".join(str(w[4]) for w in row).strip())[1] is not None
+        )
+        right_headers = sum(
+            1 for row in _word_rows(right)
+            if _question_start(" ".join(str(w[4]) for w in row).strip())[1] is not None
+        )
+        if left_headers and right_headers:
+            candidates.append((gap - crossing * 5.0, cut))
+    return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
+
+
 def _page_words(page, page_no: int = 1):
-    """Return geometry-bearing words, using OCR only when the PDF page has no text layer."""
-    words = page.get_text('words')
+    """Return word coordinates, applying source-resolution OCR when the page is scanned."""
+    words = page.get_text("words")
     if words:
         return words, False
     try:
-        textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
-        words = page.get_text('words', textpage=textpage)
+        textpage = page.get_textpage_ocr(language="eng", dpi=_ocr_dpi(page), full=True)
+        words = page.get_text("words", textpage=textpage)
     except Exception as error:
         raise RuntimeError(
-            f'OCR required on source page {page_no} but unavailable; refusing placeholder output'
+            f"OCR required on source page {page_no} but unavailable; refusing placeholder output"
         ) from error
     if not words:
         raise RuntimeError(
-            f'OCR produced no words on source page {page_no}; refusing empty/placeholder output'
+            f"OCR produced no words on source page {page_no}; refusing empty/placeholder output"
         )
-    return words, True
+    return _clean_ocr_words(words, float(page.rect.width), float(page.rect.height)), True
 
 
 def _question_start(text: str):
@@ -49,31 +166,19 @@ def _question_start(text: str):
     match = QUESTION_START.match(text)
     return match, (int(match.group(1)) if match else None)
 
+
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
+    """Group text rows and return complete left column before complete right column."""
     if not words:
         return []
-    ordered=sorted(words,key=lambda w:w[0])
-    gaps=[(ordered[i+1][0]-ordered[i][2],i) for i in range(len(ordered)-1)]
-    split_gap,split_i=max(gaps,default=(0.0,0))
-    columns=[ordered]
-    if split_gap>width*0.12 and 0<split_i<len(ordered)-1:
-        left,right=ordered[:split_i+1],ordered[split_i+1:]
-        if (
-            max(w[2] for w in left)-min(w[0] for w in left)>width*0.20
-            and max(w[2] for w in right)-min(w[0] for w in right)>width*0.20
-        ):
-            columns=[left,right]
-    result=[]
-    for col in columns:
-        col=sorted(col,key=lambda w:(w[1],w[0]))
-        rows=[]
-        for w in col:
-            if not rows or abs(w[1]-rows[-1][0][1])>4.0:
-                rows.append([w])
-            else:
-                rows[-1].append(w)
-        result.extend(sorted((sorted(row,key=lambda w:w[0]) for row in rows),key=lambda row:row[0][1]))
-    return result
+    split_x = _column_split_x(words, width)
+    if split_x is None:
+        return _word_rows(words)
+    left = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 < split_x]
+    right = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 >= split_x]
+    # Column order is deliberate: processing each entire column prevents Q1 and Q3,
+    # printed at the same y coordinate, from being fused into one question.
+    return _word_rows(left) + _word_rows(right)
 
 def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
     found=[]
@@ -232,11 +337,98 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
     return cropped
 
 
-def _subject_line(text:str)->str|None:
-    t=safe_normalize(text).strip().upper()
-    t=re.sub(r'\s+(SECTION|PAPER|SUBJECT)$','',t)
-    return SUBJECTS.get(t)
+def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
+                       blocks:list[dict], block_index:int, asset_dir:Path,
+                       source_hash:str, kind:str, dpi_by_page:dict[int,int])->list[Asset]:
+    """Render a bounded question or source-solution crop from an image-only PDF page."""
+    fitz = _fitz()
+    cropped = []
+    for page_no in sorted({row[0] for row in rows}):
+        if page_no < 1 or page_no > len(doc):
+            continue
+        page = doc[page_no - 1]
+        own_rows = [row for row in rows if row[0] == page_no]
+        answer_rows = [
+            row for row in block.get("rows", [])
+            if row[0] == page_no and ANSWER_MARKER.match(row[1])
+        ]
+        region_rows = list(own_rows)
+        if kind == "solution":
+            region_rows.extend(answer_rows)
+        region_box = _rect_union([row[2] for row in region_rows])
+        if region_box is None:
+            continue
+        center_x = (region_box[0] + region_box[2]) / 2.0
 
+        column_rows = []
+        for other in blocks:
+            other_rows = [row for row in other.get("rows", []) if row[0] == page_no]
+            other_box = _rect_union([row[2] for row in other_rows])
+            if other_box is None:
+                continue
+            other_center = (other_box[0] + other_box[2]) / 2.0
+            if abs(center_x - other_center) <= float(page.rect.width) * 0.28 or _x_overlap_ratio(region_box, other_box) >= 0.08:
+                column_rows.extend(other_rows)
+        column_box = _rect_union([row[2] for row in column_rows]) or region_box
+        x0 = max(0.0, column_box[0] - 12.0)
+        x1 = min(float(page.rect.width), column_box[2] + 12.0)
+        y0 = max(0.0, min(row[2][1] for row in region_rows) - 8.0)
+        y1 = min(float(page.rect.height), max(row[2][3] for row in region_rows) + 8.0)
+
+        if kind == "question" and answer_rows:
+            answer_top = min(row[2][1] for row in answer_rows)
+            if answer_top > y0:
+                y1 = min(y1 if y1 > answer_top else float(page.rect.height), answer_top - 6.0)
+        elif kind == "solution":
+            # Stop at the next question in the same column, but not before this
+            # question's last detected solution line.
+            region_bottom = max(row[2][3] for row in region_rows)
+            next_top = None
+            for other_index, other in enumerate(blocks):
+                if other_index <= block_index:
+                    continue
+                other_rows = [row for row in other.get("rows", []) if row[0] == page_no]
+                other_box = _rect_union([row[2] for row in other_rows])
+                if other_box is None:
+                    continue
+                other_center = (other_box[0] + other_box[2]) / 2.0
+                other_top = min(row[2][1] for row in other_rows)
+                same_column = (
+                    abs(center_x - other_center) <= float(page.rect.width) * 0.28
+                    or _x_overlap_ratio(region_box, other_box) >= 0.08
+                )
+                if same_column and other_top > region_bottom:
+                    next_top = other_top if next_top is None else min(next_top, other_top)
+            if next_top is not None:
+                y1 = min(float(page.rect.height), next_top - 6.0)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        crop_rect = fitz.Rect(x0, y0, x1, y1) & page.rect
+        if crop_rect.is_empty or crop_rect.width <= 0 or crop_rect.height <= 0:
+            continue
+        if crop_rect.width >= float(page.rect.width) * 0.85 and crop_rect.height >= float(page.rect.height) * 0.80:
+            continue
+        dpi = max(72, min(150, int(dpi_by_page.get(page_no, 72))))
+        payload = page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png")
+        digest = hashlib.sha256(payload).hexdigest()
+        slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
+        key = (
+            f"{source_hash[:16]}/page-{page_no}/"
+            f"q-{slug}-{int(block['number']):03d}-{kind}-{digest[:12]}.png"
+        )
+        path = asset_dir / key
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists():
+            path.write_bytes(payload)
+        bounds = [round(crop_rect.x0, 2), round(crop_rect.y0, 2),
+                  round(crop_rect.x1, 2), round(crop_rect.y1, 2)]
+        cropped.append(Asset(
+            key, page_no, bounds, digest, str(path.relative_to(asset_dir.parent))
+        ))
+    return cropped
+
+
+def _subject_line(text:str)->str|None:
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
     candidates={}
@@ -316,6 +508,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     all_assets=[]
     page_assets={}
     raw=[]
+    scan_only_pages=set()
+    scan_dpi_by_page={}
     source_hash=sha256_file(config.source_pdf)
     expected=set(config.expected_question_numbers)
     current_subject=None
@@ -327,15 +521,33 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             pa=_assets(page,page_no,asset_dir,source_hash)
             page_assets[page_no]=pa
             all_assets.extend(pa)
-            words, _used_ocr = _page_words(page, page_no)
+            words, used_ocr = _page_words(page,page_no)
+            if used_ocr:
+                scan_only_pages.add(page_no)
+                scan_dpi_by_page[page_no]=_ocr_dpi(page)
+            page_rows=[]
             for row in _lines(words, page.rect.width):
                 text=' '.join(w[4] for w in row).strip()
                 if not text:
                     continue
                 subject=_subject_line(text)
+                bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
+                page_rows.append((text,bounds,subject))
+            question_y = [
+                bounds[1] for text,bounds,_subject in page_rows
+                if _question_start(text)[1] is not None
+            ]
+            headings = sorted(
+                [(bounds[1],subject) for _text,bounds,subject in page_rows if subject],
+                key=lambda item:item[0]
+            )
+            # Subject names may be centered in the right column. Apply a heading
+            # above the first question to the entire page before reading either column.
+            if headings and (not question_y or headings[0][0] <= min(question_y)):
+                current_subject=headings[0][1]
+            for text,bounds,subject in page_rows:
                 if subject:
                     current_subject=subject
-                bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
                 raw.append((page_no,text,bounds,current_subject))
     finally:
         doc.close()
@@ -359,6 +571,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
 
     questions=[]
     issues=[]
+    crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
     for block_index, block in enumerate(blocks):
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
         if split_error:
@@ -406,11 +619,28 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         qassets=list(qassets)
         sassets=list(sassets)
         requires_figure=bool(FIGURE.search(q_text))
-        if requires_figure:
+        if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
             figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash)
             if figure_crops:
                 qassets=figure_crops
                 all_assets.extend(figure_crops)
+        if crop_doc is not None:
+            # A source scan is context, not a question image. Give every record a
+            # bounded question crop and a distinct source-solution crop when present.
+            question_crops=_crop_scan_regions(
+                crop_doc,block,qrows,blocks,block_index,asset_dir,source_hash,
+                "question",scan_dpi_by_page
+            )
+            solution_crops=_crop_scan_regions(
+                crop_doc,block,srows,blocks,block_index,asset_dir,source_hash,
+                "solution",scan_dpi_by_page
+            ) if srows else []
+            if question_crops:
+                qassets.extend(question_crops)
+                all_assets.extend(question_crops)
+            if solution_crops:
+                sassets.extend(solution_crops)
+                all_assets.extend(solution_crops)
         # MCQ must have four parsed choices; an absent answer is not guessed.
         if len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
             question_type='MCQ'
@@ -431,4 +661,6 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release},
             qassets,solution,requires_figure,'Dropped' if dropped else 'VALIDATED',[],block['subject'],None,question_type,sassets
         ))
+    if crop_doc is not None:
+        crop_doc.close()
     return questions,all_assets,issues,page_count
