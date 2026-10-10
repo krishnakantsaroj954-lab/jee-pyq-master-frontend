@@ -150,6 +150,32 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
         and float(w[2]) - float(w[0]) < width * 0.80
     ]
     ordered = sorted(body, key=lambda w: float(w[0]))
+
+    # Prefer the true page midpoint when both halves independently contain
+    # printed question headers and very few text boxes cross the central gutter.
+    # This avoids selecting a large accidental whitespace gap inside a column.
+    midpoint = width * 0.5
+    left_mid = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 < midpoint]
+    right_mid = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 >= midpoint]
+    left_header_count = sum(
+        1 for row in _word_rows(left_mid)
+        if _question_start(_join_word_tokens(row).strip())[1] is not None
+    )
+    right_header_count = sum(
+        1 for row in _word_rows(right_mid)
+        if _question_start(_join_word_tokens(row).strip())[1] is not None
+    )
+    central_crossings = sum(
+        1 for w in body
+        if float(w[0]) < midpoint + width * 0.006
+        and float(w[2]) > midpoint - width * 0.006
+    )
+    if (
+        left_header_count and right_header_count
+        and central_crossings <= max(6, len(body) * 0.04)
+    ):
+        return midpoint
+
     gaps = []
     for idx in range(len(ordered) - 1):
         gap = float(ordered[idx + 1][0]) - float(ordered[idx][2])

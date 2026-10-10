@@ -4,7 +4,7 @@ from jee_pyq_pipeline.models import Question
 from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
-    _clean_ocr_words, _join_word_tokens, _expected_subject_by_number,
+    _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -171,6 +171,26 @@ def test_two_column_split_handles_center_rule_and_split_number_punctuation():
     right_three = next(i for i, line in enumerate(lines) if line.startswith("3. Right"))
     right_four = next(i for i, line in enumerate(lines) if line.startswith("4. Right"))
     assert left_one < left_two < right_three < right_four
+
+
+def test_midpoint_gutter_is_preferred_when_both_columns_have_question_headers():
+    def word(x0, y0, x1, y1, text, n):
+        return (x0, y0, x1, y1, text, 0, 0, n)
+
+    words = []
+    n = 0
+    # Multiple large gaps in the central search band are deliberate distractors.
+    for y, number in [(200, "1"), (350, "2"), (500, "3")]:
+        words.extend([
+            word(100, y, 110, y + 12, number, n),
+            word(113, y, 116, y + 12, ".", n + 1),
+            word(130, y, 360, y + 12, "left-column-question-text", n + 2),
+            word(640, y, 650, y + 12, str(int(number) + 3), n + 3),
+            word(653, y, 656, y + 12, ".", n + 4),
+            word(670, y, 900, y + 12, "right-column-question-text", n + 5),
+        ])
+        n += 6
+    assert _column_split_x(words, 1000) == 500
 
 
 def test_unique_expected_printed_numbers_define_subject_mapping():
