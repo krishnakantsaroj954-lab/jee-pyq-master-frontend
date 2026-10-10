@@ -39,11 +39,11 @@ jobs:
           for i,p in enumerate(doc,1):
               native=p.get_text("text",sort=True) or ""
               used_ocr=len(native.strip())<80
-              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=220,full=True),sort=True) if used_ocr else native
+              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=72,full=True),sort=True) if used_ocr else native
               lines=[line.strip() for line in text.splitlines() if line.strip()]
               report["page_probe"].append({"page":i,"width":p.rect.width,"height":p.rect.height,"native_chars":len(native),"ocr_used":used_ocr,"chars":len(text),"subject_headings":[s for s in ["PHYSICS","CHEMISTRY","MATHEMATICS","MATHS"] if re.search(r"\\b"+s+r"\\b",text,re.I)],"question_headers":[line[:160] for line in lines if re.match(r"^\\s*(?:Question\\s*)?\\d{1,3}[.):]\\s+\\S",line,re.I)],"first_lines":lines[:18] if i<=3 else lines[:4]})
               if i in {1,2,3,10,15,20,len(doc)}:
-                  Path(f"pdf-page-{i:02}.png").write_bytes(p.get_pixmap(dpi=105,alpha=False).tobytes("png"))
+                  Path(f"pdf-page-{i:02}.png").write_bytes(p.get_pixmap(dpi=72,alpha=False).tobytes("png"))
           Path("pdf-probe.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
           print(json.dumps({"filename":report["filename"],"bytes":report["bytes"],"sha256":report["sha256"],"pages":report["pages"],"metadata":report["metadata"],"page_probe":report["page_probe"][:3]},ensure_ascii=False,indent=2))
           doc.close()
