@@ -59,7 +59,10 @@ jobs:
           if not source.is_file():
               raise SystemExit(f"Expected source PDF is missing: {source.name}")
           doc=fitz.open(source)
-          expected=[f"{subject}:{number}" for subject in ("Physics","Chemistry","Mathematics") for number in range(1,26)]
+          # This source PDF prints paper-wide numbering: Mathematics 1-25, Physics 26-50, Chemistry 51-75.
+          expected=([f"Mathematics:{number}" for number in range(1,26)]
+                    + [f"Physics:{number}" for number in range(26,51)]
+                    + [f"Chemistry:{number}" for number in range(51,76)])
           config={
               "source_pdf":str(source),
               "release":"2026-01-28-session-1-shift-1",
@@ -117,10 +120,11 @@ jobs:
               raise SystemExit("Safety failure: VALIDATED report has no IMPORT_READY.json")
           if status!="VALIDATED" and ready:
               raise SystemExit("Safety failure: unreviewed batch emitted IMPORT_READY.json")
-          if (status=="VALIDATED") != (int(__import__("os").environ.get("PIPELINE_EXIT_CODE","0"))==0):
-              pass
-          if status!="VALIDATED":
-              print("::warning title=Manual source review required::Dry-run completed without import approval; inspect validation-report.json and the crop assets.")
+          if status=="QUARANTINED":
+              print("::error title=Source PDF extraction blocked::Structural validation found blocking issues; see validation-report.json and the crop assets.")
+              raise SystemExit("Source PDF dry-run failed structural validation.")
+          if status=="REVIEW_REQUIRED":
+              print("::warning title=Manual source review required::Structure passed but per-question source review is still pending; do not import.")
           PY
       - name: Upload source probe and extraction artifacts (no production import)
         if: always()
