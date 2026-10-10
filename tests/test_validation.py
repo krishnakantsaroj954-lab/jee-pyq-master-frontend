@@ -114,13 +114,16 @@ def test_ocr_page_fallback():
     class FakePage:
         def __init__(self):
             self.ocr_calls=0
+            self.rect=SimpleNamespace(width=100,height=100)
+        def get_images(self, full=True):
+            return []
         def get_text(self, kind='text', textpage=None):
             if kind == 'words' and textpage is None:
                 return []
             return [(0,0,20,10,'Physics',0,0,0)]
         def get_textpage_ocr(self, **kwargs):
             self.ocr_calls += 1
-            assert kwargs == {'language':'eng','dpi':250,'full':True}
+            assert kwargs == {'language':'eng','dpi':200,'full':True}
             return object()
     page=FakePage()
     words,used_ocr=_page_words(page)
