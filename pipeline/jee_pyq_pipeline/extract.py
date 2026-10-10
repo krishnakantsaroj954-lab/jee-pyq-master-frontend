@@ -443,6 +443,247 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
 
 
 def _subject_line(text:str)->str|None:
+    t=safe_normalize(text).strip().upper()
+    t=re.sub(r'\s+(SECTION|PAPER|SUBJECT)
+    body=[]
+    candidates={}
+    current=None
+    for _page,text,_bounds in rows:
+        matches=list(OPTION_LABEL.finditer(text))
+        if not matches:
+            if current:
+                candidates[current]=safe_normalize(f'{candidates[current]} {text}')
+            else:
+                body.append(text)
+            continue
+        prefix=text[:matches[0].start()].strip()
+        if prefix:
+            if current:
+                candidates[current]=safe_normalize(f'{candidates[current]} {prefix}')
+            else:
+                body.append(prefix)
+        for idx,match in enumerate(matches):
+            label=match.group(1) or match.group(2)
+            current=label
+            end=matches[idx+1].start() if idx+1<len(matches) else len(text)
+            candidates[label]=safe_normalize(text[match.end():end].strip())
+    if set(candidates)==set('ABCD') or set(candidates)==set('1234'):
+        return safe_normalize(' '.join(body)),{k:v for k,v in candidates.items() if v.strip()}
+    all_text=safe_normalize(' '.join(body+[safe_normalize(t) for _,t,_ in rows if t]))
+    return all_text,{}
+
+def _parse_answer(text:str)->str|None:
+    # Match a complete numerical token before single-digit MCQ labels, otherwise 42
+    # would be incorrectly read as 4.
+    token=re.match(r'\s*[\(\[]?\s*(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?|[A-D])\s*[\)\]]?',text,re.I)
+    return token.group(1) if token else None
+
+def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
+    qrows=[]
+    srows=[]
+    answer=None
+    answer_count=0
+    answer_seen=False
+    solution_seen=False
+    for page,text,bounds in rows:
+        am=ANSWER_MARKER.match(text) if not answer_seen else None
+        sm=SOLUTION_MARKER.match(text)
+        if am:
+            token=_parse_answer(text[am.end():])
+            if token:
+                answer=token
+            answer_count+=1
+            answer_seen=True
+            if sm:
+                solution_seen=True
+                suffix=text[sm.end():].strip()
+                if suffix:
+                    srows.append((page,suffix,bounds))
+            continue
+        if sm and not solution_seen:
+            solution_seen=True
+            suffix=text[sm.end():].strip()
+            if suffix:
+                srows.append((page,suffix,bounds))
+            continue
+        if solution_seen or answer_seen:
+            srows.append((page,text,bounds))
+        else:
+            qrows.append((page,text,bounds))
+    solution_text=safe_normalize(' '.join(t for _,t,_ in srows if t))
+    q_text,q_opts=_split_options(qrows)
+    if answer_count>1:
+        return q_text,q_opts,None,solution_text,qrows,srows,'MULTIPLE_ANSWER_MARKERS'
+    return q_text,q_opts,answer,solution_text,qrows,srows,None
+
+def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
+    fitz=_fitz()
+    doc=fitz.open(config.source_pdf)
+    page_count=len(doc)
+    all_assets=[]
+    page_assets={}
+    raw=[]
+    scan_only_pages=set()
+    scan_dpi_by_page={}
+    source_hash=sha256_file(config.source_pdf)
+    expected=set(config.expected_question_numbers)
+    current_subject=None
+    try:
+        for page_no in range(config.page_range[0],config.page_range[1]+1):
+            if page_no>page_count:
+                return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
+            page=doc[page_no-1]
+            page_image_info=_page_image_info(page)
+            pa=_assets(page,page_no,asset_dir,source_hash,page_image_info)
+            page_assets[page_no]=pa
+            all_assets.extend(pa)
+            words, used_ocr = _page_words(page,page_no,page_image_info)
+            if used_ocr:
+                scan_only_pages.add(page_no)
+                scan_dpi_by_page[page_no]=_ocr_dpi(page)
+            page_rows=[]
+            for row in _lines(words, page.rect.width):
+                text=' '.join(w[4] for w in row).strip()
+                if not text:
+                    continue
+                subject=_subject_line(text)
+                bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
+                page_rows.append((text,bounds,subject))
+            question_y = [
+                bounds[1] for text,bounds,_subject in page_rows
+                if _question_start(text)[1] is not None
+            ]
+            headings = sorted(
+                [(bounds[1],subject) for _text,bounds,subject in page_rows if subject],
+                key=lambda item:item[0]
+            )
+            # Subject names may be centered in the right column. Apply a heading
+            # above the first question to the entire page before reading either column.
+            if headings and (not question_y or headings[0][0] <= min(question_y)):
+                current_subject=headings[0][1]
+            for text,bounds,subject in page_rows:
+                if subject:
+                    current_subject=subject
+                raw.append((page_no,text,bounds,current_subject))
+    finally:
+        doc.close()
+
+    blocks=[]
+    current=None
+    for page,text,bounds,subject in raw:
+        match, number = _question_start(text)
+        if number is not None and current is None and subject is None:
+            continue
+        if number is not None and subject is not None:
+            if current:
+                blocks.append(current)
+            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            continue
+        if current:
+            current['rows'].append((page,text,bounds))
+            current['pages'].add(page)
+    if current:
+        blocks.append(current)
+
+    questions=[]
+    issues=[]
+    crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
+    for block_index, block in enumerate(blocks):
+        q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
+        if split_error:
+            issues.append(Issue('MULTIPLE_ANSWER_MARKERS',f'Question {block["subject"]}:{block["number"]} has multiple answer markers'))
+        qpages=sorted({r[0] for r in qrows})
+        spages=sorted({r[0] for r in srows})
+        if not qpages:
+            qpages=sorted(block['pages'])
+        if qrows:
+            q_bounds=[
+                min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
+                max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
+            ]
+        else:
+            issues.append(Issue(
+                'EMPTY_QUESTION_TEXT',
+                f'Question {block["subject"]}:{block["number"]} has no question-region text before the answer/solution section',
+            ))
+            fallback_bounds = _rect_union([r[2] for r in block['rows']])
+            q_bounds = fallback_bounds or [0.0, 0.0, 1.0, 1.0]
+        s_bounds=None
+        if srows:
+            s_bounds=[
+                min(r[2][0] for r in srows),min(r[2][1] for r in srows),
+                max(r[2][2] for r in srows),max(r[2][3] for r in srows),
+            ]
+        qassets=[]
+        sassets=[]
+        for asset in all_assets:
+            if asset.page in qpages:
+                ax=asset.bounds
+                bx=q_bounds
+                pad=16.0
+                test=[bx[0]-pad,bx[1]-pad,bx[2]+pad,bx[3]+pad]
+                if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
+                    qassets.append(asset)
+            if s_bounds and asset.page in spages:
+                pad=40.0
+                test=[s_bounds[0]-pad,s_bounds[1]-pad,s_bounds[2]+pad,s_bounds[3]+pad]
+                ax=asset.bounds
+                if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
+                    sassets.append(asset)
+        qassets={ (a.object_key,tuple(a.bounds)):a for a in qassets }.values()
+        sassets={ (a.object_key,tuple(a.bounds)):a for a in sassets }.values()
+        qassets=list(qassets)
+        sassets=list(sassets)
+        requires_figure=bool(FIGURE.search(q_text))
+        if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
+            figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash)
+            if figure_crops:
+                qassets=figure_crops
+                all_assets.extend(figure_crops)
+        if crop_doc is not None:
+            # A source scan is context, not a question image. Give every record a
+            # bounded question crop and a distinct source-solution crop when present.
+            question_crops=_crop_scan_regions(
+                crop_doc,block,qrows,blocks,block_index,asset_dir,source_hash,
+                "question",scan_dpi_by_page
+            )
+            solution_crops=_crop_scan_regions(
+                crop_doc,block,srows,blocks,block_index,asset_dir,source_hash,
+                "solution",scan_dpi_by_page
+            ) if srows else []
+            if question_crops:
+                qassets.extend(question_crops)
+                all_assets.extend(question_crops)
+            if solution_crops:
+                sassets.extend(solution_crops)
+                all_assets.extend(solution_crops)
+        # MCQ must have four parsed choices; an absent answer is not guessed.
+        if len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
+            question_type='MCQ'
+        elif not q_opts and answer is not None and re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?',str(answer).strip()):
+            question_type='NUMERICAL'
+        else:
+            question_type='UNKNOWN'
+        dropped=bool(re.search(r'\b(?:question\s+(?:has\s+been\s+)?dropped|dropped\s+(?:question|by\s+NTA|from\s+evaluation)|question\s+is\s+dropped)\b',q_text+' '+solution_text,re.I))
+        qid=f'{source_hash[:16]}-{block["subject"].lower()}-q-{block["number"]:03d}'
+        solution=None
+        if solution_text:
+            solution={'text':solution_text,'pages':spages,'source_reference':{
+                'source_document':config.source_pdf.name,
+                'source_sha256':source_hash,
+            }}
+        questions.append(Question(
+            qid,block['number'],q_text,q_opts,answer,qpages,q_bounds,
+            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release},
+            qassets,solution,requires_figure,'Dropped' if dropped else 'VALIDATED',[],block['subject'],None,question_type,sassets
+        ))
+    if crop_doc is not None:
+        crop_doc.close()
+    return questions,all_assets,issues,page_count
+,'',t)
+    return SUBJECTS.get(t)
+
+
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
     body=[]
     candidates={}
