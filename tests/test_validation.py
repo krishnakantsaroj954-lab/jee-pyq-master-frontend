@@ -117,6 +117,8 @@ def test_ocr_page_fallback():
             self.rect=SimpleNamespace(width=100,height=100)
         def get_images(self, full=True):
             return []
+        def get_image_info(self, xrefs=True):
+            return []
         def get_text(self, kind='text', textpage=None):
             if kind == 'words' and textpage is None:
                 return []
@@ -274,8 +276,6 @@ def test_two_column_question_rows_are_kept_in_column_order():
 
 def test_scan_crop_helper_produces_separate_bounded_question_and_solution_regions(tmp_path):
     import fitz
-    from PIL import Image
-
     pdf = fitz.open()
     page = pdf.new_page(width=1000,height=1400)
     pix = fitz.Pixmap(fitz.csRGB,fitz.IRect(0,0,1000,1400),0)
@@ -307,7 +307,7 @@ def test_scan_crop_helper_produces_separate_bounded_question_and_solution_region
     for asset in question_assets+solution_assets:
         image_path=tmp_path/asset.path
         assert image_path.is_file()
-        image=Image.open(image_path)
+        image=fitz.Pixmap(str(image_path))
         assert image.width < 1000 and image.height < 1400
         assert asset.bounds[2]-asset.bounds[0] < 850
     assert question_assets[0].bounds[3] < 500
