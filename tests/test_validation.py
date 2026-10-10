@@ -221,10 +221,12 @@ def test_scan_pixel_detector_finds_true_midpoint_rule_not_cover_page_text(tmp_pa
     divided.draw_line((500, 150), (500, 1100), color=(0.15, 0.30, 0.50), width=2)
     divided.insert_text((80, 200), "Left column question", fontsize=14)
     divided.insert_text((650, 200), "Right column question", fontsize=14)
+    # Inspect the first page before adding another page; PyMuPDF can orphan a
+    # previously held Page object when the document's page tree changes.
+    assert _has_center_divider(divided) is True
     cover = pdf.new_page(width=1000, height=1200)
     cover.insert_text((100, 200), "A full-width cover page with instructions", fontsize=18)
     cover.insert_text((100, 260), "Many lines of one-column text without a center rule", fontsize=14)
-    assert _has_center_divider(divided) is True
     assert _has_center_divider(cover) is False
     pdf.close()
 
