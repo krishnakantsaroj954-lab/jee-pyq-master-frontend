@@ -1,7 +1,10 @@
 from pathlib import Path
 from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
-from jee_pyq_pipeline.extract import extract, _assets, _parse_answer, _split_options, _split_source_sections, _page_words, _question_start
+from jee_pyq_pipeline.extract import (
+    extract, _assets, _parse_answer, _split_options, _split_source_sections,
+    _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
+)
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
 
@@ -229,3 +232,93 @@ def test_invalid_source_lineage_is_rejected():
     q = question(provenance={'source_sha256':'a','source_document':'other.pdf'})
     assert 'INVALID_SOURCE_LINEAGE' in codes(cfg(Path('.')), [q])
 
+
+
+def test_sol_period_marker_is_split_from_source_solution():
+    qtext,qopts,answer,solution,qrows,srows,err=_split_source_sections([
+        (1,'A statement with four options',[0,0,100,12]),
+        (1,'(1) one (2) two (3) three (4) four',[0,20,100,32]),
+        (1,'Ans. (3)',[0,40,80,52]),
+        (1,'Sol. x + 2 = 5, so x = 3.',[0,60,150,72]),
+    ])
+    assert answer == '3'
+    assert qopts == {'1':'one','2':'two','3':'three','4':'four'}
+    assert solution == 'x + 2 = 5, so x = 3.'
+    assert err is None
+
+
+def test_two_column_question_rows_are_kept_in_column_order():
+    def word(x0,y0,x1,y1,text,n):
+        return (x0,y0,x1,y1,text,0,0,n)
+    words = [
+        word(100,100,120,115,'1.',0), word(130,100,180,115,'Left',1),
+        word(190,100,250,115,'column',2), word(260,100,330,115,'question',3),
+        word(100,200,120,215,'2.',4), word(130,200,180,215,'Left',5),
+        word(190,200,250,215,'column',6), word(260,200,330,215,'second',7),
+        word(650,100,670,115,'3.',8), word(680,100,735,115,'Right',9),
+        word(745,100,805,115,'column',10), word(815,100,885,115,'question',11),
+        word(650,200,670,215,'4.',12), word(680,200,735,215,'Right',13),
+        word(745,200,805,215,'column',14), word(815,200,885,215,'second',15),
+    ]
+    lines = [' '.join(item[4] for item in row) for row in _lines(words,1000)]
+    assert lines == [
+        '1. Left column question',
+        '2. Left column second',
+        '3. Right column question',
+        '4. Right column second',
+    ]
+
+
+def test_scan_crop_helper_produces_separate_bounded_question_and_solution_regions(tmp_path):
+    import fitz
+    from PIL import Image
+
+    pdf = fitz.open()
+    page = pdf.new_page(width=1000,height=1400)
+    pix = fitz.Pixmap(fitz.csRGB,fitz.IRect(0,0,1000,1400),0)
+    pix.clear_with(255)
+    page.insert_image(page.rect,pixmap=pix)
+    block = {
+        'subject':'Physics','number':1,'pages':{1},
+        'rows':[
+            (1,'1. Question stem',[100,200,450,230]),
+            (1,'Ans. (2)',[100,500,200,530]),
+            (1,'Sol. source explanation',[100,560,500,590]),
+        ],
+    }
+    next_block = {
+        'subject':'Physics','number':2,'pages':{1},
+        'rows':[(1,'2. Next question',[100,800,450,830])],
+    }
+    asset_dir=tmp_path/'assets'
+    question_assets=_crop_scan_regions(
+        pdf,block,[block['rows'][0]],[block,next_block],0,asset_dir,'a'*64,
+        'question',{1:72}
+    )
+    solution_assets=_crop_scan_regions(
+        pdf,block,[block['rows'][2]],[block,next_block],0,asset_dir,'a'*64,
+        'solution',{1:72}
+    )
+    assert len(question_assets)==1
+    assert len(solution_assets)==1
+    for asset in question_assets+solution_assets:
+        image_path=tmp_path/asset.path
+        assert image_path.is_file()
+        image=Image.open(image_path)
+        assert image.width < 1000 and image.height < 1400
+        assert asset.bounds[2]-asset.bounds[0] < 850
+    assert question_assets[0].bounds[3] < 500
+    assert solution_assets[0].bounds[1] < 560
+    assert solution_assets[0].bounds[3] < 800
+    pdf.close()
+
+
+def test_scan_ocr_dpi_matches_embedded_scan_resolution():
+    import fitz
+    pdf=fitz.open()
+    page=pdf.new_page(width=200,height=300)
+    pix=fitz.Pixmap(fitz.csRGB,fitz.IRect(0,0,200,300),0)
+    pix.clear_with(255)
+    page.insert_image(page.rect,pixmap=pix)
+    assert _ocr_dpi(page) == 72
+    pdf.close()
