@@ -3,7 +3,6 @@ import re
 from .models import Issue, Question
 
 NOTATION = re.compile(r'[□�]')
-ANSWER_TOKEN = re.compile(r'^\\s*(?:\\(([A-D])\\)|\\[([A-D])\\]|([A-D])|\\(([1-4])\\)|\\[([1-4])\\]|([1-4])|-?\\d+(?:\\.\\d+)?(?:\\s*/\\s*-?\\d+(?:\\.\\d+)?)?)\\s*$', re.I)
 PLACEHOLDER = re.compile(
     r'validated source statement with mathematical precision|step-by-step mathematical proof',
     re.I,
@@ -60,7 +59,7 @@ def validate(config, questions: list[Question], page_count: int) -> list[Issue]:
                 if q.options:
                     local.append(Issue('NUMERICAL_HAS_OPTIONS', 'Numerical question unexpectedly contains options', question_id=q.id))
                 answer = str(q.answer).strip() if q.answer is not None else ''
-                if not answer or not re.fullmatch(r'-?\\d+(?:\\.\\d+)?(?:\\s*/\\s*-?\\d+(?:\\.\\s*\\d+)?)?', answer):
+                if not answer or not re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?', answer):
                     local.append(Issue('MISSING_OR_AMBIGUOUS_ANSWER', 'Numerical source answer is absent or invalid', question_id=q.id))
             else:
                 local.append(Issue('UNKNOWN_QUESTION_TYPE', 'Could not safely classify source question as MCQ or numerical', question_id=q.id))
