@@ -1,0 +1,3252 @@
+[
+    {
+        "id": "mnsik6vv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Match List - I with List - II. List - I Mass of substance List - II Number of atoms A. 1.8 mg water I. B. 9.8 mg sulphuric acid II. C. 1.8 mg carbon III. D. 5.85 mg salt IV. Choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "A-IV, B-III, C-I, D-II",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "A-III, B-II, C-IV, D-I",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "A-III, B-IV, C-II, D-I",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "A-III, B-IV, C-I, D-II",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation To find the total number of atoms in each given mass, we use the relation: Number of moles Given mass in grams Molar mass in g/mol Total number of atoms Moles Number of atoms in one formula unit/molecule A. mg of water ( H O ): Molar mass of H O g/mol Mass mg g Moles of H O mol Since molecule of H O contains atoms ( H O ): Number of atoms This matches with III . B. mg of sulphuric acid ( H SO ): Molar mass of H SO g/mol Mass mg g Moles of H SO mol Since molecule of H SO contains atoms ( H S O ): Number of atoms This matches with IV . C. mg of carbon ( C ): Molar mass of C g/mol Mass mg g Moles of C mol Since carbon is atomic (1 atom per unit): Number of atoms This matches with II . D. mg of salt ( NaCl ): Molar mass of NaCl g/mol Mass mg g Moles of NaCl mol Since formula unit of NaCl contains atoms ( Na Cl ): Number of atoms This matches with I . Combining these results: A III B IV C II D I The correct choice is Option C .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6ww",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements : Given : Molar mass of are and , respectively Statement I : In solution of methanol in at T K , the mole fraction of is equal to 0.33 . Statement II : Mixture of methanol and shows positive deviation from Raoult's law. In the light of the above statements, choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Molar masses: C = 12 g mol⁻¹ H = 1 g mol⁻¹ O = 16 g mol⁻¹ Cl = 35.5 g mol⁻¹ Formula masses: For methanol, CH₃OH: g mol For carbon tetrachloride, CCl₄: g mol This means in 100 g of solution : Mass of methanol = 30 g Mass of CCl₄ = 70 g methanol mol CCl mol Total moles = So, methanol CCl Hence, Statement I is correct. Methanol is polar and forms hydrogen bonds. Carbon tetrachloride is non-polar. When they are mixed, the H-bonding between methanol molecules weakens (since CCl₄ cannot form hydrogen bonds with methanol). → The intermolecular attraction between unlike molecules decreases. As a result, the escaping tendency of molecules increases and vapour pressure increases , leading to positive deviation from Raoult’s law. Hence, Statement II is also correct. Final Answer Both Statement I and Statement II are true. Option A",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6yf",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Bromine trifluoride autoionizes to form and . The shapes of the cation and anion are respectively and .",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "bent, square planar",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "linear, square planar",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "bent, see-saw",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "linear, tetrahedral",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation First, let us recall the autoionization of bromine trifluoride: We have to determine the shapes of the cation and the anion. Central atom: Br Valence electrons of Br = 7 Each F contributes one bond → 2 Br–F bonds = 2 pairs of bonding electrons So, total electrons around Br for shape determination: by bonding positive charge These 4 electrons form 2 lone pairs on Br. Hence, the total number of electron pairs around Br = 2 (bonding) + 2 (lone pairs) = 4 electron domains. According to VSEPR theory: 4 electron pairs → tetrahedral electron geometry With 2 bonding and 2 lone pairs → bent shape Thus, is bent . Central atom: Br Valence electrons of Br = 7 Each F contributes one bond → 4 Br–F bonds = 4 pairs of bonding electrons Additional one electron due to negative charge → +1 Hence total electrons on central bromine: which means 2 lone pairs on Br. Thus, the total number of electron pairs = 4 (bonding) + 2 (lone pairs) = 6 electron domains. According to VSEPR theory: 6 electron domains → octahedral electron geometry With 4 bonding and 2 lone pairs → square planar shape Shapes are: → bent → square planar Correct Option: A) bent, square planar",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6zf",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Which of the following statements are not correct? A. For water, magnitude of is more than the magnitude of . B. The elevation in boiling point of water when a non-volatile solute is added to it is larger in magnitude than its depression in freezing point. C. Osmotic pressure measurement is preferred over any other colligative property to determine molar mass of proteins and polymers. D. The dimerised form of benzoic acid in benzene is Choose the correct answer from the options given below :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsl4bv0/12ef6a6e-9bfe-4414-a739-2c86a823e7f8/eb9bb4c0-34ae-11f1-b9ca-ad66c64af12e/file-6y3zli1mnsl4bv1.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "A and B only",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "A and D only",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "A, B and D only",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "A, C and D only",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation (A) for water for water So, for water (B) Since, so [same equimolal solution] (C) Osmotic pressure is used to determine molar mass of protiens \\& polymers (D) dimerised form of benzoic acid in benzene Option (A), (B) & (D) are incorrect",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnw00773/92eeb6ae-e860-49e9-88b9-fcd920c604a0/7ba76ff0-368f-11f1-bc21-2d5986654d93/file-6y3zli1mnw00774.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik70f",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the following reactions in which all the reactants and products are present in gaseous state The value of for the equilibrium is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation .......(2) On adding equation (1) & (2)",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik71l",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given at 298 K : Volt Volt The in Volt at 298 K is given by :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation (i) (ii) (iii) iii ii Option (B) is correct",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik72h",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements : and Statement I : When , the room temperature rate constant is doubled by a increase in temperature ( 298 K to 308 K ) Statement II : For a first order reactions , Here is the initial concentration of and is half life of reaction. In the light of the above statements, choose the correct answer from the options given below :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj31w6/1b8b1807-e5dc-48f7-a767-2bfa21f25382/f5d74f60-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsj31w7.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation S-I : S-II : For 1st Order constant. Statement-I is true but statement-II is false.",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik73k",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Match List - I with List - II. List - I Electronic configuration of neutral atom (where ) List - II st Ionization Energy ( ) A. I. 2080 B. II. 899 C. III. 800 D. IV. 1402 Choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "A-II, B-III, C-IV, D-I",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "A-IV, B-III, C-II, D-I",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "A-III, B-II, C-IV, D-I",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "A-III, B-II, C-I, D-IV",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Ionization energy is the energy needed to remove the most loosely held (outermost) electron from a neutral atom. Ionization energy generally increases when the effective nuclear charge increases. This happens because the nucleus attracts the valence electron more strongly, so more energy is required to remove it. Also, some electronic configurations are extra stable. Electrons in stable configurations are harder to remove, so their ionization energy is higher. Fully filled orbitals have greater ionisation energy due to stable electronic configuration. Order of I.E: fully-filled orbital Half-filled orbital Partially filled orbital Here , so we are comparing configurations of elements in the 2nd period. As we move from -block to -block in the same period, atomic size decreases and effective nuclear charge increases, so ionisation energy generally increases. Using stability ideas: the configuration (noble gas, fully filled) has the maximum ionisation energy, and has comparatively lower ionisation energy. So the decreasing order is: Ans. (A)",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4idq7c/76625ef2-0231-4c5d-90eb-8ee988f23c0e/9d601680-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4idq7d.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4idqsw/c684bd75-daba-4006-b191-4f21661034e5/9dd67f00-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4idqsx.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4idr1e/b0f139e7-3a30-4c27-b443-00e1769e751a/9e053020-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4idr1f.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4idr9v/2ba09c84-3705-4049-8f86-d1fb6f905dc2/9e33ba30-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4idr9x.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik74f",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Find the correct statements related to group 15 hydrides. A. Reducing nature increases from to B. Tendency to donate lone pair of electrons decreases from to C. The stability of hydrides decreases from to D. HEH bond angle decreases from to Elements of group 15) Choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "A and B only",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "B and C only",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "A, B, C and D",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "A, C and D Only",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation For group 15 hydrides, the hydrides are: Now let us check each statement one by one. A. Reducing nature increases from to Down the group, the bond strength decreases because the size of the central atom increases. So, the hydrides can release hydrogen more easily and hence their reducing character increases down the group. Thus, in reducing nature. So, A is correct . B. Tendency to donate lone pair of electrons decreases from to All group 15 hydrides have one lone pair on the central atom. But down the group, the atomic size increases and the lone pair becomes more diffuse and less available for donation. Hence, basic character decreases down the group: So, the tendency to donate lone pair decreases from to . Therefore, B is correct . C. The stability of hydrides decreases from to As we move down the group, the size of the central atom increases and the overlap between and orbitals becomes poorer. Therefore, the bond becomes weaker and thermal stability decreases. So, in stability. Hence, C is correct . D. bond angle decreases from to The bond angles are approximately: So, the bond angle indeed decreases from to . Therefore, D is correct . Since all four statements are correct, the correct option is: Option C: A, B, C and D",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik755",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements : Statement I : The number of pairs among and in which both ions are coloured is 3 . Statement II : The number of pairs among and ions in which both are diamagnetic is 3 . In the light of the above statements, choose the correct from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are correct",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are incorrect",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is correct but Statement II is incorrect",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is incorrect but Statement II is correct",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Coloured ions have unpaired electron. (ii) (iii) (iv) (v) The absence of unpaired electron makes the element diamagnetic. Ans. (A)",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ifv3b/d1f68260-acf1-4c02-bcae-c80b1d9bad7f/d8c50370-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ifv3c.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ifvkn/85c1033d-b64f-4dc4-868c-b28d839544ed/d9243a70-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ifvko.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ifvve/8cff93f6-c11c-4389-bf65-193d26296b06/d95f47a0-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ifvvf.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ifw98/194384cc-0be2-47d9-a740-c0df32f0c83b/d9ab44c0-3b3d-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ifw99.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik763",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements for catalytic properties of transition metals. Statement I : First row transition metals which act as catalyst utilise their 3d electrons only for formation of bonds between reactant molecules and atoms on the surface of catalyst. Statement II : There is increase in the concentration of reactants on the surface of catalyst which strengthens the bonds in reacting molecules. In the light of the above statements, choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are correct",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are incorrect",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is correct but Statement II is incorrect",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is incorrect but Statement II is correct",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The first-row transition metals use both their 3d and 4s electrons to form bonds with reactant molecules on the surface of the catalyst. ∴ Statement I is incorrect. When reactants are adsorbed on the catalytic surface, their concentration on the surface increases, but this adsorption actually weakens the bonds within the reactant molecules. This helps in forming an activated complex and reduces the activation energy of the reaction. ∴ Statement II is incorrect.",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik76x",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements : Statement I : Vapours of the liquid with higher boiling point condense before vapours of the liquid with lower boiling points in fractional distillation. Statement II : The vapours rising up in the fractionating column become richer in high boiling component of the mixture. In the light of the above statements, choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Let us analyse both statements carefully using the concept of fractional distillation as given in NCERT. Concept: Fractional distillation is a process used to separate a mixture of two or more liquids having different boiling points. The liquid having a lower boiling point vaporises first. As vapours rise through the fractionating column, they repeatedly condense and vaporise. The temperature in the column gradually decreases from bottom to top. Hence, vapours rising upwards become richer in the more volatile (lower boiling point) component. Statement I “Vapours of the liquid with higher boiling point condense before vapours of the liquid with lower boiling points in fractional distillation.” Liquids with higher boiling point are less volatile . Thus, their vapours condense earlier (lower in the column) because they require a lower temperature difference to liquefy. Therefore, Statement I is true . Statement II “The vapours rising up in the fractionating column become richer in high boiling component of the mixture.” As explained, the rising vapours become richer in the low boiling or more volatile component, not the high boiling one. Therefore, Statement II is false . Correct Answer: Option C: Statement I is true but Statement II is false",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik77q",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The major product of which of the following reaction is not obtained by rearrangement reaction?",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj58oe/96fb31c9-9f4c-49a8-9669-e1b7a04851d9/32b324e0-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj58of.png"
+                ]
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj54fr/fb24bfb1-f438-4e0f-9d06-61775865feb2/2f6cac70-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj54fs.png"
+                ]
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj50nk/3743cafd-cceb-48cf-8a7f-90b769cf6a9f/2c808900-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj50nl.png"
+                ]
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj4vek/757f1222-06a3-43c1-8531-5aa16a38c4e2/287253c0-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj4vel.png"
+                ]
+            }
+        ],
+        "solution": {
+            "text": "Explanation",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iiev4/3e8a2db7-1f07-4f7f-a182-8ff0237309d5/1fa95c00-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iiev5.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iifke/5b8cac66-e3b3-4bdb-af67-7f8d2da84e6a/203436e0-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iifkf.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iig3o/b542a3f8-cb70-492c-8d05-6e0da9ef70a6/209e1c40-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iig3p.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iigme/55fd8f7b-4959-4514-a112-f917add5eaa8/2104f460-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iigmf.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iigw8/7c7a85d2-c13d-4726-8653-5b12e2d754ef/213af880-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iigw9.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iih5f/588e6b58-9f44-4211-8dd8-1804ea626d50/216d7a30-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iih5g.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iihi0/51376cf0-d1fd-4443-8a5a-931f248a5ef3/21b29980-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iihi1.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iihsm/a341d588-b759-47e5-b49d-c5ab8ec5e354/21ece360-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iihsn.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iii1g/ee68001e-4b7b-4081-923d-0e7fd014a298/221d6940-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iii1h.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iiieh/ae5c0685-ca72-4aca-a846-61f1e5f51072/226520a0-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iiiei.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iiiq1/e3581290-9502-41fc-8ff0-b72fba37cd9e/22a47390-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iiiq2.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iiiz9/6b016348-0052-44ed-b51e-0d0121fe46b4/22d71c50-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iiiza.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik78m",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The total number of aromatic compounds/species from the following is",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj7lk7/39877958-dbcb-4d6c-a048-c643869dea85/74452f70-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj7lk8.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "6",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "4",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "3",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "5",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Aromatic compounds are planar, cyclic and completely conjugated systems. They follow rule called Huckel rule.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ilus5/0eadcd5a-8c88-4646-ab96-f7450c3739ec/7f62ab60-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ilus6.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ilvrt/e0c1f449-3ed0-491a-9847-91c2fbe7fdbc/80267090-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ilvru.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ilwes/132b5865-0675-43dd-a78b-38ce05d388d4/80a4a140-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ilwet.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik79g",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "n-Butane on monochlorination under photochemical condition gives an optically active compound \" P \". \" P \" on further chlorination gives dichloro compounds. The number of dichloro compounds obtained (ignore stereoisomers) is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "3",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "4",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "5",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "6",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Total dichloro products (excluding stereoisomers) = 4",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzs9s0u/958c494f-6db0-4ff1-8733-77fbf220f7fc/5f96b3e0-38a4-11f1-8c6d-2340d06ed735/file-6y3zli1mnzs9s0v.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7ad",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Given below are two statements : Statement I : Due to increase in van der Waals forces, the order of boiling points is . Statement II : In the light of the above statements, choose the correct answer from the options given below :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj9qz5/28c1450f-8461-4c6f-9c20-7f17966c98b1/b0125410-34a7-11f1-8461-75c223c4ecce/file-6y3zli1mnsj9qz6.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation As the hydrocarbon chain increases, effective van der waals force also increases. This results in increase in boiling point also. Para substituted chlorobenzene has greater packing than ortho substituted. Better packing leads to higher melting point. Ortho-substituted chlorobenzene has greater dipole - dipole interaction that para one which gives higher boiling point.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4intgo/3bb46290-82fd-4791-a9f5-d2d8200f3289/b5fc0680-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4intgp.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4inu8j/aedd165c-1a21-42a4-a8c8-776865893538/b6951230-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4inu8k.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7bg",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the following reaction. The major product formed is :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsjeay8/e07d47c2-5e2c-4bc5-8c9a-77c23f65b8d0/2ebcef00-34a8-11f1-8461-75c223c4ecce/file-6y3zli1mnsjeay9.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsje4x5/5c7cb86b-a50d-4cff-8da2-ad5087cf00ef/2a147590-34a8-11f1-8461-75c223c4ecce/file-6y3zli1mnsje4x6.png"
+                ]
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsjdz6k/bb1d7883-7178-41ae-80b5-64e0a805e1f6/25a5a9c0-34a8-11f1-8461-75c223c4ecce/file-6y3zli1mnsjdz6l.png"
+                ]
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsjdtjx/44efc6d0-962b-4fe1-a099-79487af7f098/214c88d0-34a8-11f1-8461-75c223c4ecce/file-6y3zli1mnsjdtjy.png"
+                ]
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsjdp3j/ce491f87-d86c-4a48-86f0-331320efb386/1ddb7df0-34a8-11f1-8461-75c223c4ecce/file-6y3zli1mnsjdp3k.png"
+                ]
+            }
+        ],
+        "solution": {
+            "text": "Explanation",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzscdmd/7c34ce29-ac96-45a0-9a52-8cf664921fe9/a7e41250-38a4-11f1-8c6d-2340d06ed735/file-6y3zli1mnzscdme.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7ck",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Which statements are True? A. In Hoffmann bromamide degradation, 4 moles of NaOH and 2 moles of are consumed per mole of an amide B. Hoffmann bromamide reaction is not given by alkyl amides. C. Primary amines can be synthesized by Hoffmann bromamide degradation. D. Secondary amide on reaction with and NaOH will give secondary amine. E. The by-products of Hoffmann degradation are and . Choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "A, C and E only",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "B, C and D only",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "C and E only",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "C, D and E only",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Hoffmann bromamide degradation reaction – Statement (A) – False Statement (B) – False Statement (C) – True Statement (D) – False Statement (E) – True",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzsdrdn/5fc78a3e-6944-461f-93c4-118ed6d95fb7/ce53dab0-38a4-11f1-8c6d-2340d06ed735/file-6y3zli1mnzsdrdo.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7de",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The incorrect statement from the following with respect to carbohydrates is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "All monosaccharides are reducing sugars.",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "The monosaccharide units obtained from hydrolysis of oligosaccharides are always the same.",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Starch and cellulose are typical examples of polysaccharides, which are very high molecular weight compounds of more than ten monosaccharide units.",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Open chain and cyclic structures co-exist at equilibrium that are responsible for certain properties as in the case of -glucose.",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The monosaccharide units obtained from hydrolysis of oligosaccharides may be or may notbe same. Example :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzsgyku/95760823-9bc8-434e-a528-6952298deffa/275112e0-38a5-11f1-8c6d-2340d06ed735/file-6y3zli1mnzsgykv.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7e7",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Which of the following amino acid will give violet coloured complex with neutral ferric chloride solution?",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Threonine",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Serine",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Tyrosine",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Cysteine",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation reacts with phenol to give a violet Coloured complex.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iq0vl/9308ad9c-1be4-492b-a811-a0b6749b2319/f3548610-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iq0vm.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iq1gn/bd7bae0f-6146-4905-bc0a-df450860a259/f3c82f70-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iq1go.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iq1u6/096279b0-f077-4399-8857-6f2128477bb5/f4127ee0-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iq1u7.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iq2b4/1279c33d-09b0-4930-9c6e-7e8d2f1e55be/f46f9300-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iq2b5.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iq2p3/0570f4c2-30be-481a-baeb-d2d2f33fdf53/f4bc5370-3b3e-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iq2p4.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7en",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Number of paramagnetic complexes among the following is .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 6 Explanation 3d Br → weak fild ligand → High spin complex weak field ligand → High spin complex. 3d strong field ligand complex. 3d (converted d-system) strong field ligand → low spin complex. (v) weak field ligand → high spin complex. strong field ligand → low spin complex. (vii) strong field ligand. → low spin complex 3d’ strong field ligand. weak field ligand. strong field eigand. → low spin complex.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iqyqi/b70405e2-fb42-4ff1-a500-02a28957cea3/0d7c3ba0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iqyqj.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4iqzfw/8a7bba43-3bf7-44e9-af7a-51df791f2107/0e07b2c0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4iqzfx.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir03j/37e7bd74-a704-4d76-8e3e-dc9832223148/0e898cf0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir03k.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir0r1/fc63e0d3-01e0-47d6-861f-6c94a320cfa6/0f0aa3d0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir0r2.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir1hd/645469ec-388a-40a5-9999-37551135d1ba/0f9b4b10-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir1he.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir217/b7bf619f-4ae2-43d3-8edf-233fccacb9a9/10083db0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir218.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir2kj/dea4d222-f3bb-48d1-a6d1-f82b7f893a57/10727130-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir2kk.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir315/1748bec7-1636-48e4-9a37-3cf5ff5f9980/10cdb090-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir316.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir3jk/c85663d7-4761-49de-83e4-8086e7906814/1132db00-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir3jl.png",
+                "https://app-content.cdn.examgoal.net/image/jaoe38c1mo4ir424/e3aab6e6-87b8-4c80-a267-18281ac6c718/1198c8c0-3b3f-11f1-85ec-6dd2964ee95f/file-jaoe38c1mo4ir425.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "6",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7f6",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "' ' is the product which is obtained from benzene by reacting it with carbon monoxide and hydrogen chloride in the presence of cuprous chloride. ' ' is the major product obtained from the benzene by reacting it with ethanoyl chloride in the presence of anhydrous . Product (major) obtained by heating and in the presence of alkali is . Total number of (pi) electrons in is .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 16 Explanation Total number of pi electrons in ' ' electrons.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzsnonb/2ac538c7-82be-4c48-a227-1f3d3c602aa8/e24f1970-38a5-11f1-8c6d-2340d06ed735/file-6y3zli1mnzsnonc.png",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzsni02/518687d1-f9fb-4ec6-8c67-9cffacbf23a1/dd2cdc20-38a5-11f1-8c6d-2340d06ed735/file-6y3zli1mnzsni03.png",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzsnat5/78b969c4-a666-4f36-99cc-7c191d9bb5fc/d79e9690-38a5-11f1-8c6d-2340d06ed735/file-6y3zli1mnzsnat6.png",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnzspf9r/dd1c1584-85ec-44e1-82aa-34814db96f46/12af21f0-38a6-11f1-8c6d-2340d06ed735/file-6y3zli1mnzspf9s.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "16",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7fv",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider two radiations of wavelengths The ratio of the energies of these two radiations is (Nearest integer).",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 3 Explanation We know that the energy of a photon is given by the formula where = Planck’s constant = velocity of light = wavelength of the radiation. For the two radiations, Å Å Final Answer Hence, the ratio of energies of the two radiations is 3 (nearest integer).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "3",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7gr",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the reaction The magnitude of enthalpy change for the reaction in is . (Nearest integer)",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 1126 Explanation We are given the reaction: We are also given the standard enthalpies of formation: According to NCERT convention, products reactants Products: products Reactants: reactants The magnitude of enthalpy change is nearest integer Final Answer",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "1126",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik7hd",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Solid carbon, CaO and are mixed and allowed to attain equilibrium at T K . The partial pressure of CO is __",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 4 Explanation First, let's consider the first equilibrium: As we know from our study of chemical equilibrium, for the equilibrium constant expression , we only consider the partial pressures of the gaseous species. The concentrations of pure solids (like and ) are considered to be unity (1). So, for this reaction, the expression for is: We are given that . Therefore, the partial pressure of at equilibrium is fixed by this reaction. This is an important first step. The presence of both and ensures that the partial pressure of is maintained at this value. Now, let's look at the second equilibrium: Again, we write the expression for . We consider the solid carbon, , to have an activity of 1. Since both reactions are taking place in the same vessel and are at equilibrium, the partial pressure of the common species, , must be the same for both. We have already found that from the first equilibrium. We also know that . Let's substitute these values into the expression for : . Therefore, the value to be filled in the blank is 4 .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "4",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5l1",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the relation on the set defined by if and only if . Then, among the statements : I. The number of elements in R is 17 II. R is an equivalence relation",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Only I is true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Only II is true",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Both I and II are true",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Neither I nor II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation We first observe the relation defined on is an ordered pair iff Refer the chart below : a b ab ∈ R −2 −2 4 Yes −1 −1 2 Yes 0 0 0 Yes 1 1 2 Yes 2 2 4 Yes −2 −1 2 Yes ..... ..... ..... Yes ..... ..... ..... Yes We also observe the mathematical relationship from : symmetric We take 2 ordered pair entries from : Ordered pair Transitive Yes Yes No No Relation Reflexive Symmetric Transitive Yes Yes No Now let us focus on the cardinality of S R a b No of entries Cumulative Total { −2, −1, 0, 1, 2 } ab > −1 −2 ∈ { −2, −1, 0 } 3 3 { −2, −1, 0, 1, 2 } ab > −1 −1 ∈ { −2, −1, 0 } 3 6 { −2, −1, 0, 1, 2 } ab > −1 0 ∈ S 5 11 { −2, −1, 0, 1, 2 } ab > −1 1 ∈ { 0, 1, 2 } 3 14 { −2, −1, 0, 1, 2 } ab > −1 2 ∈ { 0, 1, 2 } 3 17 The number of elements in is Valid Option is an equivalence relation Invalid",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5m2",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The number of values of , satisfying the equations and , is",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "0",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "2",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "1",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "4",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation So, are two foci of ellipse, where gives center of an ellipse is mid point of both focus ∴ center Equation of circle is ⇒ Ellipse given circle are concentric \\& radius of given circle is equal to length of minor axis of given ellipse ⇒ Two points which are common to both.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mox9zzml/0a709d1f-1ff9-4c93-810b-d6c07a5c42a5/91206cd0-4b0f-11f1-8353-79c9d062302a/file-6y3zli1mox9zzmm.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5my",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "If the system of linear equations : has infinitely many solutions, then the value of equals:",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "12",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "16",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "22",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "28",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation To find the condition for infinitely many solutions, we first calculate the determinant of the coefficients of : For infinitely many solutions, .  \n\nSo, Now, let us find , the determinant obtained by replacing the first column with the constants: Next, the determinant is obtained by replacing the second column with the constants: Finally, is obtained by replacing the third column with the constants: For the system to have infinitely many solutions, all the determinants must be zero: Substitute : From , Thus,",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5nv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let and . If , then equals :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "289",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "361",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "441",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "529",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Now adj (given in question)",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5p5",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let upto 40 terms. If is a root of the equation , then is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation 1. A series sum is defined : 2. is a root of the quadratic equation where 3. To evaluate the expression Equation (i) gives the value of : Now let us solve the quadratic equation : where and are the roots We have derived in equation which is also a root of the equation : From the pair of roots we get =1 As always",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5q1",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A candidate has to go to the examination centre to appear in an examination. The candidate uses only one means of transportation for the entire distance out of bus, scooter and car. The probabilities of the candidate going by bus, scooter and car, respectively, are and . The probabilities that the candidate reaches late at the examination centre are and if the candidate uses bus, scooter and car, respectively. Given that the candidate reached late at the examination centre, the probability that the candidate travelled by bus is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Conveyance Bus Scooter Car Arrive late Bus Scooter Car Probability Probability We label the events in the chart below : Conveyance Bus Scooter Car Arrive late by Bus Scooter Car Event Event We label the event that the candidate arrives late be Event Probability",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5qw",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A set of four observations has mean 1 and variance 13. Another set of six observations has mean 2 and variance 1 . Then, the variance of all these 10 observations is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "5.96",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "6.14",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "6.04",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "6.24",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Observation Observation Set Set Set Set We mathematically extract from equations and : We mathematically extract from equations (iii) and (iv) : We have mathematically compiled a summary of all the information in equations (v) through (viii) to compute the mean and the variance for the 10 datapoints in set set 2 :",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5rv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "If , then is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "45",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "48",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "51",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "54",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation . From the equivalence relationship between equation and we conclude",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5t2",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A person has three different bags and four different books. The number of ways, in which he can put these books in the bags so that no bag is empty, is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "18",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "36",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "39",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "72",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Number of ways ( )",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mox7d0js/d1bd891e-1719-4300-b280-96c5287812a7/3ff86880-4b05-11f1-8ae6-6d0dc390027c/file-6y3zli1mox7d0jt.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5u6",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "If a straight line drawn through the point of intersection of the lines and , meets the co-ordinate axes at the points P and Q , then the locus of the mid point of PQ is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation 1. A straight line passes through the point of intersection of 2 straight lines: 2. The straight line cuts the axes at and 3. To identify the locus of the mid-point of the segment The point of intersection of and is The mid-point of the segment is Analytical Study : We first solve the pair of straight lines and to locate the point of intersection : The straight line passes through the point identified by equation (i) The equation of the straight line in point slope form is written below : The equation (ii) gives the straight line in intercept form where the and intercepts are observed below : ..... Chart From Chart 1, the mid-point of the section is derived applying mid-point formulae : Point Chart Chart 2 has the and coordinate each as a function of where we can eliminate and mathematically trace the locus : The locus of the mid-point of the section after replacement of the dummy variables is found to be the rectangular hyperbola",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo8ud7iq/ebd17dac-7338-4b0c-ac0b-54d72d215dbb/9f171320-3d9f-11f1-a9f6-5b037b2fc55f/file-6y3zli1mo8ud7ir.webp"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5vb",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let O be the vertex of the parabola and its chords OP and OQ are perpendicular to each other. If the locus of the mid-point of the line segment PQ is a conic C , then the length of its latus rectum is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "1",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "2",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "4",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "8",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation L.R.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1moxa4ft9/dd0111bb-ba5b-493a-bacf-73c1cef05e05/0cddabd0-4b10-11f1-8353-79c9d062302a/file-6y3zli1moxa4fta.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5x8",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let and , where inverse trigonometric functions take only the principal values. Given below are two statements : Statement I : . Statement II : . In the light of the above statements, choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation ....(i) Inequalities and shows the mathematical logic for (iii) From equations (i) and (iii) we can conclude : Statement I II True Yes Yes",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1moxad8sq/a46a13d4-1033-41dc-b949-df53aa7ba5f9/01bac2a0-4b11-11f1-8353-79c9d062302a/file-6y3zli1moxad8sr.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5yc",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "For the function , consider the following statements : Statement I : is differentiable for all . Statement II : is increasing in . In the light of the above statements, choose the correct answer from the options given below :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Both Statement I and Statement II are true",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Both Statement I and Statement II are false",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Statement I is true but Statement II is false",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Statement I is false but Statement II is true",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Here . Since is not differentiable at , and also has a “kink” at , the function is not differentiable at . So, Statement I is false . Now take . Here , so and hence . Therefore, on this interval we can write and differentiate to check whether is increasing. for is increasing Since on and , we get , so on this interval. Hence, Statement II is true .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5yy",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let and a vector be such that . If , then is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "-6",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "-5",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "-4",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "-3",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The unknown vector is represented in 3D: Cross product of 2 vectors and : Cross product of 2 vectors and : We know, As individual vector components of a null vector are zero. Equation set is mathematically constructed to form a linear combination of 2 planes and generating the rd plane : Equation ( ) is conclusive in generating a family of planes indicating infinite solutions for the system equation (iii) We need an auxiliary equation provided through (iv) to render an unique solution for the vector : Equation (vi) can be solved using Determinants and Cramer's rule : Equations and provides the solution to system equation from Cramer's rule :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mou3cndl/5ce820e5-7ef0-44fb-8ab1-91085b10339c/37549490-494f-11f1-abae-354422ebc5ce/file-6y3zli1mou3cndm.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik5zv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let the foot of perpendicular from the point on the line be the point ( ). Then the distance between the lines and is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation satisfies the line L D.R. of PQ : Since Now lines : \\& i.e. Distance",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1moxcgmhz/b383f6c7-fb7a-4ab0-b595-3d3944fdb9ba/31ffcf70-4b19-11f1-8028-b3715afc15f3/file-6y3zli1moxcgmi0.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik61b",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The value of the integral is equal to:",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Let Let Using standard integration formulaes : =",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik629",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let be the solution of the differential equation . Then equals :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation (i) Bernoulli's linear ODE of first order : having Apply the I.F from equation in : - We choose the first and second functions for the integrand in equation to proceed further: where is the arbitrary constant We have the boundary condition From equation We have solved the ODE to reach a particular solution from . (vii) Substitute in equation (vii) to evaluate",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik636",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let be a function defined as . Let , where . If , then the area of the region bounded by the curves and is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation We first focus on the orbit periodicity of : From the nature of table which completes the 25 iterations in 6 cycles with orbit periodicity 4 : Equation (vi) exactly identifies the function defined under SOW : Equation (vii) has identified the function and we can mathematically plot the bounded area between the curves : Slant line Horizontal line Vertical line -axis Pair Slant line Feasible Intersection Points Yes Intersections Discarded point Reason Coordinates Falls outside the scope of bounded area Pair Vertical line Feasible Intersection Points Yes Intersection Coordinate Pair Horizontal line Vertical line Feasible Intersection point -axis Yes Intersection Coordinate Pair Slant line Horizontal line Feasible Intersection point -axis Yes Intersection Coordinate g(x) X-axis Feasible Intersection point Reason 1/x y = 0 No None X-axis is a horizontal asymptote to g(x) Slant line Vertical line Feasible Intersection point Reason y = x − (3/2) x = 4 No (4, 5/2) Intersects much above B and outside the scope of bounded area Sides Left boundary Equation Top boundary Equation Right boundary Equation Bottom boundary Equation Curves Slant line y = x − (3/2) Rectangular Hyperbola y = 1/x Vertical line x = 4 X-axis y = 0 Vertices Top left Coordinates Top right Coordinates Bottom right Coordinates Bottom left Coordinates Points A A (2, 1/2) B B (4, 1/4) C C (4, 0) D D (3/2, 0) We can visualize that both and lie on the slant line but is ahead of along the -axis. From we can drop a ⟂ on the -axis at to form a right angled . From and the remaining area upto the vertical lies under the rectangular hyperbola : Area",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mox97pa6/23a2aff3-bd8f-4df1-b208-d9fa3bf37610/7e7abde0-4b0c-11f1-8353-79c9d062302a/file-6y3zli1mox97pa7.png",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mox9affr/c1ed27dc-0ef6-4afe-8a0d-e143ca97ff39/ca4d4b70-4b0c-11f1-8353-79c9d062302a/file-6y3zli1mox9affs.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik64k",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let . If is continuous at , then the value of is :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "5",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "2",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "3",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "4",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The function is continuous at where . We observe the LHL from equation : We must have the RHL from equation (i) to be for the function to be continuous at : format Apply L'hôpital's rule format ค Apply L'hôpital's rule once more We can mathematically demonstrate conditional continuity of at from equation (iii) and (iv) : Now, I = = 4",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik65i",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let represent an ellipse with major axis along -axis, where is a strictly decreasing positive function on . If the set of all possible values of is , then is equal to :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "28",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "40",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "61",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "24",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Since the ellipse has its major axis along the -axis, the denominator under must be bigger than the denominator under . So we need Given that is a strictly decreasing positive function, a bigger function value happens when the input is smaller. So, Bring all terms to one side: Complete the square: So the inequality becomes Taking square roots, or So, or That means the allowed values are Hence, and . Therefore,",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik66f",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The sum of squares of all the real solutions of the equation is equal to .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 2 Explanation Substitute For t = 1, For t = , j x j x + 1 Base 2x + 3 Base 2x 2 + 5x + 3 Argument x 2 + 2x + 1 Argument Remarks Verdict 1 −2 −1 < 0 −1 < 0 1 > 0 1 > 0 1 st and 2 nd base −ve Invalid 2 −√2 1 − √2 < 0 3 − 2√2 > 0 7 − 5√2 < 0 3 − 2√2 > 0 1 st base and 1 st argument −ve Invalid 3 √2 1 + √2 > 0 3 + 2√2 > 0 7 + 5√2 > 0 3 + 2√2 > 0 All bases and arguments +ve Valid",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "2",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik66y",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "If , then is equal to .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 12 Explanation Substitute",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "12",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik67d",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let a line pass through the origin and be perpendicular to the lines and . If , is the point on at a distance of from the point of intersection of and , then is equal to .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 4 Explanation A pair of lines in 3D have the vector equations : A third line passes through the origin and is ⟂ to both the lines and defined just above The point of intersection of and is at a distance units from another point with coordinates and lying on where vector to Now, intersection of \\& A point on is",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "4",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik68a",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the circle C : . Let a variable chord AB of the circle C subtend a right angle at the origin. If the locus of the foot of the perpendicular drawn from the origin on the chord AB is the circle , then is equal to .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 18 Explanation Assumptions : is the foot of the ⟂ drop from origin on the variable chord The end-points of the chord are Circle Equation Transform Centre Radius We will now form the line equations of the ⟂ drop and the variable chord : The foot of the ⟂ on line defined in equation (i) is : Equation (ii) which gives the equation of the variable chord cuts the circle at and is substituted in the equation of the circle from chart 1 to form 2 quadratics in and respectively : Quadratic in : Quadratic in . (iii) where and are the roots of the quadratic Quadratic in : Quadratic in where and are the roots of the quadratic The variable chord with end-points and subtend a right at origin. We now infer from equations (iii) and (iv) : is not the origin Locus of The circle be the locus of which must be equivalent to equation :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mox88y6j/a5391b54-d55e-47ad-8093-18a75ed89dd0/b8089db0-4b08-11f1-bbd4-6bf3639b4122/file-6y3zli1mox88y6k.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "18",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik68s",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Let be a polynomial function such that and . Then is equal to .",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 395 Explanation Statement of Work : 1. is a polynomial function 2. A logarithmic equation involving function and 3. To evaluate the sum : .....(i) The function is a polynomial function stated in SOW where Equation (ii) on logical analysis reduces the polynomial to the possible form below : Cubic powers of is not possible where Now let us analyze the polynomial function from preconditions set in SOW : Equation and mathematically certify the polynomial :",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "395",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik69o",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A new unit ( ) of length is chosen such that it is equal to the speed of light in vacuum. What is the distance between Venus and Earth in terms of units if light takes 6 min. 40 s to cover this distance?",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation To find the distance between two points when an object moves at a constant speed, we use formula, Distance Speed × Time is a new unit of length such that 1 unit speed of light in vacuum (c). The speed of light c is the distance light travels per unit of time (usually meters per second). second The time taken for light to travel from Venus to Earth is 6 minutes and 40 seconds. 1 minute seconds 6 minutes seconds Total time seconds Using distance formula: Distance Speed of light × Time Distance seconds Since is the distance light travels in 1 second ( ), we can substitute c with our new unit, Distance Distance Therefore, the distance between Venus and Earth is . Hence, the correct option is (B).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6aj",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Consider the equation Where magnetic field; electric field, permittivity, distance, time The values of and respectively are :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation To find the values of the exponents , and , we will use dimensional analysis. Both sides of the equation must have the same fundamental dimensions. The dimension of distance is the dimension of length The dimension is time The dimension of electric field ( E ) can be derived from the formula for force on a charge, . Therefore, . The dimensions of force is Charge Current Time So, the dimensions of charge is, So, the dimensions of electric field is, Using relationship between electric field (E) and and magnetic field (H) in electromagnetic waves. In a vacuum, the ratio of the magnitudes of the electric field to the magnetic field (B) is the speed of light (c), Using the formula of magnetic force on a current-carrying conductor: Where, force magnetic field (flux density), current and length Substituting the dimensions, The relation between B and H is . Where permeability. Using the formula of magnetic field, , here is distance from straight conductor carrying current i. Putting the dimensions of electric field and speed of light, the dimensions of magnetic field is, We can derive the dimensions of permittivity ( ) from Coulomb's Law, . Substituting the dimensions into the given equation, On comparing the powers of , and A on both sides, For (i) For . Since , then , so and . For (ii). For T, (iii) Therefore, the values are . Hence, the correct option is (A).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6bp",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A car moving with a speed of takes a turn of radius 20 m . A simple pendulum is suspended from the ceiling of the car. Determine the angle made by the string of the pendulum with the vertical during the turning. (Take )",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The speed of the car is given in . We must convert it to to match the units of gravity and radius. When the car takes a turn, from the perspective of an observer inside the car, the pendulum bob experiences gravity ( mg ) which is acting vertically downwards and centrifugal force ( ) a pseudo-force acting horizontally outwards due to the circular motion. Where m is mass, v is velocity, and r is radius. Let the string make an angle with the vertical. The tension T in the string can be resolved into two components: The vertical component is The horizontal component is In equilibrium (relative to the car) : .....(i) Dividing equation (ii) by the equation (i) : Substituting the given values, where speed of car is , radius of turn is and the acceleration due to gravity is Therefore, the angle made by the string with the vertical is . Hence, the correct option is (C).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo15dsx4/1da09880-229d-4b3b-98ff-c4d92d0d3616/6ed8a280-3964-11f1-8d0e-01c2ed08eeaf/file-6y3zli1mo15dsx5.webp"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6ci",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A gas balloon is going up with a constant velocity of . When this balloon reached a height of 75 m , a stone is dropped from it and balloon keeps moving up with the same velocity. The height of the balloon when the stone hits the ground is m. (Take )",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "85",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "150",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "129",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "125",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation When an object is dropped from a moving carrier (like the balloon), it gets the velocity of that carrier at the exact moment of release. Initial velocity of the stone (balloon) is (upwards). Initial height of the stone is . The acceleration due to gravity is (downwards). Using the second equation of motion for the stone's displacement along vertical direction, Since the stone eventually hits the ground (at height 0 ), its displacement from the starting point ( 75 m ) is -75 m . Since time cannot be negative, we take seconds. While the stone is falling for 5 seconds, the balloon continues to move upward at a constant velocity. The constant velocity of balloon is . The time interval of journey is seconds. Displacement Velocity × Time Displacement The final height is the initial height plus the displacement covered during the 5 seconds. Total Height Therefore, the height of the balloon when the stone hits the ground is 125 m . Hence, the correct option is (D).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6da",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A thin biconvex lens is prepared from the glass both curved surfaces of which have equal radii of 20 cm each. Left side surface of the lens is silvered from outside to make it reflecting. To have the position of image and object at the same place, the object should be placed, from the lens at a distance of cm.",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "10",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "12.5",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "13",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "13.5",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation When one surface of a lens is silvered, it behaves like a mirror. The effective system consists of a lens, followed by a mirror, and then the lens again (as light passes through the lens, reflects at the silvered surface, and passes back through the lens). The effective power ( ) of this silvered lens is given by: Where, Power of the lens and Focal length of the silvered surface (mirror). The power of lens is given as , where focal length (f) should be in meters. The power of mirror is given as , where focal length (f) should be in meters. Using the Lens Maker's Formula: For a biconvex lens, the refractive index of material of lens is , the radius of curvature for the first surface is (convex surface) and is for the second surface (opposite convex surface) So, the focal length of lens is . The power of lens is, . Since the silvered surface is the back surface of a biconvex lens, it acts as a concave mirror for the light inside the lens. So, the radius of curvature is . The optical power of mirror is given as , where focal length should be in meters. The power of mirror is, . Using the effective power formula, As the effective focal length of the system is +20 D , and the whole system behaves like a mirror, When the object is placed at the centre of curvature ( ), the position of image and object are at the same place. So, the object distance is equal to the radius of curvature. Therefore, to have the image and object at the same place, the object should be placed at 10 cm . Hence, the correct option is (A).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo15yho4/2002f637-7b21-4c0e-9700-1a32e12bc7b0/ae25db40-3966-11f1-8d0e-d597cf789a0b/file-6y3zli1mo15yho5.webp"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6e6",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Two identical bodies, projected with the same speed at two different angles cover the same horizontal range . If the time of flight of these bodies are 5 s and 10 s , respectively, then the value of is m.  (Take )",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "250",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "25",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "500",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "125",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation For two projectiles launched with the same initial speed u to have the same horizontal range R, their angles of projection must be complementary. Let the first angle be . Then the second angle must be ( ) . The time taken for the projectile to return to the same horizontal level. And the total horizontal distance covered is the range of projectile, R . For the first body : For the second body ( ): Using the relation (ii) Here, the time of flight of first projectile is and that of second projectile is it Putting the values in the formula of horizontal range, Therefore, the value of the horizontal range R is 250 m. Hence, the correct option is (A).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2obf8x/9157b5f3-117a-469c-ba37-3c65106b8e0b/42c51610-3a3b-11f1-9578-51f4f7636b79/file-6y3zli1mo2obf8y.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6f1",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A solid cylinder having radius and length is slipping on a rough horizontal plane. At time the cylinder has a translational velocity , perpendicular to its axis and a rotational velocity about the centre. The time taken by the cylinder to start rolling is seconds. (coefficient of kinetic friction and )",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "15",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "5",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "10",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "7.5",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The cylinder is slipping, which means its translational motion and rotational motion are not in order for pure rolling. Initial translational velocity is . Initial angular velocity is , where is the radius of solid cylinder of length . For pure rolling to start, the condition must be satisfied. Initially, , which is less than , so the cylinder is sliding forward. Since the cylinder is sliding forward, kinetic friction acts backward at the point of contact. Using Newton's second law of motion ( ) linear retardation of cylinder is, Friction provides a torque about the center of mass. We also know . For a solid cylinder, the moment of inertia . We need to find the time t when the final translational velocity v and final angular velocity satisfy . Using equation of linear motion, final linear velocity is Using equation of rotational motion, final angular velocity is, Applying the rolling condition : Substituting the given values, and Therefore, the time taken for the cylinder to start rolling is 5 seconds. Hence, the correct option is (B).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2ojw2y/a6556104-d1fb-4b86-92bb-9a871ca2ed43/2e3f38a0-3a3c-11f1-9578-51f4f7636b79/file-6y3zli1mo2ojw2z.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6g7",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A liquid of density flowing steadily in a tube of varying cross-section. The cross-section at a point is and that at is . Both the points and are in same horizontal plane, the speed of the liquid at is . The difference in pressures at and points is Pa.",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "18",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "144",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "36",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "72",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The density of liquid is . Area of cross-section at point A is . Area of cross-section at point is . The velocity at A is . For an incompressible liquid in steady flow, the mass flow rate must remain constant. Using equation of continuity, Substituting the values : According to Bernoulli's equation for a horizontal flow (where height is constant), the sum of pressure and kinetic energy per unit volume is constant : Substituting the given values and Therefore, the difference in pressures at points A and B is 72 Pa . Hence, the correct option is (D).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2oviuj/26b9fb24-7ce0-4b21-884d-bb608060f722/71bbdfb0-3a3d-11f1-9578-51f4f7636b79/file-6y3zli1mo2oviuk.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6h8",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A spherical liquid drop of radius acquires the terminal velocity when falls through a gas of viscosity . Now the drop is broken into 64 identical droplets and each droplet acquires terminal velocity falling through the same gas. The ratio of terminal velocities is .",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "4",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "0.25",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "32",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "16",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation When a spherical object falls through a viscous fluid, it eventually reaches a constant speed called terminal velocity . This occurs when the downward force of gravity is balanced by the upward buoyant force and the viscous drag force. The force of gravity acting on the sphere is , where is the density of the liquid. Using Archimedean's principle of buoyant force , where is the density of the gas. Using Stokes' Law the viscous drag is At terminal velocity, For the same liquid and gas, terminal velocity is proportional to the square of the radius : The large drop of radius is broken into 64 identical droplets of radius . Since the total volume remains constant : Let be the terminal velocity of the large drop and be the terminal velocity of a small droplet. Using the relationship : Substituting : Therefore, the ratio of terminal velocities is 16 . Hence, the correct option is (D).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2p4gfz/3e345f22-2fce-4603-9aae-09f88cf38c85/6a28d400-3a3e-11f1-9578-51f4f7636b79/file-6y3zli1mo2p4gg0.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6i2",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "One mole of diatomic gas having rotational modes only is kept in a cylinder with a piston system. The cross-section area of the cylinder is . The gas is heated slowly to raise the temperature by during which the piston moves by 25 mm . The amount of heat supplied to the gas is J. (Atmospheric pressure ) (Neglect mass of the piston)",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "24.8",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "10.96",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "15.04",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "29.98",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation To find the total heat supplied ( Q ), we use the st law of thermodynamics : Where, is the change in internal energy and W is the work done by the gas. The internal energy of an ideal gas depends on its degrees of freedom (f). For a diatomic gas, there are 3 translational and 2 rotational degrees of freedom ( ). However, it is given that the gas has rotational modes only, which means we only consider . The formula for internal energy change is : The amount of gas is 1 mole, mole, the degree of freedom is , the universal gas constant is and the change in temperature of gas is Work done by the gas in a piston system is given by: Since the mass of the piston is neglected and it moves slowly, the internal pressure P equals the atmospheric pressure ( ). The change in volume is , where the cross-sectional area is A and displacement of the piston is . The atmospheric pressure is The area of cross-section is The displacement of piston So, the work done by the gas is; Using st law of thermodynamics, Therefore, the amount of heat supplied by the gas is 10.96 J.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2pgp3s/3d452c54-d44e-48ed-ac6c-693efff899e6/be8f2980-3a3f-11f1-9578-51f4f7636b79/file-6y3zli1mo2pgp3t.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6ix",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Initial pressure and volume of a monoatomic ideal gas are and . The change in internal energy of this gas in adiabatic expansion to volume final is J.",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation In an adiabatic process, no heat is exchanged with the surroundings ( ). For an ideal gas undergoing an adiabatic change, the relationship between pressure and volume is : constant Where is the ratio of specific heats . For a monoatomic gas, . The initial pressure of gas is . The initial volume of gas is The final volume of gas is Using the adiabatic relation : final final final From the st law of thermodynamics , since , we have: The work done ( W ) in an adiabatic process is: Therefore: Substitute the given values, Therefore, the change in internal energy is . Hence, the correct option is (C).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6js",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The frequency of oscillation of a mass suspended by a spring is . If the length of the spring is cut to half, the same mass oscillates with frequency . The value of is .",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "1",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "2",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation When a mass is attached to a spring with spring constant , the restoring force is given by Hooke's law According to Newton's Second Law, Comparing this to the standard SHM equation , we find the angular frequency as, Since frequency , the frequency of oscillation is: A spring constant k is inversely proportional to the natural length L of the spring . constant Let the initial length be and initial spring constant be . The new length is . Let the new spring constant is . Using the relation between spring constant and frequency of oscillation, Substituting : Therefore, the value of the ratio is . Hence, the correct option is (C).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6kt",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A monochromatic source of light operating at 15 kW emits photons . The region of an electromagnetic spectrum to which the emitted electromagnetic radiation belongs to 。 (Take and ).",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "Microwave",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "Infrared",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "Visible",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "Ultraviolet",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation The power of a light source is the total energy emitted per unit time. If the source emits n photons per second, and each photon has an energy E , then the power is: The given power of the source is and the number of photons per second is The energy of a photon is related to its wavelength by the formula: Substituting the constants and energy, The Plank's constant is , The speed of light is Visible light typically ranges from approximately 400 nm to 700 nm . And the ultraviolet (UV) radiation ranges from approximately 10 nm to 400 nm . Since 330 nm is less than 400 nm , the radiation belongs to the ultraviolet region. Therefore, the emitted radiation belongs to the Ultraviolet region. Hence, the correct option is (D).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6lx",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A current carrying circular loop of radius 2 cm with unit normal is placed in a magnetic field, . If and current , the torque experienced by the loop is Wb.A. ( )",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation When a current-carrying loop is placed in an external magnetic field, it experiences a torque . The magnetic properties of the loop are represented by its magnetic dipole moment , defined as : Where I is the current and is the area vector of the loop. The direction of the area vector is perpendicular to the plane of the loop, given by the unit normal . The torque is given by the cross product of the magnetic moment and the magnetic field : The radius of circular loop is . So, the area is The unit normal is And the current in loop is So, the magnetic moment vector is; The magnetic field in the region is with Using the formula for magnetic torque, Therefore, the torque experienced by the loop is . Hence, the correct option is (D).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6mv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A 30 cm long solenoid has 10 turns per cm and area of . The current through the solenoid coil varies from 2 A to 4 A in 3.14 s . The e.m.f. induced in the coil is . The value is .",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "60",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "12",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "120",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "34",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation According to Faraday's Law, a change in the magnetic flux through a coil induces an electromotive force (e.m.f.) in that coil. The magnitude of the induced e.m.f. ( ) is given by: Where N is the total number of turns. For a solenoid, the magnetic flux through each turn is , where is the magnetic field inside the solenoid and is the cross-sectional area. The magnetic field inside an ideal solenoid is: Where is the permeability of free space , n is the number of turns per unit length and I is the current. The total flux linkage is . Since , Where the self-inductance L is lA The length of the solenoid is Turns per , so turns per meter will be turns . The area of cross-section is . So, The change in current is . The time interval ( ) is 3.14 s. Therefore, the value of is 12 . Hence, the correct option is (B).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6nt",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Two point charges and are placed at points and respectively. Force on charge is N. (Take SI Units)",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation Coulomb's Law states that the force between two point charges is proportional to the product of the charges and inversely proportional to the square of the distance between them. In vector form, the force exerted on charge by charge is: Where, is the position vector from to is the unit vector and Substituting the unit vector, we get: Let be the position of and be the position of : The vector from to is : So, the magnitude of position vector is, Substituting the values into the vector formula : Therefore, the force on charge is . Hence, the correct option is (B).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6ow",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Light ray incident along a vector emerges out along vector as shown in the figure below. The value of is .",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2yxk89/c904957e-acd4-4cd9-9b01-e6433e8c1c78/c5b5e990-3a64-11f1-ae50-3df112ee8724/file-6y3zli1mo2yxk8a.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "1.6",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "0.16",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "11.6",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "16",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation A light ray travels from a medium with refractive index (air) to a medium with . The incident vector is and the refracted vector is . To use Snell's Law, we need the angles of incidence and refraction relative to the normal. The incident ray is along the vector points towards the origin. Horizontal component Vertical component So, using the trigonometric identity, The refracted ray is along the vector points away from the origin. The angle with the vertical is: From this, is: Applying Snell's Law Substituting the values : Squaring both sides, Therefore, the value of C is 1.6 . Hence, the correct option is (A).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2yzr4k/08f1afc5-f1a0-4495-b9bb-d6bfb3eb5070/02a82d40-3a65-11f1-ae50-3df112ee8724/file-6y3zli1mo2yzr4l.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                0
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6q6",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "and be the maximum kinetic energies of photoelectrons emitted from a surface of a given material for the light of wavelength and , respectively. If then the work function of material is given by :",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation According to the photoelectric effect, when light of a certain frequency or wavelength hits a metal surface, it provides energy to the electrons. Part of this energy is used to overcome the attractive forces of the metal (the work function, ), and the remaining energy becomes the maximum kinetic energy (K) of the emitted photoelectron. The energy of an incident photon is . The equation is: We are given two different wavelengths and their corresponding kinetic energies: For wavelength : ( i ) For wavelength : ( ii ) It is given that . ( iii ) From equation (ii), we can find an expression for : Now, substituting this into equation (iii) : Therefore, the work function of the material is . Hence, the correct option is (D).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                3
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6r1",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Two radioactive substances A and B of mass numbers 200 and 212 respectively, shows spontaneous -decay with same value of 1 MeV . The ratio of energies of -rays produced by A and B is .",
+            "images": []
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": []
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": []
+            }
+        ],
+        "solution": {
+            "text": "Explanation In -decay, a parent nucleus (X) of mass number A decays into a daughter nucleus (Y) and an -particle (Helium nucleus, mass number 4). Using conservation of momentum, the momentum of the -particle ( ) must be equal and opposite to the momentum of the daughter nucleus . And using energy balance ( Q -value) the total kinetic energy released ( Q ) is shared between the -particle and the daughter nucleus. Kinetic energy can be expressed in terms of momentum (p) and mass (m) as . Since , we have : and Therefore, . Substituting into the Q -value equation: Since (mass number of parent) and : The Q-value is the same ( 1 MeV ) for both substances. For Substance A ( ) : For Substance : So, the ratio is; Therefore, the ratio of energies of -rays produced by A and B is . Hence, the correct option is (C).",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                2
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6rv",
+        "type": "mcq",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The output for the given inputs and to the circuit is :",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsiw09r/e6ab0794-3423-4203-8527-09b817424a30/31ec6ef0-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsiw09s.png"
+            ]
+        },
+        "options": [
+            {
+                "option_code": "A",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsixzvh/4f86407b-600a-4774-9e45-d95a924d85d2/693c48d0-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsixzvi.png"
+                ]
+            },
+            {
+                "option_code": "B",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsixtv8/2fb4e841-16ab-46ef-90e9-9bc0ec238698/64986340-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsixtv9.png"
+                ]
+            },
+            {
+                "option_code": "C",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsixkzh/dab8aa88-dffa-4c37-b117-54beb0d69541/5dbbf2d0-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsixkzi.png"
+                ]
+            },
+            {
+                "option_code": "D",
+                "text": "",
+                "images": [
+                    "https://app-content.cdn.examgoal.net/image/6y3zli1mnsiwpiw/2f05b40c-6ed2-44a6-a710-00a7e539adcd/456e7b80-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsiwpix.png"
+                ]
+            }
+        ],
+        "solution": {
+            "text": "Explanation The inputs are, Interval I: From to , Input , Input . Interval II: From to , Input , Input . Interval III: From to , Input , Input . Interval Input A Input B I 0 1 II 1 1 III 1 0 For the output the inputs are and directly. The corresponding logic gate is AND gate. Interval Input A Input B Output I II III For the output the input B is directly but input A passes through a NOT gate . Interval Input A Input B I Output II III For the final output Y the inputs are and . The corresponding gate is OR gate. Interval Input A Input B Y 1 Y 2 Y = Y 1 + Y 2 I 0 1 0 1 0 + 1 = 1 II 1 1 1 0 1 + 0 = 1 III 1 0 0 0 0 + 0 = 0 Based on the logic analysis of the timing intervals, the correct output graph is represented in option (B).",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo2zlvm6/905510fb-399a-48b0-9c6d-60c6dc76bc2e/69ecdfd0-3a67-11f1-a0ae-9da33830bb19/file-6y3zli1mo2zlvm7.png",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsixtv8/2fb4e841-16ab-46ef-90e9-9bc0ec238698/64986340-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsixtv9.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [
+                1
+            ],
+            "answer": null,
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6sq",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A parallel plate capacitor is having separation between plates 0.885 mm . It has a capacitance of when the space between the plates is filled with an insulating material of resistivity and resistance . Relative permittivity of the insulating material is . The value of is . (Take permittivity of free space )",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 2 Explanation The resistance of a conductor of length d and cross-sectional area A is : Where, is the resistivity of the material. The capacitance of a parallel plate capacitor with plate separation d and area A is : The resistance of material is . The capacitance is The resistivity is And the permittivity of free space is Putting the values for relative permittivity, Therefore, the value of is 2 .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "2",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6tc",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Some distant star is to be observed by some telescope of diameter of objective lens , at an angular resolution of radian. If the wavelength of light from the star reaching the telescope is 500 nm , the minimum diameter of the objective lens of the telescope is cm. (nearest interger)",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 203 Explanation According to Rayleigh criterion the angular resolution ( ) of a telescope is the smallest angle between two distant objects that can be seen as separate points. For a circular aperture, the formula is: Where Angular resolution in radians, Wavelength of the light and Diameter of the objective lens. We need to find the diameter of the objective lens, The wavelength of light is . The angular resolution of telescope is . Substituting the values, Therefore, the minimum diameter of the objective lens is 203 cm .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "203",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6tu",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "A 5 mg particle carrying a charge of is moving with velocity of in a region having magnetic field . It moves a distance of meter along when it completes 5 revolutions. The value of is 。",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 2 Explanation When a charged particle enters a magnetic field with a velocity that has both a component perpendicular to the field and a component parallel to it, the particle follows a helical path. The perpendicular component causes circular motion due to the Lorentz force . The parallel component ( ) remains constant because the magnetic force on it is zero ( ), causing the particle to move linearly along the field lines. The velocity is given as and the magnetic field is . The component along the z -axis is . The component along the x -axis (î) is . For one revolution, the time taken is determined by the circular component of the motion. Centripetal force is provided by the magnetic force: The time for one revolution is. The distance moved along the field lines in 1 revolution is called the Pitch. Pitch For 5 revolutions, the total distance (a) is: The mass of charged particle is . The magnitude of charge on the particle is The parallel component of velocity to magnetic field is The magnitude of magnetic field in the region is So, the distance travelled is; meters Therefore, the distance a moved along the direction is 2 meters.",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo30216v/33351507-15bc-498e-a2ad-7e1f34d59def/2b2db970-3a69-11f1-a0ae-9da33830bb19/file-6y3zli1mo30216w.webp"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "2",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6ug",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "The stored charge in the capacitor in steady state of the following circuit is .",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mnsj0jdx/9aaeefb0-35ae-4bb6-ae7d-a1c762a45897/afed3550-34a6-11f1-8461-75c223c4ecce/file-6y3zli1mnsj0jdy.png"
+            ]
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 200 Explanation When a capacitor is connected to a DC source, it begins to charge. In steady state the capacitor is fully charged, so it acts as an open circuit, i.e., no current flows through the branch containing the capacitor. Current only flows through the closed resistive loops of the circuit. To find the voltage across the capacitor, we first need the total current from the 12 V battery. Since no current flows through the capacitor, the resistor in that branch also carries no current. The resistors and are in series The resistor is in parallel with the combination . Now, , and are in series. This is in parallel with . The total resistance across 12 V battery is . So, using Ohm's law the total current from source is, total This current divides equally between and the rest of the circuit (since both branches are ). Current entering the branch . This 1 A current reaches the node at and divides between and the branch . So, current through is . The potential difference across the capacitor is equal to the potential difference across the branch it is connected to in parallel. The formula for charge stored in a capacitor is : The capacitance is and the voltage across it is Putting the values, Therefore, the energy stored in the capacitor at steady state is .",
+            "images": [
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo308ffq/df9f07b6-7473-48bb-9343-8a977687c8f5/dd09cc60-3a69-11f1-a0ae-9da33830bb19/file-6y3zli1mo308ffr.webp",
+                "https://app-content.cdn.examgoal.net/image/6y3zli1mo30a9sb/c95f6aaf-8012-454a-8d57-dd57ef58f10f/104ad4c0-3a6a-11f1-a0ae-9da33830bb19/file-6y3zli1mo30a9sc.png"
+            ]
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "200",
+            "selected": []
+        }
+    },
+    {
+        "id": "mnsik6uw",
+        "type": "integer",
+        "paper": "JEE Main 2026 (Online) 8th April Evening Shift",
+        "marks": "+4 / -1",
+        "question": {
+            "text": "Two masses of 3.4 kg and 2.5 kg are accelerated from an initial speed of and , respectively. The distances traversed by the masses in the th second are 104 m and 129 m , respectively. The ratio of their momenta after 10 s is . The value of is 。",
+            "images": []
+        },
+        "options": [],
+        "solution": {
+            "text": "Answer Correct answer is 9 Explanation The displacement of an object during a th second is the difference between the displacement in n seconds and the displacement in ( ) seconds. Using the second equation of motion ( ): For mass : For Mass : Using the first equation of motion for : Velocity of mass 1 is, Velocity of mass 2 is, Momentum is defined as the product of mass and velocity ( ). The momentum of mass 1 is The momentum of mass 2 is So, the ratio of their momenta is : Therefore, the value of x is 9 .",
+            "images": []
+        },
+        "correct_answer": {
+            "status": "success",
+            "err_code": 0,
+            "right": false,
+            "corrects": [],
+            "answer": "9",
+            "selected": []
+        }
+    }
+]
