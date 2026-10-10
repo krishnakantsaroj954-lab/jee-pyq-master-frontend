@@ -25,6 +25,7 @@ class PaperConfig:
     source_zip: Path | None = None
     answer_key: Path | None = None
     source_solutions: Path | None = None
+    review_manifest: Path | None = None
 
 def _normalise_expected(raw, subject: str) -> tuple[str, ...]:
     if not isinstance(raw, list):
@@ -76,4 +77,5 @@ def load(path: Path) -> PaperConfig:
         resolve(raw['source_zip']) if raw.get('source_zip') else None,
         resolve(raw['answer_key']) if raw.get('answer_key') else None,
         resolve(raw['source_solutions']) if raw.get('source_solutions') else None,
+        resolve(raw['review_manifest']) if raw.get('review_manifest') else None,
     )
