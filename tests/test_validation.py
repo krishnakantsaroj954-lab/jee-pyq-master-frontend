@@ -5,6 +5,7 @@ from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
+    _has_center_divider,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -210,6 +211,22 @@ def test_midpoint_gutter_fallback_survives_unreadable_header_tokens():
             words.append(word(rx, y, rx + 22, y + 12, f"right{n}", n))
             n += 1
     assert _column_split_x(words, 1000) == 500
+
+
+def test_scan_pixel_detector_finds_true_midpoint_rule_not_cover_page_text(tmp_path):
+    import fitz
+
+    pdf = fitz.open()
+    divided = pdf.new_page(width=1000, height=1200)
+    divided.draw_line((500, 150), (500, 1100), color=(0.15, 0.30, 0.50), width=2)
+    divided.insert_text((80, 200), "Left column question", fontsize=14)
+    divided.insert_text((650, 200), "Right column question", fontsize=14)
+    cover = pdf.new_page(width=1000, height=1200)
+    cover.insert_text((100, 200), "A full-width cover page with instructions", fontsize=18)
+    cover.insert_text((100, 260), "Many lines of one-column text without a center rule", fontsize=14)
+    assert _has_center_divider(divided) is True
+    assert _has_center_divider(cover) is False
+    pdf.close()
 
 
 def test_midpoint_gutter_ignores_narrow_ocr_divider_fragments():

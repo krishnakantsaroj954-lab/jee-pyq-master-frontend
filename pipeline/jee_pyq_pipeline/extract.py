@@ -97,6 +97,44 @@ def _clean_ocr_words(words: list[tuple], width: float, height: float) -> list[tu
     return cleaned
 
 
+def _has_center_divider(page) -> bool:
+    """Detect a long, dark vertical separator near the midpoint of a scanned page."""
+    try:
+        pix = page.get_pixmap(dpi=72, alpha=False)
+    except Exception:
+        return False
+    width, height, channels = int(pix.width), int(pix.height), int(pix.n)
+    if width < 100 or height < 100 or channels < 3:
+        return False
+    samples = pix.samples
+    midpoint = width // 2
+    radius = max(3, int(width * 0.006))
+    y0, y1 = int(height * 0.12), int(height * 0.95)
+    if y1 <= y0:
+        return False
+    required_fraction = 0.35
+    required_run = int(height * 0.25)
+    for x in range(max(0, midpoint - radius), min(width, midpoint + radius + 1)):
+        dark_count = 0
+        longest_run = run = gap = 0
+        for y in range(y0, y1):
+            offset = (y * width + x) * channels
+            is_dark = (samples[offset] + samples[offset + 1] + samples[offset + 2]) / 3 < 170
+            if is_dark:
+                dark_count += 1
+                run += 1
+                gap = 0
+                longest_run = max(longest_run, run)
+            else:
+                gap += 1
+                if gap > 2:
+                    run = 0
+                    gap = 0
+        if dark_count / (y1 - y0) >= required_fraction and longest_run >= required_run:
+            return True
+    return False
+
+
 def _join_word_tokens(words: list[tuple]) -> str:
     """Join OCR tokens without breaking punctuation-only question/option markers."""
     value = ""
@@ -264,11 +302,11 @@ def _question_start(text: str):
     return match, (int(match.group(1)) if match else None)
 
 
-def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
-    """Group text rows and return complete left column before complete right column."""
+def _lines(words: list[tuple], width: float, force_midpoint: bool = False) -> list[list[tuple]]:
+    """Group rows, respecting a source-verified center divider when present."""
     if not words:
         return []
-    split_x = _column_split_x(words, width)
+    split_x = width * 0.5 if force_midpoint else _column_split_x(words, width)
     if split_x is None:
         return _word_rows(words)
     left = [w for w in words if (float(w[0]) + float(w[2])) / 2.0 < split_x]
@@ -674,7 +712,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 scan_only_pages.add(page_no)
                 scan_dpi_by_page[page_no]=_ocr_dpi(page)
             page_rows=[]
-            for row in _lines(words, page.rect.width):
+            force_midpoint = used_ocr and _has_center_divider(page)
+            for row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
                 text=_join_word_tokens(row).strip()
                 if not text:
                     continue
