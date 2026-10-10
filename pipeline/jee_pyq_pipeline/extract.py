@@ -24,6 +24,31 @@ def _fitz():
     except ImportError as error:
         raise RuntimeError('PyMuPDF is required for layout-aware extraction; refusing text-only fallback') from error
 
+
+def _page_words(page, page_no: int = 1):
+    """Return geometry-bearing words, using OCR only when the PDF page has no text layer."""
+    words = page.get_text('words')
+    if words:
+        return words, False
+    try:
+        textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
+        words = page.get_text('words', textpage=textpage)
+    except Exception as error:
+        raise RuntimeError(
+            f'OCR required on source page {page_no} but unavailable; refusing placeholder output'
+        ) from error
+    if not words:
+        raise RuntimeError(
+            f'OCR produced no words on source page {page_no}; refusing empty/placeholder output'
+        )
+    return words, True
+
+
+def _question_start(text: str):
+    """Return (regex_match, integer question number) for supported printed headers."""
+    match = QUESTION_START.match(text)
+    return match, (int(match.group(1)) if match else None)
+
 def _lines(words: list[tuple], width: float) -> list[list[tuple]]:
     if not words:
         return []
@@ -65,6 +90,10 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str)->list[Asset]:
         file.parent.mkdir(parents=True,exist_ok=True)
         file.write_bytes(data)
         for rect in page.get_image_rects(xref):
+            # Full-page scans are source context, not question images. Never attach them
+            # to every question; individual question crops must be created from geometry.
+            if rect.width >= float(page.rect.width) * 0.85 and rect.height >= float(page.rect.height) * 0.80:
+                continue
             bounds=[round(rect.x0,2),round(rect.y0,2),round(rect.x1,2),round(rect.y1,2)]
             found.append(Asset(object_key,page_no,bounds,digest,str(file.relative_to(asset_dir.parent))))
     return found
@@ -290,15 +319,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             pa=_assets(page,page_no,asset_dir,source_hash)
             page_assets[page_no]=pa
             all_assets.extend(pa)
-            words = page.get_text('words')
-            if not words:
-                try:
-                    textpage = page.get_textpage_ocr(language='eng', dpi=250, full=True)
-                    words = page.get_text('words', textpage=textpage)
-                except Exception as error:
-                    raise RuntimeError(
-                        f'OCR required on source page {page_no} but unavailable; refusing placeholder output'
-                    ) from error
+            words, _used_ocr = _page_words(page, page_no)
             for row in _lines(words, page.rect.width):
                 text=' '.join(w[4] for w in row).strip()
                 if not text:
@@ -314,8 +335,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     blocks=[]
     current=None
     for page,text,bounds,subject in raw:
-        match=QUESTION_START.match(text)
-        number=int(match.group(1)) if match else None
+        match, number = _question_start(text)
         if number is not None and current is None and subject is None:
             continue
         if number is not None and subject is not None:
@@ -339,10 +359,18 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         spages=sorted({r[0] for r in srows})
         if not qpages:
             qpages=sorted(block['pages'])
-        q_bounds=[
-            min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
-            max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
-        ]
+        if qrows:
+            q_bounds=[
+                min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
+                max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
+            ]
+        else:
+            issues.append(Issue(
+                'EMPTY_QUESTION_TEXT',
+                f'Question {block["subject"]}:{block["number"]} has no question-region text before the answer/solution section',
+            ))
+            fallback_bounds = _rect_union([r[2] for r in block['rows']])
+            q_bounds = fallback_bounds or [0.0, 0.0, 1.0, 1.0]
         s_bounds=None
         if srows:
             s_bounds=[
