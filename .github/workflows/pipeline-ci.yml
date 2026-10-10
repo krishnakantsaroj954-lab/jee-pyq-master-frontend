@@ -8,9 +8,9 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test-and-source-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,9 +18,42 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install pipeline and test dependencies
+      - name: Install pipeline, test and OCR dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
           python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
-      - name: Run parser, validator, crop, and review-gate tests
+      - name: Run parser and safety tests
         run: python -m pytest -q
+      - name: Probe the uploaded 16 MB source PDF
+        run: |
+          python - <<'PY'
+          import fitz, hashlib, json, re
+          from pathlib import Path
+          pdf=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          if not pdf.is_file():
+              raise SystemExit("Uploaded source PDF is missing")
+          doc=fitz.open(pdf)
+          report={"filename":pdf.name,"bytes":pdf.stat().st_size,"sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"pages":len(doc),"metadata":doc.metadata,"page_probe":[]}
+          for i,p in enumerate(doc,1):
+              native=p.get_text("text",sort=True) or ""
+              used_ocr=len(native.strip())<80
+              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=220,full=True),sort=True) if used_ocr else native
+              lines=[line.strip() for line in text.splitlines() if line.strip()]
+              report["page_probe"].append({"page":i,"width":p.rect.width,"height":p.rect.height,"native_chars":len(native),"ocr_used":used_ocr,"chars":len(text),"subject_headings":[s for s in ["PHYSICS","CHEMISTRY","MATHEMATICS","MATHS"] if re.search(r"\\b"+s+r"\\b",text,re.I)],"question_headers":[line[:160] for line in lines if re.match(r"^\\s*(?:Question\\s*)?\\d{1,3}[.):]\\s+\\S",line,re.I)],"first_lines":lines[:18] if i<=3 else lines[:4]})
+              if i in {1,2,3,10,15,20,len(doc)}:
+                  Path(f"pdf-page-{i:02}.png").write_bytes(p.get_pixmap(dpi=105,alpha=False).tobytes("png"))
+          Path("pdf-probe.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps({"filename":report["filename"],"bytes":report["bytes"],"sha256":report["sha256"],"pages":report["pages"],"metadata":report["metadata"],"page_probe":report["page_probe"][:3]},ensure_ascii=False,indent=2))
+          doc.close()
+          PY
+      - name: Upload source PDF probe only (diagnostic, not import data)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uploaded-source-pdf-probe
+          path: |
+            pdf-probe.json
+            pdf-page-*.png
+          if-no-files-found: warn
