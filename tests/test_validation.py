@@ -5,7 +5,7 @@ from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
-    _question_header_candidate, _infer_missing_top_question_header, _has_center_divider,
+    _question_header_candidate, _infer_missing_top_question_header, _has_center_divider, _ocr_clip_words,
     _question_type_from_ranges, _sequence_header_gap,
 )
 from jee_pyq_pipeline.validate import validate
@@ -892,3 +892,55 @@ def test_question_crop_is_clamped_before_answer_even_if_ocr_rows_overlap(tmp_pat
     assert len(crops) == 1
     assert crops[0].bounds[3] <= answer_row[2][1] - 6.0
     assert (tmp_path / crops[0].path).is_file()
+
+
+def test_question_header_recovers_expected_number_when_ocr_loses_separator():
+    match, number = _question_header_candidate(
+        "67 —K QY x", [1271.0, 539.0, 1922.0, 711.0], 2479.0, 67
+    )
+    assert number == 67
+    assert match is not None
+    assert match.group(1) == "67"
+
+    # The same exact number on an answer line must never start a new question.
+    assert _question_header_candidate(
+        "67. Ans. (1)", [1271.0, 539.0, 1450.0, 575.0], 2479.0, 67
+    ) == (None, None)
+
+
+def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
+    import csv
+    import io
+    import fitz
+    from unittest.mock import patch
+
+    def tsv_with_word(text, left=50, top=60):
+        buffer = io.StringIO(newline="")
+        writer = csv.writer(buffer, delimiter="\\t", lineterminator="\\n")
+        writer.writerow([
+            "level", "page_num", "block_num", "par_num", "line_num", "word_num",
+            "left", "top", "width", "height", "conf", "text",
+        ])
+        writer.writerow([5, 1, 1, 1, 1, 1, left, top, 40, 20, "90.0", text])
+        return buffer.getvalue().encode("utf-8")
+
+    # Simulate the actual failure mode observed on source page 5: a quoted TSV
+    # payload accidentally arrives as the text of a single OCR word.
+    contaminated = (
+        "5\\t1\\t1\\t1\\t8\\t2\\t151\\t275\\t52\\t33\\t77.284790\\t10.\\n"
+        "5\\t1\\t1\\t1\\t8\\t3\\t266\\t275\\t79\\t39\\t66.759361\\tIfa,"
+    )
+    responses = [
+        type("Completed", (), {"returncode": 0, "stdout": tsv_with_word(contaminated), "stderr": b""})(),
+        type("Completed", (), {"returncode": 0, "stdout": tsv_with_word("Question"), "stderr": b""})(),
+    ]
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    try:
+        with patch("jee_pyq_pipeline.extract.subprocess.run", side_effect=responses) as run:
+            words = _ocr_clip_words(page, 5, (0, 0, 280, 800), 72)
+        assert len(words) == 1
+        assert words[0][4] == "Question"
+        assert [call.args[0][6] for call in run.call_args_list] == ["6", "4"]
+    finally:
+        doc.close()

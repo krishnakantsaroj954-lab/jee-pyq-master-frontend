@@ -281,49 +281,79 @@ def _column_split_x(words: list[tuple], width: float) -> float | None:
     return max(candidates, default=(0.0, None), key=lambda item: item[0])[1]
 
 def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
-    """OCR one source-page region as a single text block and map TSV boxes to PDF coordinates."""
+    """OCR one source-page region, retrying a contaminated TSV block in sparse-column mode."""
     fitz = _fitz()
     rect = fitz.Rect(clip)
     pix = page.get_pixmap(dpi=dpi, clip=rect, alpha=False)
-    try:
-        result = subprocess.run(
-            ["tesseract", "stdin", "stdout", "-l", "eng", "--psm", "6", "tsv"],
-            input=pix.tobytes("png"),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            check=False,
-            timeout=120,
-        )
-    except Exception as error:
-        raise RuntimeError(f"Tesseract region OCR failed on source page {page_no}") from error
-    if result.returncode != 0:
-        detail = result.stderr.decode("utf-8", errors="replace")[-1200:]
-        raise RuntimeError(
-            f"Tesseract region OCR failed on source page {page_no}: {detail}"
-        )
     sx = rect.width / max(float(pix.width), 1.0)
     sy = rect.height / max(float(pix.height), 1.0)
-    words = []
-    reader = csv.DictReader(io.StringIO(result.stdout.decode("utf-8", errors="replace")), delimiter="\t")
-    for row in reader:
+    png = pix.tobytes("png")
+
+    def run_tesseract(psm: str) -> bytes:
         try:
-            if int(row.get("level", "0")) != 5:
+            result = subprocess.run(
+                ["tesseract", "stdin", "stdout", "-l", "eng", "--psm", psm, "tsv"],
+                input=png,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+                timeout=120,
+            )
+        except Exception as error:
+            raise RuntimeError(
+                f"Tesseract region OCR failed on source page {page_no} (PSM {psm})"
+            ) from error
+        if result.returncode != 0:
+            detail = result.stderr.decode("utf-8", errors="replace")[-1200:]
+            raise RuntimeError(
+                f"Tesseract region OCR failed on source page {page_no} (PSM {psm}): {detail}"
+            )
+        return result.stdout
+
+    def parse_tsv(payload: bytes) -> tuple[list[tuple], bool]:
+        words = []
+        contaminated = False
+        reader = csv.DictReader(
+            io.StringIO(payload.decode("utf-8", errors="replace")),
+            delimiter="\t",
+        )
+        for row in reader:
+            try:
+                if int(row.get("level", "0")) != 5:
+                    continue
+                token = (row.get("text") or "").strip()
+                if not token:
+                    continue
+                # Tesseract 5.5 can occasionally emit a whole run of TSV records
+                # inside one quoted word's text field on equation-heavy scan pages.
+                # Treat that as corrupted output, not as question text.
+                if any(char in token for char in ("\t", "\n", "\r")):
+                    contaminated = True
+                    continue
+                left, top = int(row["left"]), int(row["top"])
+                width, height = int(row["width"]), int(row["height"])
+                if width <= 0 or height <= 0:
+                    continue
+                words.append((
+                    rect.x0 + left * sx, rect.y0 + top * sy,
+                    rect.x0 + (left + width) * sx, rect.y0 + (top + height) * sy,
+                    token, int(row.get("block_num", 0)), int(row.get("line_num", 0)),
+                    int(row.get("word_num", 0)),
+                ))
+            except (KeyError, TypeError, ValueError):
                 continue
-            token = (row.get("text") or "").strip()
-            if not token:
-                continue
-            left, top = int(row["left"]), int(row["top"])
-            width, height = int(row["width"]), int(row["height"])
-            if width <= 0 or height <= 0:
-                continue
-            words.append((
-                rect.x0 + left * sx, rect.y0 + top * sy,
-                rect.x0 + (left + width) * sx, rect.y0 + (top + height) * sy,
-                token, int(row.get("block_num", 0)), int(row.get("line_num", 0)),
-                int(row.get("word_num", 0)),
-            ))
-        except (KeyError, TypeError, ValueError):
-            continue
+        return words, contaminated
+
+    # PSM 6 is usually more useful for a single question column. If its TSV
+    # structure is corrupted, retry that same source crop with PSM 4, which
+    # correctly separated Q10/Q11 on the affected 28-Jan paper scan.
+    words, contaminated = parse_tsv(run_tesseract("6"))
+    if contaminated:
+        words, contaminated = parse_tsv(run_tesseract("4"))
+        if contaminated:
+            raise RuntimeError(
+                f"Tesseract returned corrupted TSV twice on source page {page_no}; refusing contaminated text"
+            )
     if not words:
         raise RuntimeError(f"Tesseract produced no word boxes on source page {page_no}")
     return words
@@ -732,6 +762,15 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
         return None, None
     if direct_number is not None and (expected_number is None or direct_number == expected_number):
         return direct_match, direct_number
+
+    # On equation/figure pages, OCR can omit the punctuation immediately after
+    # a printed question number (source Q67 becomes "67 —K QY x"). Only accept
+    # this form when it exactly matches the next expected number and the start of
+    # the row is already inside the printed question-number gutter.
+    if expected_number is not None:
+        expected_prefix = re.match(rf'^\\s*({re.escape(str(expected_number))})\\b', text)
+        if expected_prefix and not _NUMBERED_SECTION_LABEL.match(text[expected_prefix.end():]):
+            return expected_prefix, expected_number
 
     # Examples from the source scan include "1 2. The value...", "I 46. ...",
     # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
