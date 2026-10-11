@@ -851,3 +851,44 @@ def test_incomplete_option_labels_do_not_duplicate_source_question_text():
     assert text.count("Question stem") == 1
     assert text.count("(1) one") == 1
     assert text.count("(4) four") == 1
+
+
+def test_question_crop_is_clamped_before_answer_even_if_ocr_rows_overlap(tmp_path):
+    import fitz
+
+    pdf_path = tmp_path / "crop-boundary.pdf"
+    source = fitz.open()
+    page = source.new_page(width=500, height=800)
+    page.insert_text((50, 120), "Question stem and choices", fontsize=12)
+    page.insert_text((50, 310), "Ans. (2)", fontsize=12)
+    page.insert_text((50, 345), "Sol. Source explanation", fontsize=12)
+    source.save(pdf_path)
+    source.close()
+
+    doc = fitz.open(pdf_path)
+    question_row = (1, "Question stem and choices", [50.0, 100.0, 230.0, 125.0])
+    answer_row = (1, "Ans. (2)", [50.0, 290.0, 130.0, 320.0])
+    solution_row = (1, "Sol. Source explanation", [50.0, 330.0, 260.0, 355.0])
+    block = {
+        "number": 1,
+        "subject": "Physics",
+        # Deliberately simulate a layout/OCR boundary error: the answer row
+        # has leaked into the question-region rows, although its label is known.
+        "rows": [question_row, answer_row, solution_row],
+    }
+    crops = _crop_scan_regions(
+        doc,
+        block,
+        [question_row, answer_row],
+        [block],
+        0,
+        tmp_path / "assets",
+        "a" * 64,
+        "question",
+        {1: 72},
+    )
+    doc.close()
+
+    assert len(crops) == 1
+    assert crops[0].bounds[3] <= answer_row[2][1] - 6.0
+    assert Path(crops[0].path).is_file()
