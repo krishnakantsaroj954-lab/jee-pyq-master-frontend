@@ -686,8 +686,14 @@ def _question_type_from_ranges(number: int, ranges) -> str | None:
     return matches[0] if len(matches) == 1 else None
 
 
+_NUMBERED_SECTION_LABEL = re.compile(
+    r'^\\s*(?:ans(?:wer)?\\s*[.:,;]|sol(?:ution)?\\s*[.:,;])(?=\\s|$|[\\(\\[])',
+    re.I,
+)
+
+
 def _question_header_candidate(text: str, bounds: list[float], page_width: float, expected_number: int | None = None):
-    """Recognize a printed question number despite a small OCR prefix, but only in a column's number gutter."""
+    """Recognize printed question numbers, while excluding numbered Answer/Solution rows."""
     x0 = float(bounds[0])
     midpoint = float(page_width) * 0.5
     in_number_gutter = (
@@ -698,6 +704,11 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
         return None, None
 
     direct_match, direct_number = _question_start(text)
+    if direct_match is not None and _NUMBERED_SECTION_LABEL.match(text[direct_match.end():]):
+        # Some pages print the question number again beside its answer, e.g.
+        # "10. Ans. ()". That is not a new question boundary: the actual stem
+        # may be at the top of the next column/page.
+        return None, None
     if direct_number is not None and (expected_number is None or direct_number == expected_number):
         return direct_match, direct_number
 
@@ -706,6 +717,8 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     # only short OCR debris / one stray digit before the expected printed number.
     marker = re.compile(r'(?<!\d)(\d{1,3})\s*[.):,](?=\s|$)')
     for match in marker.finditer(text[:40]):
+        if _NUMBERED_SECTION_LABEL.match(text[match.end():]):
+            return None, None
         number = int(match.group(1))
         if expected_number is not None and number != expected_number:
             continue
