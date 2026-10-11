@@ -588,6 +588,30 @@ def test_infer_missing_top_question_when_ocr_misses_sol_label():
     ) is True
 
 
+def test_infer_q4_boundary_from_actual_source_ocr_noise():
+    # Reproduces the 28 Jan Shift 1 source scan: Q4's equation is at the top
+    # of the left column, its number is OCR'd as "4 If" without punctuation,
+    # and the same OCR pass reads "Ans." / "Sol." as "1 Ans." / "Sol,".
+    raw = [
+        (3, "el) tan(A-B A eg i ‘ [0.5],", [325.9, 268.0, 1207.63, 389.0], "Mathematics"),
+        (3, "—", [455.86, 298.0, 478.85, 300.0], "Mathematics"),
+        (3, "4 If A, B, C", [147.95, 313.0, 980.7, 352.0], "Mathematics"),
+        (3, "then", [264.92, 419.0, 342.9, 452.0], "Mathematics"),
+        (3, "1 Ans. (1)", [20.99, 769.0, 316.9, 810.0], "Mathematics"),
+        (3, "Sol, 1", [149.95, 879.0, 950.71, 913.0], "Mathematics"),
+        (3, "5. Let be complex number such that | 6 | 5",
+            [148.95, 1725.0, 1206.63, 1767.0], "Mathematics"),
+    ]
+    expected_subject_by_number = {4: "Mathematics", 5: "Mathematics"}
+    assert _infer_missing_top_question_header(
+        raw,
+        0,
+        4,
+        {3: (2479.0, 3508.0)},
+        expected_subject_by_number,
+    ) is True
+
+
 def test_answer_marker_tolerates_leading_scan_noise():
     parsed = _split_source_sections([
         (1, "A statement with four options", [100, 100, 400, 120]),
