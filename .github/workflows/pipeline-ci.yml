@@ -4,7 +4,9 @@ on:
     branches: [pipeline/source-grounded-parser-review]
     paths:
       - ".github/workflows/pipeline-ci.yml"
+      - "pipeline/jee_pyq_pipeline/**"
       - "pipeline/watermark_images.py"
+      - "tests/test_validation.py"
       - "tests/test_watermark_images.py"
       - "pyproject.toml"
   workflow_dispatch:
@@ -43,7 +45,7 @@ jobs:
               raise SystemExit("Uploaded source PDF is missing")
           doc=fitz.open(pdf)
           report={"filename":pdf.name,"bytes":pdf.stat().st_size,"sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"pages":len(doc),"metadata":doc.metadata,"page_probe":[]}
-          sample_pages={1,2,3,10,15,20,len(doc)}
+          sample_pages={1,2,3,4,10,15,20,len(doc)}
           for i,p in enumerate(doc,1):
               native=p.get_text("text",sort=True) or ""
               used_ocr=len(native.strip())<80
