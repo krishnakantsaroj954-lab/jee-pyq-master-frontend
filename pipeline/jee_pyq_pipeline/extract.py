@@ -610,7 +610,10 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             if kind == "question" and answer_side:
                 answer_top = min(row[2][1] for row in answer_side)
                 if answer_top > y0:
-                    y1 = min(page_height, max(y1, answer_top - 6.0))
+                    # Never allow the question crop to extend into the printed answer row.
+                    # min() is essential here: max() can retain an overlapping crop when
+                    # OCR has accidentally included the answer row in question-region rows.
+                    y1 = min(y1, answer_top - 6.0)
             elif kind == "solution":
                 region_bottom = max(row[2][3] for row in region_rows)
                 next_top = None
