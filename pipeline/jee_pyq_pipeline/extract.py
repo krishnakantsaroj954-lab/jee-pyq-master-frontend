@@ -722,7 +722,7 @@ def _layout_answer_marker(text: str) -> bool:
     # OCR sometimes merges a short mathematical token from the same baseline
     # before the printed label (the source scan has the exact form "1 Ans. (1)").
     value = re.sub(
-        r'^\\s*\\d{1,2}\\s+(?=(?:answer|ans|correct\\s+answer)\\b)',
+        r'^\s*\d{1,2}\s+(?=(?:answer|ans|correct\s+answer)\b)',
         '',
         value,
         count=1,
@@ -736,8 +736,8 @@ def _layout_solution_marker(text: str) -> bool:
     value = str(text).strip()
     # On the source scan OCR reads the printed "Sol." label as "Sol,".
     value = re.sub(
-        r'^\\s*(solution|sol)\\s*[,;](?=\\s|$)',
-        r'\\1.',
+        r'^\s*(solution|sol)\s*[,;](?=\s|$)',
+        r'\1.',
         value,
         count=1,
         flags=re.I,
@@ -755,6 +755,10 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
         return False
     width, height = dimensions
     if float(bounds[1]) > height * 0.12:
+        return False
+    # Ignore OCR'd scan borders at the very top; they can otherwise inherit the
+    # following question merely because its answer/solution markers are nearby.
+    if float(bounds[1]) <= height * 0.015:
         return False
     x0 = float(bounds[0])
     midpoint = width * 0.5
