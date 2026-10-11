@@ -891,4 +891,4 @@ def test_question_crop_is_clamped_before_answer_even_if_ocr_rows_overlap(tmp_pat
 
     assert len(crops) == 1
     assert crops[0].bounds[3] <= answer_row[2][1] - 6.0
-    assert Path(crops[0].path).is_file()
+    assert (tmp_path / crops[0].path).is_file()
