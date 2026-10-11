@@ -812,3 +812,39 @@ def test_missing_numbered_header_does_not_swallow_all_later_source_questions(tmp
         issue.code for issue in validate(config, questions, page_count)
     }
 
+
+
+def test_scanner_prefix_answer_and_comma_solution_markers_are_split():
+    qtext, qopts, answer, solution, qrows, srows, err = _split_source_sections([
+        (1, "A statement with a required value and four options.", [100, 100, 400, 120]),
+        (1, "1 Ans. (3)", [20, 140, 180, 160]),
+        (1, "Sol, substitute the stated values to obtain the result.", [100, 180, 500, 200]),
+    ])
+    assert answer == "3"
+    assert solution == "substitute the stated values to obtain the result."
+    assert err is None
+    assert "Ans." not in qtext
+
+
+def test_numbered_answer_label_is_not_consumed_as_previous_question_answer():
+    qtext, qopts, answer, solution, qrows, srows, err = _split_source_sections([
+        (1, "Question 9 text that is grounded in the PDF source.", [100, 100, 500, 120]),
+        (1, "9. Ans. (4)", [100, 140, 200, 160]),
+        (1, "10. Ans. ()", [650, 170, 800, 190]),
+        (1, "Solution continuation from question 9.", [100, 200, 500, 220]),
+    ])
+    # A numbered Answer row is not accepted by this marker parser. The boundary
+    # detector handles it separately and must not attach Q10's answer to Q9.
+    assert answer == "4"
+    assert "10. Ans. ()" in solution
+
+
+def test_incomplete_option_labels_do_not_duplicate_source_question_text():
+    source_line = "Question stem asks for a value. (1) one (2) two (4) four"
+    text, options = _split_options([
+        (1, source_line, [100, 100, 700, 125]),
+    ])
+    assert options == {}
+    assert text.count("Question stem") == 1
+    assert text.count("(1) one") == 1
+    assert text.count("(4) four") == 1
