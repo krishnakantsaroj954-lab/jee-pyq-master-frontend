@@ -10,14 +10,6 @@ class Issue:
     question_id: str | None = None
 
 @dataclass
-class Asset:
-    object_key: str
-    page: int
-    bounds: list[float]
-    sha256: str
-    path: str
-
-@dataclass
 class Question:
     id: str
     source_question_number: int
@@ -27,7 +19,7 @@ class Question:
     pages: list[int]
     bounds: list[float]
     provenance: dict[str, Any]
-    assets: list[Asset] = field(default_factory=list)
+    assets: list[dict[str, Any]] = field(default_factory=list)
     solution: dict[str, Any] | None = None
     requires_figure: bool = False
     status: str = "VALIDATED"
@@ -35,7 +27,7 @@ class Question:
     subject: str | None = None
     section: str | None = None
     question_type: str = "UNKNOWN"
-    solution_assets: list[Asset] = field(default_factory=list)
+    solution_assets: list[dict[str, Any]] = field(default_factory=list)
 
     def json(self) -> dict[str, Any]:
         value = asdict(self)
