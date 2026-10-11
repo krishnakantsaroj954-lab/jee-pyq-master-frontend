@@ -1,0 +1,134 @@
+name: Diagnose Page 19 OCR
+on:
+  push:
+    branches:
+      - pipeline/source-grounded-parser-review
+    paths:
+      - ".github/workflows/page19-ocr-diagnostic.yml"
+      - "pipeline/jee_pyq_pipeline/extract.py"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose-page-19:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout source-grounded branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install PDF and OCR tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install "PyMuPDF>=1.24,<2"
+      - name: Isolate page 19 failure and compare OCR modes
+        shell: bash
+        run: |
+          PYTHONPATH=pipeline python - <<'PY'
+          import csv, io, json, subprocess, traceback
+          from pathlib import Path
+          import fitz
+          from jee_pyq_pipeline.extract import (
+              _page_image_info, _ocr_dpi, _has_center_divider, _page_words,
+              _join_word_tokens, _lines,
+          )
+
+          source = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          if not source.is_file():
+              raise SystemExit("Required source PDF is missing")
+          report = {"source_pdf": source.name, "page_number": 19, "modes": [], "page_words_error": None}
+          with fitz.open(source) as doc:
+              if len(doc) < 19:
+                  raise SystemExit(f"Source PDF has only {len(doc)} pages")
+              page = doc[18]
+              image_info = _page_image_info(page)
+              dpi = _ocr_dpi(page, image_info)
+              divider = _has_center_divider(page)
+              page.get_pixmap(dpi=72, alpha=False).save("page-19-source.png")
+              report["page"] = {
+                  "width": float(page.rect.width),
+                  "height": float(page.rect.height),
+                  "native_words": len(page.get_text("words")),
+                  "image_placements": len(image_info),
+                  "ocr_dpi": dpi,
+                  "center_divider": divider,
+                  "tesseract_version": subprocess.run(
+                      ["tesseract", "--version"], capture_output=True, text=True, check=False
+                  ).stdout.splitlines()[:2],
+              }
+              width, height = float(page.rect.width), float(page.rect.height)
+              if divider:
+                  mid = float(page.rect.x0) + width * 0.5
+                  margin = max(2.0, width * 0.006)
+                  regions = [
+                      ("left", fitz.Rect(page.rect.x0, page.rect.y0, mid-margin, page.rect.y1)),
+                      ("right", fitz.Rect(mid+margin, page.rect.y0, page.rect.x1, page.rect.y1)),
+                  ]
+              else:
+                  regions = [("full", page.rect)]
+              for region_name, rect in regions:
+                  pix = page.get_pixmap(dpi=dpi, clip=rect, alpha=False)
+                  png = pix.tobytes("png")
+                  for psm in ("6", "4", "11"):
+                      proc = subprocess.run(
+                          ["tesseract", "stdin", "stdout", "-l", "eng", "--psm", psm, "tsv"],
+                          input=png, capture_output=True, check=False, timeout=150,
+                      )
+                      words, contaminated, suspicious = 0, 0, []
+                      try:
+                          reader = csv.DictReader(
+                              io.StringIO(proc.stdout.decode("utf-8", errors="replace")),
+                              delimiter="\\t",
+                          )
+                          for row in reader:
+                              if int(row.get("level", "0")) != 5:
+                                  continue
+                              token = (row.get("text") or "").strip()
+                              if not token:
+                                  continue
+                              words += 1
+                              if any(ch in token for ch in ("\\t", "\\n", "\\r")):
+                                  contaminated += 1
+                                  suspicious.append(repr(token[:180]))
+                      except Exception as error:
+                          suspicious.append(f"TSV parse error: {error!r}")
+                      report["modes"].append({
+                          "region": region_name, "psm": psm, "returncode": proc.returncode,
+                          "word_rows": words, "contaminated_rows": contaminated,
+                          "suspicious_sample": suspicious[:3],
+                          "stderr_tail": proc.stderr.decode("utf-8", errors="replace")[-350:],
+                      })
+              try:
+                  words, used_ocr = _page_words(page, 19, image_info)
+                  report["page_words"] = {
+                      "success": True, "used_ocr": used_ocr, "word_count": len(words),
+                      "row_preview": [
+                          _join_word_tokens(row).strip()
+                          for row in _lines(words, width, force_midpoint=used_ocr and divider)
+                      ][:45],
+                  }
+              except Exception as error:
+                  chain = []
+                  current = error
+                  while current is not None:
+                      chain.append({"type": type(current).__name__, "message": str(current)})
+                      current = current.__cause__
+                  report["page_words_error"] = chain
+          Path("page-19-ocr-diagnostic.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          PY
+      - name: Upload page 19 diagnostics only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: page-19-ocr-diagnostic
+          path: |
+            page-19-ocr-diagnostic.json
+            page-19-source.png
+          if-no-files-found: warn
