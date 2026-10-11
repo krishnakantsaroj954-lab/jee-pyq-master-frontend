@@ -768,7 +768,7 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     # this form when it exactly matches the next expected number and the start of
     # the row is already inside the printed question-number gutter.
     if expected_number is not None:
-        expected_prefix = re.match(rf'^\\s*({re.escape(str(expected_number))})\\b', text)
+        expected_prefix = re.match(rf'^\s*({re.escape(str(expected_number))})\b', text)
         if expected_prefix and not _NUMBERED_SECTION_LABEL.match(text[expected_prefix.end():]):
             return expected_prefix, expected_number
 
