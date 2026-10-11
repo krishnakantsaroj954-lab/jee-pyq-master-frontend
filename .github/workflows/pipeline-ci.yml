@@ -45,7 +45,7 @@ jobs:
               raise SystemExit("Uploaded source PDF is missing")
           doc=fitz.open(pdf)
           report={"filename":pdf.name,"bytes":pdf.stat().st_size,"sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"pages":len(doc),"metadata":doc.metadata,"page_probe":[]}
-          sample_pages={1,2,3,4,10,15,20,len(doc)}
+          sample_pages={1,2,3,4,5,6,10,15,20,21,22,23,24,len(doc)}
           for i,p in enumerate(doc,1):
               native=p.get_text("text",sort=True) or ""
               used_ocr=len(native.strip())<80
@@ -71,7 +71,7 @@ jobs:
           )
           source=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
           doc=fitz.open(source)
-          selected={1,2,3,4,7,8,9,10,15,16,20,24}
+          selected={1,2,3,4,5,6,7,8,9,10,15,16,20,21,22,23,24}
           report={"source_pdf":source.name,"pages":len(doc),"samples":[]}
           summary=[]
           for page_no in sorted(selected):
