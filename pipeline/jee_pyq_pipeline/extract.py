@@ -10,8 +10,8 @@ from .util import safe_normalize, sha256_file
 
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(\s*([A-D]|[1-4])\s*\)|([A-D]|[1-4])\s*[.)])(?=\s|$)', re.I)
-ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:[Il]\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
-SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*\.)(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
+ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:(?:[Il]|\d{1,2})\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
+SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*[.,;])(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
@@ -863,7 +863,10 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
             candidates[label]=safe_normalize(text[match.end():end].strip())
     if set(candidates)==set('ABCD') or set(candidates)==set('1234'):
         return safe_normalize(' '.join(body)),{k:v for k,v in candidates.items() if v.strip()}
-    all_text=safe_normalize(' '.join(body+[safe_normalize(t) for _,t,_ in rows if t]))
+    # If the option labels are incomplete or OCR has detached math glyphs from
+    # their labels, preserve the source row text once and fail structural
+    # validation. Do not duplicate the question stem/options in the text field.
+    all_text=safe_normalize(' '.join(t for _,t,_ in rows if t))
     return all_text,{}
 
 def _parse_answer(text:str)->str|None:
