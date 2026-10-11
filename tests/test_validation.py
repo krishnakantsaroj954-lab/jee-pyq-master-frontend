@@ -839,7 +839,7 @@ def test_numbered_answer_label_is_not_consumed_as_previous_question_answer():
     assert answer is None
     assert "9. Ans. (4)" in qtext
     assert "10. Ans. ()" in qtext
-    assert solution == "Solution continuation from question 9."
+    assert solution == "continuation from question 9."
 
 
 def test_incomplete_option_labels_do_not_duplicate_source_question_text():
