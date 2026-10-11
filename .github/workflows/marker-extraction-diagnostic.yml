@@ -7,13 +7,19 @@ concurrency:
 # Manual-only diagnostic: avoid automatic costly reruns on every push.
 on:
   workflow_dispatch:
+    inputs:
+      run_full_paper:
+        description: "Run all 24 pages only after the question-page smoke test passes"
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   marker-smoke:
-    name: Marker one-page low-memory smoke test
+    name: Marker representative question-page low-memory smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -109,7 +115,7 @@ jobs:
           JSON
           cp marker-low-memory.json marker-smoke-output/marker-config.json
 
-      - name: Run Marker on one representative source page
+      - name: Run Marker on the first question page (source page 2)
         id: marker_smoke
         continue-on-error: true
         shell: bash
@@ -121,7 +127,7 @@ jobs:
           export TOKENIZERS_PARALLELISM=false
           set +e
           timeout 30m marker_single cEDaK5Wn5ILe4nOdotd6.pdf \
-            --page_range "0" \
+            --page_range "1" \
             --output_format json \
             --output_dir marker-smoke-output \
             --config_json marker-low-memory.json \
@@ -136,7 +142,7 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import json, re
+          import html, json, re
           from pathlib import Path
           root = Path("marker-smoke-output")
           files, strings, json_files = [], [], []
@@ -149,27 +155,34 @@ jobs:
           for p in sorted(root.rglob("*")):
               if not p.is_file(): continue
               files.append({"path": str(p), "size_bytes": p.stat().st_size})
-              if p.suffix.lower()==".json" and p.name!="marker-summary.json":
+              if (p.suffix.lower() == ".json"
+                  and p.name not in {"marker-summary.json", "source-info.json", "marker-config.json"}
+                  and not p.name.endswith("_meta.json")):
                   json_files.append(str(p))
                   try: walk(json.loads(p.read_text(encoding="utf-8")))
                   except Exception: pass
-              elif p.suffix.lower() in {".md",".txt",".html"} and p.name not in {"marker-run.log"}:
-                  try: strings.append(p.read_text(encoding="utf-8",errors="replace"))
+              elif p.suffix.lower() in {".md", ".txt", ".html"} and p.name != "marker-run.log":
+                  try: strings.append(p.read_text(encoding="utf-8", errors="replace"))
                   except Exception: pass
-          combined="\n".join(strings)
-          exitfile=root/"marker-exit-code.txt"
-          summary={
-            "status":"MARKER_OUTPUT_PRESENT" if json_files or combined.strip() else "NO_MARKER_TEXT_OUTPUT",
-            "exit_code":exitfile.read_text().strip() if exitfile.exists() else "runner_interrupted_before_exit_code",
-            "json_outputs":json_files,
-            "file_count":len(files),
-            "files":files,
-            "extracted_text_character_count":len(combined),
-            "question_header_candidate_count":len(re.findall(r"(?im)^\s*(?:(?:question|q)\s*)?\d{1,3}\s*[.):]\s+\S",combined)),
-            "note":"One-page smoke diagnostics only; source correctness review is still required."
+          combined = "\n".join(strings)
+          plain_text = html.unescape(re.sub(r"<[^>]+>", "\n", combined))
+          plain_text = re.sub(r"[ \t]+", " ", plain_text)
+          plain_text = re.sub(r"\n{2,}", "\n", plain_text)
+          question_count = len(re.findall(r"(?im)^\s*(?:(?:question|q)\s*)?\d{1,3}\s*[.):]\s*\S", plain_text))
+          exitfile = root / "marker-exit-code.txt"
+          summary = {
+            "status": "QUESTION_PAGE_CANDIDATE_FOUND" if json_files and question_count > 0 else "NO_QUESTION_PAGE_CANDIDATE",
+            "exit_code": exitfile.read_text().strip() if exitfile.exists() else "runner_interrupted_before_exit_code",
+            "json_outputs": json_files,
+            "file_count": len(files),
+            "files": files,
+            "extracted_text_character_count": len(plain_text),
+            "question_header_candidate_count": question_count,
+            "text_preview": plain_text[:1200],
+            "note": "Smoke uses source PDF page 2 (zero-based page index 1). Candidate detection is only a gate; it is not proof of answer/solution correctness."
           }
-          (root/"marker-summary.json").write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding="utf-8")
-          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          (root / "marker-summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
           PY
 
       - name: Upload smoke logs and partial outputs
@@ -181,17 +194,29 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
-      - name: Require successful one-page extraction
+      - name: Require a valid question-page smoke result
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           test -f marker-smoke-output/marker-exit-code.txt
           test "$(cat marker-smoke-output/marker-exit-code.txt)" = "0"
-          find marker-smoke-output -type f -name '*.json' ! -name 'source-info.json' ! -name 'marker-config.json' ! -name 'marker-summary.json' | grep -q .
-          echo "One-page Marker smoke test passed."
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          summary = json.loads(Path("marker-smoke-output/marker-summary.json").read_text(encoding="utf-8"))
+          outputs = [p for p in summary["json_outputs"] if not p.endswith("_meta.json")]
+          if not outputs:
+              raise SystemExit("Marker returned no extraction JSON")
+          if summary["extracted_text_character_count"] < 500:
+              raise SystemExit("Question-page output is too short to validate")
+          if summary["question_header_candidate_count"] < 1:
+              raise SystemExit("No question-number candidate detected; refusing false-positive smoke pass")
+          print("Question-page Marker smoke passed candidate checks; manual source review is still required.")
+          PY
 
   marker-full:
+    if: inputs.run_full_paper
     name: Marker full-paper low-memory extraction
     needs: marker-smoke
     runs-on: ubuntu-latest
