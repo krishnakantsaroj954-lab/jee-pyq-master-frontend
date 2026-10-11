@@ -6,7 +6,7 @@ from jee_pyq_pipeline.extract import (
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
     _question_header_candidate, _infer_missing_top_question_header, _has_center_divider,
-    _question_type_from_ranges,
+    _question_type_from_ranges, _sequence_header_gap,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -743,3 +743,72 @@ def test_configured_question_type_ranges_load(tmp_path):
     path.write_text(json.dumps(value),encoding='utf-8')
     config=load(path)
     assert config.question_type_ranges == ((1,2,'MCQ'),(3,3,'NUMERICAL'))
+
+
+def test_sequence_header_gap_reports_missing_numbers_without_advancing_backwards():
+    expected = list(range(1, 76))
+    # Expected Q10 was unreadable; Q11 must still be detected, with Q10 left
+    # as a blocking gap rather than absorbing the rest of the paper into Q9.
+    assert _sequence_header_gap(expected, 9, 11) == (10, [10])
+    assert _sequence_header_gap(expected, 10, 11) == (10, [])
+    assert _sequence_header_gap(expected, 10, 9) is None
+    assert _sequence_header_gap(expected, 10, 80) is None
+
+
+def test_missing_numbered_header_does_not_swallow_all_later_source_questions(tmp_path):
+    import fitz
+
+    pdf_path = tmp_path / "paper-with-missing-q2-header.pdf"
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    lines = [
+        "Physics",
+        "Question 1: A particle moves with constant velocity; find its speed.",
+        "(1) one",
+        "(2) two",
+        "(3) three",
+        "(4) four",
+        "Answer: 2",
+        "Solution: Substitute the stated values into the relation to find the speed.",
+        # Simulate an OCR-missed Q2 header/stem. This is Q3 as printed in source.
+        "3. Calculate the source value from the stated data.",
+        "Answer: 42",
+        "Solution: Rearranging the stated relation gives the required value.",
+    ]
+    y = 45
+    for line in lines:
+        page.insert_text((40, y), line, fontsize=11)
+        y += 38
+    doc.save(pdf_path)
+    doc.close()
+
+    config = SimpleNamespace(
+        source_pdf=pdf_path,
+        release="test-gap-recovery",
+        exam="JEE-MAIN",
+        year=2026,
+        session="Test",
+        paper="Test",
+        subject="Physics",
+        page_range=(1, 1),
+        expected_question_count=3,
+        expected_question_numbers=("Physics:1", "Physics:2", "Physics:3"),
+        source_has_solutions=True,
+        source_zip=None,
+        review_manifest=None,
+    )
+    questions, _assets_found, extraction_issues, page_count = extract(
+        config, tmp_path / "assets"
+    )
+    assert page_count == 1
+    assert [q.source_question_number for q in questions] == [1, 3]
+    gap_issues = [i for i in extraction_issues if i.code == "MISSING_EXPECTED_QUESTION_HEADER"]
+    assert len(gap_issues) == 1
+    assert "2" in gap_issues[0].message
+    assert "was not invented" in gap_issues[0].message
+    assert questions[-1].text.startswith("Calculate the source value")
+    # This paper is still not import-ready because Q2's source content is missing.
+    assert "COUNT_MISMATCH" in {
+        issue.code for issue in validate(config, questions, page_count)
+    }
+
