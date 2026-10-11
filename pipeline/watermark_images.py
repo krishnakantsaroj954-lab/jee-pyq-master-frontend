@@ -44,8 +44,8 @@ def watermark_image(source: Path, destination: Path, text: str) -> dict[str, Any
     font_size = max(12, min(30, width // 22))
     font = choose_font(font_size)
 
-    # Build a repeated, very low-opacity diagonal pattern. Original pixels remain
-    # readable, and the unmodified source is kept separately for provenance.
+    # A low-opacity diagonal tile keeps source content readable. Original files
+    # remain untouched and are recorded by SHA-256 for provenance.
     tile_w = max(220, int(font_size * max(len(text), 10) * 0.72))
     tile_h = max(120, int(font_size * 5.5))
     tile = Image.new("RGBA", (tile_w, tile_h), (255, 255, 255, 0))
@@ -60,8 +60,8 @@ def watermark_image(source: Path, destination: Path, text: str) -> dict[str, Any
     tile = tile.rotate(28, resample=Image.Resampling.BICUBIC, expand=True)
 
     overlay = Image.new("RGBA", (width, height), (255, 255, 255, 0))
-    for y in range(-tile.height, height + tile.height, tile.height):
-        for x in range(-tile.width, width + tile.width, tile.width):
+    for y in range(0, height, tile.height):
+        for x in range(0, width, tile.width):
             overlay.alpha_composite(tile, (x, y))
 
     branded = Image.alpha_composite(original.convert("RGBA"), overlay).convert("RGB")
@@ -90,6 +90,9 @@ def watermark_image(source: Path, destination: Path, text: str) -> dict[str, Any
 
 
 def build(data_dir: Path, text: str) -> dict[str, Any]:
+    text = text.strip()
+    if not text:
+        raise SystemExit("Watermark text must not be empty")
     image_root = data_dir / "images"
     output_root = image_root / "watermarked"
     if not image_root.is_dir():
@@ -139,7 +142,7 @@ def main() -> None:
     parser.add_argument("--data-dir", required=True, help="Dataset directory containing images/")
     parser.add_argument("--text", default="JEE PYQ Master", help="Watermark text")
     args = parser.parse_args()
-    result = build(Path(args.data_dir), args.text.strip())
+    result = build(Path(args.data_dir), args.text)
     print(json.dumps({
         "status": result["status"],
         "source_image_count": result["source_image_count"],
