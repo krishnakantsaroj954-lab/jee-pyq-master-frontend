@@ -916,7 +916,7 @@ def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
 
     def tsv_with_word(text, left=50, top=60):
         buffer = io.StringIO(newline="")
-        writer = csv.writer(buffer, delimiter="\\t", lineterminator="\\n")
+        writer = csv.writer(buffer, delimiter="\t", lineterminator="\n")
         writer.writerow([
             "level", "page_num", "block_num", "par_num", "line_num", "word_num",
             "left", "top", "width", "height", "conf", "text",
@@ -927,8 +927,8 @@ def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
     # Simulate the actual failure mode observed on source page 5: a quoted TSV
     # payload accidentally arrives as the text of a single OCR word.
     contaminated = (
-        "5\\t1\\t1\\t1\\t8\\t2\\t151\\t275\\t52\\t33\\t77.284790\\t10.\\n"
-        "5\\t1\\t1\\t1\\t8\\t3\\t266\\t275\\t79\\t39\\t66.759361\\tIfa,"
+        "5\t1\t1\t1\t8\t2\t151\t275\t52\t33\t77.284790\t10.\n"
+        "5\t1\t1\t1\t8\t3\t266\t275\t79\t39\t66.759361\tIfa,"
     )
     responses = [
         type("Completed", (), {"returncode": 0, "stdout": tsv_with_word(contaminated), "stderr": b""})(),
