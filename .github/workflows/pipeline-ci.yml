@@ -6,6 +6,7 @@ on:
       - ".github/workflows/pipeline-ci.yml"
       - "pipeline/watermark_images.py"
       - "tests/test_watermark_images.py"
+      - "pyproject.toml"
   workflow_dispatch:
   pull_request:
     branches: [main]
