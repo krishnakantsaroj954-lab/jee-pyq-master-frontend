@@ -1,0 +1,79 @@
+name: Build watermarked image review artifact
+
+on:
+  workflow_dispatch:
+    inputs:
+      watermark_text:
+        description: "Faint background watermark text"
+        required: true
+        default: "JEE PYQ Master"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: watermark-review-artifact
+  cancel-in-progress: false
+
+jobs:
+  watermark-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install image dependency
+        run: python -m pip install --disable-pip-version-check "Pillow>=10,<13"
+
+      - name: Build branded review copies
+        run: |
+          python pipeline/watermark_images.py \
+            --data-dir data/quarantine/2026-01-22-shift1 \
+            --text "${{ inputs.watermark_text }}"
+
+      - name: Verify output manifest and preserve-source contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("data/quarantine/2026-01-22-shift1")
+          manifest = json.loads((root / "watermark-manifest.json").read_text(encoding="utf-8"))
+          if manifest.get("status") != "BRANDED_REVIEW_ONLY":
+              raise SystemExit("Watermark artifact did not reach review status")
+          if manifest.get("source_images_modified") is not False:
+              raise SystemExit("Source image preservation check failed")
+          if manifest.get("dataset_json_modified") is not False:
+              raise SystemExit("Dataset JSON preservation check failed")
+          outputs = manifest.get("outputs", [])
+          if len(outputs) != manifest.get("source_image_count") or not outputs:
+              raise SystemExit("Output count does not match manifest")
+          for item in outputs:
+              source = Path(item["source_path"])
+              output = Path(item["output_path"])
+              if not source.is_file() or not output.is_file():
+                  raise SystemExit(f"Missing source/output: {source} / {output}")
+          print(json.dumps({
+              "status": manifest["status"],
+              "source_images": manifest["source_image_count"],
+              "watermarked_outputs": len(outputs),
+              "source_images_modified": False,
+              "dataset_json_modified": False,
+              "production_import": "NOT_PERFORMED"
+          }, indent=2))
+          PY
+
+      - name: Upload watermarked images for visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: jee-pyq-master-watermarked-image-review
+          path: |
+            data/quarantine/2026-01-22-shift1/images/watermarked/
+            data/quarantine/2026-01-22-shift1/watermark-manifest.json
+          if-no-files-found: error
