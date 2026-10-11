@@ -1,5 +1,9 @@
 name: Marker OCR Extraction Diagnostic
 
+concurrency:
+  group: marker-extraction-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
