@@ -833,10 +833,13 @@ def test_numbered_answer_label_is_not_consumed_as_previous_question_answer():
         (1, "10. Ans. ()", [650, 170, 800, 190]),
         (1, "Solution continuation from question 9.", [100, 200, 500, 220]),
     ])
-    # A numbered Answer row is not accepted by this marker parser. The boundary
-    # detector handles it separately and must not attach Q10's answer to Q9.
-    assert answer == "4"
-    assert "10. Ans. ()" in solution
+    # Neither numbered answer line is parsed as Q9's answer. The boundary
+    # detector handles numbered headers separately, so Q10's answer cannot leak
+    # into Q9's extracted fields.
+    assert answer is None
+    assert "9. Ans. (4)" in qtext
+    assert "10. Ans. ()" in qtext
+    assert solution == "Solution continuation from question 9."
 
 
 def test_incomplete_option_labels_do_not_duplicate_source_question_text():
