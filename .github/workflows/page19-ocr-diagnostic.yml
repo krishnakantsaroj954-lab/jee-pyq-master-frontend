@@ -82,7 +82,7 @@ jobs:
                       try:
                           reader = csv.DictReader(
                               io.StringIO(proc.stdout.decode("utf-8", errors="replace")),
-                              delimiter="\\t",
+                              delimiter="\t",
                           )
                           for row in reader:
                               if int(row.get("level", "0")) != 5:
@@ -91,7 +91,7 @@ jobs:
                               if not token:
                                   continue
                               words += 1
-                              if any(ch in token for ch in ("\\t", "\\n", "\\r")):
+                              if any(ch in token for ch in ("\t", "\n", "\r")):
                                   contaminated += 1
                                   suspicious.append(repr(token[:180]))
                       except Exception as error:
