@@ -687,7 +687,7 @@ def _question_type_from_ranges(number: int, ranges) -> str | None:
 
 
 _NUMBERED_SECTION_LABEL = re.compile(
-    r'^\\s*(?:ans(?:wer)?\\s*[.:,;]|sol(?:ution)?\\s*[.:,;])(?=\\s|$|[\\(\\[])',
+    r'^\s*(?:ans(?:wer)?\s*[.:,;]|sol(?:ution)?\s*[.:,;])(?=\s|$|[\(\[])',
     re.I,
 )
 
