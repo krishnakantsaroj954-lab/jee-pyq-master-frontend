@@ -56,6 +56,14 @@ jobs:
           print(json.dumps(info, indent=2))
           PY
 
+      - name: Cache Marker model weights
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/datalab/models
+            ~/.cache/huggingface
+          key: marker-pdf-1.10.2-cpu-models-v2
+
       - name: Install CPU-only PyTorch
         shell: bash
         run: |
@@ -88,6 +96,8 @@ jobs:
           cat > marker-low-memory.json <<'JSON'
           {
             "layout_batch_size": 1,
+            "detection_batch_size": 1,
+            "ocr_error_batch_size": 1,
             "recognition_batch_size": 1,
             "pdftext_workers": 1,
             "lowres_image_dpi": 72,
@@ -207,6 +217,14 @@ jobs:
               print("Verified source pages:",len(doc))
               if len(doc)!=24: raise SystemExit("Pinned source page-count mismatch")
           PY
+
+      - name: Cache Marker model weights
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/datalab/models
+            ~/.cache/huggingface
+          key: marker-pdf-1.10.2-cpu-models-v2
 
       - name: Install CPU-only PyTorch and pinned Marker
         shell: bash
