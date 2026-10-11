@@ -2,12 +2,10 @@ name: Marker OCR Extraction Diagnostic
 
 concurrency:
   group: marker-extraction-diagnostic-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
+# Manual-only diagnostic: avoid automatic costly reruns on every push.
 on:
-  push:
-    branches:
-      - pipeline/marker-extraction-diagnostic
   workflow_dispatch:
 
 permissions:
