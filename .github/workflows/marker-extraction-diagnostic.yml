@@ -1,0 +1,163 @@
+name: Marker OCR Extraction Diagnostic
+
+on:
+  push:
+    branches:
+      - pipeline/marker-extraction-diagnostic
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  marker-ocr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout isolated diagnostic branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Verify the exact source PDF
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f cEDaK5Wn5ILe4nOdotd6.pdf
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          p = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          data = p.read_bytes()
+          info = {
+              "source_pdf": p.name,
+              "size_bytes": len(data),
+              "sha256": hashlib.sha256(data).hexdigest(),
+              "page_count": None,
+              "identity": "JEE Main 2026 • 28 January • Shift 1 (repo metadata; verify against source)",
+              "mode": "isolated Marker OCR diagnostic; no import",
+          }
+          try:
+              import fitz
+              with fitz.open(p) as doc:
+                  info["page_count"] = len(doc)
+          except Exception as exc:
+              info["page_count_error"] = str(exc)
+          Path("marker-output").mkdir(exist_ok=True)
+          Path("marker-output/source-info.json").write_text(
+              json.dumps(info, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(info, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install pinned Marker OCR engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install "marker-pdf==1.10.2"
+
+      - name: Run Marker OCR, reading-order and block-layout extraction
+        id: marker
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          export TORCH_DEVICE=cpu
+          export OMP_NUM_THREADS=2
+          export MKL_NUM_THREADS=2
+          set +e
+          timeout 40m marker_single cEDaK5Wn5ILe4nOdotd6.pdf \
+            --output_format json \
+            --output_dir marker-output \
+            --force_ocr \
+            --debug 2>&1 | tee marker-output/marker-run.log
+          result=${PIPESTATUS[0]}
+          printf '%s\n' "$result" > marker-output/marker-exit-code.txt
+          echo "Marker process exit code: $result"
+          exit "$result"
+
+      - name: Summarize Marker output without changing extracted content
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, re
+          from pathlib import Path
+
+          root = Path("marker-output")
+          strings = []
+          json_files = []
+          file_rows = []
+
+          def walk(value):
+              if isinstance(value, str):
+                  strings.append(value)
+              elif isinstance(value, dict):
+                  for child in value.values():
+                      walk(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      walk(child)
+
+          for path in sorted(root.rglob("*")):
+              if not path.is_file():
+                  continue
+              try:
+                  size = path.stat().st_size
+              except OSError:
+                  size = 0
+              file_rows.append({"path": str(path), "size_bytes": size})
+              if path.suffix.lower() == ".json" and path.name != "marker-summary.json":
+                  json_files.append(str(path))
+                  try:
+                      walk(json.loads(path.read_text(encoding="utf-8")))
+                  except Exception:
+                      pass
+              elif path.suffix.lower() in {".md", ".txt", ".html", ".csv"} and path.name != "marker-run.log":
+                  try:
+                      strings.append(path.read_text(encoding="utf-8", errors="replace"))
+                  except Exception:
+                      pass
+
+          combined = "\n".join(strings)
+          # These are diagnostics only; they do not assert that a record is correct.
+          headers = re.findall(
+              r"(?im)^\s*(?:(?:question|q)\s*)?(\d{1,3})\s*[.):]\s+\S",
+              combined,
+          )
+          answer_markers = len(re.findall(r"(?i)\b(?:correct\s+)?answers?\s*[:\-]", combined))
+          solution_markers = len(re.findall(r"(?i)\bsolutions?\s*[:\-]", combined))
+          summary = {
+              "status": "MARKER_OUTPUT_PRESENT" if json_files or combined.strip() else "NO_MARKER_TEXT_OUTPUT",
+              "note": "Counts are heuristic diagnostics only; source-by-source verification is still required.",
+              "json_outputs": json_files,
+              "file_count": len(file_rows),
+              "files": file_rows,
+              "extracted_text_character_count": len(combined),
+              "question_header_candidate_count": len(headers),
+              "question_header_candidate_examples": headers[:100],
+              "answer_marker_count": answer_markers,
+              "solution_marker_count": solution_markers,
+          }
+          (root / "marker-summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Upload Marker diagnostic output for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marker-ocr-diagnostic
+          path: marker-output/
+          if-no-files-found: warn
+          retention-days: 14
