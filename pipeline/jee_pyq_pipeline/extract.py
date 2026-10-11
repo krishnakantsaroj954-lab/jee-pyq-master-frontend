@@ -680,6 +680,24 @@ def _expected_subject_by_number(expected: set[str]) -> dict[int, str]:
 
 
 
+
+def _sequence_header_gap(
+    expected_numbers: list[int], next_expected_index: int, observed_number: int
+) -> tuple[int, list[int]] | None:
+    """Find a forward header position and explicitly expose any missing numbers.
+
+    A return value of None means the observation is unknown or backwards and
+    must not advance the source sequence.
+    """
+    try:
+        observed_index = expected_numbers.index(int(observed_number))
+    except (ValueError, TypeError):
+        return None
+    if observed_index < next_expected_index:
+        return None
+    return observed_index, expected_numbers[next_expected_index:observed_index]
+
+
 def _question_type_from_ranges(number: int, ranges) -> str | None:
     """Return an explicitly configured source-paper question type, if covered exactly once."""
     matches = [kind for start, end, kind in ranges if int(start) <= number <= int(end)]
@@ -960,6 +978,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         ))
     )
     next_expected_index = 0
+    header_issues: list[Issue] = []
     blocks=[]
     current=None
     for raw_index,(page,text,bounds,subject) in enumerate(raw):
@@ -973,14 +992,41 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         if number is None and strict_sequential_numbering and expected_next is not None:
             if _infer_missing_top_question_header(raw,raw_index,expected_next,page_dimensions,expected_subject_by_number):
                 # The source has a distinct top-of-column stem, then its own Answer
-                # and Solution markers, followed by the next printed number. The
+                # and Solution markers, followed by the next numbered question. The
                 # printed number itself was missed by OCR; keep the stem text intact.
                 match = re.match(r"", text)
                 number = expected_next
+
+        # If an expected number was not legible, still recognize later numbered
+        # headers so the rest of the paper is not swallowed into the previous
+        # question's solution. The gap is an explicit blocking issue; no missing
+        # question text is fabricated and the batch remains non-importable.
+        if number is None and strict_sequential_numbering and expected_next is not None:
+            later_match, later_number = _question_header_candidate(
+                text, bounds, page_width, None
+            )
+            if (
+                later_number is not None
+                and later_number in expected_subject_by_number
+                and later_number > expected_next
+            ):
+                match, number = later_match, later_number
+
         if number is not None and strict_sequential_numbering:
-            if next_expected_index >= len(expected_number_sequence) or number != expected_number_sequence[next_expected_index]:
+            position = _sequence_header_gap(
+                expected_number_sequence, next_expected_index, number
+            )
+            if position is None:
                 match, number = None, None
             else:
+                observed_index, missing_numbers = position
+                if missing_numbers:
+                    missing_text = ", ".join(str(value) for value in missing_numbers)
+                    header_issues.append(Issue(
+                        "MISSING_EXPECTED_QUESTION_HEADER",
+                        f"Could not confidently detect printed question header(s) {missing_text} before source header {number}; missing content was not invented.",
+                    ))
+                next_expected_index = observed_index + 1
                 subject = expected_subject_by_number[number]
         elif number is not None and number in expected_subject_by_number:
             subject = expected_subject_by_number[number]
@@ -990,8 +1036,6 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if current:
                 blocks.append(current)
             current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
-            if strict_sequential_numbering:
-                next_expected_index += 1
             continue
         if current:
             current['rows'].append((page,text,bounds))
@@ -1000,9 +1044,10 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         blocks.append(current)
 
     questions=[]
-    issues=[]
+    issues=list(header_issues)
     crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
     source_placed_assets = tuple(all_assets)
+
     for block_index, block in enumerate(blocks):
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
         if split_error:
