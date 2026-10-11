@@ -716,6 +716,35 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     return None, None
 
 
+def _layout_answer_marker(text: str) -> bool:
+    """Tolerantly recognize answer labels for layout inference only, not final answer parsing."""
+    value = str(text).strip()
+    # OCR sometimes merges a short mathematical token from the same baseline
+    # before the printed label (the source scan has the exact form "1 Ans. (1)").
+    value = re.sub(
+        r'^\\s*\\d{1,2}\\s+(?=(?:answer|ans|correct\\s+answer)\\b)',
+        '',
+        value,
+        count=1,
+        flags=re.I,
+    )
+    return bool(ANSWER_MARKER.match(value))
+
+
+def _layout_solution_marker(text: str) -> bool:
+    """Tolerantly recognize noisy Sol labels for layout inference only."""
+    value = str(text).strip()
+    # On the source scan OCR reads the printed "Sol." label as "Sol,".
+    value = re.sub(
+        r'^\\s*(solution|sol)\\s*[,;](?=\\s|$)',
+        r'\\1.',
+        value,
+        count=1,
+        flags=re.I,
+    )
+    return bool(SOLUTION_MARKER.match(value))
+
+
 def _infer_missing_top_question_header(raw, row_index: int, expected_number: int, page_dimensions: dict[int, tuple[float, float]], expected_subject_by_number: dict[int, str]) -> bool:
     """Infer a completely OCR-missed number only at a column top with answer/solution markers and the next numbered question in the same column."""
     if expected_number + 1 not in expected_subject_by_number:
@@ -737,7 +766,7 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
     # first legible token, so do not require that token to lie in the number gutter.
     if len(text.strip()) < 12:
         return False
-    if ANSWER_MARKER.match(text) or SOLUTION_MARKER.match(text) or text.lstrip().startswith(("=", "∴", "⇒", "→")):
+    if _layout_answer_marker(text) or _layout_solution_marker(text) or text.lstrip().startswith(("=", "∴", "⇒", "→")):
         return False
 
     same_column_left = x0 < midpoint
@@ -750,8 +779,8 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
         future_x0 = float(future_bounds[0])
         if (future_x0 < midpoint) != same_column_left:
             break
-        answer_row = bool(ANSWER_MARKER.match(future_text))
-        solution_label = bool(SOLUTION_MARKER.match(future_text))
+        answer_row = _layout_answer_marker(future_text)
+        solution_label = _layout_solution_marker(future_text)
         if answer_row:
             saw_answer = True
         if solution_label:
