@@ -246,6 +246,8 @@ jobs:
           cat > marker-low-memory.json <<'JSON'
           {
             "layout_batch_size": 1,
+            "detection_batch_size": 1,
+            "ocr_error_batch_size": 1,
             "recognition_batch_size": 1,
             "pdftext_workers": 1,
             "lowres_image_dpi": 72,
