@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Create faintly branded review copies of image assets without modifying originals.
 
-Outputs go under images/watermarked/ and are for visual review only. This script
-never changes dataset JSON, source page images, question text, answers, or solutions.
+Accepts a dataset directory containing images/ or a pipeline batch directory
+containing assets/. Outputs go in a separate watermarked/ folder; source images
+and dataset JSON are never modified.
 """
 from __future__ import annotations
 
@@ -44,13 +45,11 @@ def watermark_image(source: Path, destination: Path, text: str) -> dict[str, Any
     font_size = max(12, min(30, width // 22))
     font = choose_font(font_size)
 
-    # A low-opacity diagonal tile keeps source content readable. Original files
-    # remain untouched and are recorded by SHA-256 for provenance.
+    # Very low-opacity diagonal pattern; original files remain unchanged.
     tile_w = max(220, int(font_size * max(len(text), 10) * 0.72))
     tile_h = max(120, int(font_size * 5.5))
     tile = Image.new("RGBA", (tile_w, tile_h), (255, 255, 255, 0))
-    draw = ImageDraw.Draw(tile)
-    draw.text(
+    ImageDraw.Draw(tile).text(
         (font_size // 2, tile_h // 3),
         text,
         font=font,
@@ -93,11 +92,14 @@ def build(data_dir: Path, text: str) -> dict[str, Any]:
     text = text.strip()
     if not text:
         raise SystemExit("Watermark text must not be empty")
-    image_root = data_dir / "images"
-    output_root = image_root / "watermarked"
-    if not image_root.is_dir():
-        raise SystemExit(f"Image directory does not exist: {image_root}")
+    if (data_dir / "images").is_dir():
+        image_root = data_dir / "images"
+    elif (data_dir / "assets").is_dir():
+        image_root = data_dir / "assets"
+    else:
+        raise SystemExit(f"No images/ or assets/ directory found in {data_dir}")
 
+    output_root = image_root / "watermarked"
     sources = sorted(
         p for p in image_root.rglob("*")
         if p.is_file()
@@ -118,6 +120,8 @@ def build(data_dir: Path, text: str) -> dict[str, Any]:
         "status": "BRANDED_REVIEW_ONLY",
         "watermark_text": text,
         "method": "repeated low-opacity diagonal overlay",
+        "source_root": image_root.as_posix(),
+        "output_root": output_root.as_posix(),
         "source_image_count": len(entries),
         "outputs": entries,
         "source_images_modified": False,
@@ -129,8 +133,7 @@ def build(data_dir: Path, text: str) -> dict[str, Any]:
             "asset before public publication. Original images are preserved."
         ),
     }
-    manifest_path = data_dir / "watermark-manifest.json"
-    manifest_path.write_text(
+    (data_dir / "watermark-manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
@@ -139,7 +142,7 @@ def build(data_dir: Path, text: str) -> dict[str, Any]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-dir", required=True, help="Dataset directory containing images/")
+    parser.add_argument("--data-dir", required=True, help="Dataset or pipeline batch directory")
     parser.add_argument("--text", default="JEE PYQ Master", help="Watermark text")
     args = parser.parse_args()
     result = build(Path(args.data_dir), args.text)
