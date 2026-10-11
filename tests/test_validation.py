@@ -588,6 +588,28 @@ def test_infer_missing_top_question_when_ocr_misses_sol_label():
     ) is True
 
 
+def test_numbered_answer_row_is_not_a_question_header():
+    # The source prints "10. Ans. ()" in the solution column before the actual
+    # Q10 stem on the next page. Do not consume the expected Q10 number here.
+    bounds_right_column = [1273.37, 1662.0, 1524.29, 1703.0]
+    assert _question_header_candidate(
+        "10. Ans. ()", bounds_right_column, 2479.0, 10
+    ) == (None, None)
+    assert _question_header_candidate(
+        "I 10. Ans. ()", bounds_right_column, 2479.0, 10
+    ) == (None, None)
+
+    bounds_left_column = [148.95, 272.0, 1208.63, 314.0]
+    match, number = _question_header_candidate(
+        "10. If alpha, beta are the roots of the equation",
+        bounds_left_column,
+        2479.0,
+        10,
+    )
+    assert match is not None
+    assert number == 10
+
+
 def test_infer_q4_boundary_from_actual_source_ocr_noise():
     # Reproduces the 28 Jan Shift 1 source scan: Q4's equation is at the top
     # of the left column, its number is OCR'd as "4 If" without punctuation,
