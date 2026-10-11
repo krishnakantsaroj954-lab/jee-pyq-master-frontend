@@ -71,12 +71,33 @@ jobs:
             ~/.cache/huggingface
           key: marker-pdf-1.10.2-cpu-models-v1
 
-      - name: Install pinned Marker
+      - name: Install CPU-only PyTorch first
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu "torch==2.7.1"
+          python - <<'PY'
+          import torch
+          print("PyTorch:", torch.__version__)
+          print("CUDA available:", torch.cuda.is_available())
+          if not torch.__version__.startswith("2.7.1") or torch.cuda.is_available():
+              raise SystemExit("CPU-only PyTorch installation was not confirmed")
+          PY
+
+      - name: Install pinned Marker and confirm it kept CPU PyTorch
+        shell: bash
+        run: |
+          set -euo pipefail
           python -m pip install "marker-pdf==1.10.2"
+          python - <<'PY'
+          import torch
+          print("PyTorch after Marker install:", torch.__version__)
+          if not torch.__version__.startswith("2.7.1") or torch.cuda.is_available():
+              raise SystemExit("Marker installation replaced CPU-only PyTorch")
+          import marker
+          print("Marker import: OK")
+          PY
 
       - name: Run Marker on first three pages
         id: marker_smoke
