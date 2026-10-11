@@ -593,6 +593,7 @@ def test_infer_q4_boundary_from_actual_source_ocr_noise():
     # of the left column, its number is OCR'd as "4 If" without punctuation,
     # and the same OCR pass reads "Ans." / "Sol." as "1 Ans." / "Sol,".
     raw = [
+        (3, "eee ee ee ee ee ee eee ee", [20.99, 0.0, 1189.64, 30.0], "Mathematics"),
         (3, "el) tan(A-B A eg i ‘ [0.5],", [325.9, 268.0, 1207.63, 389.0], "Mathematics"),
         (3, "—", [455.86, 298.0, 478.85, 300.0], "Mathematics"),
         (3, "4 If A, B, C", [147.95, 313.0, 980.7, 352.0], "Mathematics"),
@@ -606,6 +607,13 @@ def test_infer_q4_boundary_from_actual_source_ocr_noise():
     assert _infer_missing_top_question_header(
         raw,
         0,
+        4,
+        {3: (2479.0, 3508.0)},
+        expected_subject_by_number,
+    ) is False
+    assert _infer_missing_top_question_header(
+        raw,
+        1,
         4,
         {3: (2479.0, 3508.0)},
         expected_subject_by_number,
