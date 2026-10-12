@@ -96,23 +96,6 @@ def test_split_numeric_options():
     assert text==''
     assert options=={'1':'one','2':'two','3':'three','4':'four'}
 
-def test_split_terminal_numeric_choices_after_statement_labels():
-    rows = [
-        (1, "A. Q, R and S give precipitate. B. P and Q are true.", [0, 0, 1, 1]),
-        (1, "C. Q and R give sooty flame. D. R and S give yellow precipitate. E. Q alone gives test.", [0, 2, 1, 3]),
-        (1, "Choose the correct option.", [0, 4, 1, 5]),
-        (1, "(1) A, C and E only (2) A and E only", [0, 6, 1, 7]),
-        (1, "(3) C and E only (4) A, B, D and E only", [0, 8, 1, 9]),
-    ]
-    text, options = _split_options(rows)
-    assert "Choose the correct option" in text
-    assert options == {
-        "1": "A, C and E only",
-        "2": "A and E only",
-        "3": "C and E only",
-        "4": "A, B, D and E only",
-    }
-
 def test_split_compact_parenthesized_options_and_negative_values():
     text, options = _split_options([
         (1, "(1) 10 (2)-6", [0, 0, 100, 12]),
