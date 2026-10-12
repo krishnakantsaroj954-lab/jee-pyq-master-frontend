@@ -898,8 +898,42 @@ def test_question_crop_is_clamped_before_answer_even_if_ocr_rows_overlap(tmp_pat
     doc.close()
 
     assert len(crops) == 1
+    assert crops[0].bounds[1] == 50.0
     assert crops[0].bounds[3] <= answer_row[2][1] - 6.0
     assert (tmp_path / crops[0].path).is_file()
+
+
+def test_figure_crop_recovers_above_baseline_context_without_crossing_prior_question(tmp_path):
+    import fitz
+
+    pdf = fitz.open()
+    pdf.new_page(width=1000, height=1200)
+    question_row = (1, "67. Figure 1 electron probability density", [100.0, 400.0, 450.0, 430.0])
+    answer_row = (1, "Ans. (1)", [100.0, 700.0, 180.0, 725.0])
+    solution_row = (1, "Sol. At spherical node", [100.0, 740.0, 350.0, 770.0])
+    block = {
+        "subject": "Chemistry", "number": 67, "pages": {1},
+        "rows": [question_row, answer_row, solution_row],
+    }
+
+    uncapped = _crop_scan_regions(
+        pdf, block, [question_row], [block], 0,
+        tmp_path / "figure-uncapped", "b" * 64, "question", {1: 72},
+    )
+    assert len(uncapped) == 1
+    assert uncapped[0].bounds[1] == 120.0
+
+    previous = {
+        "subject": "Chemistry", "number": 66, "pages": {1},
+        "rows": [(1, "66. Previous solution", [100.0, 200.0, 450.0, 260.0])],
+    }
+    capped = _crop_scan_regions(
+        pdf, block, [question_row], [previous, block], 1,
+        tmp_path / "figure-capped", "c" * 64, "question", {1: 72},
+    )
+    assert len(capped) == 1
+    assert capped[0].bounds[1] == 266.0
+    pdf.close()
 
 
 def test_question_header_recovers_expected_number_when_ocr_loses_separator():

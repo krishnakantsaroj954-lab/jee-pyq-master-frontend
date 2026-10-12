@@ -637,7 +637,32 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             else:
                 x0 = max(x0, midpoint + 6.0)
                 x1 = min(x1, page_width - column_margin)
-            y0 = max(0.0, min(row[2][1] for row in region_rows) - 8.0)
+            region_top = min(row[2][1] for row in region_rows)
+            if kind == "question":
+                # OCR boxes can start below tall math glyphs or diagrams. Expand
+                # upward, while keeping the crop inside the current column's item.
+                region_text = " ".join(str(row[1]) for row in own_rows)
+                top_padding = 280.0 if FIGURE.search(region_text) else 50.0
+                y0 = max(0.0, region_top - top_padding)
+                previous_bottoms = []
+                for other_index, other in enumerate(blocks):
+                    if other_index == block_index:
+                        continue
+                    other_rows = [
+                        row for row in other.get("rows", [])
+                        if row[0] == page_no and side_of(row) == side
+                    ]
+                    if not other_rows:
+                        continue
+                    other_top = min(row[2][1] for row in other_rows)
+                    other_bottom = max(row[2][3] for row in other_rows)
+                    if other_top < region_top and other_bottom < region_top:
+                        previous_bottoms.append(other_bottom)
+                if previous_bottoms:
+                    y0 = max(y0, max(previous_bottoms) + 6.0)
+            else:
+                # Worked equations may extend above the first OCR baseline too.
+                y0 = max(0.0, region_top - 20.0)
             y1 = min(page_height, max(row[2][3] for row in region_rows) + 8.0)
 
             if kind == "question" and answer_side:
