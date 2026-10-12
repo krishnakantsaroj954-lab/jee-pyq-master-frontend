@@ -584,6 +584,33 @@ def test_solution_continuation_across_columns_uses_separate_narrow_crops(tmp_pat
     pdf.close()
 
 
+def test_solution_crop_leaves_gap_before_next_question_header(tmp_path):
+    import fitz
+
+    pdf = fitz.open()
+    pdf.new_page(width=1000, height=2500)
+    question_row = (1, "67. Figure 1", [600.0, 400.0, 900.0, 430.0])
+    answer_row = (1, "Ans. (1)", [600.0, 1700.0, 700.0, 1725.0])
+    solution_row = (1, "Sol. At spherical node", [600.0, 1740.0, 900.0, 1780.0])
+    next_question = (1, "68. Given below are two statements", [600.0, 1928.0, 950.0, 1960.0])
+    block = {
+        "subject": "Chemistry", "number": 67, "pages": {1},
+        "rows": [question_row, answer_row, solution_row],
+    }
+    next_block = {
+        "subject": "Chemistry", "number": 68, "pages": {1},
+        "rows": [next_question],
+    }
+    assets = _crop_scan_regions(
+        pdf, block, [solution_row], [block, next_block], 0,
+        tmp_path / "solution-gap", "d" * 64, "solution", {1: 72},
+    )
+    assert len(assets) == 1
+    assert assets[0].bounds[3] <= 1848.0
+    assert assets[0].bounds[3] < next_question[2][1]
+    pdf.close()
+
+
 def test_infer_missing_top_question_when_ocr_misses_sol_label():
     raw = [
         (3, "tan(A-B) expression continues", [334, 273, 1207, 315], "Mathematics"),

@@ -689,7 +689,12 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
                     if other_top > region_bottom:
                         next_top = other_top if next_top is None else min(next_top, other_top)
                 if next_top is not None:
-                    y1 = min(page_height, next_top - 6.0)
+                    # OCR boxes may start well below the top of a tall next-question
+                    # glyph. Keep a proportional gap so its heading cannot leak into
+                    # this solution crop, without discarding the solution's last line.
+                    gap = max(0.0, next_top - region_bottom)
+                    trailing_padding = min(80.0, max(6.0, gap * 0.65))
+                    y1 = min(page_height, next_top - trailing_padding)
 
             if x1 <= x0 or y1 <= y0:
                 continue
