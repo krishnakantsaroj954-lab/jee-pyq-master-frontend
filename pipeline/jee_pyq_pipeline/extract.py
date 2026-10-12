@@ -344,16 +344,19 @@ def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
                 continue
         return words, contaminated
 
-    # PSM 6 is usually more useful for a single question column. If its TSV
-    # structure is corrupted, retry that same source crop with PSM 4, which
-    # correctly separated Q10/Q11 on the affected 28-Jan paper scan.
+    # PSM 6 is the normal column mode; PSM 4 is the first fallback. The
+    # page-19 source diagnostic showed both modes returning a contaminated TSV
+    # field for the left column, while PSM 11 returned clean word rows. Retry
+    # in sparse-text mode before failing closed; never salvage contaminated text.
     words, contaminated = parse_tsv(run_tesseract("6"))
-    if contaminated:
+    if contaminated or not words:
         words, contaminated = parse_tsv(run_tesseract("4"))
-        if contaminated:
-            raise RuntimeError(
-                f"Tesseract returned corrupted TSV twice on source page {page_no}; refusing contaminated text"
-            )
+    if contaminated or not words:
+        words, contaminated = parse_tsv(run_tesseract("11"))
+    if contaminated:
+        raise RuntimeError(
+            f"Tesseract returned corrupted TSV in PSM 6, 4, and 11 on source page {page_no}; refusing contaminated text"
+        )
     if not words:
         raise RuntimeError(f"Tesseract produced no word boxes on source page {page_no}")
     return words

@@ -908,6 +908,45 @@ def test_question_header_recovers_expected_number_when_ocr_loses_separator():
     ) == (None, None)
 
 
+def test_ocr_clip_words_retries_tsv_contamination_with_psm11(tmp_path):
+    import csv
+    import io
+    import fitz
+    from unittest.mock import patch
+
+    def tsv_with_word(text, left=50, top=60):
+        buffer = io.StringIO(newline="")
+        writer = csv.writer(buffer, delimiter="\t", lineterminator="\n")
+        writer.writerow([
+            "level", "page_num", "block_num", "par_num", "line_num", "word_num",
+            "left", "top", "width", "height", "conf", "text",
+        ])
+        writer.writerow([5, 1, 1, 1, 1, 1, left, top, 40, 20, "90.0", text])
+        return buffer.getvalue().encode("utf-8")
+
+    # Reproduce page 19: both normal and alternate block modes are contaminated,
+    # but sparse-text mode returns a clean word row.
+    contaminated = (
+        "5\t1\t1\t1\t8\t2\t151\t275\t52\t33\t77.284790\t10.\n"
+        "5\t1\t1\t1\t8\t3\t266\t275\t79\t39\t66.759361\tIfa,"
+    )
+    responses = [
+        type("Completed", (), {"returncode": 0, "stdout": tsv_with_word(contaminated), "stderr": b""})(),
+        type("Completed", (), {"returncode": 0, "stdout": tsv_with_word(contaminated), "stderr": b""})(),
+        type("Completed", (), {"returncode": 0, "stdout": tsv_with_word("Question"), "stderr": b""})(),
+    ]
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    try:
+        with patch("jee_pyq_pipeline.extract.subprocess.run", side_effect=responses) as run:
+            words = _ocr_clip_words(page, 19, (0, 0, 280, 800), 72)
+        assert len(words) == 1
+        assert words[0][4] == "Question"
+        assert [call.args[0][6] for call in run.call_args_list] == ["6", "4", "11"]
+    finally:
+        doc.close()
+
+
 def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
     import csv
     import io
