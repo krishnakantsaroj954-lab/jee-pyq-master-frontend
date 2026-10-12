@@ -884,33 +884,57 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
 
 
 def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
-    body=[]
-    candidates={}
-    current=None
-    for _page,text,_bounds in rows:
-        matches=list(OPTION_LABEL.finditer(text))
-        if not matches:
-            if current:
-                candidates[current]=safe_normalize(f'{candidates[current]} {text}')
-            else:
-                body.append(text)
+    # Work across the complete question-region text. Some JEE questions contain
+    # statement labels A., B., C., D., E. in the stem and then use (1)-(4) for
+    # the actual answer choices. Choosing the first four labels misclassifies
+    # those statements as options and loses the real choices.
+    pieces=[str(text or '') for _page,text,_bounds in rows]
+    offsets=[]
+    flat=''
+    for piece in pieces:
+        if flat:
+            flat+=' '
+        start=len(flat)
+        flat+=piece
+        offsets.append((start,len(flat)))
+    matches=[]
+    for match in OPTION_LABEL.finditer(flat):
+        label=match.group(1) or match.group(2)
+        matches.append((match.start(),match.end(),label))
+    valid_groups=[]
+    expected_sets=(set('ABCD'),set('1234'))
+    cue=re.compile(r'\\bchoose\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b|\\bselect\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b',re.I)
+    for start_index,(start,end,label) in enumerate(matches):
+        expected=next((labels for labels in expected_sets if label in labels),None)
+        if expected is None:
             continue
-        prefix=text[:matches[0].start()].strip()
-        if prefix:
-            if current:
-                candidates[current]=safe_normalize(f'{candidates[current]} {prefix}')
-            else:
-                body.append(prefix)
-        for idx,match in enumerate(matches):
-            label=match.group(1) or match.group(2)
-            current=label
-            end=matches[idx+1].start() if idx+1<len(matches) else len(text)
-            candidates[label]=safe_normalize(text[match.end():end].strip())
-    if set(candidates)==set('ABCD') or set(candidates)==set('1234'):
-        return safe_normalize(' '.join(body)),{k:v for k,v in candidates.items() if v.strip()}
-    # If the option labels are incomplete or OCR has detached math glyphs from
-    # their labels, preserve the source row text once and fail structural
-    # validation. Do not duplicate the question stem/options in the text field.
+        group=[]
+        seen=set()
+        for item in matches[start_index:]:
+            item_label=item[2]
+            if item_label not in expected or item_label in seen:
+                break
+            group.append(item)
+            seen.add(item_label)
+            if seen==expected:
+                # If a "choose correct option" instruction follows this group,
+                # these labels belong to the statement list, not the choices.
+                if cue.search(flat[group[-1][1]:]):
+                    break
+                valid_groups.append((start_index,group))
+                break
+    if valid_groups:
+        # The terminal complete group is the actual answer-choice block when a
+        # stem contains an earlier complete set of statement labels.
+        _,group=max(valid_groups,key=lambda item:item[0])
+        body=safe_normalize(flat[:group[0][0]])
+        options={}
+        for idx,item in enumerate(group):
+            stop=group[idx+1][0] if idx+1<len(group) else len(flat)
+            options[item[2]]=safe_normalize(flat[item[1]:stop])
+        if all(options.get(label,'').strip() for label in options) and set(options) in expected_sets:
+            return body,options
+    # Incomplete/ambiguous labels are preserved as source text and fail closed.
     all_text=safe_normalize(' '.join(t for _,t,_ in rows if t))
     return all_text,{}
 
