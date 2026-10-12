@@ -9,7 +9,7 @@ from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
-OPTION_LABEL = re.compile(r'(?<![\w.])(?:\(\s*([A-D]|[1-4])\s*\)|([A-D]|[1-4])\s*[.)])(?=\s|$)', re.I)
+OPTION_LABEL = re.compile(r'(?:\(\s*([A-D]|[1-4])\s*\)|(?<![\w.])([A-D]|[1-4])\s*[.)](?=\s|$))', re.I)
 ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:(?:[Il]|\d{1,2})\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*[.,;])(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)

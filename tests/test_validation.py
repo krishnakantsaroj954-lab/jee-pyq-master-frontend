@@ -96,6 +96,14 @@ def test_split_numeric_options():
     assert text==''
     assert options=={'1':'one','2':'two','3':'three','4':'four'}
 
+def test_split_compact_parenthesized_options_and_negative_values():
+    text, options = _split_options([
+        (1, "(1) 10 (2)-6", [0, 0, 100, 12]),
+        (1, "(3)-2 (4)6", [0, 20, 100, 32]),
+    ])
+    assert text == ""
+    assert options == {"1": "10", "2": "-6", "3": "-2", "4": "6"}
+
 def test_source_answer_and_solution_split():
     qtext,qopts,answer,solution,qrows,srows,err=_split_source_sections([
         (1,'A statement (1) x (2) y (3) z (4) w',[0,0,1,1]),
