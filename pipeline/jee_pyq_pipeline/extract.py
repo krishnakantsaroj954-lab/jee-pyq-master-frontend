@@ -883,7 +883,144 @@ def _infer_missing_top_question_header(raw, row_index: int, expected_number: int
     return False
 
 
-def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,str]]:
+def _source_row_key(page: int, bounds: list[float] | tuple[float, ...]):
+    """Stable key connecting a rendered text row to its original word-level boxes."""
+    return int(page), tuple(round(float(value), 2) for value in bounds)
+
+
+def _split_options_geometry(rows, word_rows_by_page_bounds):
+    """Rebuild four options from their original word boxes when a 2-D grid is present.
+
+    Some scanned papers put options 1/2 on one visual row and 3/4 on the next,
+    while each fraction's numerator, bar and denominator occupy separate OCR rows.
+    A flattened text row cannot preserve that layout, so allocate tokens to the
+    nearest labelled option using both x and y coordinates. Ambiguous layouts fall
+    back to the existing parser and still face normal validation.
+    """
+    if not word_rows_by_page_bounds:
+        return None
+
+    word_rows = []
+    label_records = []
+    for page, text, bounds in rows:
+        tokens = word_rows_by_page_bounds.get(_source_row_key(page, bounds))
+        if tokens is None:
+            return None
+        word_rows.append((page, text, bounds, tokens))
+        for token in tokens:
+            if len(token) < 5:
+                continue
+            token_text = str(token[4]).strip()
+            match = OPTION_LABEL.fullmatch(token_text)
+            if not match:
+                continue
+            label = (match.group(1) or match.group(2) or "").upper()
+            if label:
+                label_records.append((
+                    label, float(token[0]), float(token[1]),
+                    float(token[2]), float(token[3])
+                ))
+
+    labels_present = {item[0] for item in label_records}
+    if set("ABCD").issubset(labels_present):
+        expected_labels = set("ABCD")
+    elif set("1234").issubset(labels_present):
+        expected_labels = set("1234")
+    else:
+        return None
+
+    selected = [item for item in label_records if item[0] in expected_labels]
+    centers = {}
+    for label in expected_labels:
+        entries = sorted(
+            ((item[1] + item[3]) / 2.0, (item[2] + item[4]) / 2.0)
+            for item in selected if item[0] == label
+        )
+        if not entries:
+            return None
+        # Median coordinates protect against a stray duplicate label in a stem.
+        xs = sorted(item[0] for item in entries)
+        ys = sorted(item[1] for item in entries)
+        centers[label] = (xs[len(xs) // 2], ys[len(ys) // 2])
+
+    # This coordinate strategy is for multi-column option grids. A single vertical
+    # option list is better handled by the line-oriented parser below.
+    unique_x = sorted({round(value[0] / 20.0) for value in centers.values()})
+    x_values = [value[0] for value in centers.values()]
+    if len(unique_x) < 2 or max(x_values) - min(x_values) < 80:
+        return None
+
+    first_label_top = min(item[2] for item in selected)
+    option_window_start = first_label_top - 60.0
+    first_anchor_x = min(value[0] for value in centers.values())
+    body_parts = []
+    option_tokens = {label: [] for label in expected_labels}
+
+    for page, text, bounds, tokens in word_rows:
+        row_top = float(bounds[1])
+        if row_top < option_window_start:
+            if text.strip():
+                body_parts.append(text.strip())
+            continue
+
+        # Keep any prompt prefix from a row that begins immediately before its
+        # option labels (e.g. "Select the correct value: (1) ...").
+        text_matches = list(OPTION_LABEL.finditer(text))
+        if text_matches:
+            prefix = text[:text_matches[0].start()].strip()
+            if prefix:
+                body_parts.append(prefix)
+
+        for token in tokens:
+            if len(token) < 5:
+                continue
+            token_text = str(token[4]).strip()
+            if not token_text:
+                continue
+            label_match = OPTION_LABEL.fullmatch(token_text)
+            if label_match:
+                label = (label_match.group(1) or label_match.group(2) or "").upper()
+                if label in expected_labels:
+                    continue
+
+            y0, y1 = float(token[1]), float(token[3])
+            if y1 < option_window_start:
+                continue
+            center_x = (float(token[0]) + float(token[2])) / 2.0
+            center_y = (y0 + y1) / 2.0
+
+            # Narrow page-edge OCR artefacts are outside the option cells; don't
+            # let them contaminate the leftmost option.
+            if center_x < first_anchor_x - 45.0:
+                continue
+
+            label = min(
+                expected_labels,
+                key=lambda candidate: (
+                    abs(center_x - centers[candidate][0])
+                    + 0.9 * abs(center_y - centers[candidate][1])
+                ),
+            )
+            option_tokens[label].append(token)
+
+    options = {}
+    for label, tokens in option_tokens.items():
+        tokens.sort(key=lambda token: (float(token[1]), float(token[0])))
+        value = safe_normalize(_join_word_tokens(tokens))
+        if value:
+            options[label] = value
+
+    if set(options) != expected_labels:
+        return None
+    return safe_normalize(" ".join(part for part in body_parts if part)), options
+
+
+def _split_options(rows: list[tuple[int, str, list[float]]],
+                   word_rows_by_page_bounds=None) -> tuple[str, dict[str, str]]:
+    geometry_result = _split_options_geometry(rows, word_rows_by_page_bounds)
+    if geometry_result is not None:
+        return geometry_result
+
     body=[]
     candidates={}
     current=None
@@ -913,13 +1050,14 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
     # validation. Do not duplicate the question stem/options in the text field.
     all_text=safe_normalize(' '.join(t for _,t,_ in rows if t))
     return all_text,{}
+
 def _parse_answer(text:str)->str|None:
     # Match a complete numerical token before single-digit MCQ labels, otherwise 42
     # would be incorrectly read as 4.
     token=re.match(r'\s*[\(\[]?\s*(-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?|[A-D])\s*[\)\]]?',text,re.I)
     return token.group(1) if token else None
 
-def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
+def _split_source_sections(rows:list[tuple[int,str,list[float]]], word_rows_by_page_bounds=None):
     qrows=[]
     srows=[]
     answer=None
@@ -952,7 +1090,7 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
         else:
             qrows.append((page,text,bounds))
     solution_text=safe_normalize(' '.join(t for _,t,_ in srows if t))
-    q_text,q_opts=_split_options(qrows)
+    q_text,q_opts=_split_options(qrows, word_rows_by_page_bounds)
     if answer_count>1:
         return q_text,q_opts,None,solution_text,qrows,srows,'MULTIPLE_ANSWER_MARKERS'
     return q_text,q_opts,answer,solution_text,qrows,srows,None
@@ -964,6 +1102,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     all_assets=[]
     page_assets={}
     raw=[]
+    source_word_rows_by_page_bounds={}
     page_dimensions={}
     scan_only_pages=set()
     scan_dpi_by_page={}
@@ -995,6 +1134,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                     continue
                 subject=_subject_line(text)
                 bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
+                source_word_rows_by_page_bounds[_source_row_key(page_no,bounds)] = row
                 page_rows.append((text,bounds,subject))
             question_y = [
                 bounds[1] for text,bounds,_subject in page_rows
@@ -1096,7 +1236,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     source_placed_assets = tuple(all_assets)
 
     for block_index, block in enumerate(blocks):
-        q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
+        q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'],source_word_rows_by_page_bounds)
         if split_error:
             issues.append(Issue('MULTIPLE_ANSWER_MARKERS',f'Question {block["subject"]}:{block["number"]} has multiple answer markers'))
         qpages=sorted({r[0] for r in qrows})
