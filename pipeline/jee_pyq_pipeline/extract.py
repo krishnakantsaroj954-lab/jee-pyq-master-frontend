@@ -1169,10 +1169,23 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]], word_rows_by_p
     for page,text,bounds in rows:
         am=ANSWER_MARKER.match(text) if not answer_seen else None
         sm=SOLUTION_MARKER.match(text)
+        answer_token = None
         if am:
-            token=_parse_answer(text[am.end():])
-            if token:
-                answer=token
+            answer_token = _parse_answer(text[am.end():])
+            # OCR can wrap the last word of a prompt ("... choose the correct
+            # answer") onto a separate row containing only "answer". Treat a
+            # bare marker as an answer section only when it has a value or an
+            # explicit separator; otherwise keep it in the question region.
+            explicit_empty_marker = bool(re.search(
+                r"(?:answer|ans\\s*\\.?|correct\\s+answer)\\s*[:\\-]\\s*$",
+                text,
+                re.I,
+            ))
+            if answer_token is None and not explicit_empty_marker:
+                am = None
+        if am:
+            if answer_token:
+                answer=answer_token
             answer_count+=1
             answer_seen=True
             if sm:

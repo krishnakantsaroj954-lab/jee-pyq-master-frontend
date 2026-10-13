@@ -1098,3 +1098,23 @@ def test_choice_cue_anchors_numeric_choices_after_same_family_statement_labels()
         "3": "third choice",
         "4": "fourth choice",
     }
+
+
+def test_bare_answer_word_in_wrapped_prompt_does_not_end_option_region():
+    rows = [
+        (1, "Question stem asks which statement is correct.", [0, 0, 400, 20]),
+        (1, "Choose the correct answer from the options below:", [0, 20, 400, 40]),
+        (1, "answer", [0, 40, 60, 60]),
+        (1, "(1) Statement I only", [0, 60, 300, 80]),
+        (1, "(2) Statement II only", [0, 80, 300, 100]),
+        (1, "(3) Both statements", [0, 100, 300, 120]),
+        (1, "(4) Neither statement", [0, 120, 300, 140]),
+        (1, "Ans. (3)", [0, 140, 100, 160]),
+        (1, "Sol. The source explanation.", [0, 160, 300, 180]),
+    ]
+    q_text, q_options, answer, solution, qrows, srows, error = _split_source_sections(rows)
+    assert error is None
+    assert set(q_options) == {"1", "2", "3", "4"}
+    assert answer == "3"
+    assert solution == "The source explanation."
+    assert "answer" in q_text
