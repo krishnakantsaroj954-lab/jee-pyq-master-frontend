@@ -1,0 +1,106 @@
+name: Math OCR feasibility probe
+on:
+  push:
+    branches:
+      - pipeline/source-grounded-parser-review
+    paths:
+      - ".github/workflows/math-ocr-probe.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe-option-fractions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU formula-recognition runtime
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "paddlepaddle>=3.0,<4" "paddleocr>=3.0,<4" "PyMuPDF>=1.24,<2" "Pillow>=10,<13" "tokenizers>=0.20,<1" "ftfy>=6,<7"
+      - name: Crop four printed answer-choice formulas from the source PDF
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import fitz
+
+          source = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          if not source.is_file():
+              raise SystemExit("The source PDF required for this diagnostic is missing")
+          output = Path("math-ocr-probe")
+          output.mkdir(exist_ok=True)
+          # Page 2, Mathematics Q1. These rectangles are grounded in the OCR
+          # word-box coordinates from the existing extraction artifact. They
+          # isolate the printed option formula, not synthetic/rewritten text.
+          cells = {
+              "option-1": (325, 778, 510, 925),
+              "option-2": (790, 778, 1000, 925),
+              "option-3": (325, 920, 510, 1070),
+              "option-4": (790, 920, 1000, 1070),
+          }
+          with fitz.open(source) as doc:
+              page = doc[1]
+              for label, coords in cells.items():
+                  clip = fitz.Rect(coords)
+                  if not page.rect.contains(clip):
+                      raise SystemExit(f"Invalid source crop for {label}: {coords}")
+                  page.get_pixmap(dpi=144, clip=clip, alpha=False).save(output / f"{label}.png")
+          print("Created four source-backed formula crops; no question data was edited.")
+          PY
+      - name: Run formula recognition on isolated source crops
+        env:
+          PADDLE_PDX_MODEL_SOURCE: BOS
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from paddleocr import FormulaRecognition
+
+          root = Path("math-ocr-probe")
+          model = FormulaRecognition(model_name="PP-FormulaNet_plus-M")
+          report = {"model": "PP-FormulaNet_plus-M", "source_pdf_page": 2, "results": []}
+          for path in sorted(root.glob("option-*.png")):
+              entry = {"crop": path.name}
+              try:
+                  predictions = list(model.predict(input=str(path), batch_size=1))
+                  entry["prediction_count"] = len(predictions)
+                  rendered = []
+                  for prediction in predictions:
+                      try:
+                          prediction.print()
+                      except Exception:
+                          print(repr(prediction))
+                      value = getattr(prediction, "json", None)
+                      if callable(value):
+                          value = value()
+                      if value is not None:
+                          rendered.append(value)
+                      else:
+                          rendered.append(repr(prediction))
+                  entry["predictions"] = rendered
+                  entry["status"] = "PREDICTED" if predictions else "NO_PREDICTION"
+              except Exception as error:
+                  entry["status"] = "ERROR"
+                  entry["error"] = f"{type(error).__name__}: {error}"
+              report["results"].append(entry)
+          (root / "math-ocr-result.json").write_text(
+              json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps(report, ensure_ascii=False, indent=2))
+          if not any(item.get("status") == "PREDICTED" for item in report["results"]):
+              raise SystemExit("Formula recognition returned no usable predictions; see per-crop errors above.")
+          PY
+      - name: Upload crop and prediction evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@v4
+        with:
+          name: math-ocr-feasibility-probe
+          path: math-ocr-probe/
+          if-no-files-found: warn
+          retention-days: 1

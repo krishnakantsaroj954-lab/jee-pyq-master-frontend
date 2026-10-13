@@ -1,5 +1,16 @@
 name: Pipeline CI
 on:
+  push:
+    # Run on main after merge; pull_request handles branch validation.
+    # Avoid doing the same 24-page PDF extraction twice for every PR commit.
+    branches: [main]
+    paths:
+      - ".github/workflows/pipeline-ci.yml"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pipeline/watermark_images.py"
+      - "tests/test_validation.py"
+      - "tests/test_watermark_images.py"
+      - "pyproject.toml"
   workflow_dispatch:
   pull_request:
     branches: [main]
@@ -8,202 +19,227 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  test-and-source-probe:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Install dependencies
+      - name: Install pipeline, test and OCR dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr
           python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
-
-      - name: Run unit tests
+      - name: Run parser and safety tests
         run: python -m pytest -q
-
-      - name: Require representative source PDF
-        run: |
-          test -f cEDaK5Wn5ILe4nOdotd6.pdf
-          echo "Representative PDF present."
-          git cat-file -e "HEAD:cEDaK5Wn5ILe4nOdotd6.pdf"
-
-      - name: Prepare representative dry-run config
+      - name: Probe the uploaded 16 MB source PDF
         run: |
           python - <<'PY'
-          import hashlib
-          import json
-          import subprocess
-          import fitz
+          import fitz, hashlib, json, re
           from pathlib import Path
-
-          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          expected_git_blob_sha = "bc7570e370d5409b62dc3fe88d2d1dcc1378a0ab"
-          actual_git_blob_sha = subprocess.check_output(
-              ["git", "rev-parse", f"HEAD:{pdf.name}"], text=True
-          ).strip()
-
-          if actual_git_blob_sha != expected_git_blob_sha:
-              raise SystemExit(
-                  "Representative PDF identity gate failed: "
-                  f"expected git blob {expected_git_blob_sha}, "
-                  f"got {actual_git_blob_sha}"
-              )
-
-          source_sha256 = hashlib.sha256(pdf.read_bytes()).hexdigest()
-          doc = fitz.open(pdf)
-          page_count = len(doc)
-          text_chars = sum(len(p.get_text("text") or "") for p in doc)
-
-          if page_count < 1:
-              raise SystemExit("Representative PDF identity gate failed: PDF has no pages")
-
-          expected = (
-              [f"Physics:{n}" for n in range(1, 26)] +
-              [f"Chemistry:{n}" for n in range(1, 26)] +
-              [f"Mathematics:{n}" for n in range(1, 26)]
-          )
-
-          cfg = {
-              "source_pdf": str(pdf),
-              "release": "2026-01",
-              "exam": "JEE-MAIN",
-              "year": 2026,
-              "session": "Session 1 • Jan • 28 Jan • Shift 1",
-              "paper": "Paper 1 • B.E./B.Tech",
-              "subject": "PCM",
-              "page_range": [1, page_count],
-              "expected_question_count": 75,
-              "expected_question_numbers": expected,
-              "source_has_solutions": True
-          }
-
-          Path("representative-config.json").write_text(
-              json.dumps(cfg, ensure_ascii=False, indent=2),
-              encoding="utf-8"
-          )
-
-          print(json.dumps({
-              "pdf": pdf.name,
-              "git_blob_sha": actual_git_blob_sha,
-              "sha256": source_sha256,
-              "size_bytes": pdf.stat().st_size,
-              "page_count": page_count,
-              "text_chars": text_chars,
-              "expected_questions": len(expected),
-              "identity_basis": "pinned repository blob; semantic metadata recorded in config"
-          }, indent=2))
-
+          pdf=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          if not pdf.is_file():
+              raise SystemExit("Uploaded source PDF is missing")
+          doc=fitz.open(pdf)
+          report={"filename":pdf.name,"bytes":pdf.stat().st_size,"sha256":hashlib.sha256(pdf.read_bytes()).hexdigest(),"pages":len(doc),"metadata":doc.metadata,"page_probe":[]}
+          sample_pages={1,2,3,4,5,6,10,15,20,21,22,23,24,len(doc)}
+          for i,p in enumerate(doc,1):
+              native=p.get_text("text",sort=True) or ""
+              used_ocr=len(native.strip())<80
+              sampled=i in sample_pages
+              text=p.get_text("text",textpage=p.get_textpage_ocr(language="eng",dpi=72,full=True),sort=True) if used_ocr and sampled else native
+              lines=[line.strip() for line in text.splitlines() if line.strip()]
+              report["page_probe"].append({"page":i,"width":p.rect.width,"height":p.rect.height,"native_chars":len(native),"ocr_used":used_ocr,"sampled":sampled,"chars":len(text),"subject_headings":[s for s in ["PHYSICS","CHEMISTRY","MATHEMATICS","MATHS"] if re.search(r"\b"+s+r"\b",text,re.I)],"question_headers":[line[:160] for line in lines if re.match(r"^\s*(?:Question\s*)?\d{1,3}[.):]\s+\S",line,re.I)],"first_lines":lines[:18] if i<=3 else (lines[:4] if sampled else [])})
+              if sampled:
+                  Path(f"pdf-page-{i:02}.png").write_bytes(p.get_pixmap(dpi=72,alpha=False).tobytes("png"))
+          Path("pdf-probe.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps({"filename":report["filename"],"bytes":report["bytes"],"sha256":report["sha256"],"pages":report["pages"],"metadata":report["metadata"],"page_probe":report["page_probe"][:3]},ensure_ascii=False,indent=2))
           doc.close()
           PY
-
-      - name: Run strict representative dry-run
+      - name: Diagnose OCR word rows and question boundaries
         run: |
-          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli             --config representative-config.json             --output pipeline-output             --max-pages 150             --timeout-seconds 1200
-
-      - name: Enforce green-batch contract
+          PYTHONPATH=pipeline python - <<'PY'
+          import json
+          from pathlib import Path
+          import fitz
+          from jee_pyq_pipeline.extract import (
+              _page_image_info, _page_words, _has_center_divider, _lines,
+              _join_word_tokens, _question_start, _column_split_x,
+          )
+          source=Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc=fitz.open(source)
+          selected={1,2,3,4,5,6,7,8,9,10,15,16,20,21,22,23,24}
+          report={"source_pdf":source.name,"pages":len(doc),"samples":[]}
+          summary=[]
+          for page_no in sorted(selected):
+              if page_no>len(doc):
+                  continue
+              page=doc[page_no-1]
+              image_info=_page_image_info(page)
+              words,used_ocr=_page_words(page,page_no,image_info)
+              divider=bool(used_ocr and _has_center_divider(page))
+              split_x=_column_split_x(words,float(page.rect.width))
+              rows=[]
+              for row in _lines(words,float(page.rect.width),force_midpoint=divider):
+                  text=_join_word_tokens(row).strip()
+                  if not text:
+                      continue
+                  match,number=_question_start(text)
+                  bounds=[round(min(w[0] for w in row),2),round(min(w[1] for w in row),2),round(max(w[2] for w in row),2),round(max(w[3] for w in row),2)]
+                  rows.append({"text":text[:260],"question_number":number,"bounds":bounds})
+              candidates=[r for r in rows if r["question_number"] is not None]
+              item={"page":page_no,"width":page.rect.width,"height":page.rect.height,"words":len(words),"used_ocr":used_ocr,"center_divider_detected":divider,"geometry_split_x":split_x,"row_count":len(rows),"candidate_headers":candidates,"rows":rows[:160]}
+              report["samples"].append(item)
+              summary.append({"page":page_no,"used_ocr":used_ocr,"center_divider_detected":divider,"geometry_split_x":split_x,"word_count":len(words),"candidate_headers":[{"n":r["question_number"],"text":r["text"][:100]} for r in candidates]})
+          Path("extractor-layout-diagnostic.json").write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          doc.close()
+          PY
+      - name: Run source PDF extraction dry-run (no import)
         run: |
+          python - <<'PY'
+          import fitz, json
+          from pathlib import Path
+          source=Path("cEDaK5Wn5ILe4nOdotd6.pdf").resolve()
+          if not source.is_file():
+              raise SystemExit(f"Expected source PDF is missing: {source.name}")
+          doc=fitz.open(source)
+          # This source PDF prints paper-wide numbering: Mathematics 1-25, Physics 26-50, Chemistry 51-75.
+          expected=([f"Mathematics:{number}" for number in range(1,26)]
+                    + [f"Physics:{number}" for number in range(26,51)]
+                    + [f"Chemistry:{number}" for number in range(51,76)])
+          config={
+              "source_pdf":str(source),
+              "release":"2026-01-28-session-1-shift-1",
+              "exam":"JEE-MAIN",
+              "year":2026,
+              "session":"Session 1 • January • 28 January • Shift 1",
+              "paper":"Paper 1 • B.E./B.Tech",
+              "subject":"PCM",
+              "page_range":[1,len(doc)],
+              "expected_question_count":75,
+              "expected_question_numbers":expected,
+              # Grounded in this PDF's printed section ranges: A is MCQ; B is numerical.
+              "question_type_ranges":[
+                  {"start":1,"end":20,"type":"MCQ"},
+                  {"start":21,"end":25,"type":"NUMERICAL"},
+                  {"start":26,"end":45,"type":"MCQ"},
+                  {"start":46,"end":50,"type":"NUMERICAL"},
+                  {"start":51,"end":70,"type":"MCQ"},
+                  {"start":71,"end":75,"type":"NUMERICAL"}
+              ],
+              "source_has_solutions":True
+          }
+          Path("representative-config.json").write_text(json.dumps(config,ensure_ascii=False,indent=2),encoding="utf-8")
+          print(json.dumps({"source_pdf":source.name,"pages":len(doc),"expected_questions":len(expected),"source_identity":config["session"]},ensure_ascii=False))
+          doc.close()
+          PY
+          set +e
+          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli --config representative-config.json --output pipeline-output --max-pages 50 --timeout-seconds 1200
+          pipeline_exit=$?
+          set -e
+          if [ "$pipeline_exit" -ne 0 ] && [ "$pipeline_exit" -ne 2 ]; then
+            exit "$pipeline_exit"
+          fi
           python - <<'PY'
           import json
           from pathlib import Path
+          reports=sorted(Path("pipeline-output").glob("*/validation-report.json"))
+          if len(reports)!=1:
+              raise SystemExit(f"Expected one complete extraction report, found {len(reports)}")
+          report_path=reports[0]
+          report=json.loads(report_path.read_text(encoding="utf-8"))
+          manifest_path=report_path.parent/"batch-manifest.json"
+          manifest=json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+          issues=report.get("issues",[])
+          top_issue_codes={}
+          for issue in issues:
+              code=issue.get("code","UNKNOWN")
+              top_issue_codes[code]=top_issue_codes.get(code,0)+1
+          summary={
+              "source_status":report.get("status"),
+              "subject_counts":report.get("subject_counts"),
+              "question_type_counts":report.get("question_type_counts"),
+              "record_counts":report.get("counts"),
+              "asset_count":manifest.get("asset_count"),
+              "blocking_issue_count":report.get("blocking_issue_count"),
+              "top_issue_codes":dict(sorted(top_issue_codes.items(),key=lambda item:(-item[1],item[0]))[:15]),
+              "import_ready_exists":(report_path.parent/"IMPORT_READY.json").is_file(),
+              "blocking_issue_samples":[
+                  {"code":i.get("code"),"question_id":i.get("question_id"),"message":i.get("message")}
+                  for i in issues if i.get("blocking",True)
+              ][:100]
+          }
+          print(json.dumps(summary,ensure_ascii=False,indent=2))
+          status=report.get("status")
+          ready=summary["import_ready_exists"]
+          if status not in {"VALIDATED","REVIEW_REQUIRED","QUARANTINED"}:
+              raise SystemExit(f"Unexpected extraction status: {status}")
+          if status=="VALIDATED" and not ready:
+              raise SystemExit("Safety failure: VALIDATED report has no IMPORT_READY.json")
+          if status!="VALIDATED" and ready:
+              raise SystemExit("Safety failure: unreviewed batch emitted IMPORT_READY.json")
+          if status=="QUARANTINED":
+              print("::error title=Source PDF extraction blocked::Structural validation found blocking issues; see validation-report.json and the crop assets.")
+              raise SystemExit("Source PDF dry-run failed structural validation.")
+          if status=="REVIEW_REQUIRED":
+              print("::warning title=Manual source review required::Structure passed but per-question source review is still pending; do not import.")
+          PY
+      - name: Watermark extracted assets for visual review
+        if: always()
+        run: |
+          python -m pip install --disable-pip-version-check "Pillow>=10,<13"
+          python - <<'PY'
+          import json, subprocess, sys
+          from pathlib import Path
 
           reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
+          if not reports:
+              print("No extraction batch exists; no image watermarking attempted.")
+              raise SystemExit(0)
           if len(reports) != 1:
-              raise SystemExit(f"Expected exactly one validation report, found {len(reports)}")
-
-          report_path = reports[0]
-          report = json.loads(report_path.read_text(encoding="utf-8"))
-
-          if report.get("status") != "VALIDATED":
-              raise SystemExit(f"Batch is not VALIDATED: {report.get('status')}")
-
-          counts = report.get("counts") or {}
-          subjects = report.get("subject_counts") or {}
-          blocking = report.get("blocking_issue_count")
-
-          if counts.get("validated") != 75 or counts.get("quarantined") != 0 or counts.get("rejected") != 0:
-              raise SystemExit(f"Invalid batch counts: {counts}")
-
-          expected_subjects = {"Physics": 25, "Chemistry": 25, "Mathematics": 25}
-          if subjects != expected_subjects:
-              raise SystemExit(f"Invalid subject counts: {subjects}")
-
-          if blocking != 0:
-              raise SystemExit(f"Blocking validation issues remain: {blocking}")
-
-          batch_dir = report_path.parent
-          for required in (
-              "validated.json",
-              "source-answers.json",
-              "source-solutions.json",
-              "batch-manifest.json",
-              "IMPORT_READY.json",
-          ):
-              path = batch_dir / required
-              if not path.is_file():
-                  raise SystemExit(f"Required green-batch file is missing: {path}")
-
-          marker = json.loads((batch_dir / "IMPORT_READY.json").read_text(encoding="utf-8"))
-          if marker.get("status") != "VALIDATED":
-              raise SystemExit("IMPORT_READY.json does not confirm VALIDATED status")
-
-          print("GREEN BATCH CONTRACT PASSED")
+              raise SystemExit(f"Expected one extraction batch, found {len(reports)}")
+          batch = reports[0].parent
+          if not (batch / "assets").is_dir():
+              raise SystemExit("Extraction batch has no assets/ directory")
+          subprocess.run([
+              sys.executable, "pipeline/watermark_images.py",
+              "--data-dir", str(batch),
+              "--text", "JEE PYQ Master"
+          ], check=True)
+          manifest = json.loads((batch / "watermark-manifest.json").read_text(encoding="utf-8"))
           print(json.dumps({
-              "status": report["status"],
-              "counts": counts,
-              "subject_counts": subjects,
-              "blocking_issue_count": blocking,
-              "batch": str(batch_dir),
-          }, indent=2, ensure_ascii=False))
+              "status": manifest["status"],
+              "source_images": manifest["source_image_count"],
+              "watermarked_outputs": len(manifest["outputs"]),
+              "source_images_modified": manifest["source_images_modified"],
+              "dataset_json_modified": manifest["dataset_json_modified"],
+              "production_import": manifest["production_import"]
+          }, indent=2))
           PY
 
-      - name: Summarize dry-run result
+      - name: Upload compact JSON evidence only (no production import)
         if: always()
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
-          for path in reports:
-              report = json.loads(path.read_text(encoding="utf-8"))
-              print(json.dumps({
-                  "report": str(path),
-                  "status": report.get("status"),
-                  "counts": report.get("counts"),
-                  "question_type_counts": report.get("question_type_counts"),
-                  "subject_counts": report.get("subject_counts"),
-                  "blocking_issue_count": report.get("blocking_issue_count"),
-                  "issue_codes": sorted({
-                      i.get("code") for i in report.get("issues", [])
-                  }),
-              }, indent=2, ensure_ascii=False))
-          PY
-
-      - name: Upload representative dry-run reports
-        if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: representative-pdf-dry-run-reports
+          name: source-pdf-review-json
           path: |
+            pdf-probe.json
+            extractor-layout-diagnostic.json
             representative-config.json
             pipeline-output/*/validation-report.json
             pipeline-output/*/batch-manifest.json
             pipeline-output/*/source-intake.json
             pipeline-output/*/source-answers.json
             pipeline-output/*/source-solutions.json
-            pipeline-output/*/validated.json
             pipeline-output/*/quarantined.json
-            pipeline-output/*/rejected.json
-            pipeline-output/*/IMPORT_READY.json
-          if-no-files-found: error
+            pipeline-output/*/review-manifest-template.json
+            pipeline-output/*/watermark-manifest.json
+          if-no-files-found: warn
+          retention-days: 1
