@@ -156,6 +156,11 @@ jobs:
           report=json.loads(report_path.read_text(encoding="utf-8"))
           manifest_path=report_path.parent/"batch-manifest.json"
           manifest=json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+          issues=report.get("issues",[])
+          top_issue_codes={}
+          for issue in issues:
+              code=issue.get("code","UNKNOWN")
+              top_issue_codes[code]=top_issue_codes.get(code,0)+1
           summary={
               "source_status":report.get("status"),
               "subject_counts":report.get("subject_counts"),
@@ -163,13 +168,13 @@ jobs:
               "record_counts":report.get("counts"),
               "asset_count":manifest.get("asset_count"),
               "blocking_issue_count":report.get("blocking_issue_count"),
-              "top_issue_codes":{},
-              "import_ready_exists":(report_path.parent/"IMPORT_READY.json").is_file()
+              "top_issue_codes":dict(sorted(top_issue_codes.items(),key=lambda item:(-item[1],item[0]))[:15]),
+              "import_ready_exists":(report_path.parent/"IMPORT_READY.json").is_file(),
+              "blocking_issue_samples":[
+                  {"code":i.get("code"),"question_id":i.get("question_id"),"message":i.get("message")}
+                  for i in issues if i.get("blocking",True)
+              ][:100]
           }
-          for issue in report.get("issues",[]):
-              code=issue.get("code","UNKNOWN")
-              summary["top_issue_codes"][code]=summary["top_issue_codes"].get(code,0)+1
-          summary["top_issue_codes"]=dict(sorted(summary["top_issue_codes"].items(),key=lambda item:(-item[1],item[0]))[:15])
           print(json.dumps(summary,ensure_ascii=False,indent=2))
           status=report.get("status")
           ready=summary["import_ready_exists"]
