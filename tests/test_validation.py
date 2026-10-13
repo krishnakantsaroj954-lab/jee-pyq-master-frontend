@@ -1080,3 +1080,21 @@ def test_split_terminal_numeric_choices_after_statement_labels():
         "3": "C and E only",
         "4": "A, B, D and E only",
     }
+
+
+def test_choice_cue_anchors_numeric_choices_after_same_family_statement_labels():
+    rows = [
+        (1, "The reaction sequence includes (1) A, (2) B, (3) C and (4) D.", [0, 0, 1, 1]),
+        (1, "Choose the correct option from the options below.", [0, 2, 1, 3]),
+        (1, "(1) first choice (2) second choice", [0, 4, 1, 5]),
+        (1, "(3) third choice (4) fourth choice", [0, 6, 1, 7]),
+    ]
+    text, options = _split_options(rows)
+    assert "The reaction sequence includes" in text
+    assert "Choose the correct option" in text
+    assert options == {
+        "1": "first choice",
+        "2": "second choice",
+        "3": "third choice",
+        "4": "fourth choice",
+    }

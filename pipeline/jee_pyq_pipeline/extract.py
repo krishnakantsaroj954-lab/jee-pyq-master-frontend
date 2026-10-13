@@ -1016,11 +1016,13 @@ def _split_options_geometry(rows, word_rows_by_page_bounds):
 
 
 def _split_mixed_terminal_option_group(rows: list[tuple[int, str, list[float]]]):
-    """Resolve statement labels A-D followed by real numbered answer choices (or vice versa).
+    """Prefer a complete option group after an explicit choose/select cue.
 
-    This override is deliberately narrow: it is used only when a complete group
-    of one label family appears before a complete group of the other family.
-    Geometry-based option reconstruction remains authoritative for ordinary grids.
+    OCR stems may contain earlier enumerated statements or reaction steps that
+    reuse the same (1)-(4) labels as the actual choices. When the source prompt
+    identifies where the choices begin, anchor parsing there instead of taking
+    the first complete label group in the stem. Geometry remains the fallback
+    for two-column grids whose OCR reading order is not sequential.
     """
     flat = safe_normalize(" ".join(str(text or "") for _page, text, _bounds in rows))
     matches = []
@@ -1029,13 +1031,53 @@ def _split_mixed_terminal_option_group(rows: list[tuple[int, str, list[float]]])
         family = "letters" if raw_label in set("ABCD") else "numbers" if raw_label in set("1234") else None
         if family:
             matches.append((match.start(), match.end(), raw_label, family))
-    if len(matches) < 8:
+    if len(matches) < 4:
         return None
 
     cue = re.compile(
-        r"\b(?:choose|select)\s+(?:the\s+)?correct\s+(?:option|answer)\b",
+        r"\b(?:choose|select)\s+(?:the\s+)?correct(?:\s+(?:option|answer))?(?:\s+from\s+the\s+option)?\b",
         re.I,
     )
+    cue_match = cue.search(flat)
+
+    def make_result(group, family):
+        options = {}
+        for index, item in enumerate(group):
+            stop = group[index + 1][0] if index + 1 < len(group) else len(flat)
+            options[item[2]] = safe_normalize(flat[item[1]:stop])
+        expected = set("ABCD") if family == "letters" else set("1234")
+        if set(options) != expected or any(not value for value in options.values()):
+            return None
+        return safe_normalize(flat[:group[0][0]]), options
+
+    # Source prompt first: select a complete label group after the cue even if
+    # an earlier statement/reaction group uses the same label family.
+    if cue_match:
+        complete_after = []
+        for start_index, (start, _end, _label, family) in enumerate(matches):
+            if start < cue_match.end():
+                continue
+            expected = set("ABCD") if family == "letters" else set("1234")
+            group = []
+            seen = set()
+            for item in matches[start_index:]:
+                if item[3] != family or item[2] in seen:
+                    break
+                group.append(item)
+                seen.add(item[2])
+                if seen == expected:
+                    complete_after.append((start_index, family, group))
+                    break
+        if complete_after:
+            start_index, family, group = min(complete_after, key=lambda item: item[0])
+            result = make_result(group, family)
+            if result is not None:
+                return result
+
+    # Fallback for scans where the prompt cue was lost by OCR but the stem
+    # contains a complete label group from a different family.
+    if len(matches) < 8:
+        return None
     complete = []
     for start_index, (start, end, label, family) in enumerate(matches):
         expected = set("ABCD") if family == "letters" else set("1234")
@@ -1055,15 +1097,12 @@ def _split_mixed_terminal_option_group(rows: list[tuple[int, str, list[float]]])
                     "cue_after": cue_after,
                 })
                 break
-
     if not complete:
         return None
     usable = [item for item in complete if not item["cue_after"]]
     if not usable:
         return None
     terminal = max(usable, key=lambda item: item["start_index"])
-    # Only override the ordinary geometry/line parser when there is evidence of
-    # a different, earlier complete label group in the question stem.
     mixed_prefix = any(
         item["family"] != terminal["family"]
         and item["start_index"] < terminal["start_index"]
@@ -1071,16 +1110,7 @@ def _split_mixed_terminal_option_group(rows: list[tuple[int, str, list[float]]])
     )
     if not mixed_prefix:
         return None
-
-    group = terminal["group"]
-    options = {}
-    for index, item in enumerate(group):
-        stop = group[index + 1][0] if index + 1 < len(group) else len(flat)
-        options[item[2]] = safe_normalize(flat[item[1]:stop])
-    expected = set("ABCD") if terminal["family"] == "letters" else set("1234")
-    if set(options) != expected or any(not value for value in options.values()):
-        return None
-    return safe_normalize(flat[:group[0][0]]), options
+    return make_result(terminal["group"], terminal["family"])
 
 
 def _split_options(rows: list[tuple[int, str, list[float]]],
