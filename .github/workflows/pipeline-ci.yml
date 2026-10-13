@@ -216,15 +216,23 @@ jobs:
           }, indent=2))
           PY
 
-      - name: Upload source probe and extraction artifacts (no production import)
+      - name: Upload compact JSON evidence only (no production import)
         if: always()
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
-          name: uploaded-source-pdf-probe
+          name: source-pdf-review-json
           path: |
             pdf-probe.json
             extractor-layout-diagnostic.json
-            pdf-page-*.png
             representative-config.json
-            pipeline-output/
+            pipeline-output/*/validation-report.json
+            pipeline-output/*/batch-manifest.json
+            pipeline-output/*/source-intake.json
+            pipeline-output/*/source-answers.json
+            pipeline-output/*/source-solutions.json
+            pipeline-output/*/quarantined.json
+            pipeline-output/*/review-manifest-template.json
+            pipeline-output/*/watermark-manifest.json
           if-no-files-found: warn
+          retention-days: 1
