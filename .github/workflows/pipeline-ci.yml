@@ -1,7 +1,9 @@
 name: Pipeline CI
 on:
   push:
-    branches: [pipeline/source-grounded-parser-review]
+    # Run on main after merge; pull_request handles branch validation.
+    # Avoid doing the same 24-page PDF extraction twice for every PR commit.
+    branches: [main]
     paths:
       - ".github/workflows/pipeline-ci.yml"
       - "pipeline/jee_pyq_pipeline/**"
