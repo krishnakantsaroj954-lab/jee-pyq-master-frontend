@@ -84,7 +84,7 @@ def _parse_answer(text: str) -> str | None:
     raw = raw.strip("()[]{} ")
     if not raw:
         return None
-    match = re.match(r"^([A-Da-d]|[1-4]|-?\d+(?:\.\d+)?(?:/\d+)?)\b?", raw)
+    match = re.match(r"^([A-Da-d]|-?\d+(?:\.\d+)?(?:/\d+)?)", raw)
     if not match:
         # Fractions/decimals may be followed by units or punctuation.
         match = re.match(r"^(-?\d+(?:\.\d+)?(?:/\d+)?)", raw)
@@ -419,6 +419,7 @@ def extract(config, asset_dir: Path) -> tuple[list[Question], list[Asset], list[
 
     # Attach a rendered figure crop only when a non-page-sized source image falls
     # within the actual question text's page/column region. Full-page scans are excluded.
+    figure_doc = fitz.open(config.source_pdf)
     for image_record in image_records:
         page_no = image_record["page"]
         rect = image_record["rect"]
@@ -454,7 +455,7 @@ def extract(config, asset_dir: Path) -> tuple[list[Question], list[Asset], list[
             continue
         _, key, info = min(same_page, key=lambda item: item[0])
         try:
-            page = _fitz().open(config.source_pdf)[page_no - 1]
+            page = figure_doc[page_no - 1]
             pad = 4
             crop = fitz.Rect(
                 max(0, rect.x0 - pad), max(0, rect.y0 - pad),
@@ -477,4 +478,5 @@ def extract(config, asset_dir: Path) -> tuple[list[Question], list[Asset], list[
         except Exception as error:
             issues.append(Issue("FIGURE_CROP_FAILED", f"Could not crop source figure on page {page_no}: {error}"))
 
+    figure_doc.close()
     return questions, all_assets, issues, page_count
