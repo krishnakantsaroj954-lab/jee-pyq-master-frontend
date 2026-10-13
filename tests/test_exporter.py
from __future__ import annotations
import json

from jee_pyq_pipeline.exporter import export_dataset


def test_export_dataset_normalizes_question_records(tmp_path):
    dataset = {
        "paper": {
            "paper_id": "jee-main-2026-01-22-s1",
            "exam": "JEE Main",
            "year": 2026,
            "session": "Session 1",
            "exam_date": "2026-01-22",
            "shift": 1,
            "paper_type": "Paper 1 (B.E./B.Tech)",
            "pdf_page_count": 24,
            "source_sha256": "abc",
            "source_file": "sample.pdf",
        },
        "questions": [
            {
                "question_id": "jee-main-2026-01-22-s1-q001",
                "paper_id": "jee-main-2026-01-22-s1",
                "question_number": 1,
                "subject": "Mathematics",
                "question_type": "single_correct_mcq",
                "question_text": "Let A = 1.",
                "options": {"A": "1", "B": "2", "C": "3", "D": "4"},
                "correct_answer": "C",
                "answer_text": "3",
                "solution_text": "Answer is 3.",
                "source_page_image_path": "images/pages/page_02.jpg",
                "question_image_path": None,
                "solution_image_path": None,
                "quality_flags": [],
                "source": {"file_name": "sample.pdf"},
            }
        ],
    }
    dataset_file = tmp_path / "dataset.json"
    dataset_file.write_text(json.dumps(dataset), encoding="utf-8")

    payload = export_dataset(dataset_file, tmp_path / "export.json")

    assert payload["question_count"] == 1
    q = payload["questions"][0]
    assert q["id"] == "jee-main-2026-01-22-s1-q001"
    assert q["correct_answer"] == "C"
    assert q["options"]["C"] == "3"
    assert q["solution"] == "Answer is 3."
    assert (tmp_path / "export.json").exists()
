@@ -1,0 +1,93 @@
+from __future__ import annotations
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+
+def export_dataset(dataset_path: str | Path, output_path: str | Path | None = None) -> dict[str, Any]:
+    """Normalize a source-batch dataset into a website-friendly JSON payload.
+
+    This is intended for the pre-existing, already-extracted JEE PDF bundle in
+    `data/quarantine/.../jee_main_2026_01_22_shift1_FINAL_75Q.json`.
+    """
+    dataset_file = Path(dataset_path)
+    dataset = json.loads(dataset_file.read_text(encoding="utf-8"))
+
+    paper = dataset.get("paper", {})
+    questions = []
+    for entry in dataset.get("questions", []):
+        options = entry.get("options") or {}
+        answer = entry.get("correct_answer") or entry.get("answer_text")
+        solution = entry.get("solution_text") or entry.get("solution_ocr_raw") or ""
+
+        normalized = {
+            "id": entry.get("question_id"),
+            "paper_id": entry.get("paper_id"),
+            "exam": entry.get("exam"),
+            "question_number": int(entry.get("question_number", 0)),
+            "subject": entry.get("subject"),
+            "type": entry.get("question_type"),
+            "chapter": entry.get("chapter"),
+            "topic": entry.get("topic"),
+            "question_text": entry.get("question_text") or "",
+            "options": {str(k): str(v) for k, v in dict(options).items()},
+            "correct_answer": str(answer) if answer is not None else None,
+            "answer_label": entry.get("correct_answer"),
+            "answer_text": entry.get("answer_text"),
+            "solution": solution,
+            "source_page_image_path": entry.get("source_page_image_path"),
+            "question_image_path": entry.get("question_image_path"),
+            "solution_image_path": entry.get("solution_image_path"),
+            "quality_flags": entry.get("quality_flags") or [],
+            "source": entry.get("source") or {},
+            "raw_question_ocr": entry.get("question_ocr_raw"),
+            "raw_solution_ocr": entry.get("solution_ocr_raw"),
+        }
+        questions.append(normalized)
+
+    payload = {
+        "schema_version": "website-export/v1",
+        "paper": {
+            "paper_id": paper.get("paper_id"),
+            "exam": paper.get("exam"),
+            "year": paper.get("year"),
+            "session": paper.get("session"),
+            "exam_date": paper.get("exam_date"),
+            "shift": paper.get("shift"),
+            "paper_type": paper.get("paper_type"),
+            "pdf_page_count": paper.get("pdf_page_count"),
+            "source_sha256": paper.get("source_sha256"),
+            "source_file": paper.get("source_file"),
+        },
+        "question_count": len(questions),
+        "questions": questions,
+    }
+
+    if output_path is not None:
+        out = Path(output_path)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return payload
+
+
+def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Export an already-extracted JEE PDF dataset into a frontend-friendly JSON payload.")
+    parser.add_argument("--dataset", type=Path, help="Path to a source dataset JSON file.")
+    parser.add_argument("--output", type=Path, help="Path for the exported JSON file.")
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = _parse_args(argv)
+    if not args.dataset:
+        raise SystemExit("--dataset is required")
+
+    payload = export_dataset(args.dataset, args.output)
+    print(f"Exported {payload['question_count']} questions")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
