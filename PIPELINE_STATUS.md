@@ -30,3 +30,8 @@ A green representative run must contain:
 - `IMPORT_READY.json`
 
 No live import should occur until that gate is green and the batch artifact is reviewed.
+
+
+## Controlled verification
+
+The representative workflow is dispatched manually or from pull requests and has a hard source-presence and green-batch gate; a missing source PDF can no longer skip extraction.
