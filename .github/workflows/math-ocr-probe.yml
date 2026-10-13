@@ -38,10 +38,10 @@ jobs:
           # word-box coordinates from the existing extraction artifact. They
           # isolate the printed option formula, not synthetic/rewritten text.
           cells = {
-              "option-1": (311, 778, 476, 893),
-              "option-2": (736, 778, 936, 893),
-              "option-3": (311, 903, 476, 1033),
-              "option-4": (736, 903, 936, 1033),
+              "option-1": (311, 778, 476, 925),
+              "option-2": (736, 778, 936, 925),
+              "option-3": (311, 903, 476, 1060),
+              "option-4": (736, 903, 936, 1060),
           }
           with fitz.open(source) as doc:
               page = doc[1]
