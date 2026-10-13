@@ -1015,8 +1015,80 @@ def _split_options_geometry(rows, word_rows_by_page_bounds):
     return safe_normalize(" ".join(part for part in body_parts if part)), options
 
 
+def _split_mixed_terminal_option_group(rows: list[tuple[int, str, list[float]]]):
+    """Resolve statement labels A-D followed by real numbered answer choices (or vice versa).
+
+    This override is deliberately narrow: it is used only when a complete group
+    of one label family appears before a complete group of the other family.
+    Geometry-based option reconstruction remains authoritative for ordinary grids.
+    """
+    flat = safe_normalize(" ".join(str(text or "") for _page, text, _bounds in rows))
+    matches = []
+    for match in OPTION_LABEL.finditer(flat):
+        raw_label = (match.group(1) or match.group(2) or "").upper()
+        family = "letters" if raw_label in set("ABCD") else "numbers" if raw_label in set("1234") else None
+        if family:
+            matches.append((match.start(), match.end(), raw_label, family))
+    if len(matches) < 8:
+        return None
+
+    cue = re.compile(
+        r"\b(?:choose|select)\s+(?:the\s+)?correct\s+(?:option|answer)\b",
+        re.I,
+    )
+    complete = []
+    for start_index, (start, end, label, family) in enumerate(matches):
+        expected = set("ABCD") if family == "letters" else set("1234")
+        group = []
+        seen = set()
+        for item in matches[start_index:]:
+            if item[3] != family or item[2] in seen:
+                break
+            group.append(item)
+            seen.add(item[2])
+            if seen == expected:
+                cue_after = bool(cue.search(flat[group[-1][1]:]))
+                complete.append({
+                    "start_index": start_index,
+                    "family": family,
+                    "group": group,
+                    "cue_after": cue_after,
+                })
+                break
+
+    if not complete:
+        return None
+    usable = [item for item in complete if not item["cue_after"]]
+    if not usable:
+        return None
+    terminal = max(usable, key=lambda item: item["start_index"])
+    # Only override the ordinary geometry/line parser when there is evidence of
+    # a different, earlier complete label group in the question stem.
+    mixed_prefix = any(
+        item["family"] != terminal["family"]
+        and item["start_index"] < terminal["start_index"]
+        for item in complete
+    )
+    if not mixed_prefix:
+        return None
+
+    group = terminal["group"]
+    options = {}
+    for index, item in enumerate(group):
+        stop = group[index + 1][0] if index + 1 < len(group) else len(flat)
+        options[item[2]] = safe_normalize(flat[item[1]:stop])
+    expected = set("ABCD") if terminal["family"] == "letters" else set("1234")
+    if set(options) != expected or any(not value for value in options.values()):
+        return None
+    return safe_normalize(flat[:group[0][0]]), options
+
+
 def _split_options(rows: list[tuple[int, str, list[float]]],
                    word_rows_by_page_bounds=None) -> tuple[str, dict[str, str]]:
+    mixed_terminal_result = _split_mixed_terminal_option_group(rows)
+    if mixed_terminal_result is not None:
+        return mixed_terminal_result
+
     geometry_result = _split_options_geometry(rows, word_rows_by_page_bounds)
     if geometry_result is not None:
         return geometry_result
