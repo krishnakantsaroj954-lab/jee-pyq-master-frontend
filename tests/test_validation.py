@@ -6,7 +6,7 @@ from jee_pyq_pipeline.extract import (
     _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
     _question_header_candidate, _infer_missing_top_question_header, _has_center_divider, _ocr_clip_words,
-    _question_type_from_ranges, _sequence_header_gap,
+    _question_type_from_ranges, _sequence_header_gap, _source_row_key,
 )
 from jee_pyq_pipeline.validate import validate
 from jee_pyq_pipeline.cli import _build_batch
@@ -103,6 +103,77 @@ def test_split_compact_parenthesized_options_and_negative_values():
     ])
     assert text == ""
     assert options == {"1": "10", "2": "-6", "3": "-2", "4": "6"}
+
+
+def test_geometry_split_two_by_two_fraction_options():
+    # A scanned fraction can put all four labels on two rows and each numerator /
+    # denominator on separate rows. Geometry must preserve the four option cells.
+    rows = [
+        (1, "Find the values", [40, 20, 520, 40]),
+        (1, "(1) (2)", [80, 100, 420, 120]),
+        (1, "11 13", [120, 80, 440, 98]),
+        (1, "2 4", [130, 125, 450, 143]),
+        (1, "(3) (4)", [80, 200, 420, 220]),
+        (1, "5 7", [120, 180, 440, 198]),
+        (1, "6 8", [130, 225, 450, 243]),
+    ]
+    words = {
+        _source_row_key(1, [40, 20, 520, 40]): [
+            (40, 20, 130, 40, "Find", 0, 0, 0),
+            (140, 20, 190, 40, "the", 0, 0, 1),
+            (200, 20, 280, 40, "values", 0, 0, 2),
+        ],
+        _source_row_key(1, [80, 100, 420, 120]): [
+            (80, 100, 120, 120, "(1)", 0, 0, 0),
+            (380, 100, 420, 120, "(2)", 0, 0, 1),
+        ],
+        _source_row_key(1, [120, 80, 440, 98]): [
+            (120, 80, 150, 98, "11", 0, 0, 0),
+            (420, 80, 450, 98, "13", 0, 0, 1),
+        ],
+        _source_row_key(1, [130, 125, 450, 143]): [
+            (130, 125, 140, 143, "2", 0, 0, 0),
+            (430, 125, 440, 143, "4", 0, 0, 1),
+        ],
+        _source_row_key(1, [80, 200, 420, 220]): [
+            (80, 200, 120, 220, "(3)", 0, 0, 0),
+            (380, 200, 420, 220, "(4)", 0, 0, 1),
+        ],
+        _source_row_key(1, [120, 180, 440, 198]): [
+            (120, 180, 150, 198, "5", 0, 0, 0),
+            (420, 180, 450, 198, "7", 0, 0, 1),
+        ],
+        _source_row_key(1, [130, 225, 450, 243]): [
+            (130, 225, 140, 243, "6", 0, 0, 0),
+            (430, 225, 440, 243, "8", 0, 0, 1),
+        ],
+    }
+    text, options = _split_options(rows, words)
+    assert text == "Find the values"
+    assert set(options) == set("1234")
+    assert "11" in options["1"] and "2" in options["1"]
+    assert "13" in options["2"] and "4" in options["2"]
+    assert "5" in options["3"] and "6" in options["3"]
+    assert "7" in options["4"] and "8" in options["4"]
+    assert "13" not in options["1"] and "11" not in options["2"]
+
+
+def test_geometry_split_falls_back_for_single_vertical_option_column():
+    rows = [
+        (1, "(1) first", [100, 100, 250, 120]),
+        (1, "(2) second", [100, 140, 260, 160]),
+        (1, "(3) third", [100, 180, 250, 200]),
+        (1, "(4) fourth", [100, 220, 260, 240]),
+    ]
+    words = {
+        _source_row_key(1, bounds): [
+            (bounds[0], bounds[1], bounds[0] + 35, bounds[3], text.split()[0], 0, 0, 0),
+            (bounds[0] + 40, bounds[1], bounds[2], bounds[3], " ".join(text.split()[1:]), 0, 0, 1),
+        ]
+        for _page, text, bounds in rows
+    }
+    _, options = _split_options(rows, words)
+    assert options == {"1": "first", "2": "second", "3": "third", "4": "fourth"}
 
 def test_source_answer_and_solution_split():
     qtext,qopts,answer,solution,qrows,srows,err=_split_source_sections([
