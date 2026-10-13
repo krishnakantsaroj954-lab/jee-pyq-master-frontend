@@ -16,6 +16,48 @@ def _paper_identity(config):
     }
 
 
+def _question_diagnostics(questions, issues):
+    """Return compact structure-only diagnostics for quarantined source records."""
+    issue_codes = {}
+    for issue in issues:
+        qid = issue.get("question_id")
+        if qid:
+            issue_codes.setdefault(qid, []).append(issue.get("code", "UNKNOWN"))
+    diagnostics = []
+    for question in questions:
+        qid = question.get("id")
+        codes = issue_codes.get(qid, [])
+        if not codes:
+            continue
+        options = question.get("options") if isinstance(question.get("options"), dict) else {}
+        solution = question.get("solution") if isinstance(question.get("solution"), dict) else {}
+        assets = question.get("assets") if isinstance(question.get("assets"), list) else []
+        solution_assets = question.get("solution_assets") if isinstance(question.get("solution_assets"), list) else []
+        diagnostics.append({
+            "id": qid,
+            "subject": question.get("subject"),
+            "number": question.get("source_question_number"),
+            "pages": question.get("pages"),
+            "question_bounds": question.get("bounds"),
+            "question_text_chars": len(str(question.get("text") or "")),
+            "option_keys": sorted(str(key) for key in options),
+            "option_value_chars": {str(key): len(str(value or "")) for key, value in options.items()},
+            "answer": question.get("answer"),
+            "solution_text_chars": len(str(solution.get("text") or "")),
+            "solution_pages": solution.get("pages"),
+            "question_asset_refs": [
+                {"page": asset.get("page"), "bounds": asset.get("bounds")}
+                for asset in assets[:2] if isinstance(asset, dict)
+            ],
+            "solution_asset_refs": [
+                {"page": asset.get("page"), "bounds": asset.get("bounds")}
+                for asset in solution_assets[:2] if isinstance(asset, dict)
+            ],
+            "issues": sorted(set(codes)),
+        })
+    return diagnostics
+
+
 def _question_fingerprint(question):
     payload = question.json()
     # Review approval is tied to all extracted material, not transient workflow state.
@@ -293,6 +335,17 @@ def run(config_path:Path,output_root:Path,max_pages:int=50,timeout_seconds:int=1
     except Exception:
         shutil.rmtree(tmp,ignore_errors=True)
         raise
+    if status == 'QUARANTINED':
+        report_path = out/'validation-report.json'
+        questions_path = out/'quarantined.json'
+        if report_path.is_file() and questions_path.is_file():
+            report = json.loads(report_path.read_text(encoding='utf-8'))
+            questions = json.loads(questions_path.read_text(encoding='utf-8'))
+            print('FAILED_QUESTION_DIAGNOSTICS ' + json.dumps(
+                _question_diagnostics(questions, report.get('issues', [])),
+                ensure_ascii=False,
+                separators=(',', ':'),
+            ))
     print(out)
     return 0 if status=='VALIDATED' else 2
 

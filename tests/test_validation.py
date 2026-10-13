@@ -9,7 +9,7 @@ from jee_pyq_pipeline.extract import (
     _question_type_from_ranges, _sequence_header_gap, _source_row_key,
 )
 from jee_pyq_pipeline.validate import validate
-from jee_pyq_pipeline.cli import _build_batch
+from jee_pyq_pipeline.cli import _build_batch, _question_diagnostics
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
     return SimpleNamespace(
@@ -1118,3 +1118,30 @@ def test_bare_answer_word_in_wrapped_prompt_does_not_end_option_region():
     assert answer == "3"
     assert solution == "The source explanation."
     assert "answer" in q_text
+
+
+def test_question_diagnostics_report_structure_without_copying_source_text():
+    questions = [{
+        "id": "q-58",
+        "subject": "Chemistry",
+        "source_question_number": 58,
+        "pages": [19],
+        "bounds": [10, 20, 300, 400],
+        "text": "long source text that must not be emitted",
+        "options": {"1": "alpha", "2": "", "3": "gamma"},
+        "answer": None,
+        "solution": {"text": "source solution", "pages": [19, 20]},
+        "assets": [{"page": 19, "bounds": [10, 20, 300, 400]}],
+        "solution_assets": [{"page": 20, "bounds": [10, 20, 300, 400]}],
+    }]
+    issues = [{"code": "MALFORMED_OPTIONS", "question_id": "q-58"}]
+    diagnostics = _question_diagnostics(questions, issues)
+    assert len(diagnostics) == 1
+    row = diagnostics[0]
+    assert row["option_keys"] == ["1", "2", "3"]
+    assert row["option_value_chars"] == {"1": 5, "2": 0, "3": 5}
+    assert row["answer"] is None
+    assert row["question_asset_refs"][0]["page"] == 19
+    assert row["solution_asset_refs"][0]["page"] == 20
+    assert "text" not in row
+    assert "long source text" not in str(row)
