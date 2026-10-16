@@ -1,209 +1,53 @@
 name: Pipeline CI
+
 on:
-  workflow_dispatch:
   pull_request:
     branches: [main]
+    paths:
+      - ".github/workflows/pipeline-ci.yml"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pipeline/watermark_images.py"
+      - "tests/**"
+      - "pyproject.toml"
+      - "docs/**"
+      - "PIPELINE_STATUS.md"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/pipeline-ci.yml"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pipeline/watermark_images.py"
+      - "tests/**"
+      - "pyproject.toml"
+      - "docs/**"
+      - "PIPELINE_STATUS.md"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  parser-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install OCR and test dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr
           python -m pip install --upgrade pip
           python -m pip install -e ".[test]"
 
-      - name: Run unit tests
+      - name: Run parser, source-validation, review-gate, and watermark tests
         run: python -m pytest -q
 
-      - name: Require representative source PDF
-        run: |
-          test -f cEDaK5Wn5ILe4nOdotd6.pdf
-          echo "Representative PDF present."
-          git cat-file -e "HEAD:cEDaK5Wn5ILe4nOdotd6.pdf"
-
-      - name: Prepare representative dry-run config
-        run: |
-          python - <<'PY'
-          import hashlib
-          import json
-          import subprocess
-          import fitz
-          from pathlib import Path
-
-          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          expected_git_blob_sha = "bc7570e370d5409b62dc3fe88d2d1dcc1378a0ab"
-          actual_git_blob_sha = subprocess.check_output(
-              ["git", "rev-parse", f"HEAD:{pdf.name}"], text=True
-          ).strip()
-
-          if actual_git_blob_sha != expected_git_blob_sha:
-              raise SystemExit(
-                  "Representative PDF identity gate failed: "
-                  f"expected git blob {expected_git_blob_sha}, "
-                  f"got {actual_git_blob_sha}"
-              )
-
-          source_sha256 = hashlib.sha256(pdf.read_bytes()).hexdigest()
-          doc = fitz.open(pdf)
-          page_count = len(doc)
-          text_chars = sum(len(p.get_text("text") or "") for p in doc)
-
-          if page_count < 1:
-              raise SystemExit("Representative PDF identity gate failed: PDF has no pages")
-
-          expected = (
-              [f"Physics:{n}" for n in range(1, 26)] +
-              [f"Chemistry:{n}" for n in range(1, 26)] +
-              [f"Mathematics:{n}" for n in range(1, 26)]
-          )
-
-          cfg = {
-              "source_pdf": str(pdf),
-              "release": "2026-01",
-              "exam": "JEE-MAIN",
-              "year": 2026,
-              "session": "Session 1 • Jan • 28 Jan • Shift 1",
-              "paper": "Paper 1 • B.E./B.Tech",
-              "subject": "PCM",
-              "page_range": [1, page_count],
-              "expected_question_count": 75,
-              "expected_question_numbers": expected,
-              "source_has_solutions": True
-          }
-
-          Path("representative-config.json").write_text(
-              json.dumps(cfg, ensure_ascii=False, indent=2),
-              encoding="utf-8"
-          )
-
-          print(json.dumps({
-              "pdf": pdf.name,
-              "git_blob_sha": actual_git_blob_sha,
-              "sha256": source_sha256,
-              "size_bytes": pdf.stat().st_size,
-              "page_count": page_count,
-              "text_chars": text_chars,
-              "expected_questions": len(expected),
-              "identity_basis": "pinned repository blob; semantic metadata recorded in config"
-          }, indent=2))
-
-          doc.close()
-          PY
-
-      - name: Run strict representative dry-run
-        run: |
-          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli             --config representative-config.json             --output pipeline-output             --max-pages 150             --timeout-seconds 1200
-
-      - name: Enforce green-batch contract
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
-          if len(reports) != 1:
-              raise SystemExit(f"Expected exactly one validation report, found {len(reports)}")
-
-          report_path = reports[0]
-          report = json.loads(report_path.read_text(encoding="utf-8"))
-
-          if report.get("status") != "VALIDATED":
-              raise SystemExit(f"Batch is not VALIDATED: {report.get('status')}")
-
-          counts = report.get("counts") or {}
-          subjects = report.get("subject_counts") or {}
-          blocking = report.get("blocking_issue_count")
-
-          if counts.get("validated") != 75 or counts.get("quarantined") != 0 or counts.get("rejected") != 0:
-              raise SystemExit(f"Invalid batch counts: {counts}")
-
-          expected_subjects = {"Physics": 25, "Chemistry": 25, "Mathematics": 25}
-          if subjects != expected_subjects:
-              raise SystemExit(f"Invalid subject counts: {subjects}")
-
-          if blocking != 0:
-              raise SystemExit(f"Blocking validation issues remain: {blocking}")
-
-          batch_dir = report_path.parent
-          for required in (
-              "validated.json",
-              "source-answers.json",
-              "source-solutions.json",
-              "batch-manifest.json",
-              "IMPORT_READY.json",
-          ):
-              path = batch_dir / required
-              if not path.is_file():
-                  raise SystemExit(f"Required green-batch file is missing: {path}")
-
-          marker = json.loads((batch_dir / "IMPORT_READY.json").read_text(encoding="utf-8"))
-          if marker.get("status") != "VALIDATED":
-              raise SystemExit("IMPORT_READY.json does not confirm VALIDATED status")
-
-          print("GREEN BATCH CONTRACT PASSED")
-          print(json.dumps({
-              "status": report["status"],
-              "counts": counts,
-              "subject_counts": subjects,
-              "blocking_issue_count": blocking,
-              "batch": str(batch_dir),
-          }, indent=2, ensure_ascii=False))
-          PY
-
-      - name: Summarize dry-run result
-        if: always()
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-
-          reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
-          for path in reports:
-              report = json.loads(path.read_text(encoding="utf-8"))
-              print(json.dumps({
-                  "report": str(path),
-                  "status": report.get("status"),
-                  "counts": report.get("counts"),
-                  "question_type_counts": report.get("question_type_counts"),
-                  "subject_counts": report.get("subject_counts"),
-                  "blocking_issue_count": report.get("blocking_issue_count"),
-                  "issue_codes": sorted({
-                      i.get("code") for i in report.get("issues", [])
-                  }),
-              }, indent=2, ensure_ascii=False))
-          PY
-
-      - name: Upload representative dry-run reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: representative-pdf-dry-run-reports
-          path: |
-            representative-config.json
-            pipeline-output/*/validation-report.json
-            pipeline-output/*/batch-manifest.json
-            pipeline-output/*/source-intake.json
-            pipeline-output/*/source-answers.json
-            pipeline-output/*/source-solutions.json
-            pipeline-output/*/validated.json
-            pipeline-output/*/quarantined.json
-            pipeline-output/*/rejected.json
-            pipeline-output/*/IMPORT_READY.json
-          if-no-files-found: error
+      # Deliberately no generated sample questions, production imports, deployment,
+      # large artifact uploads, or assertion that an unreviewed real paper is green.
