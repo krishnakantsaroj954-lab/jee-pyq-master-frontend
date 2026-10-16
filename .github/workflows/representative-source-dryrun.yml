@@ -97,6 +97,61 @@ jobs:
           doc.close()
           PY
 
+      - name: Diagnose OCR rows and printed question headers before extraction
+        run: |
+          PYTHONPATH=pipeline python - <<'PY'
+          import fitz, json
+          from pathlib import Path
+          from jee_pyq_pipeline.extract import (
+              _page_words, _page_image_info, _lines, _join_word_tokens,
+              _subject_line, _question_header_candidate, _has_center_divider
+          )
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc = fitz.open(pdf)
+          total_words = 0
+          total_rows = 0
+          total_headers = 0
+          subject_rows = []
+          print("OCR_DIAGNOSTIC_BEGIN")
+          for page_no, page in enumerate(doc, 1):
+              info = _page_image_info(page)
+              words, used_ocr = _page_words(page, page_no, info)
+              total_words += len(words)
+              rows = []
+              force_midpoint = used_ocr and _has_center_divider(page)
+              for word_row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
+                  text = _join_word_tokens(word_row).strip()
+                  if not text:
+                      continue
+                  bounds = [
+                      min(float(w[0]) for w in word_row),
+                      min(float(w[1]) for w in word_row),
+                      max(float(w[2]) for w in word_row),
+                      max(float(w[3]) for w in word_row),
+                  ]
+                  subject = _subject_line(text)
+                  match, number = _question_header_candidate(text, bounds, page.rect.width, None)
+                  rows.append({"text": text[:180], "subject": subject, "number": number, "y": round(bounds[1], 1), "x": round(bounds[0], 1)})
+              headers = [x for x in rows if x["number"] is not None]
+              subjects = [x for x in rows if x["subject"]]
+              total_rows += len(rows)
+              total_headers += len(headers)
+              subject_rows.extend(subjects)
+              print(json.dumps({
+                  "page": page_no, "ocr": used_ocr, "word_count": len(words),
+                  "row_count": len(rows), "header_count": len(headers),
+                  "headers": headers[:5], "subjects": subjects[:4],
+                  "sample_rows": [x["text"] for x in rows[:8]] if page_no <= 3 else []
+              }, ensure_ascii=False))
+          print(json.dumps({"OCR_DIAGNOSTIC_TOTALS": {
+              "pages": len(doc), "words": total_words, "rows": total_rows,
+              "recognized_headers": total_headers,
+              "recognized_subject_headings": subject_rows
+          }}, ensure_ascii=False))
+          print("OCR_DIAGNOSTIC_END")
+          doc.close()
+          PY
+
       - name: Run exact-source dry extraction (no import)
         run: |
           PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
