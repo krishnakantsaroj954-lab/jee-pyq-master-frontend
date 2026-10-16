@@ -1,21 +1,27 @@
 # Pipeline status — 16 October 2026
 
-## Fixed in the source-grounded parser branch
+## Fixed and merged to `main`
 
-- Removed the placeholder-question generation path from the extraction code being proposed for `main`.
-- Restored layout-aware PDF parsing with OCR fallback, source-page and geometry provenance, answer/solution marker handling, subject-aware question keys, explicit paper-specific question-type bands, and question/solution crop association.
-- Added fail-closed checks for question count/scope, duplicates, missing or malformed options, absent/ambiguous answers, missing source solutions, invalid bounds/lineage, replacement glyphs, placeholder content, and required images.
-- Added a per-question source-review manifest bound to the PDF SHA-256, paper identity, and extracted-record fingerprint.
-- Changed the release boundary so automatic extraction remains `REVIEW_REQUIRED`; `IMPORT_READY.json` requires complete structural validation and explicit review approval.
-- Preserved source-marked dropped-question records instead of silently omitting them.
-- Replaced the old CI workflow's claim that a fixed 75-question run was automatically green with a lightweight test-only workflow. It does not generate question data, import to production, deploy, or upload large artifacts.
+- Removed the fake 75-record generator that had fabricated question text, generic options, guessed answers, and placeholder solutions instead of reading the source PDF.
+- Restored source-grounded PDF parsing with page geometry, two-column layout handling, OCR fallback, source answer/solution marker splitting, subject-aware question keys, source-specific question-type ranges, and bounded question/solution crop association.
+- Added strict checks for paper scope/count, duplicate IDs and question keys, malformed options, missing/ambiguous answers, absent source solutions, invalid source lineage/bounds, notation damage, placeholder content, and required images.
+- Added a per-question source-review manifest bound to the source PDF SHA-256, paper identity, and extracted-record fingerprint.
+- The automatic parser now remains `REVIEW_REQUIRED` even when structural checks pass. `IMPORT_READY.json` requires a complete review approval; uncertain data stays quarantined.
+- Kept source-marked dropped-question records with `Dropped` status rather than silently removing them.
+- Replaced the old CI workflow's false claim that a fixed synthetic 75-question run was green with a test-only workflow. CI makes no production writes, deploys nothing, and uploads no large artifacts.
 
-## What is not yet proven
+## Automated verification
 
-**The real-paper extraction is not certified complete.** Tests against generated PDFs and helper fixtures prove only the tested parser behaviours. They do not prove the exact 16 MB source paper has correct question boundaries, answers, solutions, or image crops.
+- Pull request #13 was merged on 16 October 2026.
+- GitHub Actions run **190** completed successfully. The parser/source-validation/review-gate/watermark test step passed; the run executed 61 tests.
+- This proves the tested code paths and fixtures pass. It does **not** prove any real paper's question text, answers, solutions, or image crops are correct.
 
-Before any paper can be marked ready, run the pipeline on the exact intended PDF, confirm the PDF header/identity and SHA-256, inspect the extraction report, visually compare every question/options/answer/solution and image association against the source, and finish the content-bound review manifest. Any missing or uncertain item must remain quarantined.
+## What remains unverified
+
+**The real-paper extraction is not certified complete.** The exact intended 16 MB PDF has not been re-run and visually reviewed here with the repaired parser. Before a paper can be marked ready, confirm the exact PDF's identity and SHA-256, run a dry extraction, inspect the validation report and question count/scope, compare every question/options/answer/solution/image against the same source PDF, and complete its content-bound review manifest. Do not substitute a different date or shift. Missing or uncertain items must remain quarantined.
+
+The user-facing website/API/database also require separate verification; this is only the source/PDF pipeline.
 
 ## Production boundary
 
-No Cloudflare Worker code, D1 database/table, secret, deployment, or live import was changed by this branch. The website/API/database still require separate verification; this branch only addresses the source/PDF extraction pipeline. Do not treat these commits as a completed website or as a production-ready PYQ corpus.
+No Cloudflare Worker code, D1 database/table, secret, production import, or deployment was changed. Do not treat this pipeline repair or green unit tests as a completed website or as a production-ready PYQ corpus.
