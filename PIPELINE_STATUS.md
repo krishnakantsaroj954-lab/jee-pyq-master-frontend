@@ -1,32 +1,21 @@
-# Pipeline status
+# Pipeline status — 16 October 2026
 
-## Implemented
+## Fixed in the source-grounded parser branch
 
-- One-paper, configuration-selected intake/extraction/validation/review-batch pipeline.
-- Source and optional ZIP checksums; deterministic batch identity; per-asset page/bounds/checksums.
-- Layout-aware extraction with side-by-side option support and subject-aware question keys.
-- Combined JEE Main papers can use `Physics:1` ... `Chemistry:25` ... `Mathematics:25`, so repeated per-subject numbering is not treated as a duplicate.
-- Source PDFs that contain questions + solutions are split at source Answer/Solution markers. The answer and solution evidence is emitted from the same PDF; no guessed/manual answer map is required.
-- MCQ and numerical (Section B style) questions are both validated. Source option labels may remain A-D or 1-4; numerical questions are not forced into a four-option shape.
-- Required source figures are associated from page geometry with bounded padding; solution assets are kept separately.
-- Validated batch hand-off through `IMPORT_READY.json`; **no D1/API import code exists in this repository**.
-- Successful batches are reusable by source PDF hash + page range; the runner refuses silent re-extraction.
+- Removed the placeholder-question generation path from the extraction code being proposed for `main`.
+- Restored layout-aware PDF parsing with OCR fallback, source-page and geometry provenance, answer/solution marker handling, subject-aware question keys, explicit paper-specific question-type bands, and question/solution crop association.
+- Added fail-closed checks for question count/scope, duplicates, missing or malformed options, absent/ambiguous answers, missing source solutions, invalid bounds/lineage, replacement glyphs, placeholder content, and required images.
+- Added a per-question source-review manifest bound to the PDF SHA-256, paper identity, and extracted-record fingerprint.
+- Changed the release boundary so automatic extraction remains `REVIEW_REQUIRED`; `IMPORT_READY.json` requires complete structural validation and explicit review approval.
+- Preserved source-marked dropped-question records instead of silently omitting them.
+- Replaced the old CI workflow's claim that a fixed 75-question run was automatically green with a lightweight test-only workflow. It does not generate question data, import to production, deploy, or upload large artifacts.
 
-## Representative dry-run wiring
+## What is not yet proven
 
-The repository now contains CI wiring that, when the uploaded `cEDaK5Wn5ILe4nOdotd6.pdf` is present, verifies that the PDF identifies itself as JEE Main 2026 / Jan 28 / Shift 1, creates the exact 75-question PCM scope, runs the strict pipeline, and uploads the review batch as a workflow artifact. The dry-run never touches D1/API/live website.
+**The real-paper extraction is not certified complete.** Tests against generated PDFs and helper fixtures prove only the tested parser behaviours. They do not prove the exact 16 MB source paper has correct question boundaries, answers, solutions, or image crops.
 
-## Verification boundary
+Before any paper can be marked ready, run the pipeline on the exact intended PDF, confirm the PDF header/identity and SHA-256, inspect the extraction report, visually compare every question/options/answer/solution and image association against the source, and finish the content-bound review manifest. Any missing or uncertain item must remain quarantined.
 
-The source PDF binary is stored in GitHub, but the connected GitHub file API available to this session cannot stream that binary into the local runtime, so the actual 28 Jan Shift 1 extraction result cannot honestly be marked green from this interface alone. The repository workflow is the execution gate for the real source file.
+## Production boundary
 
-A green representative run must contain:
-- `status: VALIDATED`
-- 75 validated records
-- 25 Physics + 25 Chemistry + 25 Mathematics
-- MCQ/numerical type counts consistent with the source
-- source answer and source solution evidence for every question
-- no blocking validation issues
-- `IMPORT_READY.json`
-
-No live import should occur until that gate is green and the batch artifact is reviewed.
+No Cloudflare Worker code, D1 database/table, secret, deployment, or live import was changed by this branch. The website/API/database still require separate verification; this branch only addresses the source/PDF extraction pipeline. Do not treat these commits as a completed website or as a production-ready PYQ corpus.
