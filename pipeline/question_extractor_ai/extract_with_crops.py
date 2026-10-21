@@ -122,10 +122,12 @@ def main() -> int:
         page_rgb = np.asarray(pil_page.convert("RGB"))
         height, width = page_rgb.shape[:2]
         min_area = 0.001 * height * width
+        page_bgr = cv2.cvtColor(page_rgb, cv2.COLOR_RGB2BGR)
+        page_record["pageSize"] = {"width": int(width), "height": int(height)}
 
         try:
             original, threshold, dilated, overlay, boxes = analyze.analyzeImage(
-                page_rgb.copy(),
+                page_bgr.copy(),
                 min_area,
                 args.paper_type,
                 tuple(args.kernel),
@@ -133,7 +135,7 @@ def main() -> int:
                 args.bottom,
             )
 
-            Image.fromarray(overlay).save(preview_dir / f"{page_stem}_boxes.jpg", quality=90)
+            Image.fromarray(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB)).save(preview_dir / f"{page_stem}_boxes.jpg", quality=90)
             Image.fromarray(threshold).save(diagnostic_dir / f"{page_stem}_threshold.png")
             Image.fromarray(dilated).save(diagnostic_dir / f"{page_stem}_dilated.png")
 
@@ -150,7 +152,7 @@ def main() -> int:
                 crop = original[y0:y1, x0:x1]
                 crop_name = f"{page_stem}_q_{question_index:03d}.jpg"
                 crop_path = crop_dir / crop_name
-                Image.fromarray(crop).save(crop_path, quality=95)
+                Image.fromarray(cv2.cvtColor(crop, cv2.COLOR_BGR2RGB)).save(crop_path, quality=95)
                 page_record["crops"].append({
                     "indexOnPage": question_index,
                     "path": str(crop_path.relative_to(output_dir)),

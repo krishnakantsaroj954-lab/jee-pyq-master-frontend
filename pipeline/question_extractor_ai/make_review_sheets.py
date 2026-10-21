@@ -38,19 +38,30 @@ def main():
         raise SystemExit("Missing extraction manifest: " + str(source_manifest))
     data = json.loads(source_manifest.read_text(encoding="utf-8"))
 
-    pages, crops, compact_pages = [], [], []
+    pages, crops, compact_pages, quality_flags = [], [], [], []
     for page in data.get("pages", []):
         number = int(page["page"])
         overlay = root / "previews" / ("page_%03d_boxes.jpg" % number)
         if overlay.is_file():
             pages.append((overlay, "Page %02d | %d regions" % (number, int(page.get("count", 0)))))
         compact_crop_list = []
+        page_size = page.get("pageSize") or {}
+        page_width = int(page_size.get("width", 0) or 0)
+        page_height = int(page_size.get("height", 0) or 0)
         for crop in page.get("crops", []):
-            compact_crop_list.append({"indexOnPage": crop.get("indexOnPage"), "bbox": crop.get("bbox")})
+            bbox = crop.get("bbox") or {}
+            compact_crop_list.append({"indexOnPage": crop.get("indexOnPage"), "bbox": bbox})
+            if page_width > 0 and page_height > 0:
+                box_width = int(bbox.get("width", 0) or 0)
+                box_height = int(bbox.get("height", 0) or 0)
+                if box_width >= 0.90 * page_width and box_height >= 0.55 * page_height:
+                    quality_flags.append("Page %02d candidate %02d covers most of the page; likely merged." % (number, int(crop.get("indexOnPage", 0))))
+                elif box_height <= 0.012 * page_height:
+                    quality_flags.append("Page %02d candidate %02d is extremely thin; likely a line/footer fragment." % (number, int(crop.get("indexOnPage", 0))))
             candidate = root / crop.get("path", "")
             if candidate.is_file():
                 crops.append((candidate, "Page %02d | candidate %02d" % (number, int(crop["indexOnPage"]))))
-        entry = {"page": number, "count": int(page.get("count", 0)), "crops": compact_crop_list}
+        entry = {"page": number, "pageSize": page_size or None, "count": int(page.get("count", 0)), "crops": compact_crop_list}
         if page.get("error"):
             entry["error"] = page["error"]
         compact_pages.append(entry)
@@ -68,6 +79,8 @@ def main():
         "totalPages": len(compact_pages),
         "totalCrops": int(data.get("totalCrops", 0)),
         "pagesWithErrors": int(data.get("pagesWithErrors", 0)),
+        "qualityStatus": "REVIEW_REQUIRED",
+        "qualityFlags": quality_flags,
         "pages": compact_pages,
         "contactSheets": ["page_overview.jpg", "candidate_crop_overview.jpg"],
     }
@@ -79,6 +92,8 @@ def main():
         "- Pages processed: " + str(len(compact_pages)),
         "- Candidate regions detected: " + str(compact.get("totalCrops")),
         "- Pages with errors: " + str(compact.get("pagesWithErrors")),
+        "- Suspect geometry regions: " + str(len(quality_flags)),
+        "- Automatic import: BLOCKED (geometry-only candidates are never import-ready).",
         "- Layout type: " + str((data.get("parameters") or {}).get("paperType")),
         "- Kernel: " + str((data.get("parameters") or {}).get("kernel")), "",
         "## Important interpretation", "",
@@ -91,6 +106,11 @@ def main():
     ]
     for page in data.get("pages", []):
         lines.append("| %s | %s | %s |" % (page.get("page"), page.get("count", 0), page.get("error", "processed")))
+    if quality_flags:
+        lines.extend(["", "## Geometry warnings", ""])
+        lines.extend("- " + warning for warning in quality_flags)
+    else:
+        lines.extend(["", "No obvious page-sized or extremely thin regions were detected by this basic geometry check. Visual review is still mandatory."])
     lines.extend(["", "Full-resolution crop and diagnostic files are temporary CI output. Only compact review sheets and the compact manifest are saved to the test branch, avoiding Actions artifact-storage quota use.", ""])
     (review / "summary.md").write_text("\n".join(lines), encoding="utf-8")
     print("Review bundle created.")

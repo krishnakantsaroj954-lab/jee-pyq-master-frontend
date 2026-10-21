@@ -7,7 +7,7 @@ This isolated experiment uses the existing source PDF in this private repository
 1. Open this repository on GitHub.
 2. Go to **Actions** → **Experimental QuestionExtractorAI PDF crops**.
 3. Select branch **test/question-extractor-ai-github-runner** and choose **Run workflow**.
-4. Keep the default PDF path for the first test; start with layout type 1 and top/bottom 0.
+4. Keep the default PDF path and use layout type 2 (two-column) with top/bottom 0 for this PDF.
 5. When complete, inspect the folder **qa-artifacts/question-extractor-ai-review/** on the same test branch. The workflow commits only compact review images, a compact manifest, and a summary, rather than uploading a large Actions artifact.
 
 ## Review files
@@ -18,6 +18,8 @@ This isolated experiment uses the existing source PDF in this private repository
 - **summary.md**: quick count/status report and limitations.
 
 Full-resolution crops, threshold maps, and dilation maps are temporary CI files.
+
+The first type-1 run was not visually acceptable: it produced page-sized regions and thin footer fragments across much of this PDF. The workflow now defaults to type 2 because the source pages use a two-column layout. The review output still requires a human visual check; page-spanning and extremely thin candidate regions are called out as warnings, and geometry crops are never import-ready.
 
 ## Important limitations
 

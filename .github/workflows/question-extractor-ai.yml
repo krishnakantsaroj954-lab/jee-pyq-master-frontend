@@ -13,7 +13,7 @@ on:
         required: true
         type: choice
         options: ["1", "2", "3"]
-        default: "1"
+        default: "2"
       top_percent:
         description: Percentage to ignore at the top of every page
         required: true
@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 25
     env:
       PDF_PATH: ${{ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }}
-      PAPER_TYPE: ${{ inputs.paper_type || '1' }}
+      PAPER_TYPE: ${{ inputs.paper_type || '2' }}
       TOP_PERCENT: ${{ inputs.top_percent || '0' }}
       BOTTOM_PERCENT: ${{ inputs.bottom_percent || '0' }}
     steps:
