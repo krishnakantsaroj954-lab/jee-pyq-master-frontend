@@ -566,7 +566,11 @@ def main() -> int:
 
     # Rebuild hash-backed assets list without trusting stale asset-manifest contents.
     assets = []
-    for path in sorted((root / "images").rglob("*.jpg")):
+    image_root = root / "images"
+    watermarked_root = image_root / "watermarked"
+    # The watermark step stores branded review copies below images/watermarked/.
+    # They mirror the source images and must not enter the source asset count/hash list.
+    for path in sorted(p for p in image_root.rglob("*.jpg") if watermarked_root not in p.parents):
         rel = path.relative_to(root).as_posix()
         with Image.open(path) as im:
             fmt = im.format or "JPEG"
