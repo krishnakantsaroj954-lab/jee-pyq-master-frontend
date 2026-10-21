@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "paper_id": "jee-main-2026-01-22-s1",
+  "purpose": "Manual transcriptions from visually inspected printed-solution crops or page images. These preserve source-derived work; they are not generated replacement solutions.",
+  "transcriptions": {
+    "27": {
+      "solution_text": "By conservation of mechanical energy, \\((ME)_i=(ME)_f\\) and \\(PE_i+KE_i=PE_f+KE_f\\). Thus \\(0+7.9\\times10^6\\times1.6\\times10^{-19}=\\frac{k(2e)(Ze)}{r}+0\\). Using \\(k=9\\times10^9\\), \\(Z=79\\), and \\(e=1.6\\times10^{-19}\\,\\mathrm C\\), the source gives \\(r=2.88\\times10^{-14}\\,\\mathrm m\\). Therefore the diameter is \\(D=2r=5.76\\times10^{-14}\\,\\mathrm m\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "32": {
+      "solution_text": "From the velocity direction, \\(u\\cos60^\\circ=\\frac{20}{\\sqrt2}\\). Hence \\(\\frac{u}{2}=\\frac{20}{\\sqrt2}\\), so \\(u=\\frac{40}{\\sqrt2}=20\\sqrt2\\,\\mathrm{m/s}\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "38": {
+      "solution_text": "Let \\(R=\\frac{\\ell}{3KA}\\). The source simplifies the diamond network to an equivalent resistance \\(\\frac{11R}{2}\\), so \\(H=\\frac{100-40}{11R/2}\\). Also \\(H=\\frac{100-T_B}{R}\\) and \\(H=\\frac{T_E-40}{3R}\\). Using the source's equations gives \\(T_B=89^\\circ\\mathrm C\\) and \\(T_E=73^\\circ\\mathrm C\\), respectively.",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "45": {
+      "solution_text": "The magnetic field through the middle coil is \\(\\vec B=(B_{C_2}-B_{C_1})\\hat i\\). Therefore the flux is \\(\\phi=(B_{C_2}-B_{C_1})A\\), and the induced emf is \\(\\varepsilon=-\\frac{d\\phi}{dt}\\). Applying Lenz's law to the stated motion, the printed solution marks option (2) as the correct answer.",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "60": {
+      "solution_text": "Option (A): \\(W=-nRT\\ln\\frac{V_2}{V_1}=-\\frac{2\\times8.314\\times300}{1000}\\ln\\frac{20}{2}\\,\\mathrm{kJ}=-11.5\\,\\mathrm{kJ}\\). Option (B): \\(W=-P_{\\mathrm{ext}}(V_2-V_1)=-3(3-1)=-6\\,\\mathrm{kJ}\\). Option (C): \\(\\Delta U=nC_V\\Delta T=1\\times\\frac32\\times\\frac{8.314\\times320}{1000}\\,\\mathrm{kJ}\\approx3.99\\,\\mathrm{kJ}\\). Option (D): \\(\\Delta H=nC_P\\Delta T=1\\times\\frac52\\times\\frac{8.314\\times337}{1000}\\,\\mathrm{kJ}\\approx7\\,\\mathrm{kJ}\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "72": {
+      "solution_text": "The standard cell potential is \\(E^\\circ_{\\mathrm{cell}}=-0.44-(-0.90)=+0.46\\,\\mathrm V\\). Applying the Nernst equation, \\(E_{\\mathrm{cell}}=E^\\circ_{\\mathrm{cell}}-\\frac{0.06}{n}\\log Q\\). Substituting \\(n=6\\) and \\(Q=10^6\\), \\(E_{\\mathrm{cell}}=0.46-\\frac{0.06}{6}\\log10^6=4\\times10^{-1}\\,\\mathrm V\\). Thus \\(x=4\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "73": {
+      "solution_text": "Equating the rate constants gives \\(10^4e^{-24000/T}=10^6e^{-30000/T}\\). Hence \\(e^{6000/T}=100\\), so \\(\\frac{6000}{T}=2\\ln10\\). Therefore \\(T=\\frac{6000}{2\\times2.303}=1302.64\\,\\mathrm K\\), or approximately \\(1303\\,\\mathrm K\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "74": {
+      "solution_text": "Iodine gives the violet colour. The halogen percentage is calculated as \\(\\%I=\\frac{\\text{atomic weight of I}}{\\text{molecular weight of AgI}}\\times\\frac{m}{W}\\times100\\). Thus \\(\\%I=\\frac{127}{235}\\times\\frac{0.12}{0.15}\\times100=43.23\\%\\approx43\\%\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    },
+    "75": {
+      "solution_text": "For the dissociation, the source evaluates \\(\\Delta G^\\circ_{\\mathrm{rxn}}=-1.664\\times10^3\\,\\mathrm J=-8.3\\times300\\ln K_p\\). This gives \\(\\ln K_p=0.693\\) and \\(K_p=2\\). Using \\(2=\\frac{4\\alpha^2P_0}{1-\\alpha^2}\\) at \\(P_0=1\\) bar gives \\(\\alpha=\\frac1{\\sqrt3}\\). Since \\(\\alpha=(x\\times10^{-2})^{1/2}\\), \\(x=\\frac{100}{3}\\approx33.33\\), so the nearest integer is \\(33\\).",
+      "status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "reviewed_date": "2026-10-21",
+      "scope": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified."
+    }
+  }
+}
