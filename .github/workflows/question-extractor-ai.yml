@@ -12,10 +12,7 @@ on:
         description: "Layout type: 1 (number leads question), 2 (two-column/SAT), 3 (number aligned with question)"
         required: true
         type: choice
-        options:
-          - "1"
-          - "2"
-          - "3"
+        options: ["1", "2", "3"]
         default: "1"
       top_percent:
         description: Percentage to ignore at the top of every page
@@ -34,27 +31,28 @@ on:
       - ".github/workflows/question-extractor-ai.yml"
       - "pipeline/question_extractor_ai/**"
       - "cEDaK5Wn5ILe4nOdotd6.pdf"
-  pull_request:
-    paths:
-      - ".github/workflows/question-extractor-ai.yml"
-      - "pipeline/question_extractor_ai/**"
-      - "cEDaK5Wn5ILe4nOdotd6.pdf"
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: question-extractor-ai-${ github.ref }
+  cancel-in-progress: false
 
 jobs:
   crop-questions:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      PDF_PATH: ${{ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }}
-      PAPER_TYPE: ${{ inputs.paper_type || '1' }}
-      TOP_PERCENT: ${{ inputs.top_percent || '0' }}
-      BOTTOM_PERCENT: ${{ inputs.bottom_percent || '0' }}
+      PDF_PATH: ${ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }
+      PAPER_TYPE: ${ inputs.paper_type || '1' }
+      TOP_PERCENT: ${ inputs.top_percent || '0' }
+      BOTTOM_PERCENT: ${ inputs.bottom_percent || '0' }
     steps:
-      - name: Check out the repository
+      - name: Check out the selected test branch
         uses: actions/checkout@v4
+        with:
+          ref: ${ github.ref }
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -73,7 +71,7 @@ jobs:
           git clone https://github.com/TaroAndMulan/QuestionExtractorAI.git "$RUNNER_TEMP/QuestionExtractorAI"
           git -C "$RUNNER_TEMP/QuestionExtractorAI" checkout --detach 6206db58972bb4a06cf7d8e1294a89cd6c2fd729
 
-      - name: Detect candidate boxes and save individual crops
+      - name: Detect candidate boxes and make compact review sheets
         run: |
           python pipeline/question_extractor_ai/extract_with_crops.py \
             --pdf "$PDF_PATH" \
@@ -84,12 +82,27 @@ jobs:
             --top "$TOP_PERCENT" \
             --bottom "$BOTTOM_PERCENT" \
             --dpi 160
+          python pipeline/question_extractor_ai/make_review_sheets.py \
+            --input-dir question-extractor-output \
+            --review-dir question-extractor-output/review
+          cat question-extractor-output/review/summary.md >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload previews, crops, diagnostics, and manifest
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: question-extractor-ai-output
-          path: question-extractor-output/
-          if-no-files-found: warn
-          retention-days: 7
+      - name: Save compact review files on this test branch
+        if: success()
+        env:
+          REVIEW_DIR: qa-artifacts/question-extractor-ai-review
+        run: |
+          mkdir -p "$REVIEW_DIR"
+          cp question-extractor-output/review/page_overview.jpg "$REVIEW_DIR/"
+          cp question-extractor-output/review/candidate_crop_overview.jpg "$REVIEW_DIR/"
+          cp question-extractor-output/review/manifest.json "$REVIEW_DIR/"
+          cp question-extractor-output/review/summary.md "$REVIEW_DIR/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$REVIEW_DIR"
+          if git diff --cached --quiet; then
+            echo "No changes to compact review files."
+          else
+            git commit -m "chore: update experimental crop review sheets"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
