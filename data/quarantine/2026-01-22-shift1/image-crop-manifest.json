@@ -1,8 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_pdf": "BPD4dLYdvGj7xm8cDL66.pdf",
   "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
-  "coordinate_note": "Crops were generated from bundled full-page JPEGs using manually estimated boxes in 1024x1450 preview coordinates, scaled to the source JPEGs. They are question-specific best-effort crops and require visual review before production use. Original question text/options/answers/solutions were not edited.",
+  "source_pdf_bytes_verified_in_this_run": false,
+  "verification_mode": "pinned source metadata and all 24 source-page image hashes verified; actual PDF bytes not available to this invocation",
+  "coordinate_note": "Crop regions were estimated manually in 1024x1450 preview coordinates and scaled to the original page JPEGs. Contact sheets are generated for human visual inspection. QA status remains REVIEW_REQUIRED; crops are not claimed to be perfectly verified.",
   "question_figures": [
     {
       "question_number": 7,
@@ -183,24 +185,24 @@
     {
       "question_number": 44,
       "path": "images/questions/q044_figure.jpg",
-      "description": "List-I/List-II dimensions table",
+      "description": "Complete List-I/List-II dimensions table",
       "source_page": "images/pages/page_15.jpg",
       "source_bbox_preview": [
         80.81,
-        140.51,
+        127.52,
         513.77,
-        321.76
+        332.98
       ],
       "native_bbox": [
         137,
-        238,
+        216,
         871,
-        545
+        564
       ],
       "width": 734,
-      "height": 307,
-      "bytes": 54882,
-      "sha256": "9126e40df769d35a2e88252e61b3b3397a5199652cf547bf492a18487dacf526"
+      "height": 348,
+      "bytes": 56014,
+      "sha256": "30b2ac224a962be69e6db6576ba57e40db250aec1821faa9893d3114504cc17c"
     },
     {
       "question_number": 45,
@@ -449,7 +451,7 @@
     {
       "question_number": 27,
       "path": "images/solutions/q027_solution.jpg",
-      "description": "Printed solution block for Q27, including explanatory scattering diagram",
+      "description": "Printed solution block for Q27, including scattering diagram",
       "source_page": "images/pages/page_09.jpg",
       "source_bbox_preview": [
         40.7,
@@ -477,18 +479,18 @@
         520.85,
         30.7,
         968.55,
-        473.49
+        463.46
       ],
       "native_bbox": [
         883,
         52,
         1642,
-        802
+        785
       ],
       "width": 759,
-      "height": 750,
-      "bytes": 36871,
-      "sha256": "13ecb9649e83db0b18e4e5110858034dc1918a2fc7f8958186d6ca24c2990639"
+      "height": 733,
+      "bytes": 32413,
+      "sha256": "6c0fbeb74e068c75540e799fa3b9f74bece48fbb34f8b71abf064f0163fad002"
     },
     {
       "question_number": 38,
@@ -521,18 +523,18 @@
         515.54,
         50.77,
         968.55,
-        583.9
+        623.45
       ],
       "native_bbox": [
         874,
         86,
         1642,
-        989
+        1056
       ],
       "width": 768,
-      "height": 903,
-      "bytes": 69707,
-      "sha256": "ee5f48744e16b8dc59eb57ff826bce3c836eec322a4d68ca7979e5d9e19ee6ae"
+      "height": 970,
+      "bytes": 74300,
+      "sha256": "0d064de0279074aba85aa4b0b5efbced67772d095f1e295f632cb819f12af266"
     },
     {
       "question_number": 60,
@@ -543,18 +545,20 @@
         40.7,
         30.7,
         503.74,
-        618.73
+        638.8
       ],
       "native_bbox": [
         69,
         52,
         854,
-        1048
+        1082
       ],
       "width": 785,
-      "height": 996,
-      "bytes": 69745,
-      "sha256": "47174b8a4d0735f8cfc2d424867915a7673d1805bc5766c3f2a17de801945827"
+      "height": 1030,
+      "bytes": 70703,
+      "sha256": "f39985f60ae9a1769ecb24600b09c2a43066f0de76d87134020817c5b68fd2f1"
     }
-  ]
+  ],
+  "quality_status": "REVIEW_REQUIRED",
+  "production_import": "NOT_PERFORMED"
 }

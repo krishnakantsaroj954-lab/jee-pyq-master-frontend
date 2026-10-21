@@ -1,0 +1,19 @@
+{
+  "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
+  "source_pdf_bytes_verified_in_this_run": false,
+  "verification_mode": "dataset source SHA metadata and 24 page-image hashes verified; PDF bytes not rechecked in this run",
+  "question_records": 75,
+  "questions_with_printed_answers": 74,
+  "question_figure_crops": 19,
+  "solution_crops": 6,
+  "image_assets": 50,
+  "image_references": "PASSED",
+  "q39_status": "dropped_in_source",
+  "q39_correct_answer": null,
+  "review_status": "REVIEW_REQUIRED",
+  "production_import": "NOT_PERFORMED",
+  "contact_sheets": [
+    "question-crops-contact-sheet.jpg",
+    "solution-crops-contact-sheet.jpg"
+  ]
+}

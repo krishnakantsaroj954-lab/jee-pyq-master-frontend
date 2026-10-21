@@ -1,0 +1,26 @@
+{
+  "status": "REVIEW_REQUIRED",
+  "paper_id": "jee-main-2026-01-22-s1",
+  "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
+  "source_pdf_bytes_verified_in_this_run": false,
+  "question_records": 75,
+  "full_question_crops": 75,
+  "legacy_figure_crops": 19,
+  "solution_crops": 6,
+  "source_page_images": 24,
+  "all_question_image_references_exist": true,
+  "question_numbers_exactly_1_to_75": true,
+  "q39_status": "Dropped",
+  "q39_correct_answer": null,
+  "q39_includes_dropped_source_label": true,
+  "manual_header_fallback_count": 3,
+  "total_jpeg_assets": 125,
+  "production_import": "NOT_PERFORMED",
+  "review_gate": "Human visual review of every question crop and the text/options/answers/solutions is required; do not import automatically.",
+  "contact_sheets": [
+    "full-question-crops-contact-sheet.jpg",
+    "full-question-crops-q01-q25.jpg",
+    "full-question-crops-q26-q50.jpg",
+    "full-question-crops-q51-q75.jpg"
+  ]
+}

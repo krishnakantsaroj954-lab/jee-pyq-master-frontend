@@ -1,0 +1,3516 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "jee-main-2026-01-22-s1",
+  "source_pdf": "BPD4dLYdvGj7xm8cDL66.pdf",
+  "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
+  "source_pdf_bytes_verified_in_this_run": false,
+  "verification_mode": "source SHA is pinned in dataset metadata and source page-image hashes are verified; actual PDF bytes were not available to this invocation",
+  "source_page_count": 24,
+  "ocr_provenance": {
+    "mode": "ocr_run_from_verified_source_page_images",
+    "engine": "5.3.4",
+    "config": "--psm 6",
+    "scale": 0.72,
+    "row_count": 3202,
+    "source_page_image_hashes_verified": true
+  },
+  "question_count": 75,
+  "source_stream_order": "PDF page ascending; each page left column top-to-bottom, then right column top-to-bottom",
+  "answer_boundary_rule": "Question crop stops before its own printed Ans. row; source-dropped Q39 includes its printed dropped label",
+  "manual_header_fallbacks": [
+    {
+      "question_number": 1,
+      "page": 2,
+      "side": "L",
+      "y": 445.8,
+      "review_reason": "OCR misses printed question number; stem begins 'Let AB = ...'"
+    },
+    {
+      "question_number": 7,
+      "page": 3,
+      "side": "R",
+      "y": 184.7,
+      "review_reason": "OCR misses printed question number; stem begins 'If a random variable...'"
+    },
+    {
+      "question_number": 51,
+      "page": 18,
+      "side": "L",
+      "y": 445.8,
+      "review_reason": "Hosted Tesseract 5.3 fails to join the printed Q51 number to its stem; source header visually checked on page 18 left column."
+    }
+  ],
+  "quality_status": "REVIEW_REQUIRED",
+  "production_import": "NOT_PERFORMED",
+  "warning": "OCR-driven crop boundaries require human visual review. Full question crops preserve printed options/figures, and question/answer/solution text in the JSON was not modified by this crop script.",
+  "question_crops": [
+    {
+      "question_number": 1,
+      "question_id": "jee-main-2026-01-22-s1-q001",
+      "path": "images/questions/q001_full_question.jpg",
+      "width": 834,
+      "height": 409,
+      "bytes": 57236,
+      "sha256": "c497dd16886811a9e29334f48bffe8096334a4b6885a92a088c1cd9f617a5d5a",
+      "start_header": {
+        "page": 2,
+        "side": "L",
+        "y": 419.83,
+        "manual_fallback": true,
+        "manual_review_reason": "OCR misses printed question number; stem begins 'Let AB = ...'",
+        "ocr_line": "! 1, Let AB =2i+4j—5k and"
+      },
+      "answer_boundary": {
+        "page": 2,
+        "side": "L",
+        "y0": 830.56,
+        "y1": 880.56,
+        "printed_label_ocr": "| Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_02.jpg",
+          "page": 2,
+          "side": "L",
+          "native_bbox": [
+            22,
+            419,
+            856,
+            828
+          ],
+          "ocr_row_index_range": [
+            14,
+            22
+          ],
+          "is_manual_start_anchor": true,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 2,
+      "question_id": "jee-main-2026-01-22-s1-q002",
+      "path": "images/questions/q002_full_question.jpg",
+      "width": 834,
+      "height": 326,
+      "bytes": 46529,
+      "sha256": "54e913d9f1fa1b74f97c8c0e368e78f07300b8ae3416e311fa61ca1df76d644c",
+      "start_header": {
+        "page": 2,
+        "side": "L",
+        "y": 1594.94,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 2. Let the relation R on the set M = {1, 2, 3,.......16}"
+      },
+      "answer_boundary": {
+        "page": 2,
+        "side": "L",
+        "y0": 1922.22,
+        "y1": 1972.22,
+        "printed_label_ocr": "\\ Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_02.jpg",
+          "page": 2,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1594,
+            856,
+            1920
+          ],
+          "ocr_row_index_range": [
+            44,
+            52
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 3,
+      "question_id": "jee-main-2026-01-22-s1-q003",
+      "path": "images/questions/q003_full_question.jpg",
+      "width": 834,
+      "height": 268,
+      "bytes": 32061,
+      "sha256": "fb832edb90abc7d70c4b98dc88a76bef3cf7981c89e8fb210d897fdf8144a1a2",
+      "start_header": {
+        "page": 2,
+        "side": "R",
+        "y": 388.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "3. Let the line x = —1 divide the area of the region '"
+      },
+      "answer_boundary": {
+        "page": 2,
+        "side": "R",
+        "y0": 658.33,
+        "y1": 708.33,
+        "printed_label_ocr": "Ans. (4) '"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_02.jpg",
+          "page": 2,
+          "side": "R",
+          "native_bbox": [
+            880,
+            388,
+            1714,
+            656
+          ],
+          "ocr_row_index_range": [
+            82,
+            87
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 4,
+      "question_id": "jee-main-2026-01-22-s1-q004",
+      "path": "images/questions/q004_full_question.jpg",
+      "width": 834,
+      "height": 342,
+      "bytes": 39638,
+      "sha256": "90f326c8bef9669a013eb6f737e608a110a88cefeba3a4f70e706777e84623bb",
+      "start_header": {
+        "page": 2,
+        "side": "R",
+        "y": 1378.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "4. Two distinct numbers a and b are selected at I"
+      },
+      "answer_boundary": {
+        "page": 2,
+        "side": "R",
+        "y0": 1722.22,
+        "y1": 1770.83,
+        "printed_label_ocr": "Ans. (2) i"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_02.jpg",
+          "page": 2,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1378,
+            1714,
+            1720
+          ],
+          "ocr_row_index_range": [
+            105,
+            115
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 5,
+      "question_id": "jee-main-2026-01-22-s1-q005",
+      "path": "images/questions/q005_full_question.jpg",
+      "width": 834,
+      "height": 248,
+      "bytes": 32821,
+      "sha256": "d7ddd720a247094f2ee0a7dc124d0b418a36645aaa5c48a147cc28d49b1cef90",
+      "start_header": {
+        "page": 3,
+        "side": "L",
+        "y": 179.67,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 5. Let f(x) = x\" — x\", x © [0, 1] and the minimum"
+      },
+      "answer_boundary": {
+        "page": 3,
+        "side": "L",
+        "y0": 429.17,
+        "y1": 477.78,
+        "printed_label_ocr": "i Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_03.jpg",
+          "page": 3,
+          "side": "L",
+          "native_bbox": [
+            22,
+            179,
+            856,
+            427
+          ],
+          "ocr_row_index_range": [
+            143,
+            148
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 6,
+      "question_id": "jee-main-2026-01-22-s1-q006",
+      "path": "images/questions/q006_full_question.jpg",
+      "width": 834,
+      "height": 642,
+      "bytes": 59997,
+      "sha256": "f73211de233e42d4f34761172d7aac5e0ad0da2030383eb4bf39f8e50ef39703",
+      "start_header": {
+        "page": 3,
+        "side": "L",
+        "y": 761.61,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 6. Let P(a, B, y) be the point on the line"
+      },
+      "answer_boundary": {
+        "page": 3,
+        "side": "L",
+        "y0": 1405.56,
+        "y1": 1455.56,
+        "printed_label_ocr": "H Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_03.jpg",
+          "page": 3,
+          "side": "L",
+          "native_bbox": [
+            22,
+            761,
+            856,
+            1403
+          ],
+          "ocr_row_index_range": [
+            158,
+            178
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 7,
+      "question_id": "jee-main-2026-01-22-s1-q007",
+      "path": "images/questions/q007_full_question.jpg",
+      "width": 834,
+      "height": 377,
+      "bytes": 45258,
+      "sha256": "1d2bc0ebe2356de2855e6f6a64f5aa8f66b78db90bd7bc71672d80f3684236e3",
+      "start_header": {
+        "page": 3,
+        "side": "R",
+        "y": 164.28,
+        "manual_fallback": true,
+        "manual_review_reason": "OCR misses printed question number; stem begins 'If a random variable...'",
+        "ocr_line": "es If a random variable x has the probability 1"
+      },
+      "answer_boundary": {
+        "page": 3,
+        "side": "R",
+        "y0": 543.06,
+        "y1": 593.06,
+        "printed_label_ocr": "Ans. (4) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_03.jpg",
+          "page": 3,
+          "side": "R",
+          "native_bbox": [
+            880,
+            164,
+            1714,
+            541
+          ],
+          "ocr_row_index_range": [
+            215,
+            224
+          ],
+          "is_manual_start_anchor": true,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 8,
+      "question_id": "jee-main-2026-01-22-s1-q008",
+      "path": "images/questions/q008_full_question.jpg",
+      "width": 834,
+      "height": 189,
+      "bytes": 21146,
+      "sha256": "e77b065d797fa41b0cec7095d0db4bae9d2c8b2bba0a76a0cff4cbde2a2acccb",
+      "start_header": {
+        "page": 3,
+        "side": "R",
+        "y": 1013.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "8. The number of distinct real solutions of the 1"
+      },
+      "answer_boundary": {
+        "page": 3,
+        "side": "R",
+        "y0": 1204.17,
+        "y1": 1254.17,
+        "printed_label_ocr": "Ans. (2) '"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_03.jpg",
+          "page": 3,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1013,
+            1714,
+            1202
+          ],
+          "ocr_row_index_range": [
+            235,
+            239
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 9,
+      "question_id": "jee-main-2026-01-22-s1-q009",
+      "path": "images/questions/q009_full_question.jpg",
+      "width": 834,
+      "height": 362,
+      "bytes": 32632,
+      "sha256": "dfcd2b36892cf9b244e37502435b606a98fa144c12a696e17fb8b9b4a6637c30",
+      "start_header": {
+        "page": 4,
+        "side": "L",
+        "y": 179.67,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "' 9: Let f : [1, ©) > R be a differentiable function, If"
+      },
+      "answer_boundary": {
+        "page": 4,
+        "side": "L",
+        "y0": 543.06,
+        "y1": 593.06,
+        "printed_label_ocr": "H Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_04.jpg",
+          "page": 4,
+          "side": "L",
+          "native_bbox": [
+            22,
+            179,
+            856,
+            541
+          ],
+          "ocr_row_index_range": [
+            280,
+            288
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 10,
+      "question_id": "jee-main-2026-01-22-s1-q010",
+      "path": "images/questions/q010_full_question.jpg",
+      "width": 834,
+      "height": 355,
+      "bytes": 29925,
+      "sha256": "a126c06d1ea929647aeb2b07e4fa4eda541d976dca2fa213350ece3dab4d736f",
+      "start_header": {
+        "page": 4,
+        "side": "L",
+        "y": 1651.89,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "\\ 10. If the line ax + 2y = 1, where a € R, does not"
+      },
+      "answer_boundary": {
+        "page": 4,
+        "side": "L",
+        "y0": 2008.33,
+        "y1": 2058.33,
+        "printed_label_ocr": "! Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_04.jpg",
+          "page": 4,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1651,
+            856,
+            2006
+          ],
+          "ocr_row_index_range": [
+            319,
+            328
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 11,
+      "question_id": "jee-main-2026-01-22-s1-q011",
+      "path": "images/questions/q011_full_question.jpg",
+      "width": 834,
+      "height": 260,
+      "bytes": 31169,
+      "sha256": "a8e62c89acc58b3cd83697f6c110678730498c462f11cbefbd29d7de35c0afa8",
+      "start_header": {
+        "page": 4,
+        "side": "R",
+        "y": 790.78,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "11. If the image of the point P (1, 2 , a) in the line '"
+      },
+      "answer_boundary": {
+        "page": 4,
+        "side": "R",
+        "y0": 1052.78,
+        "y1": 1081.94,
+        "printed_label_ocr": "Ans. (3) I"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_04.jpg",
+          "page": 4,
+          "side": "R",
+          "native_bbox": [
+            880,
+            790,
+            1714,
+            1050
+          ],
+          "ocr_row_index_range": [
+            367,
+            374
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 12,
+      "question_id": "jee-main-2026-01-22-s1-q012",
+      "path": "images/questions/q012_full_question.jpg",
+      "width": 834,
+      "height": 329,
+      "bytes": 40964,
+      "sha256": "1bb722017a9c9f959ab4e735fe8e1849edae1e375eeca15b9959747009d7214e",
+      "start_header": {
+        "page": 5,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 12. Let the set of all values of r, for which the circles"
+      },
+      "answer_boundary": {
+        "page": 5,
+        "side": "L",
+        "y0": 509.72,
+        "y1": 537.5,
+        "printed_label_ocr": "1 Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_05.jpg",
+          "page": 5,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            507
+          ],
+          "ocr_row_index_range": [
+            422,
+            429
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 13,
+      "question_id": "jee-main-2026-01-22-s1-q013",
+      "path": "images/questions/q013_full_question.jpg",
+      "width": 834,
+      "height": 258,
+      "bytes": 22266,
+      "sha256": "448a75f0eabdf8b73812b929f6f66f616e74803846e36d5cf854f1835aba124a",
+      "start_header": {
+        "page": 5,
+        "side": "L",
+        "y": 1288.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "I 13. IfA= 3 5, then the determinant of the matrix"
+      },
+      "answer_boundary": {
+        "page": 5,
+        "side": "L",
+        "y0": 1548.61,
+        "y1": 1598.61,
+        "printed_label_ocr": "H Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_05.jpg",
+          "page": 5,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1288,
+            856,
+            1546
+          ],
+          "ocr_row_index_range": [
+            453,
+            458
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 14,
+      "question_id": "jee-main-2026-01-22-s1-q014",
+      "path": "images/questions/q014_full_question.jpg",
+      "width": 834,
+      "height": 355,
+      "bytes": 33700,
+      "sha256": "d86f29ce62f74481b121cfe575faf5f2780c0e08f6247b4f09b1b4af1a2356a2",
+      "start_header": {
+        "page": 5,
+        "side": "R",
+        "y": 158.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "14. If the domain of the function i"
+      },
+      "answer_boundary": {
+        "page": 5,
+        "side": "R",
+        "y0": 515.28,
+        "y1": 543.06,
+        "printed_label_ocr": "Ans. (1) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_05.jpg",
+          "page": 5,
+          "side": "R",
+          "native_bbox": [
+            880,
+            158,
+            1714,
+            513
+          ],
+          "ocr_row_index_range": [
+            493,
+            500
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 15,
+      "question_id": "jee-main-2026-01-22-s1-q015",
+      "path": "images/questions/q015_full_question.jpg",
+      "width": 834,
+      "height": 398,
+      "bytes": 33443,
+      "sha256": "a1ad9118071ba61c1f5bc907ad0b4fab902f28a5658e16dc6aa1075b6a82f5ee",
+      "start_header": {
+        "page": 5,
+        "side": "R",
+        "y": 1201.89,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "15. The value of J —— fx, where [e] denotes 1"
+      },
+      "answer_boundary": {
+        "page": 5,
+        "side": "R",
+        "y0": 1601.39,
+        "y1": 1630.56,
+        "printed_label_ocr": "Ans. (3) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_05.jpg",
+          "page": 5,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1201,
+            1714,
+            1599
+          ],
+          "ocr_row_index_range": [
+            520,
+            533
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 16,
+      "question_id": "jee-main-2026-01-22-s1-q016",
+      "path": "images/questions/q016_full_question.jpg",
+      "width": 834,
+      "height": 194,
+      "bytes": 32161,
+      "sha256": "0ce700379e9f25d8821c0c847578d5d923fa2f59109738e76c50e4fd362ef2e9",
+      "start_header": {
+        "page": 6,
+        "side": "L",
+        "y": 174.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 16. The coefficient of x* in (1 +x) +2(1 +x) +3(1"
+      },
+      "answer_boundary": {
+        "page": 6,
+        "side": "L",
+        "y0": 370.83,
+        "y1": 420.83,
+        "printed_label_ocr": "\\ Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_06.jpg",
+          "page": 6,
+          "side": "L",
+          "native_bbox": [
+            22,
+            174,
+            856,
+            368
+          ],
+          "ocr_row_index_range": [
+            570,
+            574
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 17,
+      "question_id": "jee-main-2026-01-22-s1-q017",
+      "path": "images/questions/q017_full_question.jpg",
+      "width": 834,
+      "height": 290,
+      "bytes": 40421,
+      "sha256": "19367896f9fa8c1e94d83c0e86608da1bfa946476e6a0bca651895d5d641b4aa",
+      "start_header": {
+        "page": 6,
+        "side": "L",
+        "y": 1106.06,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 17. If the chord joining the points P,(x,, y,) and P,(x,,"
+      },
+      "answer_boundary": {
+        "page": 6,
+        "side": "L",
+        "y0": 1398.61,
+        "y1": 1426.39,
+        "printed_label_ocr": "1 Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_06.jpg",
+          "page": 6,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1106,
+            856,
+            1396
+          ],
+          "ocr_row_index_range": [
+            594,
+            600
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 18,
+      "question_id": "jee-main-2026-01-22-s1-q018",
+      "path": "images/questions/q018_full_question.jpg",
+      "width": 834,
+      "height": 299,
+      "bytes": 25315,
+      "sha256": "5fb9b735a7ce4eb305fcedc657b6533f1ec011a2ac627ff17cbb230d6d4912a8",
+      "start_header": {
+        "page": 6,
+        "side": "L",
+        "y": 1765.78,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 18. The number of solutions of tan! 4x + tan '6x = ="
+      },
+      "answer_boundary": {
+        "page": 6,
+        "side": "L",
+        "y0": 2066.67,
+        "y1": 2115.28,
+        "printed_label_ocr": "H Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_06.jpg",
+          "page": 6,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1765,
+            856,
+            2064
+          ],
+          "ocr_row_index_range": [
+            611,
+            618
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 19,
+      "question_id": "jee-main-2026-01-22-s1-q019",
+      "path": "images/questions/q019_full_question.jpg",
+      "width": 834,
+      "height": 269,
+      "bytes": 29882,
+      "sha256": "f63ba107b4690c4a6e5bbfa54f73999216b73717efcc8ed378fc1644cc626322",
+      "start_header": {
+        "page": 6,
+        "side": "R",
+        "y": 847.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "19. Let the solution curve of the differential equation :"
+      },
+      "answer_boundary": {
+        "page": 6,
+        "side": "R",
+        "y0": 1118.06,
+        "y1": 1168.06,
+        "printed_label_ocr": "Ans. (1) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_06.jpg",
+          "page": 6,
+          "side": "R",
+          "native_bbox": [
+            880,
+            847,
+            1714,
+            1116
+          ],
+          "ocr_row_index_range": [
+            657,
+            662
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 20,
+      "question_id": "jee-main-2026-01-22-s1-q020",
+      "path": "images/questions/q020_full_question.jpg",
+      "width": 834,
+      "height": 249,
+      "bytes": 32215,
+      "sha256": "d361c3b3a5b836f13b61f8a3a018338182fae9304d88203e8a67ef785bfef691",
+      "start_header": {
+        "page": 7,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 20. Ifthe sum of the first four terms of an A.P. is 6 and"
+      },
+      "answer_boundary": {
+        "page": 7,
+        "side": "L",
+        "y0": 429.17,
+        "y1": 477.78,
+        "printed_label_ocr": "i Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_07.jpg",
+          "page": 7,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            427
+          ],
+          "ocr_row_index_range": [
+            712,
+            717
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 21,
+      "question_id": "jee-main-2026-01-22-s1-q021",
+      "path": "images/questions/q021_full_question.jpg",
+      "width": 834,
+      "height": 228,
+      "bytes": 27473,
+      "sha256": "ff2ddabe14de4ea94cd57ccde98b42742fe7e57f58d771c8309c0afe49d65ec7",
+      "start_header": {
+        "page": 7,
+        "side": "L",
+        "y": 1454.67,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "\\ 21. Let @ = ti ana pe wtci3 Gar"
+      },
+      "answer_boundary": {
+        "page": 7,
+        "side": "L",
+        "y0": 1684.72,
+        "y1": 1713.89,
+        "printed_label_ocr": "1 Ans. (49)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_07.jpg",
+          "page": 7,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1454,
+            856,
+            1682
+          ],
+          "ocr_row_index_range": [
+            746,
+            751
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 22,
+      "question_id": "jee-main-2026-01-22-s1-q022",
+      "path": "images/questions/q022_full_question.jpg",
+      "width": 834,
+      "height": 412,
+      "bytes": 44232,
+      "sha256": "8f9e11b420ef17b1dea5f18fafdfb860d4f04505fc3029076bfd7185f0e33354",
+      "start_header": {
+        "page": 7,
+        "side": "R",
+        "y": 158.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "22. Let A be a3 x 3 matrix such that A+ A'=O.IfA '"
+      },
+      "answer_boundary": {
+        "page": 7,
+        "side": "R",
+        "y0": 572.22,
+        "y1": 622.22,
+        "printed_label_ocr": "Ans. (18) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_07.jpg",
+          "page": 7,
+          "side": "R",
+          "native_bbox": [
+            880,
+            158,
+            1714,
+            570
+          ],
+          "ocr_row_index_range": [
+            781,
+            791
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 23,
+      "question_id": "jee-main-2026-01-22-s1-q023",
+      "path": "images/questions/q023_full_question.jpg",
+      "width": 834,
+      "height": 452,
+      "bytes": 49804,
+      "sha256": "c5fe7785e11b4559df3da0387a843ae4c8ff90e287ebced5159301f0c6074870",
+      "start_header": {
+        "page": 7,
+        "side": "R",
+        "y": 1583.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "23. If f(sinx) 2 (cosx)? dx = '"
+      },
+      "answer_boundary": {
+        "page": 7,
+        "side": "R",
+        "y0": 2037.5,
+        "y1": 2087.5,
+        "printed_label_ocr": "Ans. (16) !"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_07.jpg",
+          "page": 7,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1583,
+            1714,
+            2035
+          ],
+          "ocr_row_index_range": [
+            816,
+            829
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 24,
+      "question_id": "jee-main-2026-01-22-s1-q024",
+      "path": "images/questions/q024_full_question.jpg",
+      "width": 834,
+      "height": 190,
+      "bytes": 20290,
+      "sha256": "9e357d4e250b07709bbd435843486aa15938fa68506029f9eae97ca4370f79fd",
+      "start_header": {
+        "page": 8,
+        "side": "L",
+        "y": 896.33,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 24. If cos’ 48°=sin? 12° _ a+ BV5_ where a, B"
+      },
+      "answer_boundary": {
+        "page": 8,
+        "side": "L",
+        "y0": 1088.89,
+        "y1": 1138.89,
+        "printed_label_ocr": "' Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_08.jpg",
+          "page": 8,
+          "side": "L",
+          "native_bbox": [
+            22,
+            896,
+            856,
+            1086
+          ],
+          "ocr_row_index_range": [
+            874,
+            878
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 25,
+      "question_id": "jee-main-2026-01-22-s1-q025",
+      "path": "images/questions/q025_full_question.jpg",
+      "width": 834,
+      "height": 362,
+      "bytes": 66207,
+      "sha256": "62ee500b7d28ebc13f736ce1f4c033c82f15507fc97c62aba6d65c9b0f0e97cf",
+      "start_header": {
+        "page": 8,
+        "side": "R",
+        "y": 172.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "25. Let ABC be a triangle. Consider four points p,, p,, I"
+      },
+      "answer_boundary": {
+        "page": 8,
+        "side": "R",
+        "y0": 536.11,
+        "y1": 565.28,
+        "printed_label_ocr": "Ans. (660) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_08.jpg",
+          "page": 8,
+          "side": "R",
+          "native_bbox": [
+            880,
+            172,
+            1714,
+            534
+          ],
+          "ocr_row_index_range": [
+            927,
+            935
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 26,
+      "question_id": "jee-main-2026-01-22-s1-q026",
+      "path": "images/questions/q026_full_question.jpg",
+      "width": 834,
+      "height": 310,
+      "bytes": 55509,
+      "sha256": "2b5470adf011a9bc3bfbaa768f0e7b39d827476a79f7152e3f1a7fe70e672516",
+      "start_header": {
+        "page": 9,
+        "side": "L",
+        "y": 429.67,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 26. A solid sphere of mass 5 kg and radius 10 cm is"
+      },
+      "answer_boundary": {
+        "page": 9,
+        "side": "L",
+        "y0": 741.67,
+        "y1": 770.83,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_09.jpg",
+          "page": 9,
+          "side": "L",
+          "native_bbox": [
+            22,
+            429,
+            856,
+            739
+          ],
+          "ocr_row_index_range": [
+            1011,
+            1018
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 27,
+      "question_id": "jee-main-2026-01-22-s1-q027",
+      "path": "images/questions/q027_full_question.jpg",
+      "width": 834,
+      "height": 374,
+      "bytes": 59381,
+      "sha256": "1d04b2d1821d6bd2483f1befcb7711415870b0f422ccb18d8a134d64c23bb855",
+      "start_header": {
+        "page": 9,
+        "side": "L",
+        "y": 1049.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 27. 7.9 MeV a-particle scatters from a target material"
+      },
+      "answer_boundary": {
+        "page": 9,
+        "side": "L",
+        "y0": 1425.0,
+        "y1": 1455.56,
+        "printed_label_ocr": "1 Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_09.jpg",
+          "page": 9,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1049,
+            856,
+            1423
+          ],
+          "ocr_row_index_range": [
+            1028,
+            1037
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 28,
+      "question_id": "jee-main-2026-01-22-s1-q028",
+      "path": "images/questions/q028_full_question.jpg",
+      "width": 834,
+      "height": 958,
+      "bytes": 86178,
+      "sha256": "da6a079a92548401944758951713c5f2d1fcb6632904d06902d504b45a7237a7",
+      "start_header": {
+        "page": 9,
+        "side": "R",
+        "y": 388.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "28. Six point charges are kept 60° apart from each !"
+      },
+      "answer_boundary": {
+        "page": 9,
+        "side": "R",
+        "y0": 1348.61,
+        "y1": 1397.22,
+        "printed_label_ocr": "Ans. (2) ;"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_09.jpg",
+          "page": 9,
+          "side": "R",
+          "native_bbox": [
+            880,
+            388,
+            1714,
+            1346
+          ],
+          "ocr_row_index_range": [
+            1080,
+            1108
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 29,
+      "question_id": "jee-main-2026-01-22-s1-q029",
+      "path": "images/questions/q029_full_question.jpg",
+      "width": 834,
+      "height": 1059,
+      "bytes": 110721,
+      "sha256": "0ab8877affee49b311106bef670f41fea1d1d19a82789a512b292583b402db24",
+      "start_header": {
+        "page": 10,
+        "side": "L",
+        "y": 172.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 29. XPQY is a vertical smooth long loop having a total"
+      },
+      "answer_boundary": {
+        "page": 10,
+        "side": "L",
+        "y0": 1233.33,
+        "y1": 1281.94,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_10.jpg",
+          "page": 10,
+          "side": "L",
+          "native_bbox": [
+            22,
+            172,
+            856,
+            1231
+          ],
+          "ocr_row_index_range": [
+            1147,
+            1175
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 30,
+      "question_id": "jee-main-2026-01-22-s1-q030",
+      "path": "images/questions/q030_full_question.jpg",
+      "width": 834,
+      "height": 335,
+      "bytes": 44757,
+      "sha256": "13413f3a8c8196d819740da08e3c5985e021e55ea47212e7b297d384afd29ba7",
+      "start_header": {
+        "page": 10,
+        "side": "R",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "30. The escape velocity from a spherical planet A is 10 I"
+      },
+      "answer_boundary": {
+        "page": 10,
+        "side": "R",
+        "y0": 515.28,
+        "y1": 563.89,
+        "printed_label_ocr": "Ans. (3) h"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_10.jpg",
+          "page": 10,
+          "side": "R",
+          "native_bbox": [
+            880,
+            178,
+            1714,
+            513
+          ],
+          "ocr_row_index_range": [
+            1222,
+            1230
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 31,
+      "question_id": "jee-main-2026-01-22-s1-q031",
+      "path": "images/questions/q031_full_question.jpg",
+      "width": 834,
+      "height": 986,
+      "bytes": 86104,
+      "sha256": "e2ac624bbe614f2512a092674a2c7cd711131fecc7c4da3be066fcbcde9f557e",
+      "start_header": {
+        "page": 10,
+        "side": "R",
+        "y": 1049.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "31. A meter bridge with two resistances R, and R, as '"
+      },
+      "answer_boundary": {
+        "page": 10,
+        "side": "R",
+        "y0": 2037.5,
+        "y1": 2087.5,
+        "printed_label_ocr": "Ans. (3) !"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_10.jpg",
+          "page": 10,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1049,
+            1714,
+            2035
+          ],
+          "ocr_row_index_range": [
+            1245,
+            1271
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 32,
+      "question_id": "jee-main-2026-01-22-s1-q032",
+      "path": "images/questions/q032_full_question.jpg",
+      "width": 834,
+      "height": 856,
+      "bytes": 67991,
+      "sha256": "5c0d59d62a3b937c6edae70c52a7a9b39829b8e8eb5db1d2c25b3db76e21a3d8",
+      "start_header": {
+        "page": 11,
+        "side": "L",
+        "y": 1208.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 32 , 2Ro 16"
+      },
+      "answer_boundary": {
+        "page": 11,
+        "side": "L",
+        "y0": 2066.67,
+        "y1": 2115.28,
+        "printed_label_ocr": "H Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_11.jpg",
+          "page": 11,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1208,
+            856,
+            2064
+          ],
+          "ocr_row_index_range": [
+            1325,
+            1346
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 33,
+      "question_id": "jee-main-2026-01-22-s1-q033",
+      "path": "images/questions/q033_full_question.jpg",
+      "width": 834,
+      "height": 556,
+      "bytes": 114306,
+      "sha256": "cc8c22bd0e880425eac3442816bf7c599a4ecfbdb56b5057a657aec1abb162e8",
+      "start_header": {
+        "page": 11,
+        "side": "R",
+        "y": 761.61,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "33. Given below are two statements: '"
+      },
+      "answer_boundary": {
+        "page": 11,
+        "side": "R",
+        "y0": 1319.44,
+        "y1": 1368.06,
+        "printed_label_ocr": "Ans. (4) '"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_11.jpg",
+          "page": 11,
+          "side": "R",
+          "native_bbox": [
+            880,
+            761,
+            1714,
+            1317
+          ],
+          "ocr_row_index_range": [
+            1385,
+            1398
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 34,
+      "question_id": "jee-main-2026-01-22-s1-q034",
+      "path": "images/questions/q034_full_question.jpg",
+      "width": 834,
+      "height": 498,
+      "bytes": 41940,
+      "sha256": "47cede29722b8c57323956e6c57a59f5ace13a6ae1ca1debe14b589a02f1e5a0",
+      "start_header": {
+        "page": 11,
+        "side": "R",
+        "y": 1594.94,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "34. Find the correct combination of A, B, C and D '"
+      },
+      "answer_boundary": {
+        "page": 11,
+        "side": "R",
+        "y0": 2094.44,
+        "y1": 2144.44,
+        "printed_label_ocr": "Ans. (4) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_11.jpg",
+          "page": 11,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1594,
+            1714,
+            2092
+          ],
+          "ocr_row_index_range": [
+            1405,
+            1420
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 35,
+      "question_id": "jee-main-2026-01-22-s1-q035",
+      "path": "images/questions/q035_full_question.jpg",
+      "width": 834,
+      "height": 645,
+      "bytes": 71718,
+      "sha256": "635fc6ccd8e826447177672084087048ab9bee95c3d86649e583fcbf6d12e80e",
+      "start_header": {
+        "page": 12,
+        "side": "L",
+        "y": 672.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 35. Net gravitational force at the centre of a square is"
+      },
+      "answer_boundary": {
+        "page": 12,
+        "side": "L",
+        "y0": 1319.44,
+        "y1": 1368.06,
+        "printed_label_ocr": "H Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_12.jpg",
+          "page": 12,
+          "side": "L",
+          "native_bbox": [
+            22,
+            672,
+            856,
+            1317
+          ],
+          "ocr_row_index_range": [
+            1452,
+            1469
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 36,
+      "question_id": "jee-main-2026-01-22-s1-q036",
+      "path": "images/questions/q036_full_question.jpg",
+      "width": 834,
+      "height": 650,
+      "bytes": 53976,
+      "sha256": "0825ece1e202bf049c4f58361c8e7b05727d4842c9a79e2af8382ebf9a6cd1d5",
+      "start_header": {
+        "page": 12,
+        "side": "R",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "36. The minimum frequency of photon required to 1"
+      },
+      "answer_boundary": {
+        "page": 12,
+        "side": "R",
+        "y0": 830.56,
+        "y1": 880.56,
+        "printed_label_ocr": "Ans. (4) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_12.jpg",
+          "page": 12,
+          "side": "R",
+          "native_bbox": [
+            880,
+            178,
+            1714,
+            828
+          ],
+          "ocr_row_index_range": [
+            1508,
+            1523
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 37,
+      "question_id": "jee-main-2026-01-22-s1-q037",
+      "path": "images/questions/q037_full_question.jpg",
+      "width": 834,
+      "height": 1049,
+      "bytes": 112096,
+      "sha256": "dac23c106a986cdb16bf4d17c1495077d82a5f13002fddd428587a5dcdde6fd4",
+      "start_header": {
+        "page": 12,
+        "side": "R",
+        "y": 1039.39,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "37. A cylindrical tube AB of length /, closed at both 1"
+      },
+      "answer_boundary": {
+        "page": 12,
+        "side": "R",
+        "y0": 2090.28,
+        "y1": 2119.44,
+        "printed_label_ocr": "Ans. (1) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_12.jpg",
+          "page": 12,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1039,
+            1714,
+            2088
+          ],
+          "ocr_row_index_range": [
+            1529,
+            1555
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 38,
+      "question_id": "jee-main-2026-01-22-s1-q038",
+      "path": "images/questions/q038_full_question.jpg",
+      "width": 834,
+      "height": 814,
+      "bytes": 101381,
+      "sha256": "73e7ea61e1dae1163c562ed0ee4d21f7c569085e6d985ab8d7bbc5fadd631d58",
+      "start_header": {
+        "page": 13,
+        "side": "L",
+        "y": 1221.33,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 38. Rods x and y of equal dimensions but of different"
+      },
+      "answer_boundary": {
+        "page": 13,
+        "side": "L",
+        "y0": 2037.5,
+        "y1": 2087.5,
+        "printed_label_ocr": "1 Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_13.jpg",
+          "page": 13,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1221,
+            856,
+            2035
+          ],
+          "ocr_row_index_range": [
+            1602,
+            1623
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 39,
+      "question_id": "jee-main-2026-01-22-s1-q039",
+      "path": "images/questions/q039_full_question.jpg",
+      "width": 834,
+      "height": 850,
+      "bytes": 107360,
+      "sha256": "582a12d34bfd030c070c7d4916792264d590972100eb32ddecf4b9051c5005bb",
+      "start_header": {
+        "page": 13,
+        "side": "R",
+        "y": 1278.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "39. A thin convex lens of focal length 5 cm and a thin 1"
+      },
+      "answer_boundary": {
+        "page": 13,
+        "side": "R",
+        "y0": 2066.67,
+        "y1": 2115.28,
+        "printed_label_ocr": "Ans. (Dropped) :"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_13.jpg",
+          "page": 13,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1278,
+            1714,
+            2128
+          ],
+          "ocr_row_index_range": [
+            1677,
+            1697
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": false,
+          "includes_source_dropped_label": true
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": true
+    },
+    {
+      "question_number": 40,
+      "question_id": "jee-main-2026-01-22-s1-q040",
+      "path": "images/questions/q040_full_question.jpg",
+      "width": 834,
+      "height": 308,
+      "bytes": 54422,
+      "sha256": "ac072562441290201cb70ec87efbea89e53b7a072390f279f6563952710f6ab8",
+      "start_header": {
+        "page": 14,
+        "side": "L",
+        "y": 176.89,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 40. Consider an equilateral prism (refractive index V2)."
+      },
+      "answer_boundary": {
+        "page": 14,
+        "side": "L",
+        "y0": 486.11,
+        "y1": 536.11,
+        "printed_label_ocr": "! Ans. (1)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_14.jpg",
+          "page": 14,
+          "side": "L",
+          "native_bbox": [
+            22,
+            176,
+            856,
+            484
+          ],
+          "ocr_row_index_range": [
+            1717,
+            1724
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 41,
+      "question_id": "jee-main-2026-01-22-s1-q041",
+      "path": "images/questions/q041_full_question.jpg",
+      "width": 834,
+      "height": 348,
+      "bytes": 67640,
+      "sha256": "ba255213ca46b02e39f1f00131f142908a592ec1ad1d7e89ff141cceac18bc1a",
+      "start_header": {
+        "page": 14,
+        "side": "L",
+        "y": 1133.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 41. The volume of an ideal gas increases 8 times and"
+      },
+      "answer_boundary": {
+        "page": 14,
+        "side": "L",
+        "y0": 1483.33,
+        "y1": 1512.5,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_14.jpg",
+          "page": 14,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1133,
+            856,
+            1481
+          ],
+          "ocr_row_index_range": [
+            1740,
+            1748
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 42,
+      "question_id": "jee-main-2026-01-22-s1-q042",
+      "path": "images/questions/q042_full_question.jpg",
+      "width": 834,
+      "height": 318,
+      "bytes": 45218,
+      "sha256": "ba56ad2dd825de9ac89ea27ccc45b625daa206201140eb47449b35be222b6871",
+      "start_header": {
+        "page": 14,
+        "side": "R",
+        "y": 186.61,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "42. Electric field in a region is given by E = Axi +Byj, '"
+      },
+      "answer_boundary": {
+        "page": 14,
+        "side": "R",
+        "y0": 506.94,
+        "y1": 536.11,
+        "printed_label_ocr": "Ans. (3) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_14.jpg",
+          "page": 14,
+          "side": "R",
+          "native_bbox": [
+            880,
+            186,
+            1714,
+            504
+          ],
+          "ocr_row_index_range": [
+            1786,
+            1793
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 43,
+      "question_id": "jee-main-2026-01-22-s1-q043",
+      "path": "images/questions/q043_full_question.jpg",
+      "width": 834,
+      "height": 470,
+      "bytes": 75596,
+      "sha256": "b82402747497d2685c832e4792e067f861592b0b28780f5f084c5befae1fecd7",
+      "start_header": {
+        "page": 14,
+        "side": "R",
+        "y": 1278.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "43. A simple pendulum has a bob with mass m and 1"
+      },
+      "answer_boundary": {
+        "page": 14,
+        "side": "R",
+        "y0": 1750.0,
+        "y1": 1800.0,
+        "printed_label_ocr": "Ans. (3) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_14.jpg",
+          "page": 14,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1278,
+            1714,
+            1748
+          ],
+          "ocr_row_index_range": [
+            1812,
+            1821
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 44,
+      "question_id": "jee-main-2026-01-22-s1-q044",
+      "path": "images/questions/q044_full_question.jpg",
+      "width": 834,
+      "height": 650,
+      "bytes": 83041,
+      "sha256": "c47f0d222b642ea565ec10851920a9b6ff8df405be619ab1a1f0c4ca511e2790",
+      "start_header": {
+        "page": 15,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 44. Match the LIST-I with LIST-II"
+      },
+      "answer_boundary": {
+        "page": 15,
+        "side": "L",
+        "y0": 830.56,
+        "y1": 880.56,
+        "printed_label_ocr": "| Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_15.jpg",
+          "page": 15,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            828
+          ],
+          "ocr_row_index_range": [
+            1850,
+            1863
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 45,
+      "question_id": "jee-main-2026-01-22-s1-q045",
+      "path": "images/questions/q045_full_question.jpg",
+      "width": 834,
+      "height": 435,
+      "bytes": 96604,
+      "sha256": "323c2d9d1f0c310c8190888cac0b7089390abef0a79af95617fab45dbd0b979f",
+      "start_header": {
+        "page": 15,
+        "side": "L",
+        "y": 1622.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 45. Three identical coils C,, C, and C, are closely"
+      },
+      "answer_boundary": {
+        "page": 15,
+        "side": "L",
+        "y0": 2059.72,
+        "y1": 2098.61,
+        "printed_label_ocr": "i] Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_15.jpg",
+          "page": 15,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1622,
+            856,
+            2057
+          ],
+          "ocr_row_index_range": [
+            1885,
+            1895
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 46,
+      "question_id": "jee-main-2026-01-22-s1-q046",
+      "path": "images/questions/q046_full_question.jpg",
+      "width": 834,
+      "height": 958,
+      "bytes": 114015,
+      "sha256": "7ce9eb019a4d78cc21ab8e885636f2dbf58af78c9ae78ebfb9fcbf64fc3fd2a5",
+      "start_header": {
+        "page": 15,
+        "side": "R",
+        "y": 1106.06,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "46. Two loudspeakers (L, and L,) are placed with a H"
+      },
+      "answer_boundary": {
+        "page": 15,
+        "side": "R",
+        "y0": 2066.67,
+        "y1": 2115.28,
+        "printed_label_ocr": "Ans. (600) :"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_15.jpg",
+          "page": 15,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1106,
+            1714,
+            2064
+          ],
+          "ocr_row_index_range": [
+            1945,
+            1968
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 47,
+      "question_id": "jee-main-2026-01-22-s1-q047",
+      "path": "images/questions/q047_full_question.jpg",
+      "width": 834,
+      "height": 412,
+      "bytes": 57077,
+      "sha256": "965217a5714e95f9a3320c1d6ea14f539fbb72ce107207ed28fbe9e317362541",
+      "start_header": {
+        "page": 16,
+        "side": "L",
+        "y": 1163.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 47. The electric field of a plane electromagnetic wave,"
+      },
+      "answer_boundary": {
+        "page": 16,
+        "side": "L",
+        "y0": 1577.78,
+        "y1": 1627.78,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_16.jpg",
+          "page": 16,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1163,
+            856,
+            1575
+          ],
+          "ocr_row_index_range": [
+            2013,
+            2020
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 48,
+      "question_id": "jee-main-2026-01-22-s1-q048",
+      "path": "images/questions/q048_full_question.jpg",
+      "width": 834,
+      "height": 341,
+      "bytes": 58850,
+      "sha256": "8146b7666ea8f80d1911bb29f6c9ddd585e944c7c3d5241b5f585f3b9a263b79",
+      "start_header": {
+        "page": 16,
+        "side": "R",
+        "y": 172.72,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "48. A parallel beam of light travelling in air (refractive 1"
+      },
+      "answer_boundary": {
+        "page": 16,
+        "side": "R",
+        "y0": 515.28,
+        "y1": 563.89,
+        "printed_label_ocr": "Ans. (100) :"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_16.jpg",
+          "page": 16,
+          "side": "R",
+          "native_bbox": [
+            880,
+            172,
+            1714,
+            513
+          ],
+          "ocr_row_index_range": [
+            2054,
+            2060
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 49,
+      "question_id": "jee-main-2026-01-22-s1-q049",
+      "path": "images/questions/q049_full_question.jpg",
+      "width": 834,
+      "height": 397,
+      "bytes": 45807,
+      "sha256": "d79524787d5b59d0067a431166a62c4e3462fa712f1b21d438cdb5a7f5198e8b",
+      "start_header": {
+        "page": 16,
+        "side": "R",
+        "y": 1178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "49. A circular disc has radius R; and thickness 7). 1"
+      },
+      "answer_boundary": {
+        "page": 16,
+        "side": "R",
+        "y0": 1577.78,
+        "y1": 1627.78,
+        "printed_label_ocr": "Ans. (16) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_16.jpg",
+          "page": 16,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1178,
+            1714,
+            1575
+          ],
+          "ocr_row_index_range": [
+            2078,
+            2089
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 50,
+      "question_id": "jee-main-2026-01-22-s1-q050",
+      "path": "images/questions/q050_full_question.jpg",
+      "width": 834,
+      "height": 431,
+      "bytes": 53509,
+      "sha256": "448c6a9b7e9eb1b9334b4f861d6fd523ab4abaab7eb7b378104e45ca6664d475",
+      "start_header": {
+        "page": 17,
+        "side": "L",
+        "y": 168.56,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 50. Inductance of a coil with 10° turns is 10 mH and it"
+      },
+      "answer_boundary": {
+        "page": 17,
+        "side": "L",
+        "y0": 601.39,
+        "y1": 650.0,
+        "printed_label_ocr": "1 Ans. (20)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_17.jpg",
+          "page": 17,
+          "side": "L",
+          "native_bbox": [
+            22,
+            168,
+            856,
+            599
+          ],
+          "ocr_row_index_range": [
+            2121,
+            2132
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 51,
+      "question_id": "jee-main-2026-01-22-s1-q051",
+      "path": "images/questions/q051_full_question.jpg",
+      "width": 834,
+      "height": 495,
+      "bytes": 64681,
+      "sha256": "88c8ae4909c37d59f230e6a632153aa0f470b01837691c08019553fac599e146",
+      "start_header": {
+        "page": 18,
+        "side": "L",
+        "y": 419.83,
+        "manual_fallback": true,
+        "manual_review_reason": "Hosted Tesseract 5.3 fails to join the printed Q51 number to its stem; source header visually checked on page 18 left column.",
+        "ocr_line": "rT 51. Consider the transition metal ions Mn”, Cr’, Fe”"
+      },
+      "answer_boundary": {
+        "page": 18,
+        "side": "L",
+        "y0": 916.67,
+        "y1": 966.67,
+        "printed_label_ocr": "! Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_18.jpg",
+          "page": 18,
+          "side": "L",
+          "native_bbox": [
+            22,
+            419,
+            856,
+            914
+          ],
+          "ocr_row_index_range": [
+            2289,
+            2298
+          ],
+          "is_manual_start_anchor": true,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 52,
+      "question_id": "jee-main-2026-01-22-s1-q052",
+      "path": "images/questions/q052_full_question.jpg",
+      "width": 834,
+      "height": 472,
+      "bytes": 45376,
+      "sha256": "ad735c9054d47ff4bf63947ea63c79517694908f8c613b059cff393a0de7adb5",
+      "start_header": {
+        "page": 18,
+        "side": "L",
+        "y": 1276.89,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 52. The formal changes on the atoms marked as (1) to"
+      },
+      "answer_boundary": {
+        "page": 18,
+        "side": "L",
+        "y0": 1750.0,
+        "y1": 1800.0,
+        "printed_label_ocr": "\\ Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_18.jpg",
+          "page": 18,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1276,
+            856,
+            1748
+          ],
+          "ocr_row_index_range": [
+            2307,
+            2318
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 53,
+      "question_id": "jee-main-2026-01-22-s1-q053",
+      "path": "images/questions/q053_full_question.jpg",
+      "width": 834,
+      "height": 843,
+      "bytes": 132554,
+      "sha256": "37d1b5f0559b7b1a09db96d38de01c9d140d404668f643a1554172ed57c917bb",
+      "start_header": {
+        "page": 18,
+        "side": "R",
+        "y": 761.61,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "53. Given below are two statements : '"
+      },
+      "answer_boundary": {
+        "page": 18,
+        "side": "R",
+        "y0": 1606.94,
+        "y1": 1655.56,
+        "printed_label_ocr": "Ans. (4) '"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_18.jpg",
+          "page": 18,
+          "side": "R",
+          "native_bbox": [
+            880,
+            761,
+            1714,
+            1604
+          ],
+          "ocr_row_index_range": [
+            2366,
+            2385
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 54,
+      "question_id": "jee-main-2026-01-22-s1-q054",
+      "path": "images/questions/q054_full_question.jpg",
+      "width": 834,
+      "height": 478,
+      "bytes": 46705,
+      "sha256": "c7f50e7d0dd4026bc1b6cd59744382310f4eeac9750f51ebe07084f28dcbb9a5",
+      "start_header": {
+        "page": 19,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 54. The energy required by electrons, present in the"
+      },
+      "answer_boundary": {
+        "page": 19,
+        "side": "L",
+        "y0": 658.33,
+        "y1": 708.33,
+        "printed_label_ocr": "1 Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_19.jpg",
+          "page": 19,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            656
+          ],
+          "ocr_row_index_range": [
+            2419,
+            2430
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 55,
+      "question_id": "jee-main-2026-01-22-s1-q055",
+      "path": "images/questions/q055_full_question.jpg",
+      "width": 834,
+      "height": 678,
+      "bytes": 80947,
+      "sha256": "989ea89aff561857247f9228e04b31e70e710bfb03dbe827f5a315db23a772a1",
+      "start_header": {
+        "page": 19,
+        "side": "L",
+        "y": 1128.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 55. A ‘p’-block element (E) and hydrogen form a"
+      },
+      "answer_boundary": {
+        "page": 19,
+        "side": "L",
+        "y0": 1808.33,
+        "y1": 1856.94,
+        "printed_label_ocr": "1 Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_19.jpg",
+          "page": 19,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1128,
+            856,
+            1806
+          ],
+          "ocr_row_index_range": [
+            2443,
+            2457
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 56,
+      "question_id": "jee-main-2026-01-22-s1-q056",
+      "path": "images/questions/q056_full_question.jpg",
+      "width": 834,
+      "height": 622,
+      "bytes": 76609,
+      "sha256": "a695a65429474a5516392390457713cde8bdf2a974b509454bbb4c8408fa86fc",
+      "start_header": {
+        "page": 19,
+        "side": "R",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "56. In the reaction, I"
+      },
+      "answer_boundary": {
+        "page": 19,
+        "side": "R",
+        "y0": 802.78,
+        "y1": 851.39,
+        "printed_label_ocr": "Ans. (1) '"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_19.jpg",
+          "page": 19,
+          "side": "R",
+          "native_bbox": [
+            880,
+            178,
+            1714,
+            800
+          ],
+          "ocr_row_index_range": [
+            2485,
+            2500
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 57,
+      "question_id": "jee-main-2026-01-22-s1-q057",
+      "path": "images/questions/q057_full_question.jpg",
+      "width": 834,
+      "height": 842,
+      "bytes": 73610,
+      "sha256": "a382ca7cc06f97f6a105d8ec8d854e0851ea49b5bc6a31abf651f321e2e974ba",
+      "start_header": {
+        "page": 19,
+        "side": "R",
+        "y": 1189.39,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "57. Consider a solution of CO,(g) dissolved in water in 1"
+      },
+      "answer_boundary": {
+        "page": 19,
+        "side": "R",
+        "y0": 2033.33,
+        "y1": 2062.5,
+        "printed_label_ocr": "Ans. (3) 1"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_19.jpg",
+          "page": 19,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1189,
+            1714,
+            2031
+          ],
+          "ocr_row_index_range": [
+            2508,
+            2533
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 58,
+      "question_id": "jee-main-2026-01-22-s1-q058",
+      "path": "images/questions/q058_full_question.jpg",
+      "width": 834,
+      "height": 642,
+      "bytes": 62926,
+      "sha256": "23b8e2ae3970708254a265e1f73ad1a6d3a4828b79809f2afdd93effe5ca857e",
+      "start_header": {
+        "page": 20,
+        "side": "L",
+        "y": 358.83,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "\\ 58. A first row transition metla (M) does not liberate"
+      },
+      "answer_boundary": {
+        "page": 20,
+        "side": "L",
+        "y0": 1002.78,
+        "y1": 1052.78,
+        "printed_label_ocr": "H Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_20.jpg",
+          "page": 20,
+          "side": "L",
+          "native_bbox": [
+            22,
+            358,
+            856,
+            1000
+          ],
+          "ocr_row_index_range": [
+            2559,
+            2579
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 59,
+      "question_id": "jee-main-2026-01-22-s1-q059",
+      "path": "images/questions/q059_full_question.jpg",
+      "width": 834,
+      "height": 462,
+      "bytes": 46930,
+      "sha256": "6b5e853ae1af44a703e2ce1222f8faa0a285740db52bee665d64ce2d2e7154fa",
+      "start_header": {
+        "page": 20,
+        "side": "L",
+        "y": 1249.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": ": 59. The correct order of reactivity of CH,Br in"
+      },
+      "answer_boundary": {
+        "page": 20,
+        "side": "L",
+        "y0": 1713.89,
+        "y1": 1743.06,
+        "printed_label_ocr": "1 Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_20.jpg",
+          "page": 20,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1249,
+            856,
+            1711
+          ],
+          "ocr_row_index_range": [
+            2586,
+            2595
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 60,
+      "question_id": "jee-main-2026-01-22-s1-q060",
+      "path": "images/questions/q060_full_question.jpg",
+      "width": 834,
+      "height": 1857,
+      "bytes": 182392,
+      "sha256": "73a5b6a0fc4748662def7ef6cec9af28659f7652cbd73c5116d882ac8a0e73d1",
+      "start_header": {
+        "page": 20,
+        "side": "R",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "60. Match the LIST-I with LIST-II 1"
+      },
+      "answer_boundary": {
+        "page": 20,
+        "side": "R",
+        "y0": 2037.5,
+        "y1": 2087.5,
+        "printed_label_ocr": "Ans. (2) !"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_20.jpg",
+          "page": 20,
+          "side": "R",
+          "native_bbox": [
+            880,
+            178,
+            1714,
+            2035
+          ],
+          "ocr_row_index_range": [
+            2626,
+            2667
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 61,
+      "question_id": "jee-main-2026-01-22-s1-q061",
+      "path": "images/questions/q061_full_question.jpg",
+      "width": 834,
+      "height": 872,
+      "bytes": 113909,
+      "sha256": "d18d247787577384b6f37c8d7cc0fc9e38b6f2e126c84df6e7fe373e52418661",
+      "start_header": {
+        "page": 21,
+        "side": "L",
+        "y": 1076.89,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "' 61. Given below are two statements :"
+      },
+      "answer_boundary": {
+        "page": 21,
+        "side": "L",
+        "y0": 1950.0,
+        "y1": 1979.17,
+        "printed_label_ocr": "1 Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_21.jpg",
+          "page": 21,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1076,
+            856,
+            1948
+          ],
+          "ocr_row_index_range": [
+            2711,
+            2730
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 62,
+      "question_id": "jee-main-2026-01-22-s1-q062",
+      "path": "images/questions/q062_full_question.jpg",
+      "width": 834,
+      "height": 567,
+      "bytes": 86370,
+      "sha256": "0b0d4163eef2876b2441d183fb125e700909a76dff0db7b3d0fd55902b97fb06",
+      "start_header": {
+        "page": 21,
+        "side": "R",
+        "y": 175.5,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "62. A — products (First order reaction). 1"
+      },
+      "answer_boundary": {
+        "page": 21,
+        "side": "R",
+        "y0": 744.44,
+        "y1": 794.44,
+        "printed_label_ocr": "Ans. (2) :"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_21.jpg",
+          "page": 21,
+          "side": "R",
+          "native_bbox": [
+            880,
+            175,
+            1714,
+            742
+          ],
+          "ocr_row_index_range": [
+            2753,
+            2765
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 63,
+      "question_id": "jee-main-2026-01-22-s1-q063",
+      "path": "images/questions/q063_full_question.jpg",
+      "width": 834,
+      "height": 990,
+      "bytes": 112085,
+      "sha256": "78ecdf9ec58290df041f734fe2b3ce66e2f643c7ce64715b61e5600a061f7992",
+      "start_header": {
+        "page": 21,
+        "side": "R",
+        "y": 985.22,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "63. Match the LIST-I with LIST-II 1"
+      },
+      "answer_boundary": {
+        "page": 21,
+        "side": "R",
+        "y0": 1977.78,
+        "y1": 2005.56,
+        "printed_label_ocr": "Ans. (1) i}"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_21.jpg",
+          "page": 21,
+          "side": "R",
+          "native_bbox": [
+            880,
+            985,
+            1714,
+            1975
+          ],
+          "ocr_row_index_range": [
+            2771,
+            2794
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 64,
+      "question_id": "jee-main-2026-01-22-s1-q064",
+      "path": "images/questions/q064_full_question.jpg",
+      "width": 834,
+      "height": 754,
+      "bytes": 125727,
+      "sha256": "824007ae6354a9df2f89c33ec7939a7d11f2ceaf8457fbc87024040e2626e2a8",
+      "start_header": {
+        "page": 22,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 64. Given below are two statements :"
+      },
+      "answer_boundary": {
+        "page": 22,
+        "side": "L",
+        "y0": 934.72,
+        "y1": 966.67,
+        "printed_label_ocr": "1 Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_22.jpg",
+          "page": 22,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            932
+          ],
+          "ocr_row_index_range": [
+            2817,
+            2838
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 65,
+      "question_id": "jee-main-2026-01-22-s1-q065",
+      "path": "images/questions/q065_full_question.jpg",
+      "width": 834,
+      "height": 839,
+      "bytes": 132546,
+      "sha256": "a11ba03f777af182bdf1d683f62cefd780f1c8638bfa637a9e2b3595585eab14",
+      "start_header": {
+        "page": 22,
+        "side": "L",
+        "y": 1218.56,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 65. Given below are two statements:"
+      },
+      "answer_boundary": {
+        "page": 22,
+        "side": "L",
+        "y0": 2059.72,
+        "y1": 2088.89,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_22.jpg",
+          "page": 22,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1218,
+            856,
+            2057
+          ],
+          "ocr_row_index_range": [
+            2844,
+            2864
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 66,
+      "question_id": "jee-main-2026-01-22-s1-q066",
+      "path": "images/questions/q066_full_question.jpg",
+      "width": 834,
+      "height": 1015,
+      "bytes": 126998,
+      "sha256": "af47981b0e7b9041572775229149848c82b5b946d742e19b171241e20271160e",
+      "start_header": {
+        "page": 22,
+        "side": "R",
+        "y": 474.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "66. ‘A’ is a neutral organic compound (M. F : C,H,ON ). !"
+      },
+      "answer_boundary": {
+        "page": 22,
+        "side": "R",
+        "y0": 1491.67,
+        "y1": 1541.67,
+        "printed_label_ocr": "Ans. (3) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_22.jpg",
+          "page": 22,
+          "side": "R",
+          "native_bbox": [
+            880,
+            474,
+            1714,
+            1489
+          ],
+          "ocr_row_index_range": [
+            2893,
+            2918
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 67,
+      "question_id": "jee-main-2026-01-22-s1-q067",
+      "path": "images/questions/q067_full_question.jpg",
+      "width": 834,
+      "height": 526,
+      "bytes": 59170,
+      "sha256": "aa1fc2ea9a711981cdb76ae97cdc9baee12f79ac336e6d5e811e63eaaf8ede0d",
+      "start_header": {
+        "page": 23,
+        "side": "L",
+        "y": 388.0,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "H 67. The correct order of the rate of reaction of the"
+      },
+      "answer_boundary": {
+        "page": 23,
+        "side": "L",
+        "y0": 916.67,
+        "y1": 966.67,
+        "printed_label_ocr": "! Ans. (3)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "L",
+          "native_bbox": [
+            22,
+            388,
+            856,
+            914
+          ],
+          "ocr_row_index_range": [
+            2958,
+            2971
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 68,
+      "question_id": "jee-main-2026-01-22-s1-q068",
+      "path": "images/questions/q068_full_question.jpg",
+      "width": 834,
+      "height": 318,
+      "bytes": 54238,
+      "sha256": "c365f0a6e578c7cc75fad8ecb01c2647a00049d0053f9b1dfd91de2e5e89e6ad",
+      "start_header": {
+        "page": 23,
+        "side": "L",
+        "y": 1135.22,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 68. Two p-block elements X and Y form fluroides of"
+      },
+      "answer_boundary": {
+        "page": 23,
+        "side": "L",
+        "y0": 1455.56,
+        "y1": 1494.44,
+        "printed_label_ocr": "i] Ans. (2)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1135,
+            856,
+            1453
+          ],
+          "ocr_row_index_range": [
+            2976,
+            2983
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 69,
+      "question_id": "jee-main-2026-01-22-s1-q069",
+      "path": "images/questions/q069_full_question.jpg",
+      "width": 834,
+      "height": 1210,
+      "bytes": 121458,
+      "sha256": "d1c9664571cdf658b5dd76761d05d03a57d7be33ee3a1a3a04970027ba24fcf4",
+      "start_header": {
+        "page": 23,
+        "side": "L",
+        "y": 1586.61,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "i] 69. As compared with chlorocyclohexane, which of the"
+      },
+      "answer_boundary": {
+        "page": 23,
+        "side": "R",
+        "y0": 456.94,
+        "y1": 506.94,
+        "printed_label_ocr": "Ans. (4) !"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1586,
+            856,
+            2396
+          ],
+          "ocr_row_index_range": [
+            2986,
+            3009
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": false,
+          "includes_source_dropped_label": false
+        },
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "R",
+          "native_bbox": [
+            880,
+            80,
+            1714,
+            454
+          ],
+          "ocr_row_index_range": [
+            3010,
+            3023
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 70,
+      "question_id": "jee-main-2026-01-22-s1-q070",
+      "path": "images/questions/q070_full_question.jpg",
+      "width": 834,
+      "height": 586,
+      "bytes": 106413,
+      "sha256": "d1c034326e84e29a8c489a12b741632cbd5bab70ea243c05ddc0dd5b9b40bd82",
+      "start_header": {
+        "page": 23,
+        "side": "R",
+        "y": 674.11,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "70. Given below are two statements: !"
+      },
+      "answer_boundary": {
+        "page": 23,
+        "side": "R",
+        "y0": 1262.5,
+        "y1": 1311.11,
+        "printed_label_ocr": "Ans. (2) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "R",
+          "native_bbox": [
+            880,
+            674,
+            1714,
+            1260
+          ],
+          "ocr_row_index_range": [
+            3028,
+            3041
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 71,
+      "question_id": "jee-main-2026-01-22-s1-q071",
+      "path": "images/questions/q071_full_question.jpg",
+      "width": 834,
+      "height": 325,
+      "bytes": 55186,
+      "sha256": "fabe29280afd13f447c52e48b49b521fda5ae14334022e00781768d94e5be9f1",
+      "start_header": {
+        "page": 23,
+        "side": "R",
+        "y": 1393.56,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "71. The cycloalkane (X) on bromination consumes one H"
+      },
+      "answer_boundary": {
+        "page": 23,
+        "side": "R",
+        "y0": 1720.83,
+        "y1": 1748.61,
+        "printed_label_ocr": "Ans. (66)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_23.jpg",
+          "page": 23,
+          "side": "R",
+          "native_bbox": [
+            880,
+            1393,
+            1714,
+            1718
+          ],
+          "ocr_row_index_range": [
+            3044,
+            3051
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 72,
+      "question_id": "jee-main-2026-01-22-s1-q072",
+      "path": "images/questions/q072_full_question.jpg",
+      "width": 834,
+      "height": 478,
+      "bytes": 65285,
+      "sha256": "e039f633df430ce01fc6d30bfcb0ee5f18e6727ce7657590d73d8659be9c6d1c",
+      "start_header": {
+        "page": 24,
+        "side": "L",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 72. Consider the following electrochemical cell at"
+      },
+      "answer_boundary": {
+        "page": 24,
+        "side": "L",
+        "y0": 658.33,
+        "y1": 708.33,
+        "printed_label_ocr": "1 Ans. (4)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_24.jpg",
+          "page": 24,
+          "side": "L",
+          "native_bbox": [
+            22,
+            178,
+            856,
+            656
+          ],
+          "ocr_row_index_range": [
+            3079,
+            3089
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 73,
+      "question_id": "jee-main-2026-01-22-s1-q073",
+      "path": "images/questions/q073_full_question.jpg",
+      "width": 834,
+      "height": 358,
+      "bytes": 40484,
+      "sha256": "754d1819233104ac663ff16c4b990689e51bfc29c38bdcc08317ea2473410343",
+      "start_header": {
+        "page": 24,
+        "side": "L",
+        "y": 1131.06,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "1 73. The temperature at which the rate constants of the"
+      },
+      "answer_boundary": {
+        "page": 24,
+        "side": "L",
+        "y0": 1491.67,
+        "y1": 1541.67,
+        "printed_label_ocr": "\\ Ans. (1303)"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_24.jpg",
+          "page": 24,
+          "side": "L",
+          "native_bbox": [
+            22,
+            1131,
+            856,
+            1489
+          ],
+          "ocr_row_index_range": [
+            3100,
+            3108
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 74,
+      "question_id": "jee-main-2026-01-22-s1-q074",
+      "path": "images/questions/q074_full_question.jpg",
+      "width": 834,
+      "height": 335,
+      "bytes": 66015,
+      "sha256": "f984e373d00a6c3a8cfc5ed7e9de0da43021936ce547fa95ca67df409b677ad2",
+      "start_header": {
+        "page": 24,
+        "side": "R",
+        "y": 178.28,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "74. Sodium fusion extract of an organic compound (Y) I"
+      },
+      "answer_boundary": {
+        "page": 24,
+        "side": "R",
+        "y0": 515.28,
+        "y1": 563.89,
+        "printed_label_ocr": "Ans. (43) h"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_24.jpg",
+          "page": 24,
+          "side": "R",
+          "native_bbox": [
+            880,
+            178,
+            1714,
+            513
+          ],
+          "ocr_row_index_range": [
+            3144,
+            3152
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    },
+    {
+      "question_number": 75,
+      "question_id": "jee-main-2026-01-22-s1-q075",
+      "path": "images/questions/q075_full_question.jpg",
+      "width": 834,
+      "height": 677,
+      "bytes": 93619,
+      "sha256": "e316d888f7638a228efa1c500b3985031df2fa69c45c13c0a94ce656a4dfe47d",
+      "start_header": {
+        "page": 24,
+        "side": "R",
+        "y": 869.94,
+        "manual_fallback": false,
+        "manual_review_reason": null,
+        "ocr_line": "75. Dissociation of a gas A, takes place according to 1"
+      },
+      "answer_boundary": {
+        "page": 24,
+        "side": "R",
+        "y0": 1548.61,
+        "y1": 1598.61,
+        "printed_label_ocr": "Ans. (33) H"
+      },
+      "source_segments": [
+        {
+          "source_page_image_path": "images/pages/page_24.jpg",
+          "page": 24,
+          "side": "R",
+          "native_bbox": [
+            880,
+            869,
+            1714,
+            1546
+          ],
+          "ocr_row_index_range": [
+            3161,
+            3174
+          ],
+          "is_manual_start_anchor": false,
+          "stops_before_answer": true,
+          "includes_source_dropped_label": false
+        }
+      ],
+      "review_status": "REVIEW_REQUIRED",
+      "source_dropped_label_included": false
+    }
+  ]
+}

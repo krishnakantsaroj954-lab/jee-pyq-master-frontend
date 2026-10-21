@@ -16,7 +16,7 @@
     "source_page_images_included": 24,
     "source_pdf_sha256_verified_against_bundle_build": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3"
   },
-  "image_path_convention": "Paths are relative to this dataset directory. question_image_path is null unless a question contains a relevant figure/table/graph; those paths target question-specific crops under images/questions/. Q39 remains Dropped and uses its existing question crop. solution_image_path is null unless the printed solution needs its own readable crop under images/solutions/. source_page_image_path always preserves the original full-page source image for provenance.",
+  "image_path_convention": "question_image_path targets a full source-page crop that preserves question text, printed options and figures before the printed Ans. row; question_figure_image_path preserves any separate figure/table crop; solution_image_path targets a separate printed-solution crop when available; source_page_image_path always points to the original full-page source image. Q39 remains Dropped with no invented correct answer.",
   "database_notes": {
     "primary_key": "question_id",
     "unique_composite_key": [
@@ -30,7 +30,7 @@
     "marks_correct": 4,
     "marks_incorrect": -1,
     "nullable_fields_are_not_guesses": true,
-    "import_gate": "Not production-ready. Review all OCR/transcription and every question/solution crop visually against the source page images before any import. No Worker/D1 import or deployment is performed by this pipeline."
+    "import_gate": "REVIEW_REQUIRED: visually compare all 75 full-question crops, question text, options, answers, solution images and source-page associations. Do not import into D1/production until the question-level review is complete. No import or deployment was performed by this script."
   },
   "pages": [
     {
@@ -500,7 +500,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q001_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_02.jpg",
       "source": {
@@ -520,7 +520,9 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "manual_transcription_existing_record",
-      "quality_flags": []
+      "quality_flags": [],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q002",
@@ -556,7 +558,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q002_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_02.jpg",
       "source": {
@@ -576,7 +578,9 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "manual_transcription_existing_record",
-      "quality_flags": []
+      "quality_flags": [],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q003",
@@ -612,7 +616,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q003_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_02.jpg",
       "source": {
@@ -632,7 +636,9 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "manual_transcription_existing_record",
-      "quality_flags": []
+      "quality_flags": [],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q004",
@@ -668,7 +674,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q004_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_02.jpg",
       "source": {
@@ -688,7 +694,9 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "manual_transcription_existing_record",
-      "quality_flags": []
+      "quality_flags": [],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q005",
@@ -724,7 +732,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q005_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_03.jpg",
       "source": {
@@ -746,7 +754,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q006",
@@ -782,7 +792,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q006_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_03.jpg",
       "source": {
@@ -804,7 +814,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q007",
@@ -840,7 +852,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q007_figure.jpg",
+      "question_image_path": "images/questions/q007_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_03.jpg",
       "source": {
@@ -862,7 +874,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q007_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q008",
@@ -898,7 +913,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q008_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_03.jpg",
       "source": {
@@ -920,7 +935,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q009",
@@ -956,7 +973,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q009_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_04.jpg",
       "source": {
@@ -978,7 +995,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q010",
@@ -1014,7 +1033,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q010_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_04.jpg",
       "source": {
@@ -1036,7 +1055,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q011",
@@ -1072,7 +1093,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q011_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_04.jpg",
       "source": {
@@ -1094,7 +1115,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q012",
@@ -1130,7 +1153,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q012_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_05.jpg",
       "source": {
@@ -1152,7 +1175,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q013",
@@ -1188,7 +1213,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q013_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_05.jpg",
       "source": {
@@ -1210,7 +1235,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q014",
@@ -1246,7 +1273,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q014_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_05.jpg",
       "source": {
@@ -1268,7 +1295,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q015",
@@ -1304,7 +1333,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q015_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_05.jpg",
       "source": {
@@ -1326,7 +1355,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q016",
@@ -1362,7 +1393,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q016_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_06.jpg",
       "source": {
@@ -1384,7 +1415,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q017",
@@ -1420,7 +1453,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q017_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_06.jpg",
       "source": {
@@ -1442,7 +1475,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q018",
@@ -1478,7 +1513,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q018_full_question.jpg",
       "solution_image_path": "images/solutions/q018_solution.jpg",
       "source_page_image_path": "images/pages/page_06.jpg",
       "source": {
@@ -1501,7 +1536,9 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q019",
@@ -1537,7 +1574,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q019_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_06.jpg",
       "source": {
@@ -1559,7 +1596,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q020",
@@ -1595,7 +1634,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q020_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_07.jpg",
       "source": {
@@ -1617,7 +1656,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q021",
@@ -1648,7 +1689,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q021_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_07.jpg",
       "source": {
@@ -1670,7 +1711,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q022",
@@ -1701,7 +1744,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q022_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_07.jpg",
       "source": {
@@ -1723,7 +1766,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q023",
@@ -1754,7 +1799,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q023_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_07.jpg",
       "source": {
@@ -1776,7 +1821,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q024",
@@ -1807,7 +1854,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q024_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_08.jpg",
       "source": {
@@ -1829,7 +1876,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q025",
@@ -1860,7 +1909,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q025_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_08.jpg",
       "source": {
@@ -1882,7 +1931,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q026",
@@ -1918,7 +1969,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q026_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_09.jpg",
       "source": {
@@ -1940,7 +1991,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q027",
@@ -1976,7 +2029,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q027_full_question.jpg",
       "solution_image_path": "images/solutions/q027_solution.jpg",
       "source_page_image_path": "images/pages/page_09.jpg",
       "source": {
@@ -1999,7 +2052,9 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q028",
@@ -2035,7 +2090,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q028_figure.jpg",
+      "question_image_path": "images/questions/q028_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_09.jpg",
       "source": {
@@ -2057,7 +2112,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q028_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q029",
@@ -2093,7 +2151,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q029_figure.jpg",
+      "question_image_path": "images/questions/q029_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_10.jpg",
       "source": {
@@ -2115,7 +2173,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q029_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q030",
@@ -2151,7 +2212,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q030_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_10.jpg",
       "source": {
@@ -2173,7 +2234,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q031",
@@ -2209,7 +2272,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q031_figure.jpg",
+      "question_image_path": "images/questions/q031_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_10.jpg",
       "source": {
@@ -2231,7 +2294,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q031_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q032",
@@ -2267,7 +2333,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q032_full_question.jpg",
       "solution_image_path": "images/solutions/q032_solution.jpg",
       "source_page_image_path": "images/pages/page_11.jpg",
       "source": {
@@ -2290,7 +2356,9 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q033",
@@ -2326,7 +2394,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q033_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_11.jpg",
       "source": {
@@ -2348,7 +2416,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q034",
@@ -2384,7 +2454,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q034_figure.jpg",
+      "question_image_path": "images/questions/q034_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_11.jpg",
       "source": {
@@ -2406,7 +2476,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q034_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q035",
@@ -2442,7 +2515,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q035_figure.jpg",
+      "question_image_path": "images/questions/q035_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_12.jpg",
       "source": {
@@ -2464,7 +2537,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q035_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q036",
@@ -2500,7 +2576,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q036_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_12.jpg",
       "source": {
@@ -2522,7 +2598,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q037",
@@ -2558,7 +2636,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q037_figure.jpg",
+      "question_image_path": "images/questions/q037_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_12.jpg",
       "source": {
@@ -2580,7 +2658,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q037_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q038",
@@ -2616,7 +2697,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q038_figure.jpg",
+      "question_image_path": "images/questions/q038_full_question.jpg",
       "solution_image_path": "images/solutions/q038_solution.jpg",
       "source_page_image_path": "images/pages/page_13.jpg",
       "source": {
@@ -2639,7 +2720,10 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q038_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q039",
@@ -2675,7 +2759,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q039_question.jpg",
+      "question_image_path": "images/questions/q039_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_13.jpg",
       "source": {
@@ -2699,7 +2783,10 @@
       "quality_flags": [
         "question_dropped_in_source"
       ],
-      "question_status": "Dropped"
+      "question_status": "Dropped",
+      "question_source_crop_path": "images/questions/q039_question.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q040",
@@ -2735,7 +2822,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q040_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_14.jpg",
       "source": {
@@ -2757,7 +2844,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q041",
@@ -2793,7 +2882,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q041_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_14.jpg",
       "source": {
@@ -2815,7 +2904,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q042",
@@ -2851,7 +2942,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q042_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_14.jpg",
       "source": {
@@ -2873,7 +2964,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q043",
@@ -2909,7 +3002,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q043_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_14.jpg",
       "source": {
@@ -2931,7 +3024,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q044",
@@ -2967,7 +3062,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q044_figure.jpg",
+      "question_image_path": "images/questions/q044_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_15.jpg",
       "source": {
@@ -2989,7 +3084,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q044_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q045",
@@ -3025,7 +3123,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q045_figure.jpg",
+      "question_image_path": "images/questions/q045_full_question.jpg",
       "solution_image_path": "images/solutions/q045_solution.jpg",
       "source_page_image_path": "images/pages/page_15.jpg",
       "source": {
@@ -3048,7 +3146,10 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q045_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q046",
@@ -3079,7 +3180,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q046_figure.jpg",
+      "question_image_path": "images/questions/q046_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_15.jpg",
       "source": {
@@ -3101,7 +3202,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q046_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q047",
@@ -3132,7 +3236,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q047_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_16.jpg",
       "source": {
@@ -3154,7 +3258,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q048",
@@ -3185,7 +3291,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q048_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_16.jpg",
       "source": {
@@ -3207,7 +3313,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q049",
@@ -3238,7 +3346,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q049_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_16.jpg",
       "source": {
@@ -3260,7 +3368,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q050",
@@ -3291,7 +3401,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q050_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_17.jpg",
       "source": {
@@ -3313,7 +3423,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q051",
@@ -3349,7 +3461,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q051_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_18.jpg",
       "source": {
@@ -3371,7 +3483,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q052",
@@ -3407,7 +3521,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q052_figure.jpg",
+      "question_image_path": "images/questions/q052_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_18.jpg",
       "source": {
@@ -3429,7 +3543,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q052_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q053",
@@ -3465,7 +3582,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q053_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_18.jpg",
       "source": {
@@ -3487,7 +3604,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q054",
@@ -3523,7 +3642,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q054_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_19.jpg",
       "source": {
@@ -3545,7 +3664,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q055",
@@ -3581,7 +3702,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q055_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_19.jpg",
       "source": {
@@ -3603,7 +3724,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q056",
@@ -3639,7 +3762,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q056_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_19.jpg",
       "source": {
@@ -3661,7 +3784,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q057",
@@ -3697,7 +3822,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q057_figure.jpg",
+      "question_image_path": "images/questions/q057_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_19.jpg",
       "source": {
@@ -3719,7 +3844,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q057_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q058",
@@ -3755,7 +3883,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q058_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_20.jpg",
       "source": {
@@ -3777,7 +3905,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q059",
@@ -3813,7 +3943,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q059_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_20.jpg",
       "source": {
@@ -3835,7 +3965,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q060",
@@ -3871,7 +4003,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q060_figure.jpg",
+      "question_image_path": "images/questions/q060_full_question.jpg",
       "solution_image_path": "images/solutions/q060_solution.jpg",
       "source_page_image_path": "images/pages/page_20.jpg",
       "source": {
@@ -3894,7 +4026,10 @@
       "quality_flags": [
         "math_ocr_requires_review",
         "solution_text_ocr_missing_but_image_attached"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q060_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q061",
@@ -3930,7 +4065,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q061_figure.jpg",
+      "question_image_path": "images/questions/q061_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_21.jpg",
       "source": {
@@ -3952,7 +4087,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q061_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q062",
@@ -3988,7 +4126,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q062_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_21.jpg",
       "source": {
@@ -4010,7 +4148,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q063",
@@ -4046,7 +4186,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q063_figure.jpg",
+      "question_image_path": "images/questions/q063_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_21.jpg",
       "source": {
@@ -4068,7 +4208,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q063_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q064",
@@ -4104,7 +4247,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q064_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_22.jpg",
       "source": {
@@ -4126,7 +4269,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q065",
@@ -4162,7 +4307,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q065_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_22.jpg",
       "source": {
@@ -4184,7 +4329,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q066",
@@ -4220,7 +4367,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q066_figure.jpg",
+      "question_image_path": "images/questions/q066_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_22.jpg",
       "source": {
@@ -4242,7 +4389,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q066_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q067",
@@ -4278,7 +4428,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q067_figure.jpg",
+      "question_image_path": "images/questions/q067_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_23.jpg",
       "source": {
@@ -4300,7 +4450,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q067_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q068",
@@ -4336,7 +4489,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q068_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_23.jpg",
       "source": {
@@ -4358,7 +4511,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q069",
@@ -4394,7 +4549,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q069_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_23.jpg",
       "source": {
@@ -4428,7 +4583,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q070",
@@ -4464,7 +4621,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q070_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_23.jpg",
       "source": {
@@ -4486,7 +4643,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q071",
@@ -4517,7 +4676,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q071_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_23.jpg",
       "source": {
@@ -4539,7 +4698,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q072",
@@ -4570,7 +4731,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q072_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_24.jpg",
       "source": {
@@ -4592,7 +4753,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q073",
@@ -4623,7 +4786,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q073_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_24.jpg",
       "source": {
@@ -4645,7 +4808,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q074",
@@ -4676,7 +4841,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": null,
+      "question_image_path": "images/questions/q074_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_24.jpg",
       "source": {
@@ -4698,7 +4863,9 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     },
     {
       "question_id": "jee-main-2026-01-22-s1-q075",
@@ -4729,7 +4896,7 @@
       "difficulty": null,
       "marks_correct": 4,
       "marks_incorrect": -1,
-      "question_image_path": "images/questions/q075_figure.jpg",
+      "question_image_path": "images/questions/q075_full_question.jpg",
       "solution_image_path": null,
       "source_page_image_path": "images/pages/page_24.jpg",
       "source": {
@@ -4751,7 +4918,10 @@
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
         "math_ocr_requires_review"
-      ]
+      ],
+      "question_figure_image_path": "images/questions/q075_figure.jpg",
+      "question_image_source": "source-page crop; question/options retained in visual order",
+      "question_image_review_status": "REVIEW_REQUIRED"
     }
   ]
 }

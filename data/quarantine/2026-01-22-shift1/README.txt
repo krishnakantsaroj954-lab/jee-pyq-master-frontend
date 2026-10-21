@@ -1,14 +1,15 @@
-# JEE Main 2026 — 22 January Shift 1 (Quarantined Dataset)
+# JEE Main 2026 — 22 January Shift 1 (Quarantined source dataset)
 
-## Current status
-- 75 question records remain in source order; Q39 remains present and marked Dropped without an invented answer.
-- 24 original full-page source images are retained under images/pages/.
-- Question-specific crops: 19 figure/table/graph crops plus the pre-existing Q39 question crop.
-- Six printed-solution crops were created for questions whose solution text is missing/unreadable in the JSON.
-- question_image_path and solution_image_path now point only to specific crops or null; source_page_image_path preserves the full-page source.
-- All 50 JPEG assets are listed with SHA-256 values in asset-manifest.json; crop coordinates/metadata are in image-crop-manifest.json.
+## Dataset and image assets
+- 75 question records are retained in printed source order.
+- Q39 remains marked `Dropped`; the source dropped label is preserved and no correct answer has been invented.
+- Original full-page source images are preserved under `images/pages/`.
+- 75 full-question image crops are generated under `images/questions/`; they preserve the printed question material, options and diagrams in source reading order and normally stop before the printed `Ans.` row.
+- The previous 19 question figure/table crops are retained and linked through `question_figure_image_path`; the six solution crops remain under `images/solutions/`.
+- The JSON retains original OCR/transcription/answer/solution fields; this crop script does not rewrite their text values.
+- `asset-manifest.json` and `full-question-crop-manifest.json` contain hashes, dimensions, source locations and crop metadata.
 
-## Important review gate
-The crop boxes were estimated from source-page previews and are not claimed to be perfect. Review each crop for cut-off labels, stray text, and correct question association, then review all OCR/transcription, options, answers, and solution text against the original PDF. Several dataset records remain incomplete or OCR-only. This is not production-ready and must stay under data/quarantine/.
+## Mandatory review status
+**REVIEW_REQUIRED — NOT production-ready.** OCR-based start/answer boundaries and all 75 visual crops require human comparison against the source page images. Two source question-number headers (Q1 and Q7) were visually anchored because OCR missed the printed number; these are explicitly marked in the manifest. Review all question text, options, answers, solution text/image, and question-to-image associations before any website import.
 
-No Cloudflare Worker/D1 import, production database change, or website deployment was performed. The repository still needs a separate reviewed frontend integration change.
+This pipeline does not write to Cloudflare D1, does not publish question records, and does not deploy or alter a production Worker. No production import was performed.
