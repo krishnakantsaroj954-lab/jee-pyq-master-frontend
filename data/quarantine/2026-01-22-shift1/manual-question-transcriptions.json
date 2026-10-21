@@ -107,7 +107,7 @@
       "scope": "question stem only; solution text and provenance remain review-required"
     },
     "22": {
-      "question_text": "Let \\(A\\) be a \\(3\\times3\\) matrix such that \\(A+A^T=O\\). If \\(A\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}3\\\\3\\\\2\\end{bmatrix}\\), \\(A^2\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}1\\\\19\\\\0\\end{bmatrix}\\), and \\(\\det(\\operatorname{adj}(2\\operatorname{adj}(A+I)))=2^\\alpha 3^\\beta 11^\\gamma\\), where \\(\\alpha,\\beta,\\gamma\\) are non-negative integers, find \\(\\alpha+\\beta+\\gamma\\).",
+      "question_text": "Let \\(A\\) be a \\(3\\times3\\) matrix such that \\(A+A^T=O\\). If \\(A\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}3\\\\3\\\\2\\end{bmatrix}\\), \\(A^2\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}-3\\\\19\\\\-24\\end{bmatrix}\\), and \\(\\det(\\operatorname{adj}(2\\operatorname{adj}(A+I)))=2^\\alpha 3^\\beta 11^\\gamma\\), where \\(\\alpha,\\beta,\\gamma\\) are non-negative integers, find \\(\\alpha+\\beta+\\gamma\\).",
       "status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
       "reviewed_date": "2026-10-21",
       "scope": "question stem only; solution text and provenance remain review-required"
