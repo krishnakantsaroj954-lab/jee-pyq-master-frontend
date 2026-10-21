@@ -12,6 +12,7 @@ on:
       - "pipeline/validate_jan22_candidate.py"
       - "pipeline/watermark_images.py"
       - "data/quarantine/2026-01-22-shift1/manual-question-transcriptions.json"
+      - "data/quarantine/2026-01-22-shift1/manual-solution-transcriptions.json"
       - "tests/test_jan22_full_question_crops.py"
   pull_request:
     branches: ["main"]
@@ -20,7 +21,10 @@ on:
       - "pipeline/build_jan22_question_image_crops.py"
       - "pipeline/build_jan22_full_question_crops.py"
       - "pipeline/build_jan22_import_candidate.py"
+      - "pipeline/validate_jan22_candidate.py"
       - "pipeline/watermark_images.py"
+      - "data/quarantine/2026-01-22-shift1/manual-question-transcriptions.json"
+      - "data/quarantine/2026-01-22-shift1/manual-solution-transcriptions.json"
       - "tests/test_jan22_full_question_crops.py"
 
 permissions:
@@ -72,6 +76,17 @@ jobs:
           data = json.loads((root / "jee_main_2026_01_22_shift1_FINAL_75Q.json").read_text(encoding="utf-8"))
           report = json.loads((root / "full-question-build-report.json").read_text(encoding="utf-8"))
           manifest = json.loads((root / "full-question-crop-manifest.json").read_text(encoding="utf-8"))
+          qa = json.loads((root / "candidate-internal-qa.json").read_text(encoding="utf-8"))
+          assert qa["status"] == "STRUCTURAL_CONSISTENCY_PASSED_REVIEW_STILL_REQUIRED", qa
+          assert qa["question_count"] == 75
+          assert qa["manual_question_text_transcriptions"] == 70
+          assert qa["manual_solution_text_transcriptions"] == 9
+          assert qa["solution_math_ocr_review_required"] == 61
+          assert qa["printed_answer_mismatch_count"] == 0
+          assert qa["mcq_option_answer_text_mismatch_count"] == 0
+          assert qa["source_pdf_bytes_verified"] is False
+          assert qa["publication_rights_verified"] is False
+          assert qa["production_import"] == "NOT_PERFORMED"
           assert report["status"] == "REVIEW_REQUIRED"
           assert report["question_records"] == 75 and report["full_question_crops"] == 75
           assert report["question_numbers_exactly_1_to_75"] is True
