@@ -12,6 +12,7 @@ CANDIDATE = ROOT / "IMPORT_CANDIDATE.json"
 BLOCKED = ROOT / "IMPORT_BLOCKED_REPORT.json"
 READY = ROOT / "IMPORT_READY.json"
 TRANSCRIPTIONS = ROOT / "manual-question-transcriptions.json"
+SOLUTION_TRANSCRIPTIONS = ROOT / "manual-solution-transcriptions.json"
 
 # Proposed tags derived from each visible source question; they are not official
 # source labels and must be reviewed before the import gate can open.
@@ -108,25 +109,40 @@ def main() -> int:
     data = read(SOURCE)
     manifest = read(MANIFEST)
     transcriptions = read(TRANSCRIPTIONS)
+    solution_transcriptions = read(SOLUTION_TRANSCRIPTIONS)
     wm = watermark_build(ROOT, "JEE PYQ Master")
     issues: list[dict[str, Any]] = []
     questions = data.get("questions", [])
     manual_texts = transcriptions.get("transcriptions", {})
+    manual_solutions = solution_transcriptions.get("transcriptions", {})
     applied_transcriptions = 0
+    applied_solution_transcriptions = 0
     for question in questions:
         number = str(question.get("question_number", ""))
         entry = manual_texts.get(number)
-        if not isinstance(entry, dict) or not str(entry.get("question_text") or "").strip():
-            continue
-        question.setdefault("question_text_ocr_existing", question.get("question_text"))
-        question["question_text"] = entry["question_text"]
-        question["question_text_review_status"] = entry.get("status", "MANUAL_TRANSCRIPTION_PRESENT")
-        question["question_text_review_note"] = entry.get("scope", "Question stem transcription only; solutions/provenance remain review-required.")
-        applied_transcriptions += 1
         flags = list(question.get("quality_flags") or [])
-        if "math_ocr_requires_review" in flags:
-            flags.remove("math_ocr_requires_review")
-            flags.append("solution_math_ocr_requires_review")
+        if isinstance(entry, dict) and str(entry.get("question_text") or "").strip():
+            question.setdefault("question_text_ocr_existing", question.get("question_text"))
+            question["question_text"] = entry["question_text"]
+            question["question_text_review_status"] = entry.get("status", "MANUAL_TRANSCRIPTION_PRESENT")
+            question["question_text_review_note"] = entry.get("scope", "Question stem transcription only; solutions/provenance remain review-required.")
+            applied_transcriptions += 1
+            if "math_ocr_requires_review" in flags:
+                flags.remove("math_ocr_requires_review")
+                flags.append("solution_math_ocr_requires_review")
+        solution_entry = manual_solutions.get(number)
+        if isinstance(solution_entry, dict) and str(solution_entry.get("solution_text") or "").strip():
+            question.setdefault("solution_text_ocr_existing", question.get("solution_text"))
+            question["solution_text"] = solution_entry["solution_text"]
+            question["solution_text_review_status"] = solution_entry.get("status", "MANUAL_SOLUTION_TRANSCRIPTION_PRESENT")
+            question["solution_text_review_note"] = solution_entry.get("scope", "Printed-solution transcription; source provenance remains review-required.")
+            applied_solution_transcriptions += 1
+            if "math_ocr_requires_review" in flags:
+                flags.remove("math_ocr_requires_review")
+            if "solution_math_ocr_requires_review" in flags:
+                flags.remove("solution_math_ocr_requires_review")
+            if "solution_text_ocr_missing_but_image_attached" in flags:
+                flags.remove("solution_text_ocr_missing_but_image_attached")
         question["quality_flags"] = flags
     crops = {int(x["question_number"]): x for x in manifest.get("question_crops", [])}
     if len(questions) != 75:
@@ -246,6 +262,7 @@ def main() -> int:
         "solutions_image_present":sum(bool(q.get("solution_image_path")) for q in questions),
         "chapter_topic_proposals":sum(bool(q.get("chapter") and q.get("topic")) for q in questions),
         "question_text_manual_transcriptions":applied_transcriptions,
+        "solution_text_manual_transcriptions":applied_solution_transcriptions,
         "solution_math_ocr_review_required":sum("solution_math_ocr_requires_review" in (q.get("quality_flags") or []) for q in questions),
         "blocking_issue_count":len(issues),
         "blocking_issues":issues,
@@ -255,7 +272,8 @@ def main() -> int:
             "Watermarked derivatives are linked in this candidate; original images remain unchanged.",
             "Proposed chapter/topic metadata is inferred from question content, not printed source labels.",
             "Manual question-stem transcriptions are overlaid only from visually inspected question crops; the prior OCR stem is preserved in question_text_ocr_existing and question_ocr_raw.",
-            "Solution math OCR flags remain unresolved and are explicit import blockers. Do not import while this gate is blocked.",
+            "Nine printed solutions were manually transcribed from inspected solution crops/page images; original solution OCR is preserved in solution_text_ocr_existing and solution_ocr_raw.",
+            "Solution math OCR review flags remain on the other records and are explicit import blockers. Do not import while this gate is blocked.",
             "Q39 remains Dropped with no invented answer.",
             "Watermark presence and file checksums were tested; question accuracy and source/publication rights are not certified by structural QA."
         ]
