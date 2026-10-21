@@ -27,7 +27,7 @@ Audited files: `IMPORT_CANDIDATE.json` and `IMPORT_BLOCKED_REPORT.json` on branc
 - All 75 chapter/topic classifications remain proposed, not verified.
 - Official-original match/publication rights were not independently verified.
 - The pipeline report explicitly records `source_pdf_bytes_verified_by_GitHub_runner: false`. The PDF SHA-256 copied into metadata is **not** proof that the exact PDF bytes were independently checked in this run.
-- Expected blocker count after the 9 solution overlays is 212: 1 provenance blocker + 75 image-review blockers + 75 chapter/topic blockers + 61 remaining solution-OCR blockers. The latest GitHub Actions run must confirm this computed count before calling it the actual current report.
+- Confirmed blocker count after the 9 solution overlays is **212**: 1 provenance blocker + 75 image-review blockers + 75 chapter/topic blockers + 61 remaining solution-OCR blockers. This is the count in the regenerated `IMPORT_BLOCKED_REPORT.json`.
 
 ## Required before a true `IMPORT_READY.json`
 
@@ -49,3 +49,9 @@ This report deliberately does not turn a structurally complete record into a cla
 A programmatic check of the candidate records found: 74 non-dropped printed answer values parse consistently to the stored answer field (59 active MCQ keys and 15 numerical values; Q39 remains a dropped MCQ record among the 60 MCQ records); no MCQ answer-text/options mismatch was found outside the intentionally dropped Q39; all 75 records have non-empty question text and 75 unique question-image paths; all 74 non-dropped records have a solution text or solution-image reference. These are internal consistency checks against the candidate's own extracted fields, **not independent proof that every printed answer is correct**.
 
 The six separate solution-image crops (Q18, Q27, Q32, Q38, Q45, Q60) were visually inspected in this review. They are legible and show worked steps/final result areas; Q45 explicitly shows Correct Ans. (2). This limited review does not replace source-by-source verification of the remaining 61 flagged solution records.
+
+## Latest automated run
+
+GitHub Actions run [39648230630](https://github.com/krishnakantsaroj954-lab/jee-pyq-master-frontend/actions/runs/39648230630) completed successfully. The new `candidate-internal-qa.json` reports `STRUCTURAL_CONSISTENCY_PASSED_REVIEW_STILL_REQUIRED`, with zero stored-answer/printed-answer consistency mismatches, zero MCQ option/answer-text mismatches, 124 referenced image paths checked, and all 125 watermark derivative checksums checked.
+
+The successful pipeline and internal-consistency run **do not** open the production import gate: the candidate remains `BLOCKED_REVIEW_REQUIRED`, official-source/publication rights remain unverified, the exact source PDF bytes remain unverified in the runner, and no live import was performed.
