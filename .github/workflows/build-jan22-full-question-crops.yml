@@ -75,23 +75,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$DATA_DIR/jee_main_2026_01_22_shift1_FINAL_75Q.json" \
-                  "$DATA_DIR/images" \
-                  "$DATA_DIR/asset-manifest.json" \
-                  "$DATA_DIR/image-crop-manifest.json" \
-                  "$DATA_DIR/full-question-crop-manifest.json" \
-                  "$DATA_DIR/full-question-build-report.json" \
-                  "$DATA_DIR/watermark-manifest.json" \
-                  "$DATA_DIR/IMPORT_READY.json" \
-                  "$DATA_DIR/IMPORT_BLOCKED_REPORT.json" \
-                  "$DATA_DIR/crop-build-report.json" \
-                  "$DATA_DIR/README.md" "$DATA_DIR/README.txt" \
-                  "$DATA_DIR/question-crops-contact-sheet.jpg" \
-                  "$DATA_DIR/solution-crops-contact-sheet.jpg" \
-                  "$DATA_DIR/full-question-crops-contact-sheet.jpg" \
-                  "$DATA_DIR/full-question-crops-q01-q25.jpg" \
-                  "$DATA_DIR/full-question-crops-q26-q50.jpg" \
-                  "$DATA_DIR/full-question-crops-q51-q75.jpg"
+          git add "$DATA_DIR"
           if git diff --cached --quiet; then
             echo "No generated crop or report changes to commit."
           else
