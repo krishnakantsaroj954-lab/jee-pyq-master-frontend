@@ -36,7 +36,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: question-extractor-ai-${ github.ref }
+  group: question-extractor-ai-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -44,15 +44,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
-      PDF_PATH: ${ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }
-      PAPER_TYPE: ${ inputs.paper_type || '1' }
-      TOP_PERCENT: ${ inputs.top_percent || '0' }
-      BOTTOM_PERCENT: ${ inputs.bottom_percent || '0' }
+      PDF_PATH: ${{ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }}
+      PAPER_TYPE: ${{ inputs.paper_type || '1' }}
+      TOP_PERCENT: ${{ inputs.top_percent || '0' }}
+      BOTTOM_PERCENT: ${{ inputs.bottom_percent || '0' }}
     steps:
       - name: Check out the selected test branch
         uses: actions/checkout@v4
         with:
-          ref: ${ github.ref }
+          ref: ${{ github.ref }}
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
