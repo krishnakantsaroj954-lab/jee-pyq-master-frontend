@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "jee-main-2026-01-22-s1",
+  "source_pdf": "BPD4dLYdvGj7xm8cDL66.pdf",
+  "source_pdf_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
+  "ocr_engine": "tesseract 5.5.0",
+  "ocr_config": "--psm 6",
+  "scale": 0.72,
+  "coordinate_system": "original source-page JPEG pixels",
+  "pages_covered": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "source_page_image_hashes": {
+    "images/pages/page_01.jpg": "7b377fd2b42c36869b849612d2d2fd25cd717cb7dc6f09a6735ebb5f6dde7d89",
+    "images/pages/page_02.jpg": "f7d7c4fa67220cae82d9a311bff6e1b31d38e3a007a64929550c87bf2c1acb22",
+    "images/pages/page_03.jpg": "e2cbbdb4e538596c39f85f64db970510f81e451c87f73b00d146d78d370398b2",
+    "images/pages/page_04.jpg": "f635bba996cc083806e709418d14d4e2056179fc64c9c89407bf43e6695dded2",
+    "images/pages/page_05.jpg": "a527d2a75681e1deb5b31f997bff0b4c19fc4ae98d403531f0c53003aef286b0",
+    "images/pages/page_06.jpg": "22d4e9a1f257aef4481ae366ca9534d8faf5a07acf20b7c3b2273b69d1240b48",
+    "images/pages/page_07.jpg": "c3226f44a761b45c9317a4c986bd3e5c023c1c9372107164278390f2f66a9712",
+    "images/pages/page_08.jpg": "c003bb6943f895eb457b326a3fd391f08de9ff75564981071f5e39310be1688d",
+    "images/pages/page_09.jpg": "4dfdf1fef82b2ae4391f68c1f9747255a3ffe15e1d923f42b9cd447185566cc7",
+    "images/pages/page_10.jpg": "0aad5e8c739f1d131efa68188b7ef03f8241fbf81afc995b1b3097476ffbe85a",
+    "images/pages/page_11.jpg": "7d00dd4bcf4f52d8b658584bba978756268b9bdae267b32449abf0cf563c4e8d",
+    "images/pages/page_12.jpg": "df05e254507512d6cb63a21f146bdf1763361edb63cb2a4fb24021c5863ef905",
+    "images/pages/page_13.jpg": "9cd3234dfac9029020ce066b2bc2ea426008d0a4658828cbf6ff5228c732b510",
+    "images/pages/page_14.jpg": "aa83b1702ba8c7fab99b11530ffe195817934721690a06760d78be55b03f47dd",
+    "images/pages/page_15.jpg": "02769a321672e6425731de667f53ed9776c7ee5944420ddf24559d1b83e57a2d",
+    "images/pages/page_16.jpg": "6f201723766a0c782dfbe2a0be4ebfd7d1970bdc31a4a8a42deb397bb537dc02",
+    "images/pages/page_17.jpg": "4b4fbaa619633520e723ddbd5f979387f50e49a09bcfbbd45e7d279d2df729e4",
+    "images/pages/page_18.jpg": "c69e641439d9292ac3eca1afb45a6b66bf876d5f741bfd9b5affc66c52901fc6",
+    "images/pages/page_19.jpg": "e0ea72ab142d7183edfed90b3e6ff585180fa54056fa33054461c24563615f7b",
+    "images/pages/page_20.jpg": "b6308c00e8823ed5da09c3bc1bf2cbc510d8b4f3084391f7f091f57346b60a41",
+    "images/pages/page_21.jpg": "749d9801a5cb33c90f23c555a535e2acc5d4d522cd7dce90dc975b239bce73a9",
+    "images/pages/page_22.jpg": "f5d61de356d67b61a996f59bdff2bb6f91981a20b70b337b78eb42ee1f0285df",
+    "images/pages/page_23.jpg": "45aa495b36e9ac3585b1a08aec9614d9cd02f07b7661a447257e2af9d04cb12f",
+    "images/pages/page_24.jpg": "99e986f2ddf9a9aa5236adbdde440943cf978bb8fd07bd7998a859dc39bce81f"
+  },
+  "files": [
+    {
+      "path": "ocr_lines_02_08.json",
+      "sha256": "2d2e93ebb11e213de50a9e54e96afedfb18418a4842a7aff4c17d9b5c466722d",
+      "row_count": 993,
+      "pages": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    {
+      "path": "ocr_lines_09_12.json",
+      "sha256": "b616993be2c5bcb89cb0b74ca88362fdb1288d6e0dd2cb208e2b2f9f9d88296f",
+      "row_count": 565,
+      "pages": [
+        9,
+        10,
+        11,
+        12
+      ]
+    },
+    {
+      "path": "ocr_lines_13_15.json",
+      "sha256": "e839c13771b722b19640f7c019de581e64f3c712a3e40e126061ad83fd5c5eb3",
+      "row_count": 405,
+      "pages": [
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "path": "ocr_lines_16_19.json",
+      "sha256": "d8be52bd3fdd72a0b88eb1c760e5696dc702d001d73fb07b4df5db8f87471d5e",
+      "row_count": 562,
+      "pages": [
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "path": "ocr_lines_20_24.json",
+      "sha256": "f36abfdf241ede7efbbd3e5cf233c36d35c8b8da77ad3ce90d9c014cf99d76a6",
+      "row_count": 649,
+      "pages": [
+        20,
+        21,
+        22,
+        23,
+        24
+      ]
+    }
+  ],
+  "status": "REVIEW_REQUIRED",
+  "note": "Cached OCR rows are geometry/text hints only. The source-page images remain authoritative; review the final question crops visually."
+}
