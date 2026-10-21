@@ -9,7 +9,9 @@ on:
       - "pipeline/build_jan22_question_image_crops.py"
       - "pipeline/build_jan22_full_question_crops.py"
       - "pipeline/build_jan22_import_candidate.py"
+      - "pipeline/validate_jan22_candidate.py"
       - "pipeline/watermark_images.py"
+      - "data/quarantine/2026-01-22-shift1/manual-question-transcriptions.json"
       - "tests/test_jan22_full_question_crops.py"
   pull_request:
     branches: ["main"]
@@ -58,6 +60,9 @@ jobs:
           cat "$DATA_DIR/full-question-build-report.json" >> "$GITHUB_STEP_SUMMARY"
       - name: Apply watermark and build strictly gated website export candidate
         run: python pipeline/build_jan22_import_candidate.py
+      - name: Audit candidate consistency without bypassing source-review gates
+        run: |
+          python pipeline/validate_jan22_candidate.py --data-dir "$DATA_DIR" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Fail closed on structural or source-contract errors
         run: |
           python - <<'PY'
