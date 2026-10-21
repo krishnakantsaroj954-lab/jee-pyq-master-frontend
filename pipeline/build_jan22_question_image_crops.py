@@ -199,7 +199,11 @@ def main() -> int:
     contact_sheet(question_entries, root / "question-crops-contact-sheet.jpg", columns=4, cell_width=280, image_height=200, label_height=34)
     contact_sheet(solution_entries, root / "solution-crops-contact-sheet.jpg", columns=3, cell_width=340, image_height=360, label_height=34)
 
-    image_files = sorted((root / "images").rglob("*.jpg"))
+    image_root = root / "images"
+    watermarked_root = image_root / "watermarked"
+    # Watermarked review derivatives mirror source assets under images/watermarked/.
+    # Exclude them from the source-asset inventory so reruns do not double-count them.
+    image_files = sorted(p for p in image_root.rglob("*.jpg") if watermarked_root not in p.parents)
     assets = []
     for path in image_files:
         rel = path.relative_to(root).as_posix()
@@ -250,7 +254,7 @@ def main() -> int:
 - 19 figure/table crops and the existing Q39 question crop under `images/questions/`.
 - Six printed-solution crops under `images/solutions/`.
 - `question_image_path` and `solution_image_path` now point only to specific relevant crops or null; `source_page_image_path` keeps the original full page.
-- All 50 JPEG image assets are listed with SHA-256 values in `asset-manifest.json`.
+- All {len(assets)} original (non-watermarked) JPEG image assets are listed with SHA-256 values in `asset-manifest.json`; watermarked derivatives are tracked separately.
 - Review contact sheets: `question-crops-contact-sheet.jpg` and `solution-crops-contact-sheet.jpg`.
 
 ## Mandatory review gate
