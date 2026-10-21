@@ -27,6 +27,13 @@ on:
         required: true
         type: string
         default: "0"
+  push:
+    branches:
+      - "test/question-extractor-ai-github-runner"
+    paths:
+      - ".github/workflows/question-extractor-ai.yml"
+      - "pipeline/question_extractor_ai/**"
+      - "cEDaK5Wn5ILe4nOdotd6.pdf"
   pull_request:
     paths:
       - ".github/workflows/question-extractor-ai.yml"
