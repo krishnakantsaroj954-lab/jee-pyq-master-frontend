@@ -294,6 +294,11 @@ def safe_crop_segments(root: Path, pages: dict[int, Image.Image], rows: list[dic
         width, height = image.size
         midpoint = width // 2
         x0, x1 = (22, midpoint - 12) if side == "L" else (midpoint + 12, width - 22)
+        # Q44's List-I/List-II table reaches the central gutter. The normal
+        # left-column inset clips its right border, so extend only this crop a
+        # few pixels into the gutter while stopping before the adjacent Q45 text.
+        if q_number == 44 and page_no == 15 and side == "L":
+            x1 = min(width - 22, midpoint + 8)
         first_segment = segment_index == 0
         last_segment = segment_index == len(grouped) - 1
         if first_segment:
@@ -507,6 +512,15 @@ def main() -> int:
 
     if len(crop_records) != QUESTION_COUNT or {r["question_number"] for r in crop_records} != set(range(1,76)):
         raise SystemExit("Full question crop set is incomplete")
+    # Guard the visually found Q44 table-edge defect against regression.
+    q44_segments = crop_records[43]["source_segments"]
+    q44_right_edges = [
+        int(seg["native_bbox"][2])
+        for seg in q44_segments
+        if int(seg["page"]) == 15 and seg["side"] == "L"
+    ]
+    if not q44_right_edges or max(q44_right_edges) <= page_sizes[15][0] // 2:
+        raise SystemExit("Q44 List-I/List-II table right border would remain clipped at the page gutter")
     missing_paths = [r["path"] for r in crop_records if not (root / r["path"]).is_file()]
     if missing_paths:
         raise SystemExit(f"Generated question crop files are missing: {missing_paths[:8]}")
