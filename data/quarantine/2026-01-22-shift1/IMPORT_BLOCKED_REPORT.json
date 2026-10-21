@@ -7,12 +7,12 @@
   "question_crops_in_manifest": 75,
   "watermark_text": "JEE PYQ Master",
   "watermarked_image_count": 125,
-  "watermark_checksums_verified": false,
+  "watermark_checksums_verified": true,
   "answers_present": 74,
   "solutions_text_present": 68,
   "solutions_image_present": 6,
   "chapter_topic_proposals": 75,
-  "blocking_issue_count": 222,
+  "blocking_issue_count": 221,
   "blocking_issues": [
     {
       "scope": "provenance",
@@ -1117,10 +1117,6 @@
       "question_number": 75,
       "field": "chapter/topic",
       "issue": "Proposed chapter/topic classification requires review"
-    },
-    {
-      "scope": "watermark",
-      "issue": "One or more watermark outputs failed checksum/change verification"
     }
   ],
   "status": "BLOCKED_REVIEW_REQUIRED",
