@@ -1,0 +1,1265 @@
+{
+  "schema_version": "1.0.0",
+  "status": "BRANDED_REVIEW_ONLY",
+  "watermark_text": "JEE PYQ Master",
+  "method": "repeated low-opacity diagonal overlay",
+  "source_root": "data/quarantine/2026-01-22-shift1/images",
+  "output_root": "data/quarantine/2026-01-22-shift1/images/watermarked",
+  "source_image_count": 125,
+  "outputs": [
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_01.jpg",
+      "source_sha256": "7b377fd2b42c36869b849612d2d2fd25cd717cb7dc6f09a6735ebb5f6dde7d89",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_01.jpg",
+      "output_sha256": "058e9d050345f4bcdc5862ec377e837a6e55521451ddc9f89987fd18608f386c",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 550007
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_02.jpg",
+      "source_sha256": "f7d7c4fa67220cae82d9a311bff6e1b31d38e3a007a64929550c87bf2c1acb22",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_02.jpg",
+      "output_sha256": "ef90368de12bf9946e2eb5663b81663fd7f94d7e3ec13db9e2c3d66084096b21",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 526355
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_03.jpg",
+      "source_sha256": "e2cbbdb4e538596c39f85f64db970510f81e451c87f73b00d146d78d370398b2",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_03.jpg",
+      "output_sha256": "11a1ddc2966ffa713125e169b10aecc4d8c8cc0142ca601005c570d7930da77b",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 512508
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_04.jpg",
+      "source_sha256": "f635bba996cc083806e709418d14d4e2056179fc64c9c89407bf43e6695dded2",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_04.jpg",
+      "output_sha256": "049d7f85ef3b6662e95d85391e0cef54cbe7e16d5b544e1e2010f65cc2ce8a52",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 474595
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_05.jpg",
+      "source_sha256": "a527d2a75681e1deb5b31f997bff0b4c19fc4ae98d403531f0c53003aef286b0",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_05.jpg",
+      "output_sha256": "36887e84bfead847476ff05bab40031c1be5dafe03a6860c6c658fc8dd1eca38",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 499845
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_06.jpg",
+      "source_sha256": "22d4e9a1f257aef4481ae366ca9534d8faf5a07acf20b7c3b2273b69d1240b48",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_06.jpg",
+      "output_sha256": "4db19cacb6aab4876f63d76737b9b354aa22f6b7c231abadbdf6a5d665f03f88",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 508468
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_07.jpg",
+      "source_sha256": "c3226f44a761b45c9317a4c986bd3e5c023c1c9372107164278390f2f66a9712",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_07.jpg",
+      "output_sha256": "586687da6cab834cf91e86c466a45ea81c2f251693482243a6cd46a755862fc7",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 515779
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_08.jpg",
+      "source_sha256": "c003bb6943f895eb457b326a3fd391f08de9ff75564981071f5e39310be1688d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_08.jpg",
+      "output_sha256": "b9884017cb4ba5267cb35b7ad6e1972243f1cdb129b5cb27e05509ca69a5b872",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 450264
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_09.jpg",
+      "source_sha256": "4dfdf1fef82b2ae4391f68c1f9747255a3ffe15e1d923f42b9cd447185566cc7",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_09.jpg",
+      "output_sha256": "86d68d42b78f64ef614c15c867eacf275b365954c74b5db771625f6a5128ae88",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 550533
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_10.jpg",
+      "source_sha256": "0aad5e8c739f1d131efa68188b7ef03f8241fbf81afc995b1b3097476ffbe85a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_10.jpg",
+      "output_sha256": "145d40a7471cd37d72a1864257acc55acff2a9b56f353c46379a3bcf1df6bea1",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 539507
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_11.jpg",
+      "source_sha256": "7d00dd4bcf4f52d8b658584bba978756268b9bdae267b32449abf0cf563c4e8d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_11.jpg",
+      "output_sha256": "e7df09ea220b14806454e00d525c73d19d4a567065a0fa3e866b9e473cc6b00d",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 560408
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_12.jpg",
+      "source_sha256": "df05e254507512d6cb63a21f146bdf1763361edb63cb2a4fb24021c5863ef905",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_12.jpg",
+      "output_sha256": "2bc7754dfac0744725b4ca03fbff4caec5598c0ed9e47ebd9b3dff11fbac791c",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 568150
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_13.jpg",
+      "source_sha256": "9cd3234dfac9029020ce066b2bc2ea426008d0a4658828cbf6ff5228c732b510",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_13.jpg",
+      "output_sha256": "7c57d20a931cc86057cb860e5b05fb5f7eb76314210f2d960493438f6ca4347b",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 525867
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_14.jpg",
+      "source_sha256": "aa83b1702ba8c7fab99b11530ffe195817934721690a06760d78be55b03f47dd",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_14.jpg",
+      "output_sha256": "0fe0bf306e269750e460dfacbce1d019f1868f0e735e768c0d64e0c945059c57",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 586634
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_15.jpg",
+      "source_sha256": "02769a321672e6425731de667f53ed9776c7ee5944420ddf24559d1b83e57a2d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_15.jpg",
+      "output_sha256": "fa004ed5d8efd70bd751b785e5d8a0eed94fddeb170dfbdb57c9dbb4f79b51ef",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 632572
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_16.jpg",
+      "source_sha256": "6f201723766a0c782dfbe2a0be4ebfd7d1970bdc31a4a8a42deb397bb537dc02",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_16.jpg",
+      "output_sha256": "6e3520433d53ffba5e595a1dedd3d55a2d5f4c85c59a8885e8f3cc67624fccda",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 513829
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_17.jpg",
+      "source_sha256": "4b4fbaa619633520e723ddbd5f979387f50e49a09bcfbbd45e7d279d2df729e4",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_17.jpg",
+      "output_sha256": "09637e4b43e0d199cb6c712d16945d1d1158ce763a4108d5ed2955a0e286725e",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 280301
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_18.jpg",
+      "source_sha256": "c69e641439d9292ac3eca1afb45a6b66bf876d5f741bfd9b5affc66c52901fc6",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_18.jpg",
+      "output_sha256": "23db60e04e9384bd9fe5a3a36bc562f57695e76bbcb20fbe39424528f3a980be",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 577941
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_19.jpg",
+      "source_sha256": "e0ea72ab142d7183edfed90b3e6ff585180fa54056fa33054461c24563615f7b",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_19.jpg",
+      "output_sha256": "22e34e99d9fe29db560286d052b8a8aedd209dde43d0c0e4ba54821904313d36",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 581702
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_20.jpg",
+      "source_sha256": "b6308c00e8823ed5da09c3bc1bf2cbc510d8b4f3084391f7f091f57346b60a41",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_20.jpg",
+      "output_sha256": "4e41431055f2d22247a45ffaa3e39ffcdd7ff7e1d866547cd8fa0576d3b61fc8",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 548044
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_21.jpg",
+      "source_sha256": "749d9801a5cb33c90f23c555a535e2acc5d4d522cd7dce90dc975b239bce73a9",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_21.jpg",
+      "output_sha256": "5c30ad9a82fad04cd233c1a39353c518d4149d9812f37137160641cc212d2789",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 650524
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_22.jpg",
+      "source_sha256": "f5d61de356d67b61a996f59bdff2bb6f91981a20b70b337b78eb42ee1f0285df",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_22.jpg",
+      "output_sha256": "fa80190205fe5c66f2e1737107f305a1ba444b0055e81daad65aff29607f8425",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 737396
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_23.jpg",
+      "source_sha256": "45aa495b36e9ac3585b1a08aec9614d9cd02f07b7661a447257e2af9d04cb12f",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_23.jpg",
+      "output_sha256": "b46666b588ee27c1e557d55271663d0681710b485eea3eeee8fb71c65d0bc0a4",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 767157
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/pages/page_24.jpg",
+      "source_sha256": "99e986f2ddf9a9aa5236adbdde440943cf978bb8fd07bd7998a859dc39bce81f",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/pages/page_24.jpg",
+      "output_sha256": "f2a0ce218b0a354dadbc775f2feca9fb12de18a59dd70bcdfa0081a14c23d337",
+      "width": 1736,
+      "height": 2456,
+      "mime_type": "image/jpeg",
+      "bytes": 594352
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q001_full_question.jpg",
+      "source_sha256": "c497dd16886811a9e29334f48bffe8096334a4b6885a92a088c1cd9f617a5d5a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q001_full_question.jpg",
+      "output_sha256": "9fe569ca1d254c3793b202e4cc60a1e5860f1d4cd75081c280b5f67b58ba1945",
+      "width": 834,
+      "height": 409,
+      "mime_type": "image/jpeg",
+      "bytes": 75669
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q002_full_question.jpg",
+      "source_sha256": "54e913d9f1fa1b74f97c8c0e368e78f07300b8ae3416e311fa61ca1df76d644c",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q002_full_question.jpg",
+      "output_sha256": "55c26127d28cc590fa404dc54d7d9c0e8605e02f629af609e4f6be74a2de6d64",
+      "width": 834,
+      "height": 326,
+      "mime_type": "image/jpeg",
+      "bytes": 61116
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q003_full_question.jpg",
+      "source_sha256": "fb832edb90abc7d70c4b98dc88a76bef3cf7981c89e8fb210d897fdf8144a1a2",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q003_full_question.jpg",
+      "output_sha256": "572a4cab07d09014ee711e59f16d0a21e8bf2fafc2115cc921f67b05590d9ede",
+      "width": 834,
+      "height": 268,
+      "mime_type": "image/jpeg",
+      "bytes": 43544
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q004_full_question.jpg",
+      "source_sha256": "90f326c8bef9669a013eb6f737e608a110a88cefeba3a4f70e706777e84623bb",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q004_full_question.jpg",
+      "output_sha256": "2145551cc94294fa6c143723bf6db303a59ce277e766124a9fa8ab408f55b591",
+      "width": 834,
+      "height": 342,
+      "mime_type": "image/jpeg",
+      "bytes": 53194
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q005_full_question.jpg",
+      "source_sha256": "d7ddd720a247094f2ee0a7dc124d0b418a36645aaa5c48a147cc28d49b1cef90",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q005_full_question.jpg",
+      "output_sha256": "db3922c5e2a6fada3679d402d44ac7ab8f43d0157f8490778c7275855ccc7d6e",
+      "width": 834,
+      "height": 248,
+      "mime_type": "image/jpeg",
+      "bytes": 45045
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q006_full_question.jpg",
+      "source_sha256": "f73211de233e42d4f34761172d7aac5e0ad0da2030383eb4bf39f8e50ef39703",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q006_full_question.jpg",
+      "output_sha256": "586f244533111a1ae8241719316593d2ff9fb1cff3745eeaaa4c76818c2c1d95",
+      "width": 834,
+      "height": 642,
+      "mime_type": "image/jpeg",
+      "bytes": 83672
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q007_figure.jpg",
+      "source_sha256": "874b4ca8173985d2abac9ecd2a509115a56b1bbf8affe6652743ab52799c0cc1",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q007_figure.jpg",
+      "output_sha256": "a2a7749732039426b677d2f3729bf8bf03c76b560c209d7cbf7b8cd1c0ed4f79",
+      "width": 697,
+      "height": 119,
+      "mime_type": "image/jpeg",
+      "bytes": 21305
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q007_full_question.jpg",
+      "source_sha256": "1d2bc0ebe2356de2855e6f6a64f5aa8f66b78db90bd7bc71672d80f3684236e3",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q007_full_question.jpg",
+      "output_sha256": "dbe6cfbe3f99a25567ae02f94aa4ca16d41c3011f488ef0ce5ec48acea5f309c",
+      "width": 834,
+      "height": 377,
+      "mime_type": "image/jpeg",
+      "bytes": 58875
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q008_full_question.jpg",
+      "source_sha256": "e77b065d797fa41b0cec7095d0db4bae9d2c8b2bba0a76a0cff4cbde2a2acccb",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q008_full_question.jpg",
+      "output_sha256": "5228f5be3250c99a226c7293eb536064cf3310c648bfad4254fe5d4a86381824",
+      "width": 834,
+      "height": 189,
+      "mime_type": "image/jpeg",
+      "bytes": 29577
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q009_full_question.jpg",
+      "source_sha256": "dfcd2b36892cf9b244e37502435b606a98fa144c12a696e17fb8b9b4a6637c30",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q009_full_question.jpg",
+      "output_sha256": "2c2dbc5c58dca37606f8821f12c6d2b5ab24143ca2a56e9f09d41ed1a04cf415",
+      "width": 834,
+      "height": 362,
+      "mime_type": "image/jpeg",
+      "bytes": 44791
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q010_full_question.jpg",
+      "source_sha256": "a126c06d1ea929647aeb2b07e4fa4eda541d976dca2fa213350ece3dab4d736f",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q010_full_question.jpg",
+      "output_sha256": "45f2bdfd6fdd04a008844c387f96a499e980b03e688de0d08d328b7f3314e6b1",
+      "width": 834,
+      "height": 355,
+      "mime_type": "image/jpeg",
+      "bytes": 41770
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q011_full_question.jpg",
+      "source_sha256": "a8e62c89acc58b3cd83697f6c110678730498c462f11cbefbd29d7de35c0afa8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q011_full_question.jpg",
+      "output_sha256": "a294c414b0ab177c0906f22daff0de32d6cd8770db9198dec3106240c875261c",
+      "width": 834,
+      "height": 260,
+      "mime_type": "image/jpeg",
+      "bytes": 42610
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q012_full_question.jpg",
+      "source_sha256": "1bb722017a9c9f959ab4e735fe8e1849edae1e375eeca15b9959747009d7214e",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q012_full_question.jpg",
+      "output_sha256": "508ed5de354c993da72a08ec4a309a7cdef623abc152400d6bba2e89dc721891",
+      "width": 834,
+      "height": 329,
+      "mime_type": "image/jpeg",
+      "bytes": 54979
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q013_full_question.jpg",
+      "source_sha256": "448a75f0eabdf8b73812b929f6f66f616e74803846e36d5cf854f1835aba124a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q013_full_question.jpg",
+      "output_sha256": "d34a556f97e3e853341031b6c36537580dfbe30dc93734f30fdd0a5fd78b720e",
+      "width": 834,
+      "height": 258,
+      "mime_type": "image/jpeg",
+      "bytes": 32179
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q014_full_question.jpg",
+      "source_sha256": "d86f29ce62f74481b121cfe575faf5f2780c0e08f6247b4f09b1b4af1a2356a2",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q014_full_question.jpg",
+      "output_sha256": "0451439456b59e5b0acb25e836b7983cf3e403a15906d1f79911aa70a9f8200b",
+      "width": 834,
+      "height": 355,
+      "mime_type": "image/jpeg",
+      "bytes": 45745
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q015_full_question.jpg",
+      "source_sha256": "a1ad9118071ba61c1f5bc907ad0b4fab902f28a5658e16dc6aa1075b6a82f5ee",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q015_full_question.jpg",
+      "output_sha256": "5ae0ea74f1cdd7cbd870a035f15a355cde00e533b11750c34638f85fa2e6d8c7",
+      "width": 834,
+      "height": 398,
+      "mime_type": "image/jpeg",
+      "bytes": 46165
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q016_full_question.jpg",
+      "source_sha256": "0ce700379e9f25d8821c0c847578d5d923fa2f59109738e76c50e4fd362ef2e9",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q016_full_question.jpg",
+      "output_sha256": "0331aa91bb8c1d9f211b5486fe720e50cc34f18ee7ddf1e2be26df49acf5e5a7",
+      "width": 834,
+      "height": 194,
+      "mime_type": "image/jpeg",
+      "bytes": 43064
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q017_full_question.jpg",
+      "source_sha256": "19367896f9fa8c1e94d83c0e86608da1bfa946476e6a0bca651895d5d641b4aa",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q017_full_question.jpg",
+      "output_sha256": "9699d2f50d03e123d4a5f1a04ce18d687459e2e839b432d1f86562ec9c69614f",
+      "width": 834,
+      "height": 290,
+      "mime_type": "image/jpeg",
+      "bytes": 54659
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q018_full_question.jpg",
+      "source_sha256": "5fb9b735a7ce4eb305fcedc657b6533f1ec011a2ac627ff17cbb230d6d4912a8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q018_full_question.jpg",
+      "output_sha256": "9e0c49d99c86df7f9dfbc81e50c0037513fba00b1b4e796f3cc4c3d5d1c90927",
+      "width": 834,
+      "height": 299,
+      "mime_type": "image/jpeg",
+      "bytes": 35673
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q019_full_question.jpg",
+      "source_sha256": "f63ba107b4690c4a6e5bbfa54f73999216b73717efcc8ed378fc1644cc626322",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q019_full_question.jpg",
+      "output_sha256": "46fa0225a245e264a22fcff69ee8b46f91ae44dbcb92993044487cd3f3d58d0a",
+      "width": 834,
+      "height": 269,
+      "mime_type": "image/jpeg",
+      "bytes": 40835
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q020_full_question.jpg",
+      "source_sha256": "d361c3b3a5b836f13b61f8a3a018338182fae9304d88203e8a67ef785bfef691",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q020_full_question.jpg",
+      "output_sha256": "cba168e0f7d7f1662bff7b041703f3b6992024a06dc54d366137e97e494fb8f7",
+      "width": 834,
+      "height": 249,
+      "mime_type": "image/jpeg",
+      "bytes": 44753
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q021_full_question.jpg",
+      "source_sha256": "ff2ddabe14de4ea94cd57ccde98b42742fe7e57f58d771c8309c0afe49d65ec7",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q021_full_question.jpg",
+      "output_sha256": "ab3ecb0e4000d331e53fadef79f335826cb8e70bcaa55878ff21076a82196071",
+      "width": 834,
+      "height": 228,
+      "mime_type": "image/jpeg",
+      "bytes": 37747
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q022_full_question.jpg",
+      "source_sha256": "8f9e11b420ef17b1dea5f18fafdfb860d4f04505fc3029076bfd7185f0e33354",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q022_full_question.jpg",
+      "output_sha256": "3f998c79c45521705a61fb90aece34766f22a8ebc0e9edd1903a894340200ed9",
+      "width": 834,
+      "height": 412,
+      "mime_type": "image/jpeg",
+      "bytes": 59628
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q023_full_question.jpg",
+      "source_sha256": "c5fe7785e11b4559df3da0387a843ae4c8ff90e287ebced5159301f0c6074870",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q023_full_question.jpg",
+      "output_sha256": "68045ea94d51624ae3a7c60d8a56a7506558ebe71025cc6fcb3319592ae2aa85",
+      "width": 834,
+      "height": 452,
+      "mime_type": "image/jpeg",
+      "bytes": 68674
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q024_full_question.jpg",
+      "source_sha256": "9e357d4e250b07709bbd435843486aa15938fa68506029f9eae97ca4370f79fd",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q024_full_question.jpg",
+      "output_sha256": "8c91c01d0c954b088de9f8fc4fcd27c89cf094ca36db5ba905a47cc2f43f2171",
+      "width": 834,
+      "height": 190,
+      "mime_type": "image/jpeg",
+      "bytes": 28663
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q025_full_question.jpg",
+      "source_sha256": "62ee500b7d28ebc13f736ce1f4c033c82f15507fc97c62aba6d65c9b0f0e97cf",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q025_full_question.jpg",
+      "output_sha256": "0bf5878ba617d40616a3b77888f8b23905b4a418dbfc0cb748b1685d544bde29",
+      "width": 834,
+      "height": 362,
+      "mime_type": "image/jpeg",
+      "bytes": 85798
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q026_full_question.jpg",
+      "source_sha256": "2b5470adf011a9bc3bfbaa768f0e7b39d827476a79f7152e3f1a7fe70e672516",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q026_full_question.jpg",
+      "output_sha256": "7f6e3558c4ca3b3e401461656f5ae4c6d79f74a24e6408553fe77c07f17ba6f2",
+      "width": 834,
+      "height": 310,
+      "mime_type": "image/jpeg",
+      "bytes": 72094
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q027_full_question.jpg",
+      "source_sha256": "1d04b2d1821d6bd2483f1befcb7711415870b0f422ccb18d8a134d64c23bb855",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q027_full_question.jpg",
+      "output_sha256": "6950754a2449bc78b94414dd4136c01a91400cf1e03db5e3abd83fa18072f281",
+      "width": 834,
+      "height": 374,
+      "mime_type": "image/jpeg",
+      "bytes": 78148
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q028_figure.jpg",
+      "source_sha256": "7d016d22cf9a4c8ca229369fcfa5c36993c77fb8417d5e35e23afa7bed4e01f0",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q028_figure.jpg",
+      "output_sha256": "1afcac26317420d18a1fba56afcbfc0237807eef92b9bf37d0e0b2f9e24015a6",
+      "width": 568,
+      "height": 335,
+      "mime_type": "image/jpeg",
+      "bytes": 27988
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q028_full_question.jpg",
+      "source_sha256": "da6a079a92548401944758951713c5f2d1fcb6632904d06902d504b45a7237a7",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q028_full_question.jpg",
+      "output_sha256": "3fc00e99c300a8e8d6086cff7f5803a683bdeb77332aa043f53ecf887ea86aa8",
+      "width": 834,
+      "height": 958,
+      "mime_type": "image/jpeg",
+      "bytes": 119870
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q029_figure.jpg",
+      "source_sha256": "f94572fd6db14dd6bfbc0e317724e6314b2ef704214701135a8625a2b10a0512",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q029_figure.jpg",
+      "output_sha256": "54fd759e43f777427ad32c41f699fd7a2d0046f061bd3dcaeff6f89356766369",
+      "width": 400,
+      "height": 290,
+      "mime_type": "image/jpeg",
+      "bytes": 16569
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q029_full_question.jpg",
+      "source_sha256": "0ab8877affee49b311106bef670f41fea1d1d19a82789a512b292583b402db24",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q029_full_question.jpg",
+      "output_sha256": "0a1c3a6f2fa18d7693fe740e11da42a7e9b2fa675f6fcb5c8a4c59dc67e22e74",
+      "width": 834,
+      "height": 1059,
+      "mime_type": "image/jpeg",
+      "bytes": 155156
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q030_full_question.jpg",
+      "source_sha256": "13413f3a8c8196d819740da08e3c5985e021e55ea47212e7b297d384afd29ba7",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q030_full_question.jpg",
+      "output_sha256": "08257597162421c60ae9c5f8241c2da5bc0798919e29270e17ce3bd2039c8b74",
+      "width": 834,
+      "height": 335,
+      "mime_type": "image/jpeg",
+      "bytes": 59485
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q031_figure.jpg",
+      "source_sha256": "807d0a0967f58a5ac31c987aed11ae00c7eab1b6a4a80fb1427ecda5f837c73d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q031_figure.jpg",
+      "output_sha256": "29af970f85df79a0d3cb3ab18a82a0dac41790d7230e5274e5c46bec8dd7389f",
+      "width": 413,
+      "height": 284,
+      "mime_type": "image/jpeg",
+      "bytes": 16706
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q031_full_question.jpg",
+      "source_sha256": "e2ac624bbe614f2512a092674a2c7cd711131fecc7c4da3be066fcbcde9f557e",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q031_full_question.jpg",
+      "output_sha256": "737b6bb519555b066d609b371dab61f0e6ca83ec63a724500391a6dcd04a4c46",
+      "width": 834,
+      "height": 986,
+      "mime_type": "image/jpeg",
+      "bytes": 120953
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q032_full_question.jpg",
+      "source_sha256": "5c0d59d62a3b937c6edae70c52a7a9b39829b8e8eb5db1d2c25b3db76e21a3d8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q032_full_question.jpg",
+      "output_sha256": "6789b0cf4502044d98c8e127f22359e7c41f9194a9a93688ba511fa9825c51b9",
+      "width": 834,
+      "height": 856,
+      "mime_type": "image/jpeg",
+      "bytes": 98823
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q033_full_question.jpg",
+      "source_sha256": "cc8c22bd0e880425eac3442816bf7c599a4ecfbdb56b5057a657aec1abb162e8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q033_full_question.jpg",
+      "output_sha256": "bfe7246af3bb974f1d90652734a768912d86af651607b9451e78b86f1f6fec93",
+      "width": 834,
+      "height": 556,
+      "mime_type": "image/jpeg",
+      "bytes": 148455
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q034_figure.jpg",
+      "source_sha256": "a2cdb1d6117482b95a6a7308ccf730e97fcdbad4a55d585b398c1ef6a9431712",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q034_figure.jpg",
+      "output_sha256": "f5befd2ab36041f580bbcce6b24c3b3e99b0b384ac2aa4093e15b74c95535cfe",
+      "width": 429,
+      "height": 298,
+      "mime_type": "image/jpeg",
+      "bytes": 18071
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q034_full_question.jpg",
+      "source_sha256": "47cede29722b8c57323956e6c57a59f5ace13a6ae1ca1debe14b589a02f1e5a0",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q034_full_question.jpg",
+      "output_sha256": "81a17b024ea7880e3c6c47f7ba63bd09db2a215cd60523e28f8592d52fbcadbb",
+      "width": 834,
+      "height": 498,
+      "mime_type": "image/jpeg",
+      "bytes": 59515
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q035_figure.jpg",
+      "source_sha256": "d0d267e15d6df6b71ec6faa13e63fd94f4b4754b72c2ec957cab8a32354b6b3a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q035_figure.jpg",
+      "output_sha256": "4d7194c7a6a745a880fb59c6abe8bf32a0c44e3a2a75ececa0cd8767152b2cfa",
+      "width": 320,
+      "height": 212,
+      "mime_type": "image/jpeg",
+      "bytes": 12347
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q035_full_question.jpg",
+      "source_sha256": "635fc6ccd8e826447177672084087048ab9bee95c3d86649e583fcbf6d12e80e",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q035_full_question.jpg",
+      "output_sha256": "f59adc8522a84fc9d9c7802656e6b1e70ff5b7fc9577ec7a8c08251bfc83c073",
+      "width": 834,
+      "height": 645,
+      "mime_type": "image/jpeg",
+      "bytes": 97593
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q036_full_question.jpg",
+      "source_sha256": "0825ece1e202bf049c4f58361c8e7b05727d4842c9a79e2af8382ebf9a6cd1d5",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q036_full_question.jpg",
+      "output_sha256": "e125998abbb306ed84bc04b01aba6edc7ee40ea90b7081a4174cf750eaf5bdee",
+      "width": 834,
+      "height": 650,
+      "mime_type": "image/jpeg",
+      "bytes": 76610
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q037_figure.jpg",
+      "source_sha256": "9a66427637b39fd8e8c1bf7bfca5e47af5642c103d30bbfd1676ea73ca9c2a25",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q037_figure.jpg",
+      "output_sha256": "09b4c8b71d40ae25a185e1792ff140c542e5db4317e87c0a8e31d76e022eee13",
+      "width": 446,
+      "height": 205,
+      "mime_type": "image/jpeg",
+      "bytes": 15794
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q037_full_question.jpg",
+      "source_sha256": "dac23c106a986cdb16bf4d17c1495077d82a5f13002fddd428587a5dcdde6fd4",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q037_full_question.jpg",
+      "output_sha256": "f6209c0636da054fc519a6c298dd2a3b3b3a49030d649add7559ecb2f4f3c49d",
+      "width": 834,
+      "height": 1049,
+      "mime_type": "image/jpeg",
+      "bytes": 156182
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q038_figure.jpg",
+      "source_sha256": "d0de9dc460a6c9ef99cd79e4aea39a3e199f0004f74fcad106f71f0bdd248728",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q038_figure.jpg",
+      "output_sha256": "abb58b4b66bba19681ab5d2af67de442f906a528b0073bcb6c21af5a846c8774",
+      "width": 564,
+      "height": 243,
+      "mime_type": "image/jpeg",
+      "bytes": 16520
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q038_full_question.jpg",
+      "source_sha256": "73e7ea61e1dae1163c562ed0ee4d21f7c569085e6d985ab8d7bbc5fadd631d58",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q038_full_question.jpg",
+      "output_sha256": "f4daf40c1d00882edd5d4efb384afcf3bc957f81626d2adb2227f953643d369e",
+      "width": 834,
+      "height": 814,
+      "mime_type": "image/jpeg",
+      "bytes": 138883
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q039_full_question.jpg",
+      "source_sha256": "582a12d34bfd030c070c7d4916792264d590972100eb32ddecf4b9051c5005bb",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q039_full_question.jpg",
+      "output_sha256": "a693e514f2653cfaf5022952146d79331f7b30d6463426be7c162be6c8c88efe",
+      "width": 834,
+      "height": 850,
+      "mime_type": "image/jpeg",
+      "bytes": 145907
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q039_question.jpg",
+      "source_sha256": "9270696905f90a7f2de33eb9380bb8772cefd47e016c4307de9bea8f7a6c4a44",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q039_question.jpg",
+      "output_sha256": "f1b62db5e250685a481db49d50f0a245e63bfce1c1da99c000a80f1c443ccd23",
+      "width": 799,
+      "height": 909,
+      "mime_type": "image/jpeg",
+      "bytes": 143423
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q040_full_question.jpg",
+      "source_sha256": "ac072562441290201cb70ec87efbea89e53b7a072390f279f6563952710f6ab8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q040_full_question.jpg",
+      "output_sha256": "9349435a05359be9e97beca9839aa3d073b1be64463fe21f39927dab1e5c4c5c",
+      "width": 834,
+      "height": 308,
+      "mime_type": "image/jpeg",
+      "bytes": 70905
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q041_full_question.jpg",
+      "source_sha256": "ba255213ca46b02e39f1f00131f142908a592ec1ad1d7e89ff141cceac18bc1a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q041_full_question.jpg",
+      "output_sha256": "5e29c31d391745e5affb5350152c11bc90ef21a2680c9fe21cdb7b5c6c46517c",
+      "width": 834,
+      "height": 348,
+      "mime_type": "image/jpeg",
+      "bytes": 87282
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q042_full_question.jpg",
+      "source_sha256": "ba56ad2dd825de9ac89ea27ccc45b625daa206201140eb47449b35be222b6871",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q042_full_question.jpg",
+      "output_sha256": "b2d4addca3085bb3a8bdb8f97a82c1e550e946325b292b3d8272138bffe16078",
+      "width": 834,
+      "height": 318,
+      "mime_type": "image/jpeg",
+      "bytes": 59418
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q043_full_question.jpg",
+      "source_sha256": "b82402747497d2685c832e4792e067f861592b0b28780f5f084c5befae1fecd7",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q043_full_question.jpg",
+      "output_sha256": "dd5d16eadbe945b54cc25cc79f525133421b9abc895a329fc73e454a40b53651",
+      "width": 834,
+      "height": 470,
+      "mime_type": "image/jpeg",
+      "bytes": 99880
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q044_figure.jpg",
+      "source_sha256": "30b2ac224a962be69e6db6576ba57e40db250aec1821faa9893d3114504cc17c",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q044_figure.jpg",
+      "output_sha256": "ec689d4dab5b8607adc160a3e42694c2d60da7f0ffa3b2b089eceec8d04245ac",
+      "width": 734,
+      "height": 348,
+      "mime_type": "image/jpeg",
+      "bytes": 61188
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q044_full_question.jpg",
+      "source_sha256": "c47f0d222b642ea565ec10851920a9b6ff8df405be619ab1a1f0c4ca511e2790",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q044_full_question.jpg",
+      "output_sha256": "6b014097a1074e41a617e22e28a0e1626fa0a87c170af52d2103575420d0678b",
+      "width": 834,
+      "height": 650,
+      "mime_type": "image/jpeg",
+      "bytes": 110854
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q045_figure.jpg",
+      "source_sha256": "8f993664888a53a4b4c2010dc7ba96f55b9ca1bbcdec5a2617e18f335a3b19d4",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q045_figure.jpg",
+      "output_sha256": "9bb2c2d7b9199fe09e766ccab12e1a057ebcec5998da66f35dc041469ec505d9",
+      "width": 362,
+      "height": 336,
+      "mime_type": "image/jpeg",
+      "bytes": 20595
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q045_full_question.jpg",
+      "source_sha256": "323c2d9d1f0c310c8190888cac0b7089390abef0a79af95617fab45dbd0b979f",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q045_full_question.jpg",
+      "output_sha256": "fa1cf4b7700a9edba67913e3d227332b11ca18c21acc140f59b3290eabc8091b",
+      "width": 834,
+      "height": 435,
+      "mime_type": "image/jpeg",
+      "bytes": 124422
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q046_figure.jpg",
+      "source_sha256": "8c41f72c1a21b8e1bed52e1e44a4229caa551e3ab0706562f5378bb53c44a4a5",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q046_figure.jpg",
+      "output_sha256": "1e663e9b1f31c266dfdbc36f0e15842dd251836679defdf0b04f2ca43bedc6ab",
+      "width": 421,
+      "height": 319,
+      "mime_type": "image/jpeg",
+      "bytes": 16837
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q046_full_question.jpg",
+      "source_sha256": "7ce9eb019a4d78cc21ab8e885636f2dbf58af78c9ae78ebfb9fcbf64fc3fd2a5",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q046_full_question.jpg",
+      "output_sha256": "64c81ee078706ebb0280529902efaf7061f2404b686220485c608c680da13bf5",
+      "width": 834,
+      "height": 958,
+      "mime_type": "image/jpeg",
+      "bytes": 154535
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q047_full_question.jpg",
+      "source_sha256": "965217a5714e95f9a3320c1d6ea14f539fbb72ce107207ed28fbe9e317362541",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q047_full_question.jpg",
+      "output_sha256": "7d0f78973d5773573aa7765d1763bf2ee6d79da72dd273e94976b03f527a26bc",
+      "width": 834,
+      "height": 412,
+      "mime_type": "image/jpeg",
+      "bytes": 76922
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q048_full_question.jpg",
+      "source_sha256": "8146b7666ea8f80d1911bb29f6c9ddd585e944c7c3d5241b5f585f3b9a263b79",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q048_full_question.jpg",
+      "output_sha256": "76786b51a42b829d066bbf369932b78a835393c04ab05fccf169b67d9ca4c29b",
+      "width": 834,
+      "height": 341,
+      "mime_type": "image/jpeg",
+      "bytes": 76865
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q049_full_question.jpg",
+      "source_sha256": "d79524787d5b59d0067a431166a62c4e3462fa712f1b21d438cdb5a7f5198e8b",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q049_full_question.jpg",
+      "output_sha256": "3985e103a47fcca3d2a94053b55db49f43e185cf66cbe649b81664b517dabb55",
+      "width": 834,
+      "height": 397,
+      "mime_type": "image/jpeg",
+      "bytes": 61591
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q050_full_question.jpg",
+      "source_sha256": "448c6a9b7e9eb1b9334b4f861d6fd523ab4abaab7eb7b378104e45ca6664d475",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q050_full_question.jpg",
+      "output_sha256": "a16fdfc58899361e0d65ebe4fd203c14be4e1aad50e27fb5c43a34427176b2e0",
+      "width": 834,
+      "height": 431,
+      "mime_type": "image/jpeg",
+      "bytes": 72246
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q051_full_question.jpg",
+      "source_sha256": "88c8ae4909c37d59f230e6a632153aa0f470b01837691c08019553fac599e146",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q051_full_question.jpg",
+      "output_sha256": "dd570117aaa5653c0c3305a6344cb85dbddb63f66e5974370e217beabb28195c",
+      "width": 834,
+      "height": 495,
+      "mime_type": "image/jpeg",
+      "bytes": 88121
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q052_figure.jpg",
+      "source_sha256": "23628b0eec7889815e5a41997a16538e91ed677fe3d8258e37e3093b44775ddd",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q052_figure.jpg",
+      "output_sha256": "d804e4f0f257a75c66d56f1fe43f35b2696dd4d73b28a0a1182375050f455cdc",
+      "width": 255,
+      "height": 220,
+      "mime_type": "image/jpeg",
+      "bytes": 11663
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q052_full_question.jpg",
+      "source_sha256": "ad735c9054d47ff4bf63947ea63c79517694908f8c613b059cff393a0de7adb5",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q052_full_question.jpg",
+      "output_sha256": "57999a40a570ebc9747684bd4fc57dca8430c95e313a00801f3cb9af2fec1476",
+      "width": 834,
+      "height": 472,
+      "mime_type": "image/jpeg",
+      "bytes": 64673
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q053_full_question.jpg",
+      "source_sha256": "37d1b5f0559b7b1a09db96d38de01c9d140d404668f643a1554172ed57c917bb",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q053_full_question.jpg",
+      "output_sha256": "f839a301c4faf36e143356e11b0f818fda5bfc4075c12b864efe0eea6e2517e9",
+      "width": 834,
+      "height": 843,
+      "mime_type": "image/jpeg",
+      "bytes": 176289
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q054_full_question.jpg",
+      "source_sha256": "c7f50e7d0dd4026bc1b6cd59744382310f4eeac9750f51ebe07084f28dcbb9a5",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q054_full_question.jpg",
+      "output_sha256": "413e6289eecd6aca6cad8f428b8436b6770d92a4b7c36a6e4acf11c6e9f2c38e",
+      "width": 834,
+      "height": 478,
+      "mime_type": "image/jpeg",
+      "bytes": 66964
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q055_full_question.jpg",
+      "source_sha256": "989ea89aff561857247f9228e04b31e70e710bfb03dbe827f5a315db23a772a1",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q055_full_question.jpg",
+      "output_sha256": "d9ffcc2cb31a368d30b63078383ec085b72ef396cb7a3d96f210474eebeadb22",
+      "width": 834,
+      "height": 678,
+      "mime_type": "image/jpeg",
+      "bytes": 110237
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q056_full_question.jpg",
+      "source_sha256": "a695a65429474a5516392390457713cde8bdf2a974b509454bbb4c8408fa86fc",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q056_full_question.jpg",
+      "output_sha256": "4dedc7a28ff4c6efe4256e2c1c1084a5db5618aceadb8518657e81f67682c41c",
+      "width": 834,
+      "height": 622,
+      "mime_type": "image/jpeg",
+      "bytes": 103423
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q057_figure.jpg",
+      "source_sha256": "8ab5918c1b5e481d8715c6765fcef57d63b3bee5fe9c6448b03c7fa3e7e47bed",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q057_figure.jpg",
+      "output_sha256": "f56a6425d65a8aac297a6998a545a696cebee7eb063e3c81b2d3fc2272216e46",
+      "width": 632,
+      "height": 504,
+      "mime_type": "image/jpeg",
+      "bytes": 30087
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q057_full_question.jpg",
+      "source_sha256": "a382ca7cc06f97f6a105d8ec8d854e0851ea49b5bc6a31abf651f321e2e974ba",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q057_full_question.jpg",
+      "output_sha256": "4cd3110c3db76bd3ad54f17de25b3701b5460389bfc36cfb1400b8a2779c4c7d",
+      "width": 834,
+      "height": 842,
+      "mime_type": "image/jpeg",
+      "bytes": 104357
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q058_full_question.jpg",
+      "source_sha256": "23b8e2ae3970708254a265e1f73ad1a6d3a4828b79809f2afdd93effe5ca857e",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q058_full_question.jpg",
+      "output_sha256": "486dc392d0245f7e84a6a8d19cde88dee00e982f4a72419b8dc1d065822f3617",
+      "width": 834,
+      "height": 642,
+      "mime_type": "image/jpeg",
+      "bytes": 87660
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q059_full_question.jpg",
+      "source_sha256": "6b5e853ae1af44a703e2ce1222f8faa0a285740db52bee665d64ce2d2e7154fa",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q059_full_question.jpg",
+      "output_sha256": "da4b274ce7e01142b5fbf6009f856fa92cc4c849e1107cc616b66ed599076781",
+      "width": 834,
+      "height": 462,
+      "mime_type": "image/jpeg",
+      "bytes": 65749
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q060_figure.jpg",
+      "source_sha256": "c50da8c3095c6e2f284b3810165908d411c4ce94a44bea00fb53a0640dd75848",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q060_figure.jpg",
+      "output_sha256": "e446611be3ed598f70332b6770c2b3ffcbb61fbda270f4152ec84967ada1bd58",
+      "width": 692,
+      "height": 1472,
+      "mime_type": "image/jpeg",
+      "bytes": 201437
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q060_full_question.jpg",
+      "source_sha256": "73a5b6a0fc4748662def7ef6cec9af28659f7652cbd73c5116d882ac8a0e73d1",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q060_full_question.jpg",
+      "output_sha256": "4a7f24cf267a1c7e08525de2eac0e5184370888a316297079f3b717e8d27c3e2",
+      "width": 834,
+      "height": 1857,
+      "mime_type": "image/jpeg",
+      "bytes": 250405
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q061_figure.jpg",
+      "source_sha256": "a237312b3af5679fb4ebf25fdea57fea21fbe7b24f882ef8f0654618353c4bde",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q061_figure.jpg",
+      "output_sha256": "58ca9d2eeb2004fb12d186515f4e5d25d72c03f8418b122787bd2d1075cd8c61",
+      "width": 284,
+      "height": 166,
+      "mime_type": "image/jpeg",
+      "bytes": 8002
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q061_full_question.jpg",
+      "source_sha256": "d18d247787577384b6f37c8d7cc0fc9e38b6f2e126c84df6e7fe373e52418661",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q061_full_question.jpg",
+      "output_sha256": "c7faab2de91820a3937c0d59ce0d577e956f5cbb25fdc2d372a0c520b343c0b9",
+      "width": 834,
+      "height": 872,
+      "mime_type": "image/jpeg",
+      "bytes": 154425
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q062_full_question.jpg",
+      "source_sha256": "0b0d4163eef2876b2441d183fb125e700909a76dff0db7b3d0fd55902b97fb06",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q062_full_question.jpg",
+      "output_sha256": "ebfee750563cad0f5b4a400ae2d3372a956753d7b6557566a3efb537de38d2df",
+      "width": 834,
+      "height": 567,
+      "mime_type": "image/jpeg",
+      "bytes": 115298
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q063_figure.jpg",
+      "source_sha256": "d765bf5d01f0fed6a7166c09ae7939158d23371287113c9048e736772a16b784",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q063_figure.jpg",
+      "output_sha256": "1c310b2ad27023caba1eefb184f4cb2f61aacc5a0f941a81c4364cba2430c47d",
+      "width": 722,
+      "height": 681,
+      "mime_type": "image/jpeg",
+      "bytes": 99568
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q063_full_question.jpg",
+      "source_sha256": "78ecdf9ec58290df041f734fe2b3ce66e2f643c7ce64715b61e5600a061f7992",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q063_full_question.jpg",
+      "output_sha256": "9552a1fcfe9509891b72a4df6f59e9d212ab5ec89643dfc4d3bc30181e3421dc",
+      "width": 834,
+      "height": 990,
+      "mime_type": "image/jpeg",
+      "bytes": 149908
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q064_full_question.jpg",
+      "source_sha256": "824007ae6354a9df2f89c33ec7939a7d11f2ceaf8457fbc87024040e2626e2a8",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q064_full_question.jpg",
+      "output_sha256": "a496aea2120d16ed1c43c4df5ad385a366a1cd283faa5defc33906d331233dac",
+      "width": 834,
+      "height": 754,
+      "mime_type": "image/jpeg",
+      "bytes": 168082
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q065_full_question.jpg",
+      "source_sha256": "a11ba03f777af182bdf1d683f62cefd780f1c8638bfa637a9e2b3595585eab14",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q065_full_question.jpg",
+      "output_sha256": "60fcea0526828a93ac2704a5c4219efafc7e186c382beaf4b652d1d1abb57b6b",
+      "width": 834,
+      "height": 839,
+      "mime_type": "image/jpeg",
+      "bytes": 177915
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q066_figure.jpg",
+      "source_sha256": "c5374c990c8620b38a3c4013f8947a095b8153d499b81d981fc12a80600aec90",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q066_figure.jpg",
+      "output_sha256": "2cb8ff044bb333216706ba477a7b3fc233f8ed8e4dc48299ce784cfec34e54a8",
+      "width": 702,
+      "height": 500,
+      "mime_type": "image/jpeg",
+      "bytes": 52002
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q066_full_question.jpg",
+      "source_sha256": "af47981b0e7b9041572775229149848c82b5b946d742e19b171241e20271160e",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q066_full_question.jpg",
+      "output_sha256": "f4db66eae0325c7bc228bedea2d364fd9032887d852d02358d4dde5fdc4d0625",
+      "width": 834,
+      "height": 1015,
+      "mime_type": "image/jpeg",
+      "bytes": 171918
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q067_figure.jpg",
+      "source_sha256": "73442ed2027dd197c7d15a907e1a4f98cf15ffaeb3905517771ff1824748cdb0",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q067_figure.jpg",
+      "output_sha256": "0e4f9a52a4c4e510d7f90c21028ef1accd4bfe09b37fe71eafca598cf63fdb4b",
+      "width": 692,
+      "height": 250,
+      "mime_type": "image/jpeg",
+      "bytes": 25602
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q067_full_question.jpg",
+      "source_sha256": "aa1fc2ea9a711981cdb76ae97cdc9baee12f79ac336e6d5e811e63eaaf8ede0d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q067_full_question.jpg",
+      "output_sha256": "a1b5d68431983ceb2b1213e360d207dde5b5534c64e164d3c84338be5516b542",
+      "width": 834,
+      "height": 526,
+      "mime_type": "image/jpeg",
+      "bytes": 81764
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q068_full_question.jpg",
+      "source_sha256": "c365f0a6e578c7cc75fad8ecb01c2647a00049d0053f9b1dfd91de2e5e89e6ad",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q068_full_question.jpg",
+      "output_sha256": "62f288a89db694cbc0a97954dcc2d712cced996ca648c2be09da5673286f8fff",
+      "width": 834,
+      "height": 318,
+      "mime_type": "image/jpeg",
+      "bytes": 71151
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q069_full_question.jpg",
+      "source_sha256": "d1c9664571cdf658b5dd76761d05d03a57d7be33ee3a1a3a04970027ba24fcf4",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q069_full_question.jpg",
+      "output_sha256": "3a0522617a4fa331265ba91197999f01b3ec59eba9e4d5ab588e4a25ee913693",
+      "width": 834,
+      "height": 1210,
+      "mime_type": "image/jpeg",
+      "bytes": 169373
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q070_full_question.jpg",
+      "source_sha256": "d1c034326e84e29a8c489a12b741632cbd5bab70ea243c05ddc0dd5b9b40bd82",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q070_full_question.jpg",
+      "output_sha256": "d6ae5bd2bc4850ca85e3243fec62df775475be941b8095c1b29dfcc527819951",
+      "width": 834,
+      "height": 586,
+      "mime_type": "image/jpeg",
+      "bytes": 139524
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q071_full_question.jpg",
+      "source_sha256": "fabe29280afd13f447c52e48b49b521fda5ae14334022e00781768d94e5be9f1",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q071_full_question.jpg",
+      "output_sha256": "f0dd2206c0fe299499b1cc4a01f16bb345ce20829a9ca0cdb5b3c93e0d0829f7",
+      "width": 834,
+      "height": 325,
+      "mime_type": "image/jpeg",
+      "bytes": 71754
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q072_full_question.jpg",
+      "source_sha256": "e039f633df430ce01fc6d30bfcb0ee5f18e6727ce7657590d73d8659be9c6d1c",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q072_full_question.jpg",
+      "output_sha256": "15eb8689a262dd1fcfd2c5b7e7cdcec2468bd3f41c035c0a55ebd3871898f97e",
+      "width": 834,
+      "height": 478,
+      "mime_type": "image/jpeg",
+      "bytes": 88850
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q073_full_question.jpg",
+      "source_sha256": "754d1819233104ac663ff16c4b990689e51bfc29c38bdcc08317ea2473410343",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q073_full_question.jpg",
+      "output_sha256": "292e511be6c8b10d6b5ec909704b6304d5972a83beab1a7c6fe4ae558153b8c9",
+      "width": 834,
+      "height": 358,
+      "mime_type": "image/jpeg",
+      "bytes": 54617
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q074_full_question.jpg",
+      "source_sha256": "f984e373d00a6c3a8cfc5ed7e9de0da43021936ce547fa95ca67df409b677ad2",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q074_full_question.jpg",
+      "output_sha256": "956339bda32e3fc5c10fe67423109167d07015eece02cb0b21284d1be40ffd6d",
+      "width": 834,
+      "height": 335,
+      "mime_type": "image/jpeg",
+      "bytes": 84995
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q075_figure.jpg",
+      "source_sha256": "957a150d83e2838f713115ee6fe290391f6f2021bfcc9244b59b344e11fec15a",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q075_figure.jpg",
+      "output_sha256": "81e57d7e48ad84725ca2222f8b16580bfc984f039b03c0793a398ec35d32e3b4",
+      "width": 429,
+      "height": 157,
+      "mime_type": "image/jpeg",
+      "bytes": 18997
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q075_full_question.jpg",
+      "source_sha256": "e316d888f7638a228efa1c500b3985031df2fa69c45c13c0a94ce656a4dfe47d",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q075_full_question.jpg",
+      "output_sha256": "62e9601727a7496890484de4f80e673a6d27db1e8f800fbc0ed2ca0109d06a1e",
+      "width": 834,
+      "height": 677,
+      "mime_type": "image/jpeg",
+      "bytes": 124359
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q018_solution.jpg",
+      "source_sha256": "938b3807c93d99ee50b8308c0e91ad0c7c79106a8656bc93a2aedebc483cd8ed",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q018_solution.jpg",
+      "output_sha256": "4a7d1506ce3ae0cd6afcb439420cfde8fb154b5d7230598b2768d35b9b72ea00",
+      "width": 759,
+      "height": 818,
+      "mime_type": "image/jpeg",
+      "bytes": 69375
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q027_solution.jpg",
+      "source_sha256": "72f7b558860483f4ae07bd12ff7cec2ce9d7d270dd184037e6216d34e8a9dd67",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q027_solution.jpg",
+      "output_sha256": "f670da8a3906d615ffabde90256c0bd0028d52ed4648db355ab9dd5891ad8f57",
+      "width": 785,
+      "height": 666,
+      "mime_type": "image/jpeg",
+      "bytes": 89234
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q032_solution.jpg",
+      "source_sha256": "6c0fbeb74e068c75540e799fa3b9f74bece48fbb34f8b71abf064f0163fad002",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q032_solution.jpg",
+      "output_sha256": "3e6d96f83c263e28d40e285aa072375be116e0318c1dce4c1d8a7bcc224d28cd",
+      "width": 759,
+      "height": 733,
+      "mime_type": "image/jpeg",
+      "bytes": 44122
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q038_solution.jpg",
+      "source_sha256": "c42e1c51455685c2cce883fa65f6f0bf545ea0f6a15e5054bb4b0c81f793f91c",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q038_solution.jpg",
+      "output_sha256": "7047eff6119320e902a8b0dd0e9614ce2e50113a494b7c65179dc125d6655e4d",
+      "width": 768,
+      "height": 1233,
+      "mime_type": "image/jpeg",
+      "bytes": 93611
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q045_solution.jpg",
+      "source_sha256": "0d064de0279074aba85aa4b0b5efbced67772d095f1e295f632cb819f12af266",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q045_solution.jpg",
+      "output_sha256": "b27b0fae8eda7da30b5761256df54a03d0fbdccb9e28d957d2d571f53ecf02df",
+      "width": 768,
+      "height": 970,
+      "mime_type": "image/jpeg",
+      "bytes": 90749
+    },
+    {
+      "source_path": "data/quarantine/2026-01-22-shift1/images/solutions/q060_solution.jpg",
+      "source_sha256": "f39985f60ae9a1769ecb24600b09c2a43066f0de76d87134020817c5b68fd2f1",
+      "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/solutions/q060_solution.jpg",
+      "output_sha256": "cffd863493201ed677d5ca51ae5c071948c5a095e74c01e1f1a9c4424446d7b1",
+      "width": 785,
+      "height": 1030,
+      "mime_type": "image/jpeg",
+      "bytes": 89680
+    }
+  ],
+  "source_images_modified": false,
+  "dataset_json_modified": false,
+  "production_import": "NOT_PERFORMED",
+  "review_note": "These are branded derivatives for visual review. Confirm text and diagram readability and ensure rights/permissions for each source asset before public publication. Original images are preserved."
+}
