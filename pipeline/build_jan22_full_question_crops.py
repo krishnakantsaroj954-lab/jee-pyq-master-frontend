@@ -633,7 +633,7 @@ def main() -> int:
 - `asset-manifest.json` and `full-question-crop-manifest.json` contain hashes, dimensions, source locations and crop metadata.
 
 ## Mandatory review status
-**REVIEW_REQUIRED — NOT production-ready.** OCR-based start/answer boundaries and all 75 visual crops require human comparison against the source page images. Two source question-number headers (Q1 and Q7) were visually anchored because OCR missed the printed number; these are explicitly marked in the manifest. Review all question text, options, answers, solution text/image, and question-to-image associations before any website import.
+**REVIEW_REQUIRED — NOT production-ready.** OCR-based start/answer boundaries and all 75 visual crops require human comparison against the source page images. Three source question-number headers (Q1, Q7 and Q51) use explicit source-checked anchors because OCR missed or misjoined the printed number; these are marked in the manifest. Review all question text, options, answers, solution text/image, and question-to-image associations before any website import.
 
 This pipeline does not write to Cloudflare D1, does not publish question records, and does not deploy or alter a production Worker. No production import was performed.
 """
