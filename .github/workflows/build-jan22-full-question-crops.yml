@@ -8,6 +8,8 @@ on:
       - ".github/workflows/build-jan22-full-question-crops.yml"
       - "pipeline/build_jan22_question_image_crops.py"
       - "pipeline/build_jan22_full_question_crops.py"
+      - "pipeline/build_jan22_import_candidate.py"
+      - "pipeline/watermark_images.py"
       - "tests/test_jan22_full_question_crops.py"
 
 permissions:
@@ -44,6 +46,8 @@ jobs:
         run: |
           python pipeline/build_jan22_full_question_crops.py --data-dir "$DATA_DIR"
           cat "$DATA_DIR/full-question-build-report.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Apply watermark and build strictly gated website export candidate
+        run: python pipeline/build_jan22_import_candidate.py
       - name: Fail closed on structural or source-contract errors
         run: |
           python - <<'PY'
@@ -77,6 +81,9 @@ jobs:
                   "$DATA_DIR/image-crop-manifest.json" \
                   "$DATA_DIR/full-question-crop-manifest.json" \
                   "$DATA_DIR/full-question-build-report.json" \
+                  "$DATA_DIR/watermark-manifest.json" \
+                  "$DATA_DIR/IMPORT_READY.json" \
+                  "$DATA_DIR/IMPORT_BLOCKED_REPORT.json" \
                   "$DATA_DIR/crop-build-report.json" \
                   "$DATA_DIR/README.md" "$DATA_DIR/README.txt" \
                   "$DATA_DIR/question-crops-contact-sheet.jpg" \
