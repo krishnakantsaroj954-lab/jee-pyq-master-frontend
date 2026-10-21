@@ -217,7 +217,6 @@ def main() -> int:
         "unique_question_image_paths": len(set(q_images)),
         "referenced_image_paths_checked": len(referenced_paths),
         "watermarked_derivatives_checksum_checked": len(watermark_checks),
-        "solution_math_ocr_review_required": len(flagged_solution_numbers),
         "q39": {"status": q39.get("question_status"), "correct_answer": q39.get("correct_answer")},
         "source_pdf_bytes_verified": False,
         "publication_rights_verified": False,
