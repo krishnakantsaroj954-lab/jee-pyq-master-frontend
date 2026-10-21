@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "paper_id": "jee-main-2026-01-22-s1",
+  "status": "STRUCTURAL_CONSISTENCY_PASSED_REVIEW_STILL_REQUIRED",
+  "question_count": 75,
+  "manual_question_text_transcriptions": 70,
+  "manual_solution_text_transcriptions": 9,
+  "solution_math_ocr_review_required": 61,
+  "solution_text_records": 73,
+  "solution_image_records": 6,
+  "mcq_records_checked": 59,
+  "numerical_records_checked": 15,
+  "non_dropped_printed_answer_consistency_checked": 74,
+  "printed_answer_mismatch_count": 0,
+  "mcq_option_answer_text_mismatch_count": 0,
+  "unique_question_image_paths": 75,
+  "referenced_image_paths_checked": 124,
+  "watermarked_derivatives_checksum_checked": 125,
+  "q39": {
+    "status": "Dropped",
+    "correct_answer": null
+  },
+  "source_pdf_bytes_verified": false,
+  "publication_rights_verified": false,
+  "production_import": "NOT_PERFORMED",
+  "errors": [],
+  "limitations": [
+    "Answer consistency is checked against the answer marker stored in the same extracted candidate; it is not an independent solution of the question.",
+    "Manual question-text transcription does not verify OCR solution text, chapter/topic tags, original PDF bytes, source provenance, or publication rights.",
+    "This audit is not approval to import into production."
+  ]
+}

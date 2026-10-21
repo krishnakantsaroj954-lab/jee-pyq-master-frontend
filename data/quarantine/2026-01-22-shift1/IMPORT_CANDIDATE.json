@@ -721,7 +721,7 @@
       "topic": "Minimum value of a function",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Let f(x) =x” — x\", x e€ [0, 1] and the minimum value of the function f(x) in the interval [0, 1] be (80) (n) “'. Then n is equal to",
+      "question_text": "Let \\(f(x)=x^{2025}-x^{2000}\\), \\(x\\in[0,1]\\), and let the minimum value of \\(f(x)\\) on \\([0,1]\\) be \\((80)^{80}(n)^{-81}\\). Then \\(n\\) is equal to.",
       "question_ocr_raw": "Let f(x) =x” — x\", x e€ [0, 1] and the minimum\nvalue of the function f(x) in the interval [0, 1] be\n(80) (n) “'. Then n is equal to\n\n(1) -81 (2) -40\n\n(3) 41 (4) -80",
       "options": {
         "A": "-81",
@@ -761,10 +761,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Let f(x) =x” — x\", x e€ [0, 1] and the minimum value of the function f(x) in the interval [0, 1] be (80) (n) “'. Then n is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -783,7 +786,7 @@
       "topic": "Shortest distance between skew lines",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Let P(α, β, γ) be the point on the line (x−1)/2 = (y+1)/(−3) = z at a distance 4√14 from the point (1, −1, 0) and nearer to the origin. Then the shortest distance between the lines (x−α)/1 = (y−β)/2 = (z−γ)/3 and (x+5)/2 = (y−10)/1 = (z−3)/1 is equal to.",
+      "question_text": "Let \\(P(\\alpha,\\beta,\\gamma)\\) be the point on the line \\(\\frac{x-1}{2}=\\frac{y+1}{-3}=z\\), at a distance \\(4\\sqrt{14}\\) from \\((1,-1,0)\\) and nearer to the origin. The shortest distance between the lines \\(\\frac{x-\\alpha}{1}=\\frac{y-\\beta}{2}=\\frac{z-\\gamma}{3}\\) and \\(\\frac{x+5}{2}=\\frac{y-10}{1}=\\frac{z-3}{1}\\) is equal to _____.",
       "question_ocr_raw": "Let P(a, B, y) be the point on the line\n\n1 +1\n>= ee a =zat a distance 4V14 from the\npoint (1, —1, 0) and nearer to the origin. Then the\nshortest distance, between the lines\n\nxo yp 2-7 nid 2 t > ¥ y-10 2-3\n1 Z 3 2 l 1\n\n, 1S equal to\n\n[5 [7\nie Rp A,\\—\natin (2) 5\n[5 7\n\n4 |= 4) 2,|—\n(3) 7 (4) 4",
       "options": {
         "A": "7√(5/4)",
@@ -823,10 +826,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Let P(α, β, γ) be the point on the line (x−1)/2 = (y+1)/(−3) = z at a distance 4√14 from the point (1, −1, 0) and nearer to the origin. Then the shortest distance between the lines (x−α)/1 = (y−β)/2 = (z−γ)/3 and (x+5)/2 = (y−10)/1 = (z−3)/1 is equal to.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -845,7 +851,7 @@
       "topic": "Discrete probability distribution",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If a random variable x has the probability distribution DBD DIEICEaES ry [ax Px [ax [ae ae [ee then P(3 < x < 6) is equal to",
+      "question_text": "A random variable \\(x\\) has the probability distribution shown in the question image. Find \\(P(3<x\\le6)\\). The table gives \\(x=0,1,2,3,4,5,6,7\\) with \\(p(x)=0,2k,k,3k,2k^2,2k,k^2+k,7k^2\\), respectively.",
       "question_ocr_raw": "If a random variable x has the probability\ndistribution\n\nDBD DIEICEaES\n\nry [ax Px [ax [ae ae [ee\nthen P(3 < x < 6) is equal to\n\n(1) 0.34 (2) 0.22\n\n(3) 0.64 (4) 0.33",
       "options": {
         "A": "0.34",
@@ -885,11 +891,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q007_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If a random variable x has the probability distribution DBD DIEICEaES ry [ax Px [ax [ae ae [ee then P(3 < x < 6) is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -908,7 +917,7 @@
       "topic": "Modulus equation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The number of distinct real solutions of the equation x|x + 4] + 3|x + 2|+ 10 =0 is",
+      "question_text": "The number of distinct real solutions of \\(x|x+4|+3|x+2|+10=0\\) is _____.",
       "question_ocr_raw": "The number of distinct real solutions of the\n\nequation x|x + 4] + 3|x + 2|+ 10 =0 is\n(1)3 (2) 1\n(3) 0 (4) 2",
       "options": {
         "A": "3",
@@ -948,10 +957,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The number of distinct real solutions of the equation x|x + 4] + 3|x + 2|+ 10 =0 is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -970,7 +982,7 @@
       "topic": "Integral-defined function",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Let f : [1, ©) > R be a differentiable function, If 6[ sf (oat =3xf (x)+x° —4 for all x > 1, then the value of f(2) —f{3) is",
+      "question_text": "Let \\(f:[1,\\infty)\\to\\mathbb{R}\\) be differentiable. If \\(6\\int_1^x f(t)\\,dt=3xf(x)+x^3-4\\) for all \\(x\\ge1\\), then \\(f(2)-f(3)\\) is _____.",
       "question_ocr_raw": "Let f : [1, ©) > R be a differentiable function, If\n\n6[ sf (oat =3xf (x)+x° —4 for all x > 1, then\nthe value of f(2) —f{3) is\n\n(1)4 (2) -3\n\n(3)4 (4) 3",
       "options": {
         "A": "4",
@@ -1010,10 +1022,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Let f : [1, ©) > R be a differentiable function, If 6[ sf (oat =3xf (x)+x° —4 for all x > 1, then the value of f(2) —f{3) is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1032,7 +1047,7 @@
       "topic": "Line and hyperbola",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If the line ax + 2y = 1, where a © R, does not meet the hyperbola x’ — 9y° = 9, then a possible value of o is :",
+      "question_text": "If the line \\(\\alpha x+2y=1\\), where \\(\\alpha\\in\\mathbb{R}\\), does not meet the hyperbola \\(x^2-9y^2=9\\), a possible value of \\(\\alpha\\) is _____.",
       "question_ocr_raw": "10.\n\nIf the line ax + 2y = 1, where a © R, does not\n\nmeet the hyperbola x’ — 9y° = 9, then a possible\n\nvalue of o is :\n\n(1) 0.6 (2) 0.8\n(3) 0.5 (4) 0.7",
       "options": {
         "A": "0.6",
@@ -1072,10 +1087,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If the line ax + 2y = 1, where a © R, does not meet the hyperbola x’ — 9y° = 9, then a possible value of o is :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1094,7 +1112,7 @@
       "topic": "Reflection of a point in a line",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If the image of the point P (1, 2 , a) in the line ee 7s Ts is Q(5, b, c), then a + b + e 2 c’ is equal to",
+      "question_text": "If the image of the point \\(P(1,2,a)\\) in the line \\(\\frac{x-6}{3}=\\frac{y-7}{2}=\\frac{7-z}{2}\\) is \\(Q(5,b,c)\\), then \\(a^2+b^2+c^2\\) is equal to _____.",
       "question_ocr_raw": "11.\n\nIf the image of the point P (1, 2 , a) in the line\nee 7s Ts\n\nis Q(5, b, c), then a + b +\n\ne 2\nc’ is equal to\n(1) 293 (2) 264\n\n(3) 298 (4) 283",
       "options": {
         "A": "293",
@@ -1134,10 +1152,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If the image of the point P (1, 2 , a) in the line ee 7s Ts is Q(5, b, c), then a + b + e 2 c’ is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1156,7 +1177,7 @@
       "topic": "Intersection of circles",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Let the set of all values of r, for which the circles (x+ 1) +(y+4) =randx’+y —4x-2y—4=0 intersect at two distinct points be the interval (a, B). Then aB is equal to",
+      "question_text": "Let the set of all \\(r\\) for which the circles \\((x+1)^2+(y+4)^2=r^2\\) and \\(x^2+y^2-4x-2y-4=0\\) intersect at two distinct points be the interval \\((\\alpha,\\beta)\\). Then \\(\\alpha\\beta\\) is equal to _____.",
       "question_ocr_raw": "12.\n\nLet the set of all values of r, for which the circles\n(x+ 1) +(y+4) =randx’+y —4x-2y—4=0\n\nintersect at two distinct points be the interval (a,\n\nB). Then aB is equal to\n(1) 25 (2) 20\n(3) 21 (4) 24",
       "options": {
         "A": "25",
@@ -1196,10 +1217,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Let the set of all values of r, for which the circles (x+ 1) +(y+4) =randx’+y —4x-2y—4=0 intersect at two distinct points be the interval (a, B). Then aB is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1218,7 +1242,7 @@
       "topic": "Determinant of a matrix polynomial",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If A = [[2, 3], [3, 5]], then the determinant of the matrix (A²⁰²⁵ − 3A²⁰²⁴ + A²⁰²³) is.",
+      "question_text": "If \\(A=\\begin{bmatrix}2&3\\\\3&5\\end{bmatrix}\\), the determinant of the matrix \\(A^{2025}-3A^{2024}+A^{2023}\\) is _____.",
       "question_ocr_raw": "13.\n\nIf A= 3 5 | , then the determinant of the matrix\n\n(A AO\n\n(1) 28\n(3) 24\n\n_ Bir 4: A”) is\n(2) 12\n(4) 16",
       "options": {
         "A": "28",
@@ -1258,10 +1282,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If A = [[2, 3], [3, 5]], then the determinant of the matrix (A²⁰²⁵ − 3A²⁰²⁴ + A²⁰²³) is.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1280,7 +1307,7 @@
       "topic": "Domain of a logarithmic function",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If the domain of the function is (co, a] ee 3+2x/ log (+0 U[B, vy) — {5}, then 6(a + B + y + 8) is equal to",
+      "question_text": "The domain of \\(f(x)=\\sin^{-1}\\!\\left(\\frac{5-x}{3+2x}\\right)+\\frac{1}{\\log_e(1+x)}\\) is \\((-\\infty,\\alpha]\\cup[\\beta,\\gamma)-\\{\\delta\\}\\). Find \\(6(\\alpha+\\beta+\\gamma+\\delta)\\).",
       "question_ocr_raw": "14.\n\nIf the domain of the function\n\nis (co, a]\n\nee\n3+2x/ log (+0\n\nU[B, vy) — {5}, then 6(a + B + y + 8) is equal to\n(1) 70 (2) 66\n(3) 67 (4) 68",
       "options": {
         "A": "70",
@@ -1320,10 +1347,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If the domain of the function is (co, a] ee 3+2x/ log (+0 U[B, vy) — {5}, then 6(a + B + y + 8) is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1342,7 +1372,7 @@
       "topic": "Greatest-integer function integral",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The value of ] li 7 a} where [e] denotes X|{+ TT the greatest integer function, is 1 l",
+      "question_text": "Evaluate \\(\\displaystyle\\int_{-\\pi/2}^{2}\\frac{1}{[x]+4}\\,dx\\), where \\([x]\\) denotes the greatest-integer function.",
       "question_ocr_raw": "15.\n\nThe value of ] li 7 a} where [e] denotes\nX|{+\n\nTT\n\n2\n\nthe greatest integer function, is\n\n1 l\n(1) a (2) ae 2\n\nfi 7\n(3) cl (4) nme",
       "options": {
         "A": "a",
@@ -1382,10 +1412,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The value of ] li 7 a} where [e] denotes X|{+ TT the greatest integer function, is 1 l",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1404,7 +1437,7 @@
       "topic": "Coefficient in binomial expansion",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The coefficient of x⁴⁸ in (1+x) + 2(1+x)² + 3(1+x)³ + … + 100(1+x)¹⁰⁰ is equal to.",
+      "question_text": "The coefficient of \\(x^{48}\\) in \\((1+x)+2(1+x)^2+3(1+x)^3+\\cdots+100(1+x)^{100}\\) is equal to _____.",
       "question_ocr_raw": "16.\n\nThe coefficient of x* in (1 +x) +2(1+x)+3(1\n+x)+....+ 100 (1 +x)’ is equal to :\n\n(1) 100. 2 - —, (2) =e, af on\nCts\". im,\"\n\n50",
       "options": {
         "A": "100·¹⁰⁰C₄₉ − ¹⁰⁰C₅₀",
@@ -1444,10 +1477,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The coefficient of x⁴⁸ in (1+x) + 2(1+x)² + 3(1+x)³ + … + 100(1+x)¹⁰⁰ is equal to.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1466,7 +1502,7 @@
       "topic": "Chord of a parabola",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If the chord joining the points P\\(x,, y,) and P,(x,, y,) on the parabola y’ = 12x subtends a right angle at the vertex of the parabola, then x,x, — y,y, is equal to",
+      "question_text": "If the chord joining \\(P_1(x_1,y_1)\\) and \\(P_2(x_2,y_2)\\) on the parabola \\(y^2=12x\\) subtends a right angle at the vertex, then \\(x_1x_2-y_1y_2\\) is equal to _____.",
       "question_ocr_raw": "17.\n\nIf the chord joining the points P\\(x,, y,) and P,(x,,\ny,) on the parabola y’ = 12x subtends a right angle\nat the vertex of the parabola, then x,x, — y,y, is\nequal to\n\n(1) 288 (2) 280\n\n(3) 284 (4) 292",
       "options": {
         "A": "288",
@@ -1506,10 +1542,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If the chord joining the points P\\(x,, y,) and P,(x,, y,) on the parabola y’ = 12x subtends a right angle at the vertex of the parabola, then x,x, — y,y, is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1528,7 +1567,7 @@
       "topic": "Equation involving inverse tangent",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The number of solutions of tan! 4x + tan '6x = 6: 1 1 where <x< is equal to 2/6 2/6",
+      "question_text": "The number of solutions of \\(\\tan^{-1}(4x)+\\tan^{-1}(6x)=\\frac{\\pi}{6}\\), where \\(-\\frac{1}{2\\sqrt6}<x<\\frac{1}{2\\sqrt6}\\), is _____.",
       "question_ocr_raw": "18.\n\nThe number of solutions of tan! 4x + tan '6x = 6:\n\n1 1\nwhere <x< is equal to\n2/6\n\n2/6\n(1)3 (2) 0\n(3) 1 (4) 2",
       "options": {
         "A": "3",
@@ -1568,11 +1607,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
+        "solution_text_ocr_missing_but_image_attached",
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The number of solutions of tan! 4x + tan '6x = 6: 1 1 where <x< is equal to 2/6 2/6",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1591,7 +1633,7 @@
       "topic": "First-order differential equation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Let the solution curve of the differential equation xdy — ydx = 4/x? + y? dx, x > 0, y(1) = 0, be y = y(x). Then y(3) is equal to",
+      "question_text": "Let the solution curve of \\(x\\,dy-y\\,dx=\\sqrt{x^2+y^2}\\,dx\\), \\(x>0\\), \\(y(1)=0\\), be \\(y=y(x)\\). Then \\(y(3)\\) is equal to _____.",
       "question_ocr_raw": "19.\n\nLet the solution curve of the differential equation\n\nxdy — ydx = 4/x? + y? dx, x > 0, y(1) = 0, be y =\ny(x). Then y(3) is equal to\n\n(1) 4 (2) 6\n\n(3) 1 (4) 2",
       "options": {
         "A": "4",
@@ -1631,10 +1673,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Let the solution curve of the differential equation xdy — ydx = 4/x? + y? dx, x > 0, y(1) = 0, be y = y(x). Then y(3) is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1653,7 +1698,7 @@
       "topic": "Arithmetic progression sums",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "If the sum of the first four terms of an A.P. is 6 and the sum of its first six terms is 4, then the sum of its first twelve terms is",
+      "question_text": "If the sum of the first four terms of an arithmetic progression is \\(6\\) and the sum of its first six terms is \\(4\\), then the sum of its first twelve terms is _____.",
       "question_ocr_raw": "20.\n\nIf the sum of the first four terms of an A.P. is 6 and\nthe sum of its first six terms is 4, then the sum of\nits first twelve terms is\n\n(1) -20 (2) -24\n\n(3) -26 (4) -22",
       "options": {
         "A": "-20",
@@ -1693,10 +1738,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "If the sum of the first four terms of an A.P. is 6 and the sum of its first six terms is 4, then the sum of its first twelve terms is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1715,7 +1763,7 @@
       "topic": "Complex-number algebra",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Zl, Lect a= and p=. i= V-1. If (7 —7a + 9B)* + (9 + 7a — 7B)’ + (-7 + 9a + TBY” +(14+7a+7B)° =m\", then m is",
+      "question_text": "Let \\(\\alpha=\\frac{-1+i\\sqrt3}{2}\\) and \\(\\beta=\\frac{-1-i\\sqrt3}{2}\\), where \\(i=\\sqrt{-1}\\). If \\((7-7\\alpha+9\\beta)^{20}+(9+7\\alpha-7\\beta)^{20}+(-7+9\\alpha+7\\beta)^{20}+(14+7\\alpha+7\\beta)^{20}=m^{10}\\), find \\(m\\).",
       "question_ocr_raw": "Zl, Lect a= and p=. i= V-1. If\n\n(7 —7a + 9B)* + (9 + 7a — 7B)’ + (-7 + 9a + TBY”\n+(14+7a+7B)° =m\", then m is",
       "options": null,
       "options_ocr_raw": null,
@@ -1750,10 +1798,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Zl, Lect a= and p=. i= V-1. If (7 —7a + 9B)* + (9 + 7a — 7B)’ + (-7 + 9a + TBY” +(14+7a+7B)° =m\", then m is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1772,7 +1823,7 @@
       "topic": "Matrix identities and determinants",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "DD: Let A be a 3 x 3 matrix such that A+ A'=O. If A 1 3 1 3 A| -1}=|3|,A?|}—-l]=|] 19 |and det(adj(2adj 0 yi 0 24 (A + D)) = (2)*.(3)°.(11), a, B, y are non-negative integers, then a + B + y is equal to",
+      "question_text": "Let \\(A\\) be a \\(3\\times3\\) matrix such that \\(A+A^T=O\\). If \\(A\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}3\\\\3\\\\2\\end{bmatrix}\\), \\(A^2\\begin{bmatrix}1\\\\-1\\\\0\\end{bmatrix}=\\begin{bmatrix}-3\\\\19\\\\-24\\end{bmatrix}\\), and \\(\\det(\\operatorname{adj}(2\\operatorname{adj}(A+I)))=2^\\alpha 3^\\beta 11^\\gamma\\), where \\(\\alpha,\\beta,\\gamma\\) are non-negative integers, find \\(\\alpha+\\beta+\\gamma\\).",
       "question_ocr_raw": "DD:\n\nLet A be a 3 x 3 matrix such that A+ A'=O. If A\n\n1 3 1 3\nA| -1}=|3|,A?|}—-l]=|] 19 |and det(adj(2adj\n0 yi 0 24\n\n(A + D)) = (2)*.(3)°.(11), a, B, y are non-negative\n\nintegers, then a + B + y is equal to",
       "options": null,
       "options_ocr_raw": null,
@@ -1807,10 +1858,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "DD: Let A be a 3 x 3 matrix such that A+ A'=O. If A 1 3 1 3 A| -1}=|3|,A?|}—-l]=|] 19 |and det(adj(2adj 0 yi 0 24 (A + D)) = (2)*.(3)°.(11), a, B, y are non-negative integers, then a + B + y is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1829,7 +1883,7 @@
       "topic": "Trigonometric integral",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "23. If | (sinx)? (cosx)? dx = a 5 i 3 —Pi (otx)? —P2 (cotx)? — P3 (cotx)2 + 24 (cotx)? +C> 1 D} 3 4 where p, and q, are positive integers with gcd(p,, q,) = | for i = 1, 2, 3, 4 and C is the constant of 15p,p,P;P, 9,959344 integration, then is equal to",
+      "question_text": "If \\(\\displaystyle\\int(\\sin x)^{-11/2}(\\cos x)^{-5/2}\\,dx=-\\frac{p_1}{q_1}(\\cot x)^{9/2}-\\frac{p_2}{q_2}(\\cot x)^{5/2}-\\frac{p_3}{q_3}(\\cot x)^{1/2}+\\frac{p_4}{q_4}(\\cot x)^{-3/2}+C\\), where \\(p_i,q_i\\) are positive integers, \\(\\gcd(p_i,q_i)=1\\) for \\(i=1,2,3,4\\), and \\(C\\) is the constant of integration, find \\(\\frac{15p_1p_2p_3p_4}{q_1q_2q_3q_4}\\).",
       "question_ocr_raw": "23. If | (sinx)? (cosx)? dx =\n\na 5 i 3\n—Pi (otx)? —P2 (cotx)? — P3 (cotx)2 + 24 (cotx)? +C>\n1 D} 3 4\n\nwhere p, and q, are positive integers with gcd(p,, q,)\n= | for i = 1, 2, 3, 4 and C is the constant of\n\n15p,p,P;P,\n9,959344\n\nintegration, then is equal to",
       "options": null,
       "options_ocr_raw": null,
@@ -1864,10 +1918,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "23. If | (sinx)? (cosx)? dx = a 5 i 3 —Pi (otx)? —P2 (cotx)? — P3 (cotx)2 + 24 (cotx)? +C> 1 D} 3 4 where p, and q, are positive integers with gcd(p,, q,) = | for i = 1, 2, 3, 4 and C is the constant of 15p,p,P;P, 9,959344 integration, then is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1886,7 +1943,7 @@
       "topic": "Trigonometric expression and inequality",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "YYO TO 8 VA Lee a Ne 24. If —;> a a , where a, B sin’ 24°—sin~ 6° 2 e N , then a+ B is equal to",
+      "question_text": "If \\(\\displaystyle\\frac{\\cos^2 48^\\circ-\\sin^2 12^\\circ}{\\sin^2 24^\\circ-\\sin^2 6^\\circ}=\\frac{\\alpha+\\beta\\sqrt5}{2}\\), where \\(\\alpha,\\beta\\in\\mathbb{N}\\), find \\(\\alpha+\\beta\\).",
       "question_ocr_raw": "YYO TO 8 VA Lee a Ne\n\n24. If —;> a a , where a, B\nsin’ 24°—sin~ 6° 2\n\ne N , then a+ B is equal to",
       "options": null,
       "options_ocr_raw": null,
@@ -1921,10 +1978,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "YYO TO 8 VA Lee a Ne 24. If —;> a a , where a, B sin’ 24°—sin~ 6° 2 e N , then a+ B is equal to",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -1943,7 +2003,7 @@
       "topic": "Counting triangles from points on sides",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "25. Let ABC be a triangle. Consider four points p,, p,, Pp; p, on the side AB, five points p,, p,, P,, Pgs Py ON the side BC and four points p,,, p,,, P,,, P,, on the side AC. None of these points is a vertex of the triangle ABC. Then the total number of pentagons, that can be formed by taking all the vertices from the points P,, Piz .= Pigs 1S",
+      "question_text": "Let \\(ABC\\) be a triangle. There are four points \\(p_1,p_2,p_3,p_4\\) on side \\(AB\\), five points \\(p_5,p_6,p_7,p_8,p_9\\) on side \\(BC\\), and four points \\(p_{10},p_{11},p_{12},p_{13}\\) on side \\(AC\\). None is a vertex of the triangle. Find the total number of pentagons that can be formed using these points as vertices.",
       "question_ocr_raw": "25. Let ABC be a triangle. Consider four points p,, p,,\nPp; p, on the side AB, five points p,, p,, P,, Pgs Py ON\nthe side BC and four points p,,, p,,, P,,, P,, on the\nside AC. None of these points is a vertex of the\ntriangle ABC. Then the total number of pentagons,\nthat can be formed by taking all the vertices from\nthe points P,, Piz .= Pigs 1S",
       "options": null,
       "options_ocr_raw": null,
@@ -1978,10 +2038,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "25. Let ABC be a triangle. Consider four points p,, p,, Pp; p, on the side AB, five points p,, p,, P,, Pgs Py ON the side BC and four points p,,, p,,, P,,, P,, on the side AC. None of these points is a vertex of the triangle ABC. Then the total number of pentagons, that can be formed by taking all the vertices from the points P,, Piz .= Pigs 1S",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2000,7 +2063,7 @@
       "topic": "Moment of inertia of touching spheres",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A solid sphere of mass 5 kg and radius 10 cm is kept in contact with another solid sphere of mass 10 kg and radius 20 cm. The moment of inertia of this pair of spheres about the tangent passing through the point of contact is kg.m’.",
+      "question_text": "A solid sphere of mass \\(5\\,\\mathrm{kg}\\) and radius \\(10\\,\\mathrm{cm}\\) is in contact with another solid sphere of mass \\(10\\,\\mathrm{kg}\\) and radius \\(20\\,\\mathrm{cm}\\). Find the moment of inertia of the pair about a tangent passing through their point of contact, in \\(\\mathrm{kg\\,m^2}\\).",
       "question_ocr_raw": "26.\n\nA solid sphere of mass 5 kg and radius 10 cm is\nkept in contact with another solid sphere of mass\n10 kg and radius 20 cm. The moment of inertia of\nthis pair of spheres about the tangent passing\nthrough the point of contact is kg.m’.\n\n(1) 0.36 i022\n\n(3) 0.18 (4) 0.63",
       "options": {
         "A": "0.36 kg·m²",
@@ -2040,10 +2103,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A solid sphere of mass 5 kg and radius 10 cm is kept in contact with another solid sphere of mass 10 kg and radius 20 cm. The moment of inertia of this pair of spheres about the tangent passing through the point of contact is kg.m’.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2062,7 +2128,7 @@
       "topic": "Nuclear radius from alpha-particle scattering",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "7.9 MeV a-—particle scatters from a target material of atomic number 79. From the given data the estimated diameter of nuclei of the target material is (approximately) m. =9x10°Nm? /C’and electron charge =1.6* 1] 4ne,",
+      "question_text": "A \\(7.9\\,\\mathrm{MeV}\\) alpha particle scatters from a target material of atomic number \\(79\\). Estimate the diameter of nuclei of the target material. Given: \\(\\frac{1}{4\\pi\\epsilon_0}=9\\times10^9\\,\\mathrm{N\\,m^2/C^2}\\) and electron charge \\(=1.6\\times10^{-19}\\,\\mathrm C\\).",
       "question_ocr_raw": "27.\n\n7.9 MeV a-—particle scatters from a target material\nof atomic number 79. From the given data the\nestimated diameter of nuclei of the target material\n\nis (approximately) m.\n=9x10°Nm? /C’and electron charge =1.6* 1]\n4ne,\n(1) 5.76 x 10\" (2) 1.44 x 10”\n\n(3) 2.88 x 10°\" (4) 1.69 x 10°”",
       "options": {
         "A": "5.76 x 10\"",
@@ -2076,7 +2142,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "ocr_four_choice_parse",
       "answer_text": "5.76 x 10\"",
-      "solution_text": null,
+      "solution_text": "By conservation of mechanical energy, \\((ME)_i=(ME)_f\\) and \\(PE_i+KE_i=PE_f+KE_f\\). Thus \\(0+7.9\\times10^6\\times1.6\\times10^{-19}=\\frac{k(2e)(Ze)}{r}+0\\). Using \\(k=9\\times10^9\\), \\(Z=79\\), and \\(e=1.6\\times10^{-19}\\,\\mathrm C\\), the source gives \\(r=2.88\\times10^{-14}\\,\\mathrm m\\). Therefore the diameter is \\(D=2r=5.76\\times10^{-14}\\,\\mathrm m\\).",
       "solution_ocr_raw": null,
       "difficulty": null,
       "marks_correct": 4,
@@ -2101,12 +2167,15 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
-      ],
+      "quality_flags": [],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "7.9 MeV a-—particle scatters from a target material of atomic number 79. From the given data the estimated diameter of nuclei of the target material is (approximately) m. =9x10°Nm? /C’and electron charge =1.6* 1] 4ne,",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": null,
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2125,7 +2194,7 @@
       "topic": "Electric field of point charges",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Six point charges are kept 60° apart from each other on the circumference of a circle of radius R as shown in figure. The net electric field at the centre of the circle is (€, is permittivity of free —",
+      "question_text": "Six point charges are placed \\(60^\\circ\\) apart on the circumference of a circle of radius \\(R\\), as shown in the question image. Find the net electric field at the centre. \\(\\epsilon_0\\) is the permittivity of free space.",
       "question_ocr_raw": "28.\n\nSix point charges are kept 60° apart from each\nother on the circumference of a circle of radius R\nas shown in figure. The net electric field at the\ncentre of the circle is\n\n(€, is permittivity of free —",
       "options": {
         "A": "−(5Q/(8π ε₀ R²))(î + √3 ĵ)",
@@ -2165,11 +2234,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q028_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Six point charges are kept 60° apart from each other on the circumference of a circle of radius R as shown in figure. The net electric field at the centre of the circle is (€, is permittivity of free —",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2188,7 +2260,7 @@
       "topic": "Induced emf in a moving-conductor loop",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "XPQY is a vertical smooth long loop having a total resistance R where PX is parallel to QY and separation between them is /. A constant magnetic field B perpendicular to the plane of the loop exists in the entire space. A rod CD of length L (L > /) and mass m is made to slide down from rest under the gravity as shown in figure. The terminal speed acquired by the rod is m/s. (g = acceleration due to gravity) 2mgR 8mgR",
+      "question_text": "A vertical smooth long loop \\(XPQY\\) has total resistance \\(R\\), with \\(PX\\) parallel to \\(QY\\) and separation \\(l\\). A constant magnetic field \\(B\\) perpendicular to the plane of the loop exists throughout the space. A rod \\(CD\\) of length \\(L\\) (\\(L>l\\)) and mass \\(m\\) slides down from rest under gravity. Find its terminal speed. Here \\(g\\) is acceleration due to gravity.",
       "question_ocr_raw": "29.\n\nXPQY is a vertical smooth long loop having a total\nresistance R where PX is parallel to QY and\nseparation between them is /. A constant magnetic\nfield B perpendicular to the plane of the loop exists\nin the entire space. A rod CD of length L (L > /)\nand mass m is made to slide down from rest under\nthe gravity as shown in figure. The terminal speed\n\nacquired by the rod is m/s.\n\n(g = acceleration due to gravity)\n\n2mgR 8mgR\n(1) pe (2) Pp\n\n2mgR mgR\nQ) Sar (4) aa",
       "options": {
         "A": "2mgR/(B² l²)",
@@ -2228,11 +2300,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q029_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "XPQY is a vertical smooth long loop having a total resistance R where PX is parallel to QY and separation between them is /. A constant magnetic field B perpendicular to the plane of the loop exists in the entire space. A rod CD of length L (L > /) and mass m is made to slide down from rest under the gravity as shown in figure. The terminal speed acquired by the rod is m/s. (g = acceleration due to gravity) 2mgR 8mgR",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2251,7 +2326,7 @@
       "topic": "Escape velocity and planetary density",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The escape velocity from a spherical planet A is 10 km/s. The escape velocity from another planet B whose density and radius are 10% of those of planet A, is m/s.",
+      "question_text": "The escape velocity from spherical planet \\(A\\) is \\(10\\,\\mathrm{km/s}\\). Planet \\(B\\) has both density and radius equal to \\(10\\%\\) of those of planet \\(A\\). Find the escape velocity from planet \\(B\\), in \\(\\mathrm{m/s}\\).",
       "question_ocr_raw": "30.\n\nThe escape velocity from a spherical planet A is 10\nkm/s. The escape velocity from another planet B\nwhose density and radius are 10% of those of\nplanet A, is m/s.\n\n(1) 1000 (2) 200/5\n(3) 100/10 (4) 1000/2",
       "options": {
         "A": "1000",
@@ -2291,10 +2366,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The escape velocity from a spherical planet A is 10 km/s. The escape velocity from another planet B whose density and radius are 10% of those of planet A, is m/s.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2313,7 +2391,7 @@
       "topic": "Meter bridge and parallel resistance",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A meter bridge with two resistances R, and R, as shown in figure was balanced (null point) at 40 cm from the point P. The null point changed to 50 cm from the point P, when 16 Q resistance is connected in parallel to R,. The values of resistances R, and R, are Vv",
+      "question_text": "A meter bridge with resistances \\(R_1\\) and \\(R_2\\) is balanced at \\(40\\,\\mathrm{cm}\\) from point \\(P\\). The null point changes to \\(50\\,\\mathrm{cm}\\) from \\(P\\) when a \\(16\\,\\Omega\\) resistance is connected in parallel with \\(R_2\\). Find \\(R_1\\) and \\(R_2\\).",
       "question_ocr_raw": "31.\n\nA meter bridge with two resistances R, and R, as\nshown in figure was balanced (null point) at 40 cm\nfrom the point P. The null point changed to 50 cm\nfrom the point P, when 16 Q resistance is connected\nin parallel to R,. The values of resistances R, and\nR, are\n\nVv\n\n(1) Ry =160,R, =O\n\n(2) R, =4Q,R, =50\n\n(3) Ry =8Q,R, = <0\n\n(4) R, =12Q,R, -=0",
       "options": {
         "A": "Ry =160,R, =O",
@@ -2353,11 +2431,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q031_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A meter bridge with two resistances R, and R, as shown in figure was balanced (null point) at 40 cm from the point P. The null point changed to 50 cm from the point P, when 16 Q resistance is connected in parallel to R,. The values of resistances R, and R, are Vv",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2376,7 +2457,7 @@
       "topic": "Projectile motion",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A projectile is thrown upward at an angle 60° with the horizontal. The speed of the projectile is 20 m/s when its direction of motion is 45° with the horizontal. The initial speed of the projectile is m/s.",
+      "question_text": "A projectile is thrown upward at an angle of \\(60^\\circ\\) to the horizontal. Its speed is \\(20\\,\\mathrm{m/s}\\) when its direction of motion is at \\(45^\\circ\\) to the horizontal. Find its initial speed in \\(\\mathrm{m/s}\\).",
       "question_ocr_raw": "32.\n\nA projectile is thrown upward at an angle 60° with\nthe horizontal. The speed of the projectile is 20 m/s\nwhen its direction of motion is 45° with the\nhorizontal. The initial speed of the projectile\nis m/s.\n\n(1) 40/2 (2) 40\n(3) 20V3 (4) 20/2",
       "options": {
         "A": "40/2",
@@ -2390,7 +2471,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "ocr_four_choice_parse",
       "answer_text": "20/2",
-      "solution_text": null,
+      "solution_text": "From the velocity direction, \\(u\\cos60^\\circ=\\frac{20}{\\sqrt2}\\). Hence \\(\\frac{u}{2}=\\frac{20}{\\sqrt2}\\), so \\(u=\\frac{40}{\\sqrt2}=20\\sqrt2\\,\\mathrm{m/s}\\).",
       "solution_ocr_raw": null,
       "difficulty": null,
       "marks_correct": 4,
@@ -2415,12 +2496,15 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
-      ],
+      "quality_flags": [],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A projectile is thrown upward at an angle 60° with the horizontal. The speed of the projectile is 20 m/s when its direction of motion is 45° with the horizontal. The initial speed of the projectile is m/s.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": null,
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2439,7 +2523,7 @@
       "topic": "Fluid pressure and surface energy",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements: Statement I : Pressure of fluid is exerted only on a solid surface in contact as the fluid-pressure does not exist everywhere in a still fluid. Statement II: Excess potential energy of the molecules on the surface of a liquid, when compared to interior, results in surface tension. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text": "Statement I: Fluid pressure is exerted only on a solid surface in contact, because fluid pressure does not exist everywhere in a still fluid. Statement II: The excess potential energy of molecules at the surface of a liquid, compared with molecules inside it, results in surface tension. Choose the correct option.",
       "question_ocr_raw": "33.\n\nGiven below are two statements:\n\nStatement I : Pressure of fluid is exerted only on a\nsolid surface in contact as the fluid-pressure does\nnot exist everywhere in a still fluid.\n\nStatement II: Excess potential energy of the\nmolecules on the surface of a liquid, when\ncompared to interior, results in surface tension.\n\nIn the light of the above statements, choose the\ncorrect answer from the options given below.\n\n(1) Statement I is true but Statement II is false\n\n(2) Both Statement I and Statement II are false\n\n(3) Both Statement I and Statement II are true\n\n(4) Statement I is false but Statement II is true",
       "options": {
         "A": "Statement I is true but Statement II is false",
@@ -2479,10 +2563,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements: Statement I : Pressure of fluid is exerted only on a solid surface in contact as the fluid-pressure does not exist everywhere in a still fluid. Statement II: Excess potential energy of the molecules on the surface of a liquid, when compared to interior, results in surface tension. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2501,7 +2588,7 @@
       "topic": "Logic gates and LED circuit",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "34. Find the correct combination of A, B, C and D inputs which can cause the LED to glow. A B LED C D",
+      "question_text": "Find the correct combination of inputs \\(A,B,C,D\\) that can cause the LED to glow, using the logic-gate circuit shown in the question image.",
       "question_ocr_raw": "34. Find the correct combination of A, B, C and D\ninputs which can cause the LED to glow.\n\nA\n\nB\n\nLED\nC\nD\n\n(1) 0100 (2) 0011\n(3) 1000 (4) 1101",
       "options": {
         "A": "0100",
@@ -2541,11 +2628,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q034_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "34. Find the correct combination of A, B, C and D inputs which can cause the LED to glow. A B LED C D",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2564,7 +2654,7 @@
       "topic": "Net force due to masses at square corners",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "3D. Net gravitational force at the centre of a square is found to be F; when four particles having mass M, 2M, 3M and 4M are placed at the four corners of the square as shown in figure and it is F> when the positions of 3M and 4M are interchanged. The - FF, ©@ : ratio — is —~. The value of a is F, V5 4M ¢------- 23M 1 I I ! I ! I I e------- °2M",
+      "question_text": "The net gravitational force at the centre of a square is \\(F_1\\) when masses \\(M,2M,3M,4M\\) occupy its four corners as shown. It is \\(F_2\\) when the positions of \\(3M\\) and \\(4M\\) are interchanged. If \\(\\frac{F_1}{F_2}=\\frac{\\alpha}{\\sqrt5}\\), find \\(\\alpha\\).",
       "question_ocr_raw": "3D.\n\nNet gravitational force at the centre of a square is\nfound to be F; when four particles having mass\nM, 2M, 3M and 4M are placed at the four corners\nof the square as shown in figure and it is F> when\nthe positions of 3M and 4M are interchanged. The\n\n- FF, ©@ :\nratio — is —~. The value of a is\n\nF, V5\n\n4M ¢------- 23M\n1 I\nI !\nI !\nI I\ne------- °2M\n(1) 2 (2) 3\n\n(3) 1 (4) 25",
       "options": {
         "A": "2",
@@ -2604,11 +2694,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q035_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "3D. Net gravitational force at the centre of a square is found to be F; when four particles having mass M, 2M, 3M and 4M are placed at the four corners of the square as shown in figure and it is F> when the positions of 3M and 4M are interchanged. The - FF, ©@ : ratio — is —~. The value of a is F, V5 4M ¢------- 23M 1 I I ! I ! I I e------- °2M",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2627,7 +2720,7 @@
       "topic": "Mass defect and nuclear binding energy",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The minimum frequency of photon required to break a particle of mass 15.348 amu into 4a particles is kHz. [mass of He nucleus = 4.002 amu, 1 amu = 1.66 x 10” kg, h = 6.6 x 10 J.s andc = 3 x 10° m/s]",
+      "question_text": "The minimum photon frequency required to break a particle of mass \\(15.348\\,\\mathrm{amu}\\) into four alpha particles is ____ kHz. Given: mass of a helium nucleus \\(=4.002\\,\\mathrm{amu}\\); \\(1\\,\\mathrm{amu}=1.66\\times10^{-27}\\,\\mathrm{kg}\\); \\(h=6.6\\times10^{-34}\\,\\mathrm{J\\,s}\\); \\(c=3\\times10^8\\,\\mathrm{m/s}\\).",
       "question_ocr_raw": "36.\n\nThe minimum frequency of photon required to\nbreak a particle of mass 15.348 amu into 4a\n\nparticles is kHz.\n[mass of He nucleus = 4.002 amu,\n\n1 amu = 1.66 x 10” kg, h = 6.6 x 10 J.s andc =\n3 x 10° m/s]\n\n(1) 9 x 10”\n(2) 9 x 10”\n(3) 14.94 x 10”\n\n(4) 14.94 x 10”",
       "options": {
         "A": "9 x 10”",
@@ -2667,10 +2760,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The minimum frequency of photon required to break a particle of mass 15.348 amu into 4a particles is kHz. [mass of He nucleus = 4.002 amu, 1 amu = 1.66 x 10” kg, h = 6.6 x 10 J.s andc = 3 x 10° m/s]",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2689,7 +2785,7 @@
       "topic": "Gas in a rotating tube",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "ihe A cylindrical tube AB of length /, closed at both ends contains an ideal gas of 1 mol having molecular weight M. The tube is rotated in a horizontal plane with constant angular velocity @ about an axis perpendicular to AB and passing through the edge at end A, as shown in the figure. If Py, and Pg are the pressures at A and B respectively, then (Consider the temperature is same at all points in the tube)",
+      "question_text": "A cylindrical tube \\(AB\\) of length \\(l\\), closed at both ends, contains one mole of an ideal gas of molecular weight \\(M\\). The tube rotates in a horizontal plane with constant angular velocity \\(\\omega\\) about an axis perpendicular to \\(AB\\) and passing through the edge at \\(A\\). If \\(P_A\\) and \\(P_B\\) are the pressures at \\(A\\) and \\(B\\), respectively, assume the temperature is the same at all points in the tube.",
       "question_ocr_raw": "ihe\n\nA cylindrical tube AB of length /, closed at both\nends contains an ideal gas of 1 mol having\nmolecular weight M. The tube is rotated in a\nhorizontal plane with constant angular velocity @\nabout an axis perpendicular to AB and passing\nthrough the edge at end A, as shown in the figure.\nIf Py, and Pg are the pressures at A and B\nrespectively, then (Consider the temperature is\n\nsame at all points in the tube)\n\n(1) Ps = Py exp (Ma / 2RT)\n(2) Pa =P\n(3) Ps = Py exp (Mal /3RT)\n\n(4) Ps = Py exp (Mal / RT)",
       "options": {
         "A": "Ps = Py exp (Ma / 2RT)",
@@ -2729,11 +2825,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q037_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "ihe A cylindrical tube AB of length /, closed at both ends contains an ideal gas of 1 mol having molecular weight M. The tube is rotated in a horizontal plane with constant angular velocity @ about an axis perpendicular to AB and passing through the edge at end A, as shown in the figure. If Py, and Pg are the pressures at A and B respectively, then (Consider the temperature is same at all points in the tube)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2752,7 +2851,7 @@
       "topic": "Heat conduction through joined rods",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Rods x and y of equal dimensions but of different materials are joined as shown in figure. Temperatures of end points A and F are maintained at 100 °C and 40 °C respectively. Given the thermal conductivity of rod x is three times of that of rod y, the temperature at junction points B and FE are (close to) :",
+      "question_text": "Rods \\(x\\) and \\(y\\) of equal dimensions but different materials are joined as shown. Endpoints \\(A\\) and \\(F\\) are maintained at \\(100^\\circ\\mathrm C\\) and \\(40^\\circ\\mathrm C\\), respectively. The thermal conductivity of rod \\(x\\) is three times that of rod \\(y\\). Find the temperatures at junctions \\(B\\) and \\(E\\), approximately.",
       "question_ocr_raw": "38.\n\nRods x and y of equal dimensions but of different\nmaterials are joined as shown in figure.\nTemperatures of end points A and F are maintained\nat 100 °C and 40 °C respectively. Given the\nthermal conductivity of rod x is three times of that\nof rod y, the temperature at junction points B and FE\nare (close to) :\n\n(1) 89 °C and 73 °C respectively\n(2) 80 °C and 60 °C respectively\n(3) 80 °C and 70 °C respectively\n(4) 60 °C and 45 °C respectively",
       "options": {
         "A": "89 °C and 73 °C respectively",
@@ -2766,7 +2865,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "ocr_four_choice_parse",
       "answer_text": "89 °C and 73 °C respectively",
-      "solution_text": null,
+      "solution_text": "Let \\(R=\\frac{\\ell}{3KA}\\). The source simplifies the diamond network to an equivalent resistance \\(\\frac{11R}{2}\\), so \\(H=\\frac{100-40}{11R/2}\\). Also \\(H=\\frac{100-T_B}{R}\\) and \\(H=\\frac{T_E-40}{3R}\\). Using the source's equations gives \\(T_B=89^\\circ\\mathrm C\\) and \\(T_E=73^\\circ\\mathrm C\\), respectively.",
       "solution_ocr_raw": null,
       "difficulty": null,
       "marks_correct": 4,
@@ -2791,13 +2890,16 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
-      ],
+      "quality_flags": [],
       "question_figure_image_path": "images/watermarked/questions/q038_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Rods x and y of equal dimensions but of different materials are joined as shown in figure. Temperatures of end points A and F are maintained at 100 °C and 40 °C respectively. Given the thermal conductivity of rod x is three times of that of rod y, the temperature at junction points B and FE are (close to) :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": null,
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2881,7 +2983,7 @@
       "topic": "Refraction through a prism",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Consider an equilateral prism (refractive index /2). A ray of light is incident on its one surface at a certain angle i. If the emergent ray is found to graze along the other surface then the angle of refraction at the incident surface iscloseto _..",
+      "question_text": "An equilateral prism has refractive index \\(\\sqrt2\\). A ray is incident on one surface at angle \\(i\\). If the emergent ray grazes along the other surface, find the approximate angle of refraction at the incident surface.",
       "question_ocr_raw": "40.\n\nConsider an equilateral prism (refractive index /2).\nA ray of light is incident on its one surface at a\ncertain angle i. If the emergent ray is found to\ngraze along the other surface then the angle of\nrefraction at the incident surface iscloseto _..\n(1) 15° (2) 20°\n\n(3) 40° (4) 30°",
       "options": {
         "A": "15°",
@@ -2921,10 +3023,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Consider an equilateral prism (refractive index /2). A ray of light is incident on its one surface at a certain angle i. If the emergent ray is found to graze along the other surface then the angle of refraction at the incident surface iscloseto _..",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -2943,7 +3048,7 @@
       "topic": "Adiabatic expansion of an ideal gas",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The volume of an ideal gas increases 8 times and temperature becomes (1/4)\" of initial temperature during a reversible change. If there is no exchange of heat in this process (AQ = 0) then identify the gas from the following options (Assuming the gases given in the options are ideal gases) :",
+      "question_text": "The volume of an ideal gas increases eightfold and its temperature becomes one-fourth of the initial temperature during a reversible change. If no heat is exchanged (\\(\\Delta Q=0\\)), identify the gas from the given ideal-gas options.",
       "question_ocr_raw": "41.\n\nThe volume of an ideal gas increases 8 times and\ntemperature becomes (1/4)\" of initial temperature\nduring a reversible change. If there is no exchange\nof heat in this process (AQ = 0) then identify the\ngas from the following options (Assuming the\ngases given in the options are ideal gases) :\n\n(1) CO, (2) 0,\n\n(3) NH, (4) He",
       "options": {
         "A": "CO,",
@@ -2983,10 +3088,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The volume of an ideal gas increases 8 times and temperature becomes (1/4)\" of initial temperature during a reversible change. If there is no exchange of heat in this process (AQ = 0) then identify the gas from the following options (Assuming the gases given in the options are ideal gases) :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3005,7 +3113,7 @@
       "topic": "Electric field and electric potential",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Electric field in a region is given by E = Axi + Byj ; where 4 = 10 V/m’ and B = 5 Vim’. If the electric potential at a point (10, 20) is 500 V, then the electric potential at originis ———_sédV«Y.",
+      "question_text": "The electric field is \\(\\vec E=Ax\\hat i+By\\hat j\\), where \\(A=10\\,\\mathrm{V/m^2}\\) and \\(B=5\\,\\mathrm{V/m^2}\\). If the electric potential at \\((10,20)\\) is \\(500\\,\\mathrm V\\), find the potential at the origin.",
       "question_ocr_raw": "42.\n\nElectric field in a region is given by E = Axi + Byj ;\nwhere 4 = 10 V/m’ and B = 5 Vim’. If the electric\npotential at a point (10, 20) is 500 V, then the\nelectric potential at originis ———_sédV«Y.\n\n(1) 1000 (2) 500\n\n(3) 2000 (4) 0",
       "options": {
         "A": "1000",
@@ -3045,10 +3153,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Electric field in a region is given by E = Axi + Byj ; where 4 = 10 V/m’ and B = 5 Vim’. If the electric potential at a point (10, 20) is 500 V, then the electric potential at originis ———_sédV«Y.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3067,7 +3178,7 @@
       "topic": "Charged pendulum in an electric field",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A simple pendulum has a bob with mass m and charge q. The pendulum string has negligible mass. When a uniform and horizontal electric field E is applied, the tension in the string changes. The final tension in the string, when pendulum attains an equilibrium position is (g : acceleration due to gravity)",
+      "question_text": "A simple pendulum has a bob of mass \\(m\\) and charge \\(q\\), with a string of negligible mass. A uniform horizontal electric field \\(\\vec E\\) is applied. Find the final string tension when the pendulum reaches equilibrium. \\(g\\) is the acceleration due to gravity.",
       "question_ocr_raw": "43.\n\nA simple pendulum has a bob with mass m and\ncharge q. The pendulum string has negligible mass.\nWhen a uniform and horizontal electric field E is\napplied, the tension in the string changes. The final\ntension in the string, when pendulum attains an\nequilibrium position is\n\n(g : acceleration due to gravity)\n\n(1) mg—-qE (2) mg + qE\n\n(3) Jorg +qE? (4) im? g? 9° E",
       "options": {
         "A": "mg—-qE",
@@ -3107,10 +3218,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A simple pendulum has a bob with mass m and charge q. The pendulum string has negligible mass. When a uniform and horizontal electric field E is applied, the tension in the string changes. The final tension in the string, when pendulum attains an equilibrium position is (g : acceleration due to gravity)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3129,7 +3243,7 @@
       "topic": "Dimensional analysis",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "44. Match the LIST-I with LIST-II CT tet i Thermal Il. conductivity [o-naueveecanee [1] Choose the correct answer from the options given below:",
+      "question_text": "Match List-I and List-II: A. Spring constant; B. Thermal conductivity; C. Boltzmann constant; D. Inductive reactance. Match these with the dimensional formulas I–IV shown in the question image.",
       "question_ocr_raw": "44. Match the LIST-I with LIST-II\n\nCT tet i\n\nThermal Il.\nconductivity\n[o-naueveecanee [1]\n\nChoose the correct answer from the options given\n\nbelow:\n\n(1) A-II, B-I, C-IV, D-II\n(2) A-I, B-IV, C-II, D-II\n(3) A-II, B-II, C-IV, D-I\n(4) A-II, B-IV, C-I, D-II\n\nList-II\nMULT kK\nML’T”\n\nML T A\nMLT’K\"™",
       "options": {
         "A": "A-II, B-I, C-IV, D-II",
@@ -3169,11 +3283,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q044_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "44. Match the LIST-I with LIST-II CT tet i Thermal Il. conductivity [o-naueveecanee [1] Choose the correct answer from the options given below:",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3188,11 +3305,11 @@
       "shift": 1,
       "paper_type": "Paper 1 (B.E./B.Tech)",
       "subject": "Physics",
-      "chapter": "Magnetic Effects of Current and Magnetism",
-      "topic": "Magnetic fields of coaxial coils",
+      "chapter": "Electromagnetic Induction",
+      "topic": "Faraday and Lenz laws for moving coaxial coils",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Three identical coils C,, C, and C, are closely placed such that they share a common axis. C, is exactly midway. C, carries current J in anti-clockwise direction while C, carries current [ in clockwise direction. An induced current flows through C, will be in clockwise direction when",
+      "question_text": "Three identical coils \\(C_1,C_2,C_3\\) share a common axis, and \\(C_2\\) is exactly midway between the others. \\(C_1\\) carries current \\(I\\) anticlockwise and \\(C_3\\) carries current \\(I\\) clockwise. In which listed motion condition will the induced current through \\(C_2\\) be clockwise?",
       "question_ocr_raw": "45.\n\nThree identical coils C,, C, and C, are closely\nplaced such that they share a common axis. C, is\nexactly midway. C, carries current J in\nanti-clockwise direction while C, carries current [\nin clockwise direction. An induced current flows\nthrough C, will be in clockwise direction when\n\n(1) C, and C, move with equal speeds away from C,\n\n(2) C, moves towards C, and C, moves away from C,\n\n(3) C, moves away from C, and C, moves towards C,\n\n(4) C, and C, move with equal speeds towards C,",
       "options": {
         "A": "C, and C, move with equal speeds away from C,",
@@ -3206,7 +3323,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "ocr_four_choice_parse",
       "answer_text": "C, moves towards C, and C, moves away from C,",
-      "solution_text": null,
+      "solution_text": "The magnetic field through the middle coil is \\(\\vec B=(B_{C_2}-B_{C_1})\\hat i\\). Therefore the flux is \\(\\phi=(B_{C_2}-B_{C_1})A\\), and the induced emf is \\(\\varepsilon=-\\frac{d\\phi}{dt}\\). Applying Lenz's law to the stated motion, the printed solution marks option (2) as the correct answer.",
       "solution_ocr_raw": null,
       "difficulty": null,
       "marks_correct": 4,
@@ -3231,13 +3348,16 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
-      ],
+      "quality_flags": [],
       "question_figure_image_path": "images/watermarked/questions/q045_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Three identical coils C,, C, and C, are closely placed such that they share a common axis. C, is exactly midway. C, carries current J in anti-clockwise direction while C, carries current [ in clockwise direction. An induced current flows through C, will be in clockwise direction when",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": null,
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3256,7 +3376,7 @@
       "topic": "Doppler effect and sound",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Two loudspeakers (Z, and L,) are placed with a separation of 10 m, as shown in figure. Both speakers are fed with an audio input signal of same frequency with constant volume. A voice recorder, initially at point A, at equidistance to both loud speakers, is moved by 25 m along the line AB while monitoring the audio signal. The measured signal was found to undergo 10 cycles of minima and maxima during the movement. The frequency of the input signal is Hz (Speed of sound in air is 324 m/s and Ja= 2.23)",
+      "question_text": "Two loudspeakers \\(L_1,L_2\\), separated by \\(10\\,\\mathrm m\\), receive the same-frequency audio signal at constant volume. A voice recorder initially at point \\(A\\), equidistant from both speakers, moves \\(25\\,\\mathrm m\\) along line \\(AB\\). The signal undergoes 10 cycles of minima and maxima. Find the input frequency. Speed of sound \\(=324\\,\\mathrm{m/s}\\) and \\(\\sqrt5=2.23\\).",
       "question_ocr_raw": "46.\n\nTwo loudspeakers (Z, and L,) are placed with a\nseparation of 10 m, as shown in figure. Both\nspeakers are fed with an audio input signal of same\nfrequency with constant volume. A voice recorder,\ninitially at point A, at equidistance to both loud\nspeakers, is moved by 25 m along the line AB\nwhile monitoring the audio signal. The measured\nsignal was found to undergo 10 cycles of minima\nand maxima during the movement. The frequency\n\nof the input signal is Hz\n\n(Speed of sound in air is 324 m/s and Ja= 2.23)",
       "options": null,
       "options_ocr_raw": null,
@@ -3291,11 +3411,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q046_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Two loudspeakers (Z, and L,) are placed with a separation of 10 m, as shown in figure. Both speakers are fed with an audio input signal of same frequency with constant volume. A voice recorder, initially at point A, at equidistance to both loud speakers, is moved by 25 m along the line AB while monitoring the audio signal. The measured signal was found to undergo 10 cycles of minima and maxima during the movement. The frequency of the input signal is Hz (Speed of sound in air is 324 m/s and Ja= 2.23)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3314,7 +3437,7 @@
       "topic": "Wave propagation in a dielectric medium",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "The electric field of a plane electromagnetic wave, travelling in an unknown non-magnetic medium is given by, E, = 20 sin (3 x 10°x — 4.5 x 10\"t) V/m (where x, t and other values have S.I. units). The dielectric constant of the medium is (speed of light in free space is 3 x 10° m/s)",
+      "question_text": "The electric field of a plane electromagnetic wave in a non-magnetic medium is \\(E_y=20\\sin(3\\times10^6x-4.5\\times10^{14}t)\\,\\mathrm{V/m}\\). The variables use SI units. Find the dielectric constant of the medium; the speed of light in vacuum is \\(3\\times10^8\\,\\mathrm{m/s}\\).",
       "question_ocr_raw": "47.\n\nThe electric field of a plane electromagnetic wave,\ntravelling in an unknown non-magnetic medium is\ngiven by,\n\nE, = 20 sin (3 x 10°x — 4.5 x 10\"t) V/m\n\n(where x, t and other values have S.I. units). The\ndielectric constant of the medium is\n\n(speed of light in free space is 3 x 10° m/s)",
       "options": null,
       "options_ocr_raw": null,
@@ -3349,10 +3472,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The electric field of a plane electromagnetic wave, travelling in an unknown non-magnetic medium is given by, E, = 20 sin (3 x 10°x — 4.5 x 10\"t) V/m (where x, t and other values have S.I. units). The dielectric constant of the medium is (speed of light in free space is 3 x 10° m/s)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3371,7 +3497,7 @@
       "topic": "Refraction at a spherical surface",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "A parallel beam of light travelling in air (refractive index 1.0) is incident on a convex spherical glass surface of radius of curvature 50 cm. Refractive index of glass is 1.5. The rays converge to a point at a distance x cm from the centre of the curvature of the spherical surface. The value of x is cm.",
+      "question_text": "A parallel beam travelling in air (refractive index \\(1.0\\)) is incident on a convex spherical glass surface of radius of curvature \\(50\\,\\mathrm{cm}\\). The refractive index of glass is \\(1.5\\). The rays converge at a point \\(x\\) cm from the centre of curvature. Find \\(x\\).",
       "question_ocr_raw": "48.\n\nA parallel beam of light travelling in air (refractive\nindex 1.0) is incident on a convex spherical glass\nsurface of radius of curvature 50 cm. Refractive\nindex of glass is 1.5. The rays converge to a point\nat a distance x cm from the centre of the curvature\n\nof the spherical surface. The value of x is cm.",
       "options": null,
       "options_ocr_raw": null,
@@ -3406,10 +3532,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A parallel beam of light travelling in air (refractive index 1.0) is incident on a convex spherical glass surface of radius of curvature 50 cm. Refractive index of glass is 1.5. The rays converge to a point at a distance x cm from the centre of the curvature of the spherical surface. The value of x is cm.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3428,7 +3557,7 @@
       "topic": "Moment of inertia of discs",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "A circular disc has radius R; and thickness 77. Another circular disc made of the same material has radius R, and thickness T>. If the moment of inertia of both discs are same and —-=2 then = = .Thevalueofais a AS",
+      "question_text": "A circular disc has radius \\(R_1\\) and thickness \\(T_1\\). Another disc of the same material has radius \\(R_2\\) and thickness \\(T_2\\). If their moments of inertia are equal and \\(\\frac{R_1}{R_2}=2\\), and \\(\\frac{T_1}{T_2}=\\frac1\\alpha\\), find \\(\\alpha\\).",
       "question_ocr_raw": "49.\n\nA circular disc has radius R; and thickness 77.\nAnother circular disc made of the same material\n\nhas radius R, and thickness T>. If the moment of\n\ninertia of both discs are same and —-=2 then\n\n2\n\n= = .Thevalueofais\na\n\nAS",
       "options": null,
       "options_ocr_raw": null,
@@ -3463,10 +3592,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A circular disc has radius R; and thickness 77. Another circular disc made of the same material has radius R, and thickness T>. If the moment of inertia of both discs are same and —-=2 then = = .Thevalueofais a AS",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3485,7 +3617,7 @@
       "topic": "Energy stored in an inductor",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Inductance of a coil with 10° turns is 10 mH and it is connected to a de source of 10 V with internal resistance of 10Q. The energy density in the . 1 . inductor when the current reaches (+) of its e ; . 1 maximum value is am x — J/m’. The value of a e is. (uy=4m x 10’ T/A).",
+      "question_text": "A coil with \\(10^4\\) turns has inductance \\(10\\,\\mathrm{mH}\\) and is connected to a \\(10\\,\\mathrm V\\) DC source with internal resistance \\(10\\,\\Omega\\). Find \\(\\alpha\\) if the energy density in the inductor at current \\(1/e\\) of its maximum value is \\(\\alpha\\pi\\frac1{e^2}\\,\\mathrm{J/m^3}\\). Given \\(\\mu_0=4\\pi\\times10^{-7}\\,\\mathrm{T\\,m/A}\\).",
       "question_ocr_raw": "50.\n\nInductance of a coil with 10° turns is 10 mH and it\nis connected to a de source of 10 V with internal\n\nresistance of 10Q. The energy density in the\n\n. 1 .\ninductor when the current reaches (+) of its\ne\n\n; . 1\nmaximum value is am x — J/m’. The value of a\ne\n\nis. (uy=4m x 10’ T/A).",
       "options": null,
       "options_ocr_raw": null,
@@ -3520,10 +3652,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Inductance of a coil with 10° turns is 10 mH and it is connected to a de source of 10 V with internal resistance of 10Q. The energy density in the . 1 . inductor when the current reaches (+) of its e ; . 1 maximum value is am x — J/m’. The value of a e is. (uy=4m x 10’ T/A).",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3542,7 +3677,7 @@
       "topic": "Unpaired electrons in low-spin complexes",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Consider the transition metal ions Mn’, Cr’, Fe” and Co” and all form low spin octahedral complexes. The correct decreasing order of unpaired electrons in their respective d-orbitals of the complexes is",
+      "question_text": "Consider the transition-metal ions \\(\\mathrm{Mn^{3+}},\\mathrm{Cr^{3+}},\\mathrm{Fe^{3+}},\\mathrm{Co^{3+}}\\), all forming low-spin octahedral complexes. Choose the decreasing order of the number of unpaired electrons in their respective \\(d\\)-orbitals.",
       "question_ocr_raw": "51.\n\nConsider the transition metal ions Mn’, Cr’, Fe”\nand Co” and all form low spin octahedral\ncomplexes. The correct decreasing order of\nunpaired electrons in their respective d-orbitals of\nthe complexes is\n\n(1) Cr’ > Fe” > Co” > Mn”\n\n(2) Mn” > Fe” > Co” > Cr”\n\n(3) Fe” > Co” > Mn* > Cr”\n\n(4) Cr” > Mn” > Fe” > Co”",
       "options": {
         "A": "Cr’ > Fe” > Co” > Mn”",
@@ -3582,10 +3717,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Consider the transition metal ions Mn’, Cr’, Fe” and Co” and all form low spin octahedral complexes. The correct decreasing order of unpaired electrons in their respective d-orbitals of the complexes is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3604,7 +3742,7 @@
       "topic": "Formal charges in HNO3",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The formal charges on the atoms marked (1) to (4) in the Lewis representation of the HNO₃ molecule, respectively, are.",
+      "question_text": "The formal charges on atoms marked (1) to (4), respectively, in the Lewis representation of the \\(\\mathrm{HNO_3}\\) molecule shown in the question image are _____.",
       "question_ocr_raw": "52.\n\nThe formal changes on the atoms marked as (1) to\n\n(4) in the Lewis representation of HnO, molecule\n\nrespectively are\n\n@®®\nH-9-N=9\n20:\n\"“@\n\n(1) +1, 0, 0, -1\n(3) 0, +1, 0, -1\n\n(2) 0, —1, 0, 4\n(4) 0, 0, -1,\n\n—",
       "options": {
         "A": "+1, 0, 0, −1",
@@ -3644,11 +3782,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q052_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The formal charges on the atoms marked (1) to (4) in the Lewis representation of the HNO₃ molecule, respectively, are.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3667,7 +3808,7 @@
       "topic": "Reimer-Tiemann reaction of phenol",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements : Statement I : Phenol on treatment with CHCI,/aq. KOH under refluxing condition, followed by acidification produces p-hydroxy benzladehyde as the major product and o-hydroxy benzaldehyde as the minor product. Statement II : The mixture of p-hydroxybenzaldehyde and o-hydroxybenzaldehyde can be easily separated through steam distillation. In the light of the above statements, choose the correct answer from the options given below :",
+      "question_text": "Statement I: Phenol treated with \\(\\mathrm{CHCl_3/aq.\\ KOH}\\) under reflux and then acidified produces \\(p\\)-hydroxybenzaldehyde as the major product and \\(o\\)-hydroxybenzaldehyde as the minor product. Statement II: The mixture of \\(p\\)- and \\(o\\)-hydroxybenzaldehyde can be easily separated by steam distillation. Choose the correct option.",
       "question_ocr_raw": "53.\n\nGiven below are two statements :\n\nStatement I : Phenol on treatment with CHCI,/aq.\nKOH under refluxing condition, followed by\nacidification produces p-hydroxy benzladehyde as\nthe major product and o-hydroxy benzaldehyde as\nthe minor product.\n\nStatement II : The mixture of\np-hydroxybenzaldehyde and o-hydroxybenzaldehyde\ncan be easily separated through steam distillation.\n\nIn the light of the above statements, choose the\ncorrect answer from the options given below :\n\n(1) Both Statement I and Statement II are false\n\n(2) Statement I is true but Statement II is false\n\n(3) Both Statement I and Statement II are true\n\n(4) Statement I is false but Statement II is true",
       "options": {
         "A": "Both Statement I and Statement II are false",
@@ -3707,10 +3848,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements : Statement I : Phenol on treatment with CHCI,/aq. KOH under refluxing condition, followed by acidification produces p-hydroxy benzladehyde as the major product and o-hydroxy benzaldehyde as the minor product. Statement II : The mixture of p-hydroxybenzaldehyde and o-hydroxybenzaldehyde can be easily separated through steam distillation. In the light of the above statements, choose the correct answer from the options given below :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3729,7 +3873,7 @@
       "topic": "Bohr energy-level excitation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The energy required by electrons, present in the first Bohr orbit of hydrogen atom to be excited to second Bohr orbit is Jmol\". Given : R, = 2.18 x 10\" ergs.",
+      "question_text": "The energy required to excite an electron from the first Bohr orbit of a hydrogen atom to the second Bohr orbit is ____ \\(\\mathrm{J\\,mol^{-1}}\\). Given \\(R_H=2.18\\times10^{-11}\\) ergs.",
       "question_ocr_raw": "54.\n\nThe energy required by electrons, present in the\nfirst Bohr orbit of hydrogen atom to be excited to\nsecond Bohr orbit is Jmol\".\n\nGiven : R, = 2.18 x 10\" ergs.\n\n(1) 1.635 x 10\"\n\n(2) 9.835 x 10°\n\n(3) 9.835 x 10”\n\n(4) 1.635 x 10\"",
       "options": {
         "A": "1.635 x 10\"",
@@ -3769,10 +3913,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The energy required by electrons, present in the first Bohr orbit of hydrogen atom to be excited to second Bohr orbit is Jmol\". Given : R, = 2.18 x 10\" ergs.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3791,7 +3938,7 @@
       "topic": "Nitrogen-family chemistry and ionisation enthalpy",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "355 A ‘p’-block element (E) and hydrogen form a binary cation (EH,)’, while EH, on treatment with K.Hgl, in alkaline medium gives a precipitate of basic mercury(II])amido-iodine. Given below are first ionisation enthalpy values (kJ mol) for first element each from group 13, 14, 15 and 16. Identify the correct first ionisation enthalpy value for element E.",
+      "question_text": "A p-block element \\(E\\) and hydrogen form a binary cation \\((EH_x)^+\\). \\(EH_3\\), treated with \\(K_2HgI_4\\) in alkaline medium, gives a precipitate of basic mercury(II) amido-iodine. The first-ionisation enthalpies (kJ mol\\(^{-1}\\)) for the first element of groups 13, 14, 15 and 16 are listed in the question image. Identify the value for \\(E\\).",
       "question_ocr_raw": "355\n\nA ‘p’-block element (E) and hydrogen form a\nbinary cation (EH,)’, while EH, on treatment with\nK.Hgl, in alkaline medium gives a precipitate of\nbasic mercury(II])amido-iodine. Given below are\nfirst ionisation enthalpy values (kJ mol) for first\nelement each from group 13, 14, 15 and 16.\nIdentify the correct first ionisation enthalpy value\nfor element E.\n\n(1) 1312\n\n(2) 1086\n\n(3) 1402\n\n(4) 801",
       "options": {
         "A": "1312",
@@ -3831,10 +3978,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "355 A ‘p’-block element (E) and hydrogen form a binary cation (EH,)’, while EH, on treatment with K.Hgl, in alkaline medium gives a precipitate of basic mercury(II])amido-iodine. Given below are first ionisation enthalpy values (kJ mol) for first element each from group 13, 14, 15 and 16. Identify the correct first ionisation enthalpy value for element E.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3853,7 +4003,7 @@
       "topic": "Stoichiometry of aluminium and hydrochloric acid",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "In the reaction, 2Al(s) + 6HCl(aq) > 2Al\"(aq) + 6CI (aq) + 3H,(g)",
+      "question_text": "For the reaction \\(2\\mathrm{Al}(s)+6\\mathrm{HCl}(aq)\\rightarrow2\\mathrm{Al^{3+}}(aq)+6\\mathrm{Cl^-}(aq)+3\\mathrm{H_2}(g)\\), choose the correct statement about the stoichiometric quantities of the reactants and products.",
       "question_ocr_raw": "56.\n\nIn the reaction,\n\n2Al(s) + 6HCl(aq) > 2Al\"(aq) + 6CI (aq) + 3H,(g)\n\n(1) 11.2 L H,(g) at STP is produced for every mole\nof HCl consumed.\n\n(2) 67.2 LH,(g) at STP is produced for every mole\nof Al that reacts.\n\n(3) 12 L HCl(aq) is consumed for every 6L H,(g)\nproduced.\n\n(4) 33.6 L Hg) is produced regardless of\ntemperature and pressure for every mole of Al\n\nthat reacts.",
       "options": {
         "A": "11.2 L H,(g) at STP is produced for every mole of HCl consumed.",
@@ -3893,10 +4043,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "In the reaction, 2Al(s) + 6HCl(aq) > 2Al\"(aq) + 6CI (aq) + 3H,(g)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3915,7 +4068,7 @@
       "topic": "Henry law and gas solubility",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Consider a solution of CO,(g) dissolved in water in a closed container. Which one of the following plots correctly represents variation of log (partial pressure of CO, in vapour phase above water) [y-axis] with log (mole fraction of CO, in water) [x-axis] at 25°C ? <i y",
+      "question_text": "For \\(\\mathrm{CO_2(g)}\\) dissolved in water in a closed container, choose the plot that represents \\(\\log\\) of the partial pressure of \\(\\mathrm{CO_2}\\) in the vapour phase (y-axis) against \\(\\log\\) of the mole fraction of \\(\\mathrm{CO_2}\\) in water (x-axis) at \\(25^\\circ\\mathrm C\\).",
       "question_ocr_raw": "57.\n\nConsider a solution of CO,(g) dissolved in water in\na closed container.\n\nWhich one of the following plots correctly\nrepresents variation of log (partial pressure of CO,\nin vapour phase above water) [y-axis] with log\n\n(mole fraction of CO, in water) [x-axis] at 25°C ?\n\n<i\n\ny\n\n(1) (2)\n\n<)\nSs)\n\n(3) (4)",
       "options": {
         "A": "Decreasing straight line with positive y-intercept",
@@ -3955,11 +4108,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q057_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Consider a solution of CO,(g) dissolved in water in a closed container. Which one of the following plots correctly represents variation of log (partial pressure of CO, in vapour phase above water) [y-axis] with log (mole fraction of CO, in water) [x-axis] at 25°C ? <i y",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -3978,7 +4134,7 @@
       "topic": "Transition-metal chemistry and complex formation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A first row transition metla (M) does not liberate H, gas from dilute HCl. 1 mol of aqueous solution of MSO, is treated with excess of aqueous KCN and then H,S(g) is passed through the solution. The amount of MS (metal sulphide) formed from the above reactionis __—_—rmodi.",
+      "question_text": "A first-row transition metal \\(M\\) does not liberate \\(\\mathrm H_2\\) gas from dilute HCl. One mole of aqueous \\(MSO_4\\) is treated with excess aqueous KCN and then \\(\\mathrm H_2S(g)\\) is passed through the solution. Find the amount of \\(MS\\) (metal sulphide) formed, in mol.",
       "question_ocr_raw": "58.\n\nA first row transition metla (M) does not liberate\nH, gas from dilute HCl. 1 mol of aqueous solution\nof MSO, is treated with excess of aqueous KCN\nand then H,S(g) is passed through the solution. The\namount of MS (metal sulphide) formed from the\n\nabove reactionis __—_—rmodi.\n(1) 2\n(2) 1\n(3) 3\n(4) 0",
       "options": {
         "A": "2",
@@ -4018,10 +4174,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A first row transition metla (M) does not liberate H, gas from dilute HCl. 1 mol of aqueous solution of MSO, is treated with excess of aqueous KCN and then H,S(g) is passed through the solution. The amount of MS (metal sulphide) formed from the above reactionis __—_—rmodi.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4040,7 +4199,7 @@
       "topic": "Nucleophilic substitution of bromomethane",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "ao). The correct order of reactivity of CH,Br in methanol with the following nucleophiles is FTC 00 adC io C)TSeCHo +F reno 2) [>CH0 =Cao >r G) C>CHO >F >CE.O",
+      "question_text": "Find the correct order of reactivity of \\(\\mathrm{CH_3Br}\\) in methanol with the nucleophiles \\(\\mathrm{F^-}\\), \\(\\mathrm{I^-}\\), \\(\\mathrm{C_2H_5O^-}\\), and \\(\\mathrm{C_6H_5O^-}\\).",
       "question_ocr_raw": "ao).\n\nThe correct order of reactivity of CH,Br in\nmethanol with the following nucleophiles is\n\nFTC 00 adC io\n\nC)TSeCHo +F reno\n\n2) [>CH0 =Cao >r\n\nG) C>CHO >F >CE.O\n\n(4) 1 >F >CH,O >C,H,O-",
       "options": {
         "A": "I⁻ > C₆H₅O⁻ > F⁻ > C₂H₅O⁻",
@@ -4080,10 +4239,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "ao). The correct order of reactivity of CH,Br in methanol with the following nucleophiles is FTC 00 adC io C)TSeCHo +F reno 2) [>CH0 =Cao >r G) C>CHO >F >CE.O",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4102,7 +4264,7 @@
       "topic": "Reversible and irreversible isothermal work",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Match the LIST-I with LIST-II List-I List-II Thermodynamic Process Magnitude in kJ Work done in reversible, isothermal expansion of 2 mol of ideal gas from 2 dm’ to 20 dm’ at 300 K. Work done in irreversible isothermal expansion of | mol ideal gas from 1 m’ to 3 m’ at 300 K against A constant pressure of 3kPa. Change in _ internal energy for adiabatic expansion of a 1 mol ideal gas with change of temperature = 320 K and Change in enthalpy at constant pressure of 1 mole ideal gas with change of temperature = 337 K and C, =SR. Choose the correct answer from the option given below :",
+      "question_text": "Match List-I with List-II. A: Work in reversible isothermal expansion of 2 mol ideal gas from \\(2\\,\\mathrm{dm^3}\\) to \\(20\\,\\mathrm{dm^3}\\) at \\(300\\,\\mathrm K\\). B: Work in irreversible isothermal expansion of 1 mol ideal gas from \\(1\\,\\mathrm{m^3}\\) to \\(3\\,\\mathrm{m^3}\\) at \\(300\\,\\mathrm K\\) against constant pressure \\(3\\,\\mathrm{kPa}\\). C: Change in internal energy during adiabatic expansion of 1 mol ideal gas with temperature change \\(320\\,\\mathrm K\\) and \\(\\bar C_V=\\frac32R\\). D: Change in enthalpy at constant pressure for 1 mol ideal gas with temperature change \\(337\\,\\mathrm K\\) and \\(\\bar C_P=\\frac52R\\). Match the processes with magnitudes I–IV in the question image.",
       "question_ocr_raw": "Match the LIST-I with LIST-II\n\nList-I List-II\n\nThermodynamic Process Magnitude\nin kJ\n\nWork done in reversible,\nisothermal expansion of\n2 mol of ideal gas from 2\ndm’ to 20 dm’ at 300 K.\n\nWork done in\nirreversible isothermal\nexpansion of | mol ideal\ngas from 1 m’ to 3 m’ at\n300 K against A constant\n\npressure of 3kPa.\n\nChange in _ internal\n\nenergy for adiabatic\n\nexpansion of a 1 mol\n\nideal gas with change of\n\ntemperature = 320 K and\n3\n\nChange in enthalpy at\nconstant pressure of 1\nmole ideal gas with\n\nchange of temperature =\n\n337 K and C, =SR.\n\nChoose the correct answer from the option given\n\nbelow :\n\n(1) A-III, B-IL, C-IV, D-I\n(2) A-II, B-IIl, C-I, D-IV\n(3) A-I, B-II, C-III, D-IV\n(4) A-II, B-I, C-IIl, D-IV",
       "options": {
         "A": "A-III, B-IL, C-IV, D-I",
@@ -4116,7 +4278,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "ocr_four_choice_parse",
       "answer_text": "A-II, B-IIl, C-I, D-IV",
-      "solution_text": null,
+      "solution_text": "Option (A): \\(W=-nRT\\ln\\frac{V_2}{V_1}=-\\frac{2\\times8.314\\times300}{1000}\\ln\\frac{20}{2}\\,\\mathrm{kJ}=-11.5\\,\\mathrm{kJ}\\). Option (B): \\(W=-P_{\\mathrm{ext}}(V_2-V_1)=-3(3-1)=-6\\,\\mathrm{kJ}\\). Option (C): \\(\\Delta U=nC_V\\Delta T=1\\times\\frac32\\times\\frac{8.314\\times320}{1000}\\,\\mathrm{kJ}\\approx3.99\\,\\mathrm{kJ}\\). Option (D): \\(\\Delta H=nC_P\\Delta T=1\\times\\frac52\\times\\frac{8.314\\times337}{1000}\\,\\mathrm{kJ}\\approx7\\,\\mathrm{kJ}\\).",
       "solution_ocr_raw": null,
       "difficulty": null,
       "marks_correct": 4,
@@ -4141,13 +4303,16 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review",
-        "solution_text_ocr_missing_but_image_attached"
-      ],
+      "quality_flags": [],
       "question_figure_image_path": "images/watermarked/questions/q060_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Match the LIST-I with LIST-II List-I List-II Thermodynamic Process Magnitude in kJ Work done in reversible, isothermal expansion of 2 mol of ideal gas from 2 dm’ to 20 dm’ at 300 K. Work done in irreversible isothermal expansion of | mol ideal gas from 1 m’ to 3 m’ at 300 K against A constant pressure of 3kPa. Change in _ internal energy for adiabatic expansion of a 1 mol ideal gas with change of temperature = 320 K and Change in enthalpy at constant pressure of 1 mole ideal gas with change of temperature = 337 K and C, =SR. Choose the correct answer from the option given below :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": null,
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4162,11 +4327,11 @@
       "shift": 1,
       "paper_type": "Paper 1 (B.E./B.Tech)",
       "subject": "Chemistry",
-      "chapter": "Organic Chemistry: Basic Principles and Techniques",
-      "topic": "Directing effects in aromatic substitution",
+      "chapter": "Hydrocarbons",
+      "topic": "Electrophilic aromatic substitution and directing effects",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements : Statement I : Benzene is nitrated to give nitrobenzene, which on further treatment with COCH, CH,COCI/ AICI, will give NO, Statement II : NO, group is a m-directing, and deactivating group. In the light of the above statements, choose the most appropriate answer from the options given below.",
+      "question_text": "Two statements are given. I: Benzene is nitrated to nitrobenzene, which on further treatment with \\(\\mathrm{CH_3COCl/AlCl_3}\\) gives the product structure shown in the question image. II: The \\(\\mathrm{NO_2}\\) group is meta-directing and deactivating. Choose the most appropriate answer.",
       "question_ocr_raw": "61.\n\nGiven below are two statements :\nStatement I : Benzene is nitrated to give\nnitrobenzene, which on further treatment with\n\nCOCH,\nCH,COCI/ AICI, will give\n\nNO,\nStatement II : NO, group is a m-directing, and\ndeactivating group.\n\nIn the light of the above statements, choose the\nmost appropriate answer from the options given\nbelow.\n\n(1) Statement I is correct but Statement II is\nincorrect.\n\n(2) Both Statement I and Statement II are correct.\n(3) Statement I is incorrect but Statement II is\ncorrect.\n\n(4) Both Statement I and Statement II is are\nincorrect.",
       "options": {
         "A": "Statement I is correct but Statement II is incorrect.",
@@ -4206,11 +4371,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q061_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements : Statement I : Benzene is nitrated to give nitrobenzene, which on further treatment with COCH, CH,COCI/ AICI, will give NO, Statement II : NO, group is a m-directing, and deactivating group. In the light of the above statements, choose the most appropriate answer from the options given below.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4229,7 +4397,7 @@
       "topic": "Rate of a first-order reaction",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "A — products (First order reaction). Three sets of experiment were performed for a reaction under similar experimental conditions. Run 1 > 100 mL of 10 M solution of reactant A Run 2 => 200 mL of 10 M solution of reactant A Run 3 => 100 mL of 10 M solution of reactant A+ 100 mL of H,O added. The correct variation of rate of reaction is",
+      "question_text": "For the first-order reaction \\(A\\rightarrow\\) products, three experiments are performed under similar conditions: Run 1 uses 100 mL of 10 M solution of \\(A\\); Run 2 uses 200 mL of 10 M solution of \\(A\\); Run 3 uses 100 mL of 10 M solution of \\(A\\) plus 100 mL of water. Choose the correct relation among the reaction rates.",
       "question_ocr_raw": "62.\n\nA — products (First order reaction).\n\nThree sets of experiment were performed for a\nreaction under similar experimental conditions.\nRun 1 > 100 mL of 10 M solution of reactant A\nRun 2 => 200 mL of 10 M solution of reactant A\nRun 3 => 100 mL of 10 M solution of reactant A+\n100 mL of H,O added.\n\nThe correct variation of rate of reaction is\n\n(1) Run 1 = Run 2 = Run 3\n\n(2) Run 3 < Run 1 = Run 2\n\n(3) Run 3 < Run 1 < Run 2\n\n(4) Run 1 < Run 2 < Run 3",
       "options": {
         "A": "Run 1 = Run 2 = Run 3",
@@ -4269,10 +4437,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "A — products (First order reaction). Three sets of experiment were performed for a reaction under similar experimental conditions. Run 1 > 100 mL of 10 M solution of reactant A Run 2 => 200 mL of 10 M solution of reactant A Run 3 => 100 mL of 10 M solution of reactant A+ 100 mL of H,O added. The correct variation of rate of reaction is",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4291,7 +4462,7 @@
       "topic": "Carbonyl reagents and named reactions",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "63. Match the LIST-I with LIST-II List-I List-II Reagents Name of Reaction involving carbonyl compound A. | NH,— NH,, KOH 1 | Tollen’s Test Ag(NH,),OH II. | Clemmensen Reduction C. | Aq. CuSO,, Wolff-Kishner Sodium Reduction Potassium tartarate, KOH D.| Zn — Hg, HCl Fehling’s Test Choose the correct answer from the options given below",
+      "question_text": "Match List-I reagents with List-II reactions involving carbonyl compounds: A. \\(\\mathrm{NH_2NH_2,\\ KOH}\\); B. \\(\\mathrm{Ag(NH_3)_2OH}\\); C. aqueous \\(\\mathrm{CuSO_4}\\), sodium potassium tartrate and KOH; D. \\(\\mathrm{Zn-Hg,\\ HCl}\\). List-II: I. Tollen's test; II. Clemmensen reduction; III. Wolff–Kishner reduction; IV. Fehling's test.",
       "question_ocr_raw": "63. Match the LIST-I with LIST-II\nList-I List-II\nReagents Name of Reaction\n\ninvolving carbonyl\n\ncompound\n\nA. | NH,— NH,, KOH 1 | Tollen’s Test\n\nAg(NH,),OH II. | Clemmensen\nReduction\nC. | Aq. CuSO,, Wolff-Kishner\n\nSodium Reduction\n\nPotassium\ntartarate, KOH\n\nD.| Zn — Hg, HCl Fehling’s Test\n\nChoose the correct answer from the options given\nbelow\n\n(1) A-IIL, B-I, C-IV, D-II\n(2) A-IL, B-L, C-IV, D-III\n(3) A-IV, B-III, C-II, D-I\n(4) A-IIL, B-IV, C-I, D-II",
       "options": {
         "A": "A-IIL, B-I, C-IV, D-II",
@@ -4331,11 +4502,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q063_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "63. Match the LIST-I with LIST-II List-I List-II Reagents Name of Reaction involving carbonyl compound A. | NH,— NH,, KOH 1 | Tollen’s Test Ag(NH,),OH II. | Clemmensen Reduction C. | Aq. CuSO,, Wolff-Kishner Sodium Reduction Potassium tartarate, KOH D.| Zn — Hg, HCl Fehling’s Test Choose the correct answer from the options given below",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4354,7 +4528,7 @@
       "topic": "Periodic trends in hydrides and halogens",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements : Statement I : The halogen that makes longest bond with hydrogen in HX, has the smallest covalent radius in its group. Statement II : A group 15 element’s hydride EH, has the lowest boiling point among corresponding hydrides of other group 15 elements. The maximum covalency of that element E is 4. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text": "Statement I: The halogen making the longest bond with hydrogen in \\(HX\\) has the smallest covalent radius in its group. Statement II: A group 15 element's hydride \\(EH_3\\) has the lowest boiling point among corresponding group 15 hydrides, and the maximum covalency of \\(E\\) is 4. Choose the correct option.",
       "question_ocr_raw": "64.\n\nGiven below are two statements :\n\nStatement I : The halogen that makes longest\nbond with hydrogen in HX, has the smallest\ncovalent radius in its group.\n\nStatement II : A group 15 element’s hydride EH,\nhas the lowest boiling point among corresponding\nhydrides of other group 15 elements. The\nmaximum covalency of that element E is 4.\n\nIn the light of the above statements, choose the\ncorrect answer from the options given below.\n\n(1) Both Statement I and Statement II are true.\n\n(2) Statement I is false but Statement II is true.\n\n(3) Both Statement I and Statement II are false.\n\n(4) Statement I is true but Statement II is false.",
       "options": {
         "A": "Both Statement I and Statement II are true.",
@@ -4394,10 +4568,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements : Statement I : The halogen that makes longest bond with hydrogen in HX, has the smallest covalent radius in its group. Statement II : A group 15 element’s hydride EH, has the lowest boiling point among corresponding hydrides of other group 15 elements. The maximum covalency of that element E is 4. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4416,7 +4593,7 @@
       "topic": "Sucrose hydrolysis and optical rotation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements: Statement I : Sucrose is dextrorotatory. However sucrose upon hydrolysis gives a solution having mixture of products. This solution shows laevorotation. Statement II : Hydrolysis of sucrose gives glucose and fructose. Since the laevorotation of glucose is more than the dextrorotation of fructose the resulting solution becomes laevorotatory. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text": "Statement I: Sucrose is dextrorotatory, but on hydrolysis it gives a product mixture that shows laevorotation. Statement II: Hydrolysis of sucrose gives glucose and fructose; the statement says the laevorotation of glucose is greater than the dextrorotation of fructose, so the resulting solution is laevorotatory. Choose the correct option.",
       "question_ocr_raw": "65.\n\nGiven below are two statements:\n\nStatement I : Sucrose is dextrorotatory. However\nsucrose upon hydrolysis gives a solution having\nmixture of products. This solution shows\n\nlaevorotation.\n\nStatement II : Hydrolysis of sucrose gives glucose\nand fructose. Since the laevorotation of glucose is\nmore than the dextrorotation of fructose the\nresulting solution becomes laevorotatory.\n\nIn the light of the above statements, choose the\ncorrect answer from the options given below.\n\n(1) Statement I is false but Statement IJ is true.\n\n(2) Both Statement I and Statement II are false.\n\n(3) Both Statement I and Statement II are true.\n\n(4) Statement I is true but Statement II is false.",
       "options": {
         "A": "Statement I is false but Statement IJ is true.",
@@ -4456,10 +4633,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements: Statement I : Sucrose is dextrorotatory. However sucrose upon hydrolysis gives a solution having mixture of products. This solution shows laevorotation. Statement II : Hydrolysis of sucrose gives glucose and fructose. Since the laevorotation of glucose is more than the dextrorotation of fructose the resulting solution becomes laevorotatory. In the light of the above statements, choose the correct answer from the options given below.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4478,7 +4658,7 @@
       "topic": "Amine formation and diazotisation sequence",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "‘A’ is a neutral organic compound (M. F : C,H,ON ). On treatment with aqueous Br,/HO”, ‘A’ forms a compound ‘B’ which is soluble in dilute acid. ‘B’ on treatment with aqueous NaNO,/HCI(0—5°C) produces a compound ‘C’ which on treatment with CuCN/NaCN produces ‘D’ Hydrolysis of ‘D’ produces ‘E’ which is also obtainable from the hydrolysis of ‘A’. ‘E’ on treatment with acidified KMn0O, produces ‘F’. ‘F’ contains two different types of hydrogen atoms. The structure of ‘A’ is O I 0 Cy CH () CT I @ CH es) O — CH,",
+      "question_text": "A neutral organic compound \\(A\\) has molecular formula \\(\\mathrm{C_8H_9ON}\\). Treatment with aqueous \\(\\mathrm{Br_2/OH^-}\\) gives \\(B\\), soluble in dilute acid. Treatment of \\(B\\) with aqueous \\(\\mathrm{NaNO_2/HCl}\\) at \\(0\\text{–}5^\\circ\\mathrm C\\) gives \\(C\\); treatment of \\(C\\) with \\(\\mathrm{CuCN/NaCN}\\) gives \\(D\\). Hydrolysis of \\(D\\) gives \\(E\\), also obtainable by hydrolysis of \\(A\\). Oxidation of \\(E\\) with acidified \\(\\mathrm{KMnO_4}\\) gives \\(F\\), which contains two different types of hydrogen atoms. Select the structure of \\(A\\) shown in the question image.",
       "question_ocr_raw": "66.\n\n‘A’ is a neutral organic compound (M. F : C,H,ON ).\nOn treatment with aqueous Br,/HO”, ‘A’ forms a\ncompound ‘B’ which is soluble in dilute acid. ‘B’\non treatment with aqueous NaNO,/HCI(0—5°C)\nproduces a compound ‘C’ which on treatment with\nCuCN/NaCN produces ‘D’ Hydrolysis of ‘D’\nproduces ‘E’ which is also obtainable from the\nhydrolysis of ‘A’. ‘E’ on treatment with acidified\nKMn0O, produces ‘F’. ‘F’ contains two different\ntypes of hydrogen atoms. The structure of ‘A’ is\n\nO\nI 0\n\nCy CH\n() CT I @\n\nCH\n\nes)\n\nO\n— CH,\n(3) ee? CONH,\nCH,",
       "options": {
         "A": "Chemical structure diagram at option (1); see question_image_path",
@@ -4518,11 +4698,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q066_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "‘A’ is a neutral organic compound (M. F : C,H,ON ). On treatment with aqueous Br,/HO”, ‘A’ forms a compound ‘B’ which is soluble in dilute acid. ‘B’ on treatment with aqueous NaNO,/HCI(0—5°C) produces a compound ‘C’ which on treatment with CuCN/NaCN produces ‘D’ Hydrolysis of ‘D’ produces ‘E’ which is also obtainable from the hydrolysis of ‘A’. ‘E’ on treatment with acidified KMn0O, produces ‘F’. ‘F’ contains two different types of hydrogen atoms. The structure of ‘A’ is O I 0 Cy CH () CT I @ CH es) O — CH,",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4541,7 +4724,7 @@
       "topic": "SN1 reaction rates",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "The correct order of the rate of reaction of the following reactants with nucleophile by S,1 mechanism is : (Given : Structure I and II are rigid) Br Br Br Br Ph (I) (II) (IID) (IV) (Q)IV<II<I<!I",
+      "question_text": "Choose the correct order of reaction rates for the structures I–IV shown reacting with a nucleophile by the \\(S_N1\\) mechanism. Structures I and II are rigid.",
       "question_ocr_raw": "67.\n\nThe correct order of the rate of reaction of the\nfollowing reactants with nucleophile by S,1\nmechanism is :\n\n(Given : Structure I and II are rigid)\n\nBr Br Br Br\nPh\n(I) (II) (IID) (IV)\n\n(Q)IV<II<I<!I (2) I<1I<W<IV\n(3) Il<I<IN<IV (4)1<I<I<IV",
       "options": {
         "A": "IV < III < II < I",
@@ -4581,11 +4764,14 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_figure_image_path": "images/watermarked/questions/q067_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The correct order of the rate of reaction of the following reactants with nucleophile by S,1 mechanism is : (Given : Structure I and II are rigid) Br Br Br Br Ph (I) (II) (IID) (IV) (Q)IV<II<I<!I",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4604,7 +4790,7 @@
       "topic": "Lewis acid/base character and hybridisation",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Two p-block elements X and Y form fluroides of the type EF,. The fluoride compound XF, is a Lewis acid and YF, is a Lewis base. The hybridization of the central atoms of XF, and YF, respectively are",
+      "question_text": "Two p-block elements \\(X\\) and \\(Y\\) form fluorides of type \\(EF_3\\). \\(XF_3\\) is a Lewis acid and \\(YF_3\\) is a Lewis base. Find the hybridisation of the central atoms of \\(XF_3\\) and \\(YF_3\\), respectively.",
       "question_ocr_raw": "68.\n\nTwo p-block elements X and Y form fluroides of\nthe type EF,. The fluoride compound XF, is a\nLewis acid and YF, is a Lewis base. The\nhybridization of the central atoms of XF, and YF,\nrespectively are\n\n(1) Both sp’ (2) sp’ and sp’\n\n(3) sp and sp’ (4) Both sp’",
       "options": {
         "A": "Both sp’",
@@ -4644,10 +4830,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Two p-block elements X and Y form fluroides of the type EF,. The fluoride compound XF, is a Lewis acid and YF, is a Lewis base. The hybridization of the central atoms of XF, and YF, respectively are",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4666,7 +4855,7 @@
       "topic": "Bond character in chlorobenzene",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "As compared with chlorocyclohexane, which of the following statements correctly apply to chlorobenzene ? A. The magnitude of negative charge is more on chlorine atoms B. The C — Cl bond has partial double bond character C. C — Cl bond is less polar D. C — Cl bond is longer due to repulsion between delocalised electrons of the aromatic ring and lone pairs of electrons of chlorine. E. The C-Cl bond is formed using sp’ hybridised orbital of carbon. Choose the correct answer from the options given below :",
+      "question_text": "Compared with chlorocyclohexane, which statements correctly apply to chlorobenzene? A: the magnitude of negative charge is greater on chlorine; B: the C–Cl bond has partial double-bond character; C: the C–Cl bond is less polar; D: the C–Cl bond is longer because of repulsion between delocalised aromatic-ring electrons and chlorine lone pairs; E: the C–Cl bond is formed using an \\(sp^2\\)-hybridised carbon orbital. Choose the correct combination.",
       "question_ocr_raw": "As compared with chlorocyclohexane, which of the\nfollowing statements correctly apply to\nchlorobenzene ?\n\nA. The magnitude of negative charge is more on\nchlorine atoms\n\nB. The C — Cl bond has partial double bond\ncharacter\n\nC. C — Cl bond is less polar\n\nD. C — Cl bond is longer due to repulsion between\ndelocalised electrons of the aromatic ring and lone\npairs of electrons of chlorine.\n\nE. The C-Cl bond is formed using sp’ hybridised\norbital of carbon.\n\nChoose the correct answer from the options given\nbelow :\n\n(1) A, C and E only (2) B, C and D only\n(3) A, D and E only (4) B, C and E only",
       "options": {
         "A": "A, C and E only",
@@ -4718,10 +4907,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "As compared with chlorocyclohexane, which of the following statements correctly apply to chlorobenzene ? A. The magnitude of negative charge is more on chlorine atoms B. The C — Cl bond has partial double bond character C. C — Cl bond is less polar D. C — Cl bond is longer due to repulsion between delocalised electrons of the aromatic ring and lone pairs of electrons of chlorine. E. The C-Cl bond is formed using sp’ hybridised orbital of carbon. Choose the correct answer from the options given below :",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4740,7 +4932,7 @@
       "topic": "Henry law constant",
       "subtopic": null,
       "question_type": "single_correct_mcq",
-      "question_text": "Given below are two statements: Statement I : The Henry’s law constant K,, is constant with respect to variations in solution’s concentration over the range for which the solutions is ideally dilute. Statement II: K,, does not differ for the same solute in different solvents. In the light of the above statements, choose the correct answer from the options.",
+      "question_text": "Statement I: Henry's law constant \\(K_H\\) remains constant as solution concentration varies over the range where the solution is ideally dilute. Statement II: \\(K_H\\) does not differ for the same solute in different solvents. Choose the correct option.",
       "question_ocr_raw": "70.\n\nGiven below are two statements:\n\nStatement I : The Henry’s law constant K,, is\nconstant with respect to variations in solution’s\nconcentration over the range for which the\nsolutions is ideally dilute.\n\nStatement II: K,, does not differ for the same\nsolute in different solvents.\n\nIn the light of the above statements, choose the\ncorrect answer from the options.\n\n(1) Statement I is false but Statement II is true.\n(2) Statement I is true but Statement II is false.\n(3) Both Statement I and Statement II are true.\n\n(4) Both Statement I and Statement II are false.",
       "options": {
         "A": "Statement I is false but Statement II is true.",
@@ -4780,10 +4972,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Given below are two statements: Statement I : The Henry’s law constant K,, is constant with respect to variations in solution’s concentration over the range for which the solutions is ideally dilute. Statement II: K,, does not differ for the same solute in different solvents. In the light of the above statements, choose the correct answer from the options.",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4802,7 +4997,7 @@
       "topic": "Bromination of a cycloalkane",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "The cycloalkane (X) on bromination consumes one mole of bromine per mole of (X) and gives the product (Y) in which C:Br ratio is 3 : 1. The percentage of bromine in the product (Y) is %. (Nearest integer) (Given : Molar mass in g mol’ H: 1, C: 12, O: 16, Br: 80 )",
+      "question_text": "A cycloalkane \\(X\\) consumes one mole of bromine per mole of \\(X\\) on bromination and gives product \\(Y\\) with a C:Br ratio of 3:1. Find the percentage of bromine in \\(Y\\), to the nearest integer. Molar masses (g mol\\(^{-1}\\)): H = 1, C = 12, O = 16, Br = 80.",
       "question_ocr_raw": "71.\n\nThe cycloalkane (X) on bromination consumes one\n\nmole of bromine per mole of (X) and gives the\n\nproduct (Y) in which C:Br ratio is 3 : 1. The\n\npercentage of bromine in the product (Y) is\n%. (Nearest integer)\n\n(Given : Molar mass in g mol’ H: 1, C: 12,\n\nO: 16, Br: 80 )",
       "options": null,
       "options_ocr_raw": null,
@@ -4837,10 +5032,13 @@
       },
       "extraction_status": "ocr_extracted_not_human_verified",
       "quality_flags": [
-        "math_ocr_requires_review"
+        "solution_math_ocr_requires_review"
       ],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "The cycloalkane (X) on bromination consumes one mole of bromine per mole of (X) and gives the product (Y) in which C:Br ratio is 3 : 1. The percentage of bromine in the product (Y) is %. (Nearest integer) (Given : Molar mass in g mol’ H: 1, C: 12, O: 16, Br: 80 )",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4859,7 +5057,7 @@
       "topic": "Cell emf and reaction quotient",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Consider the following electrochemical cell at 298K Pt|HSnO; (aq)|Sn(OH),” (aq)|Bi,0, (s)|Bi(s). If the reaction quotient at a given time is 10°, then the cell EMF (E,,,) is x 10'V (Nearest integer). Given the standard half-cell reduction potential as 0 _ ee — —0.44V and E° =—0.90V Sn(OH)2-/HSn03,OH",
+      "question_text": "Consider the electrochemical cell at 298 K: \\(\\mathrm{Pt|HSnO_2^-(aq)|Sn(OH)_6^{2-}(aq)|Bi_2O_3(s)|Bi(s)}\\). If the reaction quotient is \\(10^6\\), find \\(E_{\\mathrm{cell}}=\\_\\_\\_\\times10^{-1}\\,\\mathrm V\\), to the nearest integer. Given \\(E^\\circ_{\\mathrm{Bi_2O_3/Bi,OH^-}}=-0.44\\,\\mathrm V\\) and \\(E^\\circ_{\\mathrm{Sn(OH)_6^{2-}/HSnO_2^-,OH^-}}=-0.90\\,\\mathrm V\\).",
       "question_ocr_raw": "72.\n\nConsider the following electrochemical cell at\n298K\n\nPt|HSnO; (aq)|Sn(OH),” (aq)|Bi,0, (s)|Bi(s).\n\nIf the reaction quotient at a given time is 10°, then\nthe cell EMF (E,,,) is x 10'V (Nearest\ninteger).\n\nGiven the standard half-cell reduction potential as\n\n0 _\nee — —0.44V and\nE° =—0.90V\n\nSn(OH)2-/HSn03,OH",
       "options": null,
       "options_ocr_raw": null,
@@ -4868,7 +5066,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "unparsed_ocr_use_question_image",
       "answer_text": "4",
-      "solution_text": "E,,, =-0.44—(-0.90)\n=+ 0.46 V\nApplying Nernst equation :-\no 0.06\nEon 7 Bey - oe\nE,. = 0.46 005 5910!\n6\nE.., =4* 10\"\n\ncell\n\nx=4",
+      "solution_text": "The standard cell potential is \\(E^\\circ_{\\mathrm{cell}}=-0.44-(-0.90)=+0.46\\,\\mathrm V\\). Applying the Nernst equation, \\(E_{\\mathrm{cell}}=E^\\circ_{\\mathrm{cell}}-\\frac{0.06}{n}\\log Q\\). Substituting \\(n=6\\) and \\(Q=10^6\\), \\(E_{\\mathrm{cell}}=0.46-\\frac{0.06}{6}\\log10^6=4\\times10^{-1}\\,\\mathrm V\\). Thus \\(x=4\\).",
       "solution_ocr_raw": "Sol. E,,, =-0.44—(-0.90)\n=+ 0.46 V\nApplying Nernst equation :-\no 0.06\nEon 7 Bey - oe\nE,. = 0.46 005 5910!\n6\nE.., =4* 10\"\n\ncell\n\nx=4",
       "difficulty": null,
       "marks_correct": 4,
@@ -4893,11 +5091,15 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review"
-      ],
+      "quality_flags": [],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Consider the following electrochemical cell at 298K Pt|HSnO; (aq)|Sn(OH),” (aq)|Bi,0, (s)|Bi(s). If the reaction quotient at a given time is 10°, then the cell EMF (E,,,) is x 10'V (Nearest integer). Given the standard half-cell reduction potential as 0 _ ee — —0.44V and E° =—0.90V Sn(OH)2-/HSn03,OH",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": "E,,, =-0.44—(-0.90)\n=+ 0.46 V\nApplying Nernst equation :-\no 0.06\nEon 7 Bey - oe\nE,. = 0.46 005 5910!\n6\nE.., =4* 10\"\n\ncell\n\nx=4",
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4916,7 +5118,7 @@
       "topic": "Arrhenius equation",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Tas The temperature at which the rate constants of the given below two gaseous reactions become equal is K. (Nearest integer). 30000 X—>Y k,=10%e 7) 24000 P—>Q_ k,=10*e 7 Given : In 10 = 2.303",
+      "question_text": "Find the temperature (nearest integer, in K) at which the rate constants of two gaseous reactions become equal: \\(X\\rightarrow Y,\\ k_1=10^6e^{-30000/T}\\); \\(P\\rightarrow Q,\\ k_2=10^4e^{-24000/T}\\). Given \\(\\ln10=2.303\\).",
       "question_ocr_raw": "Tas\n\nThe temperature at which the rate constants of the\ngiven below two gaseous reactions become equal is\nK. (Nearest integer).\n30000\nX—>Y k,=10%e 7)\n24000\n\nP—>Q_ k,=10*e 7\nGiven : In 10 = 2.303",
       "options": null,
       "options_ocr_raw": null,
@@ -4925,7 +5127,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "unparsed_ocr_use_question_image",
       "answer_text": "1303",
-      "solution_text": "10°e 7 =10°e 7\n6000\neT =100\nee =2In10\n_ 6000\n~ 2x2.303\nT = 1302.64 K\nT ~ 1303 K",
+      "solution_text": "Equating the rate constants gives \\(10^4e^{-24000/T}=10^6e^{-30000/T}\\). Hence \\(e^{6000/T}=100\\), so \\(\\frac{6000}{T}=2\\ln10\\). Therefore \\(T=\\frac{6000}{2\\times2.303}=1302.64\\,\\mathrm K\\), or approximately \\(1303\\,\\mathrm K\\).",
       "solution_ocr_raw": "Sol. 10°e 7 =10°e 7\n6000\neT =100\nee =2In10\n_ 6000\n~ 2x2.303\nT = 1302.64 K\nT ~ 1303 K",
       "difficulty": null,
       "marks_correct": 4,
@@ -4950,11 +5152,15 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review"
-      ],
+      "quality_flags": [],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Tas The temperature at which the rate constants of the given below two gaseous reactions become equal is K. (Nearest integer). 30000 X—>Y k,=10%e 7) 24000 P—>Q_ k,=10*e 7 Given : In 10 = 2.303",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": "10°e 7 =10°e 7\n6000\neT =100\nee =2In10\n_ 6000\n~ 2x2.303\nT = 1302.64 K\nT ~ 1303 K",
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -4973,7 +5179,7 @@
       "topic": "Halogen detection and Carius method",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Sodium fusion extract of an organic compound (Y) with CHCl, and chlorine water gives violet color to the CHCl, layer. 0.15g of (Y) gave 0.12 g of the silver halide precipitate in Carius method. Percentage of halogen in the compound (Y) is . (Nearest integer). (Given : molar mass g mol C : 12, H: 1, Cl: 35.5, Br : 80, I : 127)",
+      "question_text": "Sodium-fusion extract of organic compound \\(Y\\), treated with \\(\\mathrm{CHCl_3}\\) and chlorine water, gives a violet colour in the \\(\\mathrm{CHCl_3}\\) layer. A 0.15 g sample of \\(Y\\) gives 0.12 g of silver-halide precipitate by the Carius method. Find the percentage of halogen in \\(Y\\), to the nearest integer. Molar masses (g mol\\(^{-1}\\)): C = 12, H = 1, Cl = 35.5, Br = 80, I = 127.",
       "question_ocr_raw": "74.\n\nSodium fusion extract of an organic compound (Y)\nwith CHCl, and chlorine water gives violet color to\nthe CHCl, layer. 0.15g of (Y) gave 0.12 g of the\nsilver halide precipitate in Carius method.\nPercentage of halogen in the compound (Y) is\n. (Nearest integer).\n\n(Given : molar mass g mol C : 12, H: 1, Cl: 35.5,\nBr : 80, I : 127)",
       "options": null,
       "options_ocr_raw": null,
@@ -4982,7 +5188,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "unparsed_ocr_use_question_image",
       "answer_text": "43",
-      "solution_text": "Iodine gives violet colour\n\n% of I= eee Mm 100\nMolecular weight of Agl W\n_ 127 O12 12.\n~ 335 0.15 15\"\n\n% of I= 43.23 % = 43%",
+      "solution_text": "Iodine gives the violet colour. The halogen percentage is calculated as \\(\\%I=\\frac{\\text{atomic weight of I}}{\\text{molecular weight of AgI}}\\times\\frac{m}{W}\\times100\\). Thus \\(\\%I=\\frac{127}{235}\\times\\frac{0.12}{0.15}\\times100=43.23\\%\\approx43\\%\\).",
       "solution_ocr_raw": "Sol. Iodine gives violet colour\n\n% of I= eee Mm 100\nMolecular weight of Agl W\n_ 127 O12 12.\n~ 335 0.15 15\"\n\n% of I= 43.23 % = 43%",
       "difficulty": null,
       "marks_correct": 4,
@@ -5007,11 +5213,15 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review"
-      ],
+      "quality_flags": [],
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Sodium fusion extract of an organic compound (Y) with CHCl, and chlorine water gives violet color to the CHCl, layer. 0.15g of (Y) gave 0.12 g of the silver halide precipitate in Carius method. Percentage of halogen in the compound (Y) is . (Nearest integer). (Given : molar mass g mol C : 12, H: 1, Cl: 35.5, Br : 80, I : 127)",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": "Iodine gives violet colour\n\n% of I= eee Mm 100\nMolecular weight of Agl W\n_ 127 O12 12.\n~ 335 0.15 15\"\n\n% of I= 43.23 % = 43%",
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     },
@@ -5030,7 +5240,7 @@
       "topic": "Gas dissociation and Gibbs energy",
       "subtopic": null,
       "question_type": "numerical_value",
-      "question_text": "Dissociation of a gas A, takes place according to the following chemical reactions. At equilibrium, the total pressure is 1 bar at 300K. A,(g)——=2A(g) The standard Gibbs energy of formation of the involved substances has been provided below: Substance | AG, / kImol | A, 100.00 | A —50.832 The degree of dissociation of A,(g) is given by (x x 10°)'” where x = (Nearest integer). [Given : R=8 J mol' K', log 2 = 0.3010, log 3 = 0.48]",
+      "question_text": "Gas \\(A_2\\) dissociates according to \\(A_2(g)\\rightleftharpoons2A(g)\\). At equilibrium, total pressure is 1 bar at 300 K. Standard Gibbs energies of formation are \\(\\Delta G_f^\\circ(A_2)=-100.00\\,\\mathrm{kJ\\,mol^{-1}}\\) and \\(\\Delta G_f^\\circ(A)=-50.832\\,\\mathrm{kJ\\,mol^{-1}}\\). The degree of dissociation of \\(A_2(g)\\) is \\((x\\times10^{-2})^{1/2}\\). Find \\(x\\) to the nearest integer. Given \\(R=8\\,\\mathrm{J\\,mol^{-1}K^{-1}}\\), \\(\\log2=0.3010\\), \\(\\log3=0.48\\).",
       "question_ocr_raw": "75.\n\nDissociation of a gas A, takes place according to\nthe following chemical reactions. At equilibrium,\nthe total pressure is 1 bar at 300K.\n\nA,(g)——=2A(g)\n\nThe standard Gibbs energy of formation of the\ninvolved substances has been provided below:\nSubstance | AG, / kImol |\n\nA, 100.00 |\n\nA —50.832\n\nThe degree of dissociation of A,(g) is given by\n(x x 10°)'” where x =\n\n(Nearest integer).\n\n[Given : R=8 J mol' K', log 2 = 0.3010,\n\nlog 3 = 0.48]",
       "options": null,
       "options_ocr_raw": null,
@@ -5039,7 +5249,7 @@
       "correct_answer_status": "printed_answer_detected",
       "options_extraction_method": "unparsed_ocr_use_question_image",
       "answer_text": "33",
-      "solution_text": "—1.664 x 10° =-8.3 x 300 InK,\nInK, = 0.693\nK, =2\n\n1/2\nQ= [210°]\n3\n\n= (33.33 x 10°)”",
+      "solution_text": "For the dissociation, the source evaluates \\(\\Delta G^\\circ_{\\mathrm{rxn}}=-1.664\\times10^3\\,\\mathrm J=-8.3\\times300\\ln K_p\\). This gives \\(\\ln K_p=0.693\\) and \\(K_p=2\\). Using \\(2=\\frac{4\\alpha^2P_0}{1-\\alpha^2}\\) at \\(P_0=1\\) bar gives \\(\\alpha=\\frac1{\\sqrt3}\\). Since \\(\\alpha=(x\\times10^{-2})^{1/2}\\), \\(x=\\frac{100}{3}\\approx33.33\\), so the nearest integer is \\(33\\).",
       "solution_ocr_raw": "Sol.\n\n—1.664 x 10° =-8.3 x 300 InK,\nInK, = 0.693\nK, =2\n\n1/2\nQ= [210°]\n3\n\n= (33.33 x 10°)”",
       "difficulty": null,
       "marks_correct": 4,
@@ -5064,12 +5274,16 @@
         "official_original_match_status": "not_verified"
       },
       "extraction_status": "ocr_extracted_not_human_verified",
-      "quality_flags": [
-        "math_ocr_requires_review"
-      ],
+      "quality_flags": [],
       "question_figure_image_path": "images/watermarked/questions/q075_figure.jpg",
       "question_image_source": "source-page crop; question/options retained in visual order",
       "question_image_review_status": "REVIEW_REQUIRED",
+      "question_text_ocr_existing": "Dissociation of a gas A, takes place according to the following chemical reactions. At equilibrium, the total pressure is 1 bar at 300K. A,(g)——=2A(g) The standard Gibbs energy of formation of the involved substances has been provided below: Substance | AG, / kImol | A, 100.00 | A —50.832 The degree of dissociation of A,(g) is given by (x x 10°)'” where x = (Nearest integer). [Given : R=8 J mol' K', log 2 = 0.3010, log 3 = 0.48]",
+      "question_text_review_status": "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP",
+      "question_text_review_note": "question stem only; solution text and provenance remain review-required",
+      "solution_text_ocr_existing": "—1.664 x 10° =-8.3 x 300 InK,\nInK, = 0.693\nK, =2\n\n1/2\nQ= [210°]\n3\n\n= (33.33 x 10°)”",
+      "solution_text_review_status": "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE",
+      "solution_text_review_note": "Printed solution transcription checked visually; broader PDF-byte provenance and publication rights remain unverified.",
       "classification_method": "inferred_from_source_question_text",
       "classification_status": "PROPOSED_REVIEW_REQUIRED"
     }
@@ -5085,10 +5299,13 @@
     "watermarked_image_count": 125,
     "watermark_checksums_verified": true,
     "answers_present": 74,
-    "solutions_text_present": 68,
+    "solutions_text_present": 73,
     "solutions_image_present": 6,
     "chapter_topic_proposals": 75,
-    "blocking_issue_count": 221,
+    "question_text_manual_transcriptions": 70,
+    "solution_text_manual_transcriptions": 9,
+    "solution_math_ocr_review_required": 61,
+    "blocking_issue_count": 212,
     "blocking_issues": [
       {
         "scope": "provenance",
@@ -5136,8 +5353,8 @@
       },
       {
         "question_number": 5,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 5,
@@ -5151,8 +5368,8 @@
       },
       {
         "question_number": 6,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 6,
@@ -5166,8 +5383,8 @@
       },
       {
         "question_number": 7,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 7,
@@ -5181,8 +5398,8 @@
       },
       {
         "question_number": 8,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 8,
@@ -5196,8 +5413,8 @@
       },
       {
         "question_number": 9,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 9,
@@ -5211,8 +5428,8 @@
       },
       {
         "question_number": 10,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 10,
@@ -5226,8 +5443,8 @@
       },
       {
         "question_number": 11,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 11,
@@ -5241,8 +5458,8 @@
       },
       {
         "question_number": 12,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 12,
@@ -5256,8 +5473,8 @@
       },
       {
         "question_number": 13,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 13,
@@ -5271,8 +5488,8 @@
       },
       {
         "question_number": 14,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 14,
@@ -5286,8 +5503,8 @@
       },
       {
         "question_number": 15,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 15,
@@ -5301,8 +5518,8 @@
       },
       {
         "question_number": 16,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 16,
@@ -5316,8 +5533,8 @@
       },
       {
         "question_number": 17,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 17,
@@ -5331,8 +5548,8 @@
       },
       {
         "question_number": 18,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 18,
@@ -5346,8 +5563,8 @@
       },
       {
         "question_number": 19,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 19,
@@ -5361,8 +5578,8 @@
       },
       {
         "question_number": 20,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 20,
@@ -5376,8 +5593,8 @@
       },
       {
         "question_number": 21,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 21,
@@ -5391,8 +5608,8 @@
       },
       {
         "question_number": 22,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 22,
@@ -5406,8 +5623,8 @@
       },
       {
         "question_number": 23,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 23,
@@ -5421,8 +5638,8 @@
       },
       {
         "question_number": 24,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 24,
@@ -5436,8 +5653,8 @@
       },
       {
         "question_number": 25,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 25,
@@ -5451,8 +5668,8 @@
       },
       {
         "question_number": 26,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 26,
@@ -5466,11 +5683,6 @@
       },
       {
         "question_number": 27,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 27,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -5481,8 +5693,8 @@
       },
       {
         "question_number": 28,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 28,
@@ -5496,8 +5708,8 @@
       },
       {
         "question_number": 29,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 29,
@@ -5511,8 +5723,8 @@
       },
       {
         "question_number": 30,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 30,
@@ -5526,8 +5738,8 @@
       },
       {
         "question_number": 31,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 31,
@@ -5541,11 +5753,6 @@
       },
       {
         "question_number": 32,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 32,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -5556,8 +5763,8 @@
       },
       {
         "question_number": 33,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 33,
@@ -5571,8 +5778,8 @@
       },
       {
         "question_number": 34,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 34,
@@ -5586,8 +5793,8 @@
       },
       {
         "question_number": 35,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 35,
@@ -5601,8 +5808,8 @@
       },
       {
         "question_number": 36,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 36,
@@ -5616,8 +5823,8 @@
       },
       {
         "question_number": 37,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 37,
@@ -5628,11 +5835,6 @@
         "question_number": 37,
         "field": "chapter/topic",
         "issue": "Proposed chapter/topic classification requires review"
-      },
-      {
-        "question_number": 38,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
       },
       {
         "question_number": 38,
@@ -5656,8 +5858,8 @@
       },
       {
         "question_number": 40,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 40,
@@ -5671,8 +5873,8 @@
       },
       {
         "question_number": 41,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 41,
@@ -5686,8 +5888,8 @@
       },
       {
         "question_number": 42,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 42,
@@ -5701,8 +5903,8 @@
       },
       {
         "question_number": 43,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 43,
@@ -5716,8 +5918,8 @@
       },
       {
         "question_number": 44,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 44,
@@ -5731,11 +5933,6 @@
       },
       {
         "question_number": 45,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 45,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -5746,8 +5943,8 @@
       },
       {
         "question_number": 46,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 46,
@@ -5761,8 +5958,8 @@
       },
       {
         "question_number": 47,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 47,
@@ -5776,8 +5973,8 @@
       },
       {
         "question_number": 48,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 48,
@@ -5791,8 +5988,8 @@
       },
       {
         "question_number": 49,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 49,
@@ -5806,8 +6003,8 @@
       },
       {
         "question_number": 50,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 50,
@@ -5821,8 +6018,8 @@
       },
       {
         "question_number": 51,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 51,
@@ -5836,8 +6033,8 @@
       },
       {
         "question_number": 52,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 52,
@@ -5851,8 +6048,8 @@
       },
       {
         "question_number": 53,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 53,
@@ -5866,8 +6063,8 @@
       },
       {
         "question_number": 54,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 54,
@@ -5881,8 +6078,8 @@
       },
       {
         "question_number": 55,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 55,
@@ -5896,8 +6093,8 @@
       },
       {
         "question_number": 56,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 56,
@@ -5911,8 +6108,8 @@
       },
       {
         "question_number": 57,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 57,
@@ -5926,8 +6123,8 @@
       },
       {
         "question_number": 58,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 58,
@@ -5941,8 +6138,8 @@
       },
       {
         "question_number": 59,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 59,
@@ -5956,11 +6153,6 @@
       },
       {
         "question_number": 60,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 60,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -5971,8 +6163,8 @@
       },
       {
         "question_number": 61,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 61,
@@ -5986,8 +6178,8 @@
       },
       {
         "question_number": 62,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 62,
@@ -6001,8 +6193,8 @@
       },
       {
         "question_number": 63,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 63,
@@ -6016,8 +6208,8 @@
       },
       {
         "question_number": 64,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 64,
@@ -6031,8 +6223,8 @@
       },
       {
         "question_number": 65,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 65,
@@ -6046,8 +6238,8 @@
       },
       {
         "question_number": 66,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 66,
@@ -6061,8 +6253,8 @@
       },
       {
         "question_number": 67,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 67,
@@ -6076,8 +6268,8 @@
       },
       {
         "question_number": 68,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 68,
@@ -6091,8 +6283,8 @@
       },
       {
         "question_number": 69,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 69,
@@ -6106,8 +6298,8 @@
       },
       {
         "question_number": 70,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 70,
@@ -6121,8 +6313,8 @@
       },
       {
         "question_number": 71,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
+        "field": "solution_text",
+        "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
       },
       {
         "question_number": 71,
@@ -6136,11 +6328,6 @@
       },
       {
         "question_number": 72,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 72,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -6151,11 +6338,6 @@
       },
       {
         "question_number": 73,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 73,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -6166,11 +6348,6 @@
       },
       {
         "question_number": 74,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
-      },
-      {
-        "question_number": 74,
         "field": "image_review",
         "issue": "Question image is not formally approved"
       },
@@ -6178,11 +6355,6 @@
         "question_number": 74,
         "field": "chapter/topic",
         "issue": "Proposed chapter/topic classification requires review"
-      },
-      {
-        "question_number": 75,
-        "field": "question_text/solution",
-        "issue": "Existing math OCR flag requires source-by-source verification"
       },
       {
         "question_number": 75,
@@ -6200,7 +6372,9 @@
     "notes": [
       "Watermarked derivatives are linked in this candidate; original images remain unchanged.",
       "Proposed chapter/topic metadata is inferred from question content, not printed source labels.",
-      "Source JSON OCR flags are deliberately retained. Do not import while this gate is blocked.",
+      "Manual question-stem transcriptions are overlaid only from visually inspected question crops; the prior OCR stem is preserved in question_text_ocr_existing and question_ocr_raw.",
+      "Nine printed solutions were manually transcribed from inspected solution crops/page images; original solution OCR is preserved in solution_text_ocr_existing and solution_ocr_raw.",
+      "Solution math OCR review flags remain on the other records and are explicit import blockers. Do not import while this gate is blocked.",
       "Q39 remains Dropped with no invented answer.",
       "Watermark presence and file checksums were tested; question accuracy and source/publication rights are not certified by structural QA."
     ]

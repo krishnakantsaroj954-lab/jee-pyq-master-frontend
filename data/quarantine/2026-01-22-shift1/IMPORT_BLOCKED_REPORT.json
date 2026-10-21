@@ -9,10 +9,13 @@
   "watermarked_image_count": 125,
   "watermark_checksums_verified": true,
   "answers_present": 74,
-  "solutions_text_present": 68,
+  "solutions_text_present": 73,
   "solutions_image_present": 6,
   "chapter_topic_proposals": 75,
-  "blocking_issue_count": 221,
+  "question_text_manual_transcriptions": 70,
+  "solution_text_manual_transcriptions": 9,
+  "solution_math_ocr_review_required": 61,
+  "blocking_issue_count": 212,
   "blocking_issues": [
     {
       "scope": "provenance",
@@ -60,8 +63,8 @@
     },
     {
       "question_number": 5,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 5,
@@ -75,8 +78,8 @@
     },
     {
       "question_number": 6,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 6,
@@ -90,8 +93,8 @@
     },
     {
       "question_number": 7,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 7,
@@ -105,8 +108,8 @@
     },
     {
       "question_number": 8,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 8,
@@ -120,8 +123,8 @@
     },
     {
       "question_number": 9,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 9,
@@ -135,8 +138,8 @@
     },
     {
       "question_number": 10,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 10,
@@ -150,8 +153,8 @@
     },
     {
       "question_number": 11,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 11,
@@ -165,8 +168,8 @@
     },
     {
       "question_number": 12,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 12,
@@ -180,8 +183,8 @@
     },
     {
       "question_number": 13,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 13,
@@ -195,8 +198,8 @@
     },
     {
       "question_number": 14,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 14,
@@ -210,8 +213,8 @@
     },
     {
       "question_number": 15,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 15,
@@ -225,8 +228,8 @@
     },
     {
       "question_number": 16,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 16,
@@ -240,8 +243,8 @@
     },
     {
       "question_number": 17,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 17,
@@ -255,8 +258,8 @@
     },
     {
       "question_number": 18,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 18,
@@ -270,8 +273,8 @@
     },
     {
       "question_number": 19,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 19,
@@ -285,8 +288,8 @@
     },
     {
       "question_number": 20,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 20,
@@ -300,8 +303,8 @@
     },
     {
       "question_number": 21,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 21,
@@ -315,8 +318,8 @@
     },
     {
       "question_number": 22,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 22,
@@ -330,8 +333,8 @@
     },
     {
       "question_number": 23,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 23,
@@ -345,8 +348,8 @@
     },
     {
       "question_number": 24,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 24,
@@ -360,8 +363,8 @@
     },
     {
       "question_number": 25,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 25,
@@ -375,8 +378,8 @@
     },
     {
       "question_number": 26,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 26,
@@ -390,11 +393,6 @@
     },
     {
       "question_number": 27,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 27,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -405,8 +403,8 @@
     },
     {
       "question_number": 28,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 28,
@@ -420,8 +418,8 @@
     },
     {
       "question_number": 29,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 29,
@@ -435,8 +433,8 @@
     },
     {
       "question_number": 30,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 30,
@@ -450,8 +448,8 @@
     },
     {
       "question_number": 31,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 31,
@@ -465,11 +463,6 @@
     },
     {
       "question_number": 32,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 32,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -480,8 +473,8 @@
     },
     {
       "question_number": 33,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 33,
@@ -495,8 +488,8 @@
     },
     {
       "question_number": 34,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 34,
@@ -510,8 +503,8 @@
     },
     {
       "question_number": 35,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 35,
@@ -525,8 +518,8 @@
     },
     {
       "question_number": 36,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 36,
@@ -540,8 +533,8 @@
     },
     {
       "question_number": 37,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 37,
@@ -552,11 +545,6 @@
       "question_number": 37,
       "field": "chapter/topic",
       "issue": "Proposed chapter/topic classification requires review"
-    },
-    {
-      "question_number": 38,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
     },
     {
       "question_number": 38,
@@ -580,8 +568,8 @@
     },
     {
       "question_number": 40,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 40,
@@ -595,8 +583,8 @@
     },
     {
       "question_number": 41,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 41,
@@ -610,8 +598,8 @@
     },
     {
       "question_number": 42,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 42,
@@ -625,8 +613,8 @@
     },
     {
       "question_number": 43,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 43,
@@ -640,8 +628,8 @@
     },
     {
       "question_number": 44,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 44,
@@ -655,11 +643,6 @@
     },
     {
       "question_number": 45,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 45,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -670,8 +653,8 @@
     },
     {
       "question_number": 46,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 46,
@@ -685,8 +668,8 @@
     },
     {
       "question_number": 47,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 47,
@@ -700,8 +683,8 @@
     },
     {
       "question_number": 48,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 48,
@@ -715,8 +698,8 @@
     },
     {
       "question_number": 49,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 49,
@@ -730,8 +713,8 @@
     },
     {
       "question_number": 50,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 50,
@@ -745,8 +728,8 @@
     },
     {
       "question_number": 51,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 51,
@@ -760,8 +743,8 @@
     },
     {
       "question_number": 52,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 52,
@@ -775,8 +758,8 @@
     },
     {
       "question_number": 53,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 53,
@@ -790,8 +773,8 @@
     },
     {
       "question_number": 54,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 54,
@@ -805,8 +788,8 @@
     },
     {
       "question_number": 55,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 55,
@@ -820,8 +803,8 @@
     },
     {
       "question_number": 56,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 56,
@@ -835,8 +818,8 @@
     },
     {
       "question_number": 57,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 57,
@@ -850,8 +833,8 @@
     },
     {
       "question_number": 58,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 58,
@@ -865,8 +848,8 @@
     },
     {
       "question_number": 59,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 59,
@@ -880,11 +863,6 @@
     },
     {
       "question_number": 60,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 60,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -895,8 +873,8 @@
     },
     {
       "question_number": 61,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 61,
@@ -910,8 +888,8 @@
     },
     {
       "question_number": 62,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 62,
@@ -925,8 +903,8 @@
     },
     {
       "question_number": 63,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 63,
@@ -940,8 +918,8 @@
     },
     {
       "question_number": 64,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 64,
@@ -955,8 +933,8 @@
     },
     {
       "question_number": 65,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 65,
@@ -970,8 +948,8 @@
     },
     {
       "question_number": 66,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 66,
@@ -985,8 +963,8 @@
     },
     {
       "question_number": 67,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 67,
@@ -1000,8 +978,8 @@
     },
     {
       "question_number": 68,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 68,
@@ -1015,8 +993,8 @@
     },
     {
       "question_number": 69,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 69,
@@ -1030,8 +1008,8 @@
     },
     {
       "question_number": 70,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 70,
@@ -1045,8 +1023,8 @@
     },
     {
       "question_number": 71,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
+      "field": "solution_text",
+      "issue": "Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay"
     },
     {
       "question_number": 71,
@@ -1060,11 +1038,6 @@
     },
     {
       "question_number": 72,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 72,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -1075,11 +1048,6 @@
     },
     {
       "question_number": 73,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 73,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -1090,11 +1058,6 @@
     },
     {
       "question_number": 74,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
-    },
-    {
-      "question_number": 74,
       "field": "image_review",
       "issue": "Question image is not formally approved"
     },
@@ -1102,11 +1065,6 @@
       "question_number": 74,
       "field": "chapter/topic",
       "issue": "Proposed chapter/topic classification requires review"
-    },
-    {
-      "question_number": 75,
-      "field": "question_text/solution",
-      "issue": "Existing math OCR flag requires source-by-source verification"
     },
     {
       "question_number": 75,
@@ -1124,7 +1082,9 @@
   "notes": [
     "Watermarked derivatives are linked in this candidate; original images remain unchanged.",
     "Proposed chapter/topic metadata is inferred from question content, not printed source labels.",
-    "Source JSON OCR flags are deliberately retained. Do not import while this gate is blocked.",
+    "Manual question-stem transcriptions are overlaid only from visually inspected question crops; the prior OCR stem is preserved in question_text_ocr_existing and question_ocr_raw.",
+    "Nine printed solutions were manually transcribed from inspected solution crops/page images; original solution OCR is preserved in solution_text_ocr_existing and solution_ocr_raw.",
+    "Solution math OCR review flags remain on the other records and are explicit import blockers. Do not import while this gate is blocked.",
     "Q39 remains Dropped with no invented answer.",
     "Watermark presence and file checksums were tested; question accuracy and source/publication rights are not certified by structural QA."
   ]
