@@ -19,7 +19,7 @@ This isolated experiment uses the existing source PDF in this private repository
 
 Full-resolution crops, threshold maps, and dilation maps are temporary CI files.
 
-The first type-1 run was not visually acceptable: it produced page-sized regions and thin footer fragments across much of this PDF. The workflow now defaults to type 2 because the source pages use a two-column layout. The review output still requires a human visual check; page-spanning and extremely thin candidate regions are called out as warnings, and geometry crops are never import-ready.
+The first type-1 run was not visually acceptable: it produced page-sized regions and thin footer fragments. Type 2 was tested for the two-column layout, but it also produced full-height column crops and 256 regions for this 75-question paper, so that output is also rejected. The workflow saves the contact sheets first, then fails its quality gate when full-height merges, thin fragments, or more than 120 candidate regions are detected. This red result is an intentional fail-closed QA outcome, not an artifact-upload failure. The approach is still unsuitable as a source-to-question pipeline until a text/layout-aware segmentation method passes visual checks.
 
 ## Important limitations
 

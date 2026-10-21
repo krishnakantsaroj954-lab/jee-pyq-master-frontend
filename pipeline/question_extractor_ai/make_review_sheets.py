@@ -54,7 +54,9 @@ def main():
             if page_width > 0 and page_height > 0:
                 box_width = int(bbox.get("width", 0) or 0)
                 box_height = int(bbox.get("height", 0) or 0)
-                if box_width >= 0.90 * page_width and box_height >= 0.55 * page_height:
+                if box_height >= 0.85 * page_height and box_width >= 0.25 * page_width:
+                    quality_flags.append("Page %02d candidate %02d spans nearly the full page height and a substantial column width; likely a page/column merge." % (number, int(crop.get("indexOnPage", 0))))
+                elif box_width >= 0.90 * page_width and box_height >= 0.55 * page_height:
                     quality_flags.append("Page %02d candidate %02d covers most of the page; likely merged." % (number, int(crop.get("indexOnPage", 0))))
                 elif box_height <= 0.012 * page_height:
                     quality_flags.append("Page %02d candidate %02d is extremely thin; likely a line/footer fragment." % (number, int(crop.get("indexOnPage", 0))))
@@ -65,6 +67,9 @@ def main():
         if page.get("error"):
             entry["error"] = page["error"]
         compact_pages.append(entry)
+
+    if int(data.get("totalCrops", 0)) > 120:
+        quality_flags.append("The detector returned %s regions, above the 120-region sanity limit for this 75-question source paper; likely over-segmented." % int(data.get("totalCrops", 0)))
 
     review.mkdir(parents=True, exist_ok=True)
     make_sheet(pages, review / "page_overview.jpg", 4, 300, 350, 28)
@@ -79,7 +84,7 @@ def main():
         "totalPages": len(compact_pages),
         "totalCrops": int(data.get("totalCrops", 0)),
         "pagesWithErrors": int(data.get("pagesWithErrors", 0)),
-        "qualityStatus": "REVIEW_REQUIRED",
+        "qualityStatus": "REJECTED" if quality_flags else "REVIEW_REQUIRED",
         "qualityFlags": quality_flags,
         "pages": compact_pages,
         "contactSheets": ["page_overview.jpg", "candidate_crop_overview.jpg"],
@@ -93,6 +98,7 @@ def main():
         "- Candidate regions detected: " + str(compact.get("totalCrops")),
         "- Pages with errors: " + str(compact.get("pagesWithErrors")),
         "- Suspect geometry regions: " + str(len(quality_flags)),
+        "- QA status: " + str(compact.get("qualityStatus")),
         "- Automatic import: BLOCKED (geometry-only candidates are never import-ready).",
         "- Layout type: " + str((data.get("parameters") or {}).get("paperType")),
         "- Kernel: " + str((data.get("parameters") or {}).get("kernel")), "",

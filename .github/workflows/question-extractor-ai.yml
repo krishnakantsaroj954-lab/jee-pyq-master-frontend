@@ -106,3 +106,17 @@ jobs:
             git commit -m "chore: update experimental crop review sheets"
             git push origin "HEAD:$GITHUB_REF_NAME"
           fi
+
+      - name: Fail closed when geometry checks reject the candidates
+        if: success()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report_path = Path("question-extractor-output/review/manifest.json")
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          if report.get("qualityStatus") == "REJECTED":
+              print("::error::QuestionExtractorAI geometry QA rejected the output. Review the saved contact sheets; do not import these candidates.")
+              raise SystemExit(1)
+          print("Geometry checks raised no blocking warning. Human review is still required before any use.")
+          PY
