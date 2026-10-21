@@ -11,6 +11,15 @@ on:
       - "pipeline/build_jan22_import_candidate.py"
       - "pipeline/watermark_images.py"
       - "tests/test_jan22_full_question_crops.py"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/build-jan22-full-question-crops.yml"
+      - "pipeline/build_jan22_question_image_crops.py"
+      - "pipeline/build_jan22_full_question_crops.py"
+      - "pipeline/build_jan22_import_candidate.py"
+      - "pipeline/watermark_images.py"
+      - "tests/test_jan22_full_question_crops.py"
 
 permissions:
   contents: write
@@ -70,8 +79,17 @@ jobs:
           assert not (root / "IMPORT_READY.json").exists()
           print(json.dumps({"status":"STRUCTURAL_QA_PASSED_REVIEW_REQUIRED","questions":75,"full_question_crops":75,"assets":report["total_jpeg_assets"],"q39":"Dropped","direct_pdf_bytes_verified":False,"production_import":"NOT_PERFORMED"}, indent=2))
           PY
-      - name: Commit generated review images and manifests to this branch
+      - name: Upload watermarked candidate bundle for inspection
         if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jan22-shift1-watermarked-import-candidate
+          path: data/quarantine/2026-01-22-shift1/
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit generated review images and manifests to this branch
+        if: success() && github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
