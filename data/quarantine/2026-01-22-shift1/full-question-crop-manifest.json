@@ -2026,10 +2026,10 @@
       "question_number": 44,
       "question_id": "jee-main-2026-01-22-s1-q044",
       "path": "images/questions/q044_full_question.jpg",
-      "width": 834,
+      "width": 854,
       "height": 650,
-      "bytes": 83041,
-      "sha256": "c47f0d222b642ea565ec10851920a9b6ff8df405be619ab1a1f0c4ca511e2790",
+      "bytes": 85875,
+      "sha256": "bc748ed17703bcdee2ab1f92c4ec9c01b08c78611f753af941a98bc79555c81d",
       "start_header": {
         "page": 15,
         "side": "L",
@@ -2053,7 +2053,7 @@
           "native_bbox": [
             22,
             178,
-            856,
+            876,
             828
           ],
           "ocr_row_index_range": [

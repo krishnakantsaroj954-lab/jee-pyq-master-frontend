@@ -8,7 +8,7 @@
   "question_crop_manifest": "full-question-crop-manifest.json",
   "legacy_figure_solution_manifest": "image-crop-manifest.json",
   "asset_count": 125,
-  "assets_total_bytes": 16000080,
+  "assets_total_bytes": 16002914,
   "assets": [
     {
       "path": "images/pages/page_01.jpg",
@@ -474,8 +474,8 @@
     },
     {
       "path": "images/questions/q044_full_question.jpg",
-      "bytes": 83041,
-      "sha256": "c47f0d222b642ea565ec10851920a9b6ff8df405be619ab1a1f0c4ca511e2790",
+      "bytes": 85875,
+      "sha256": "bc748ed17703bcdee2ab1f92c4ec9c01b08c78611f753af941a98bc79555c81d",
       "mime_type": "image/jpeg"
     },
     {

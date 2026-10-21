@@ -779,13 +779,13 @@
     },
     {
       "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q044_full_question.jpg",
-      "source_sha256": "c47f0d222b642ea565ec10851920a9b6ff8df405be619ab1a1f0c4ca511e2790",
+      "source_sha256": "bc748ed17703bcdee2ab1f92c4ec9c01b08c78611f753af941a98bc79555c81d",
       "output_path": "data/quarantine/2026-01-22-shift1/images/watermarked/questions/q044_full_question.jpg",
-      "output_sha256": "6b014097a1074e41a617e22e28a0e1626fa0a87c170af52d2103575420d0678b",
-      "width": 834,
+      "output_sha256": "a76b6096b89f8167c32166925f627c8fd7e8c607c49300a96b901ffb3cc47231",
+      "width": 854,
       "height": 650,
       "mime_type": "image/jpeg",
-      "bytes": 110854
+      "bytes": 114098
     },
     {
       "source_path": "data/quarantine/2026-01-22-shift1/images/questions/q045_figure.jpg",
