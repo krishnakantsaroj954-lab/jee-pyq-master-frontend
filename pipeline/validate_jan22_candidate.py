@@ -16,6 +16,8 @@ from pathlib import Path
 
 EXPECTED_ANSWERS = {1: "A", 2: "B", 3: "C", 4: "D"}
 EXPECTED_MANUAL_TEXT = set(range(5, 39)) | set(range(40, 76))
+EXPECTED_MANUAL_SOLUTIONS = {27, 32, 38, 45, 60, 72, 73, 74, 75}
+EXPECTED_SOLUTION_REVIEW = EXPECTED_MANUAL_TEXT - EXPECTED_MANUAL_SOLUTIONS
 
 
 def read_json(path: Path):
@@ -73,6 +75,18 @@ def main() -> int:
             "Manual-transcription coverage mismatch: "
             f"missing={sorted(EXPECTED_MANUAL_TEXT - manual_numbers)}, "
             f"unexpected={sorted(manual_numbers - EXPECTED_MANUAL_TEXT)}"
+        )
+
+    manual_solution_numbers = {
+        int(q["question_number"])
+        for q in questions
+        if q.get("solution_text_review_status") == "MANUALLY_TRANSCRIBED_FROM_PRINTED_SOLUTION_IMAGE"
+    }
+    if manual_solution_numbers != EXPECTED_MANUAL_SOLUTIONS:
+        errors.append(
+            "Manual-solution transcription coverage mismatch: "
+            f"missing={sorted(EXPECTED_MANUAL_SOLUTIONS - manual_solution_numbers)}, "
+            f"unexpected={sorted(manual_solution_numbers - EXPECTED_MANUAL_SOLUTIONS)}"
         )
 
     q_images = [q.get("question_image_path") for q in questions]
@@ -139,6 +153,11 @@ def main() -> int:
         if not (str(q.get("solution_text") or "").strip() or q.get("solution_image_path")):
             no_solution.append(n)
 
+    if set(flagged_solution_numbers) != EXPECTED_SOLUTION_REVIEW:
+        errors.append(
+            "Solution OCR review-flag coverage mismatch: "
+            f"expected={sorted(EXPECTED_SOLUTION_REVIEW)}, actual={sorted(set(flagged_solution_numbers))}"
+        )
     if answer_mismatches:
         errors.append("Printed answer marker/stored answer consistency mismatches found.")
     if option_mismatches:
@@ -186,6 +205,10 @@ def main() -> int:
         "status": "STRUCTURAL_CONSISTENCY_PASSED_REVIEW_STILL_REQUIRED" if not errors else "STRUCTURAL_CONSISTENCY_FAILED",
         "question_count": len(questions),
         "manual_question_text_transcriptions": len(manual_numbers),
+        "manual_solution_text_transcriptions": len(manual_solution_numbers),
+        "solution_math_ocr_review_required": len(flagged_solution_numbers),
+        "solution_text_records": sum(bool(str(q.get("solution_text") or "").strip()) for q in questions),
+        "solution_image_records": sum(bool(q.get("solution_image_path")) for q in questions),
         "mcq_records_checked": mcq_count,
         "numerical_records_checked": numeric_count,
         "non_dropped_printed_answer_consistency_checked": answer_checked,
