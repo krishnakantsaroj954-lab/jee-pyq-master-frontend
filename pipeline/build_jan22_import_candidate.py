@@ -11,6 +11,7 @@ MANIFEST = ROOT / "full-question-crop-manifest.json"
 CANDIDATE = ROOT / "IMPORT_CANDIDATE.json"
 BLOCKED = ROOT / "IMPORT_BLOCKED_REPORT.json"
 READY = ROOT / "IMPORT_READY.json"
+TRANSCRIPTIONS = ROOT / "manual-question-transcriptions.json"
 
 # Proposed tags derived from each visible source question; they are not official
 # source labels and must be reviewed before the import gate can open.
@@ -106,9 +107,27 @@ def main() -> int:
     from watermark_images import build as watermark_build
     data = read(SOURCE)
     manifest = read(MANIFEST)
+    transcriptions = read(TRANSCRIPTIONS)
     wm = watermark_build(ROOT, "JEE PYQ Master")
     issues: list[dict[str, Any]] = []
     questions = data.get("questions", [])
+    manual_texts = transcriptions.get("transcriptions", {})
+    applied_transcriptions = 0
+    for question in questions:
+        number = str(question.get("question_number", ""))
+        entry = manual_texts.get(number)
+        if not isinstance(entry, dict) or not str(entry.get("question_text") or "").strip():
+            continue
+        question.setdefault("question_text_ocr_existing", question.get("question_text"))
+        question["question_text"] = entry["question_text"]
+        question["question_text_review_status"] = entry.get("status", "MANUAL_TRANSCRIPTION_PRESENT")
+        question["question_text_review_note"] = entry.get("scope", "Question stem transcription only; solutions/provenance remain review-required.")
+        applied_transcriptions += 1
+        flags = list(question.get("quality_flags") or [])
+        if "math_ocr_requires_review" in flags:
+            flags.remove("math_ocr_requires_review")
+            flags.append("solution_math_ocr_requires_review")
+        question["quality_flags"] = flags
     crops = {int(x["question_number"]): x for x in manifest.get("question_crops", [])}
     if len(questions) != 75:
         issues.append({"scope":"dataset","issue":f"Expected 75 question records; found {len(questions)}"})
@@ -174,8 +193,12 @@ def main() -> int:
         if not q.get("question_image_path") or not (ROOT / str(q.get("question_image_path",""))).is_file():
             issues.append({"question_number":n,"field":"question_image_path","issue":"Watermarked question image path is unresolved"})
         flags = q.get("quality_flags") or []
-        if "math_ocr_requires_review" in flags:
-            issues.append({"question_number":n,"field":"question_text/solution","issue":"Existing math OCR flag requires source-by-source verification"})
+        if "math_ocr_requires_review" in flags or "solution_math_ocr_requires_review" in flags:
+            issues.append({
+                "question_number":n,
+                "field":"solution_text",
+                "issue":"Solution math OCR still requires source-by-source verification; the question stem has a separate manual-transcription overlay" if q.get("question_text_review_status") == "MANUALLY_TRANSCRIBED_FROM_QUESTION_CROP" else "Existing math OCR flag requires source-by-source verification"
+            })
         if q.get("question_image_review_status") != "APPROVED":
             issues.append({"question_number":n,"field":"image_review","issue":"Question image is not formally approved"})
         if q.get("classification_status") != "APPROVED":
@@ -222,6 +245,8 @@ def main() -> int:
         "solutions_text_present":sum(bool(q.get("solution_text")) for q in questions),
         "solutions_image_present":sum(bool(q.get("solution_image_path")) for q in questions),
         "chapter_topic_proposals":sum(bool(q.get("chapter") and q.get("topic")) for q in questions),
+        "question_text_manual_transcriptions":applied_transcriptions,
+        "solution_math_ocr_review_required":sum("solution_math_ocr_requires_review" in (q.get("quality_flags") or []) for q in questions),
         "blocking_issue_count":len(issues),
         "blocking_issues":issues,
         "status":"IMPORT_READY" if not issues else "BLOCKED_REVIEW_REQUIRED",
@@ -229,7 +254,8 @@ def main() -> int:
         "notes":[
             "Watermarked derivatives are linked in this candidate; original images remain unchanged.",
             "Proposed chapter/topic metadata is inferred from question content, not printed source labels.",
-            "Source JSON OCR flags are deliberately retained. Do not import while this gate is blocked.",
+            "Manual question-stem transcriptions are overlaid only from visually inspected question crops; the prior OCR stem is preserved in question_text_ocr_existing and question_ocr_raw.",
+            "Solution math OCR flags remain unresolved and are explicit import blockers. Do not import while this gate is blocked.",
             "Q39 remains Dropped with no invented answer.",
             "Watermark presence and file checksums were tested; question accuracy and source/publication rights are not certified by structural QA."
         ]
