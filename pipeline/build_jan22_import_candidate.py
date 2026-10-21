@@ -186,9 +186,25 @@ def main() -> int:
             if page.get(field):
                 page[field] = branded_path(page[field])
 
-    wm_valid = all((ROOT / x["output_path"]).is_file() and
-                   sha256(ROOT / x["output_path"]) == x["output_sha256"] and
-                   x["output_sha256"] != x["source_sha256"] for x in wm.get("outputs",[]))
+    def resolve_watermark_output(value: str) -> Path | None:
+        candidate = Path(value)
+        possibilities = [candidate] if candidate.is_absolute() else [Path.cwd() / candidate, ROOT / candidate]
+        return next((item for item in possibilities if item.is_file()), None)
+
+    def verify_watermark_outputs(outputs: list[dict[str, Any]]) -> bool:
+        if not outputs:
+            return False
+        for entry in outputs:
+            output_path = resolve_watermark_output(str(entry.get("output_path") or ""))
+            if output_path is None:
+                return False
+            if sha256(output_path) != entry.get("output_sha256"):
+                return False
+            if entry.get("output_sha256") == entry.get("source_sha256"):
+                return False
+        return True
+
+    wm_valid = verify_watermark_outputs(wm.get("outputs", []))
     if not wm_valid:
         issues.append({"scope":"watermark","issue":"One or more watermark outputs failed checksum/change verification"})
 
