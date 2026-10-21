@@ -408,9 +408,20 @@ def main() -> int:
     page_images = {}
     expected_page_hashes = {}
     asset_manifest_path = root / "asset-manifest.json"
+    prior_manifest = {}
     if asset_manifest_path.is_file():
         prior_manifest = json.loads(asset_manifest_path.read_text(encoding="utf-8"))
-        expected_page_hashes = {a.get("path"): a.get("sha256") for a in prior_manifest.get("assets", []) if a.get("path", "").startswith("images/pages/")}
+        expected_page_hashes = {a.get("path"): a.get("sha256") for a in prior_manifest.get("assets", []) if str(a.get("path", "")).startswith("images/pages/")}
+    if not source_pdf_bytes_verified:
+        if prior_manifest.get("source_pdf_sha256") != SOURCE_SHA:
+            raise SystemExit("Without PDF bytes, asset-manifest.json must contain the pinned source PDF SHA-256 metadata.")
+        expected_paths = {f"images/pages/page_{i:02d}.jpg" for i in range(1, PAGE_COUNT + 1)}
+        if set(expected_page_hashes) != expected_paths:
+            raise SystemExit("Without PDF bytes, the asset manifest must pin exactly 24 source-page image hashes.")
+        for rel, digest in expected_page_hashes.items():
+            path = root / rel
+            if not path.is_file() or sha256(path) != digest:
+                raise SystemExit(f"Pinned source page-image SHA-256 mismatch: {rel}")
     for page_no in range(1, PAGE_COUNT + 1):
         path = root / "images" / "pages" / f"page_{page_no:02d}.jpg"
         if not path.is_file():
@@ -423,7 +434,33 @@ def main() -> int:
     if any(size[0] < 1000 or size[1] < 1500 for size in page_sizes.values()):
         raise SystemExit("Unexpected source page image dimensions; refusing low-resolution crops")
 
-    rows = load_ocr_rows(root, args.ocr_cache_dir.resolve() if args.ocr_cache_dir else None, page_images)
+    cache_path = args.ocr_cache_dir.resolve() if args.ocr_cache_dir else None
+    rows = load_ocr_rows(root, cache_path, page_images)
+    if cache_path is not None:
+        cache_meta = json.loads((cache_path / "ocr-cache-manifest.json").read_text(encoding="utf-8"))
+        ocr_provenance = {
+            "mode": "pinned_precomputed_ocr_rows",
+            "engine": cache_meta.get("ocr_engine"),
+            "config": cache_meta.get("ocr_config"),
+            "scale": cache_meta.get("scale"),
+            "cache_manifest_sha256": sha256(cache_path / "ocr-cache-manifest.json"),
+            "cache_file_count": len(cache_meta.get("files", [])),
+            "row_count": len(rows),
+        }
+    else:
+        try:
+            import pytesseract
+            engine_version = str(pytesseract.get_tesseract_version()).splitlines()[0]
+        except Exception as exc:
+            raise SystemExit("Tesseract/pytesseract is required when --ocr-cache-dir is not supplied") from exc
+        ocr_provenance = {
+            "mode": "ocr_run_from_verified_source_page_images",
+            "engine": engine_version,
+            "config": "--psm 6",
+            "scale": 0.72,
+            "row_count": len(rows),
+            "source_page_image_hashes_verified": not source_pdf_bytes_verified,
+        }
     headers, header_indices = locate_question_headers(rows, page_sizes)
     answer_mappings = locate_answers(rows, header_indices)
 
@@ -500,6 +537,7 @@ def main() -> int:
             "source SHA is pinned in dataset metadata and source page-image hashes are verified; actual PDF bytes were not available to this invocation"
         ),
         "source_page_count": PAGE_COUNT,
+        "ocr_provenance": ocr_provenance,
         "question_count": QUESTION_COUNT,
         "source_stream_order": "PDF page ascending; each page left column top-to-bottom, then right column top-to-bottom",
         "answer_boundary_rule": "Question crop stops before its own printed Ans. row; source-dropped Q39 includes its printed dropped label",

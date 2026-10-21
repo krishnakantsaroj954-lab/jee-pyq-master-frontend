@@ -9,7 +9,6 @@ on:
       - "pipeline/build_jan22_question_image_crops.py"
       - "pipeline/build_jan22_full_question_crops.py"
       - "tests/test_jan22_full_question_crops.py"
-      - "data/quarantine/2026-01-22-shift1/ocr-cache/**"
 
 permissions:
   contents: write
@@ -32,17 +31,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install image and test dependencies
-        run: python -m pip install --disable-pip-version-check Pillow pytest
+      - name: Install OCR, image and test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes tesseract-ocr
+          python -m pip install --disable-pip-version-check Pillow pytesseract pytest
       - name: Test source-aware boundary rules
         run: python -m pytest -q tests/test_jan22_full_question_crops.py
       - name: Rebuild bounded figure and solution crops
         run: python pipeline/build_jan22_question_image_crops.py --data-dir "$DATA_DIR"
-      - name: Build all 75 full-question crops from pinned OCR rows
+      - name: OCR verified source-page images and build all 75 full-question crops
         run: |
-          python pipeline/build_jan22_full_question_crops.py \
-            --data-dir "$DATA_DIR" \
-            --ocr-cache-dir "$DATA_DIR/ocr-cache"
+          python pipeline/build_jan22_full_question_crops.py --data-dir "$DATA_DIR"
           cat "$DATA_DIR/full-question-build-report.json" >> "$GITHUB_STEP_SUMMARY"
       - name: Fail closed on structural or source-contract errors
         run: |
