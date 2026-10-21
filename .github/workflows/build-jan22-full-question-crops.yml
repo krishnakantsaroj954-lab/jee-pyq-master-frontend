@@ -82,6 +82,8 @@ jobs:
           PY
       - name: Upload watermarked candidate bundle for inspection
         if: success()
+        # Artifact storage quota may be full; do not block the branch commit of QA outputs.
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: jan22-shift1-watermarked-import-candidate
