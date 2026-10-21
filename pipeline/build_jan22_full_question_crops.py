@@ -34,6 +34,7 @@ QUESTION_COUNT = 75
 MANUAL_HEADER_ANCHORS = {
     1: {"page": 2, "side": "L", "y": 445.8, "review_reason": "OCR misses printed question number; stem begins 'Let AB = ...'"},
     7: {"page": 3, "side": "R", "y": 184.7, "review_reason": "OCR misses printed question number; stem begins 'If a random variable...'"},
+    51: {"page": 18, "side": "L", "y": 445.8, "review_reason": "Hosted Tesseract 5.3 fails to join the printed Q51 number to its stem; source header visually checked on page 18 left column."},
 }
 
 # Leading OCR debris is tolerated only before an exact expected number and only

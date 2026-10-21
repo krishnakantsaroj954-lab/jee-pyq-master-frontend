@@ -44,3 +44,10 @@ def test_border_glyphs_are_not_used_as_question_content() -> None:
     assert not PIPE.meaningful_source_row(row(23, "R", 0, "—E——E——>EE—EEeo>——E————————————————= ==", x0=14, x1=860), 1736, 2456)
     assert not PIPE.meaningful_source_row(row(23, "R", 26, "1", x0=1716, x1=1725), 1736, 2456)
     assert PIPE.meaningful_source_row(row(23, "R", 189, "E. The C-Cl bond is formed using sp2 hybridised", x0=972, x1=1500), 1736, 2456)
+
+def test_hosted_tesseract_q51_header_has_explicit_source_anchor() -> None:
+    anchor = PIPE.MANUAL_HEADER_ANCHORS[51]
+    assert anchor["page"] == 18
+    assert anchor["side"] == "L"
+    assert abs(anchor["y"] - 445.8) < 0.1
+    assert "visually checked" in anchor["review_reason"]
