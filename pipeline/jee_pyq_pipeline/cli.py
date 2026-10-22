@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse,hashlib,json,shutil,signal,sys
+import argparse,hashlib,json,shutil,signal,sys,traceback
 from pathlib import Path
 from .config import load
 from .extract import extract
@@ -310,6 +310,7 @@ def main(argv=None):
         return run(args.config,args.output,args.max_pages,args.timeout_seconds,args.force_reextract)
     except Exception as e:
         print(f'EARLY FAIL: {e}',file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         return 2
 
 if __name__=='__main__':
