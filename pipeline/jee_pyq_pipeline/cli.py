@@ -126,135 +126,157 @@ def _check_review_manifest(config, questions, source_hash):
             })
     return not errors, ('APPROVED' if not errors else 'INVALID'), errors, template
 
-def _build_batch(config,output_dir:Path,timeout_seconds:int):
-    (output_dir/'assets').mkdir(parents=True,exist_ok=True)
-    source_hash=sha256_file(config.source_pdf)
+def _run_extraction(config, output_dir: Path, timeout_seconds: int):
+    (output_dir / 'assets').mkdir(parents=True, exist_ok=True)
 
-    def timed_out(_signum,_frame):
+    def timed_out(_signum, _frame):
         raise TimeoutError(f'Extraction exceeded {timeout_seconds} seconds')
 
-    prior=signal.signal(signal.SIGALRM,timed_out)
+    prior = signal.signal(signal.SIGALRM, timed_out)
     signal.alarm(timeout_seconds)
     try:
-        questions,assets,extraction_issues,page_count=extract(config,output_dir/'assets')
+        return extract(config, output_dir / 'assets')
     finally:
         signal.alarm(0)
-        signal.signal(signal.SIGALRM,prior)
+        signal.signal(signal.SIGALRM, prior)
 
-    issues=extraction_issues+validate(config,questions,page_count)
+
+def _validate_batch(config, questions, extraction_issues, page_count, source_hash):
+    issues = extraction_issues + validate(config, questions, page_count)
     structural_blockers = sum(1 for issue in issues if issue.blocking)
     review_ok, review_status, review_issues, review_template = _check_review_manifest(config, questions, source_hash)
+
     if structural_blockers:
-        status='QUARANTINED'
+        status = 'QUARANTINED'
     elif review_ok:
-        status='VALIDATED'
+        status = 'VALIDATED'
     else:
-        status='REVIEW_REQUIRED'
+        status = 'REVIEW_REQUIRED'
 
     for q in questions:
         if q.status == 'Dropped':
             continue
         if structural_blockers:
-            q.status='QUARANTINED'
+            q.status = 'QUARANTINED'
         elif status == 'REVIEW_REQUIRED':
-            q.status='REVIEW_REQUIRED'
+            q.status = 'REVIEW_REQUIRED'
         else:
-            q.status='VALIDATED'
+            q.status = 'VALIDATED'
 
+    return status, issues, review_status, review_issues, review_template
+
+
+def _serialize_batch(config, output_dir: Path, source_hash: str, status: str, questions, assets, issues, page_count, review_status, review_issues, review_template):
     # A structurally clean parse is not source-verified until every record has
     # explicit, content-bound human review. Dropped questions remain in the paper.
-    records={
-        'validated': [q.json() for q in questions if status == 'VALIDATED' and q.status in ('VALIDATED','Dropped')],
-        'review_required': [q.json() for q in questions if status == 'REVIEW_REQUIRED' and q.status in ('REVIEW_REQUIRED','Dropped')],
-        'quarantined': [q.json() for q in questions if q.status=='QUARANTINED'],
-        'rejected':[],
-        'dropped':[q.json() for q in questions if q.status=='Dropped'],
+    records = {
+        'validated': [q.json() for q in questions if status == 'VALIDATED' and q.status in ('VALIDATED', 'Dropped')],
+        'review_required': [q.json() for q in questions if status == 'REVIEW_REQUIRED' and q.status in ('REVIEW_REQUIRED', 'Dropped')],
+        'quarantined': [q.json() for q in questions if q.status == 'QUARANTINED'],
+        'rejected': [],
+        'dropped': [q.json() for q in questions if q.status == 'Dropped'],
     }
-    review_template_checksum = write_json(output_dir/'review-manifest-template.json', review_template)
-    checksums={name:write_json(output_dir/f'{name}.json',values) for name,values in records.items()}
 
-    answer_evidence={
-        'source_document':config.source_pdf.name,
-        'source_sha256':source_hash,
-        'answers':{f'{q.subject}:{q.source_question_number}':q.answer for q in questions if q.answer is not None and q.status!='Dropped'},
-        'question_types':{f'{q.subject}:{q.source_question_number}':q.question_type for q in questions},
-    }
-    solution_evidence={
-        'source_document':config.source_pdf.name,
-        'source_sha256':source_hash,
-        'solutions':{f'{q.subject}:{q.source_question_number}':q.solution for q in questions if q.solution},
-    }
-    checksums['source_answers']=write_json(output_dir/'source-answers.json',answer_evidence)
-    checksums['source_solutions']=write_json(output_dir/'source-solutions.json',solution_evidence)
-    checksums['review_template']=review_template_checksum
+    review_template_checksum = write_json(output_dir / 'review-manifest-template.json', review_template)
+    checksums = {name: write_json(output_dir / f'{name}.json', values) for name, values in records.items()}
 
-    intake={
-        'release':config.release,
-        'source_pdf':config.source_pdf.name,
-        'source_pdf_sha256':source_hash,
-        'source_zip':None if not config.source_zip else {'filename':config.source_zip.name,'sha256':sha256_file(config.source_zip)},
-        'pdf_page_count':page_count,
-        'selected_page_range':list(config.page_range),
-        'identity':{'exam':config.exam,'year':config.year,'session':config.session,'paper':config.paper,'subject':config.subject},
+    answer_evidence = {
+        'source_document': config.source_pdf.name,
+        'source_sha256': source_hash,
+        'answers': {f'{q.subject}:{q.source_question_number}': q.answer for q in questions if q.answer is not None and q.status != 'Dropped'},
+        'question_types': {f'{q.subject}:{q.source_question_number}': q.question_type for q in questions},
     }
-    write_json(output_dir/'source-intake.json',intake)
+    solution_evidence = {
+        'source_document': config.source_pdf.name,
+        'source_sha256': source_hash,
+        'solutions': {f'{q.subject}:{q.source_question_number}': q.solution for q in questions if q.solution},
+    }
+    checksums['source_answers'] = write_json(output_dir / 'source-answers.json', answer_evidence)
+    checksums['source_solutions'] = write_json(output_dir / 'source-solutions.json', solution_evidence)
+    checksums['review_template'] = review_template_checksum
 
-    report={
-        'validator_version':VERSION,
-        'status':status,
-        'counts':{k:len(v) for k,v in records.items()},
-        'status_counts':{
-            'VALIDATED':sum(1 for q in questions if q.status=='VALIDATED'),
-            'REVIEW_REQUIRED':sum(1 for q in questions if q.status=='REVIEW_REQUIRED'),
-            'Dropped':sum(1 for q in questions if q.status=='Dropped'),
-            'QUARANTINED':sum(1 for q in questions if q.status=='QUARANTINED'),
+    intake = {
+        'release': config.release,
+        'source_pdf': config.source_pdf.name,
+        'source_pdf_sha256': source_hash,
+        'source_zip': None if not config.source_zip else {'filename': config.source_zip.name, 'sha256': sha256_file(config.source_zip)},
+        'pdf_page_count': page_count,
+        'selected_page_range': list(config.page_range),
+        'identity': {'exam': config.exam, 'year': config.year, 'session': config.session, 'paper': config.paper, 'subject': config.subject},
+    }
+    write_json(output_dir / 'source-intake.json', intake)
+
+    report = {
+        'validator_version': VERSION,
+        'status': status,
+        'counts': {k: len(v) for k, v in records.items()},
+        'status_counts': {
+            'VALIDATED': sum(1 for q in questions if q.status == 'VALIDATED'),
+            'REVIEW_REQUIRED': sum(1 for q in questions if q.status == 'REVIEW_REQUIRED'),
+            'Dropped': sum(1 for q in questions if q.status == 'Dropped'),
+            'QUARANTINED': sum(1 for q in questions if q.status == 'QUARANTINED'),
         },
-        'review_gate':{
-            'status':review_status,
-            'manifest':str(config.review_manifest) if config.review_manifest else None,
-            'issues':review_issues,
-            'template':'review-manifest-template.json',
+        'review_gate': {
+            'status': review_status,
+            'manifest': str(config.review_manifest) if config.review_manifest else None,
+            'issues': review_issues,
+            'template': 'review-manifest-template.json',
         },
-        'question_type_counts':{
-            'MCQ':sum(1 for q in questions if q.question_type=='MCQ'),
-            'NUMERICAL':sum(1 for q in questions if q.question_type=='NUMERICAL'),
-            'UNKNOWN':sum(1 for q in questions if q.question_type=='UNKNOWN'),
+        'question_type_counts': {
+            'MCQ': sum(1 for q in questions if q.question_type == 'MCQ'),
+            'NUMERICAL': sum(1 for q in questions if q.question_type == 'NUMERICAL'),
+            'UNKNOWN': sum(1 for q in questions if q.question_type == 'UNKNOWN'),
         },
-        'subject_counts':{
-            s:sum(1 for q in questions if q.subject==s) for s in ('Physics','Chemistry','Mathematics')
+        'subject_counts': {
+            s: sum(1 for q in questions if q.subject == s) for s in ('Physics', 'Chemistry', 'Mathematics')
         },
-        'blocking_issue_count':sum(i.blocking for i in issues) + len(review_issues),
-        'issues':[i.__dict__ for i in issues] + [
-            {'code':item['code'],'message':item['message'],'blocking':True,'question_id':None}
+        'blocking_issue_count': sum(i.blocking for i in issues) + len(review_issues),
+        'issues': [i.__dict__ for i in issues] + [
+            {'code': item['code'], 'message': item['message'], 'blocking': True, 'question_id': None}
             for item in review_issues
         ],
     }
-    write_json(output_dir/'validation-report.json',report)
+    write_json(output_dir / 'validation-report.json', report)
 
-    manifest={
-        'format':'jee-pyq-review-batch/v2',
-        'run_id':output_dir.name,
-        'created_at':'DETERMINISTIC_FROM_SOURCE_HASH',
-        'status':status,
-        'source_intake':'source-intake.json',
-        'records':checksums,
-        'asset_count':len(assets),
-        'validator_version':VERSION,
-        'import_boundary':'IMPORT_READY.json is emitted only after structural checks pass and a complete content-bound per-question source review is approved; this pipeline never imports and never touches D1.',
+    manifest = {
+        'format': 'jee-pyq-review-batch/v2',
+        'run_id': output_dir.name,
+        'created_at': 'DETERMINISTIC_FROM_SOURCE_HASH',
+        'status': status,
+        'source_intake': 'source-intake.json',
+        'records': checksums,
+        'asset_count': len(assets),
+        'validator_version': VERSION,
+        'import_boundary': 'IMPORT_READY.json is emitted only after structural checks pass and a complete content-bound per-question source review is approved; this pipeline never imports and never touches D1.',
     }
-    write_json(output_dir/'batch-manifest.json',manifest)
+    write_json(output_dir / 'batch-manifest.json', manifest)
 
-    if status=='VALIDATED':
-        write_json(output_dir/'IMPORT_READY.json',{
-            'run_id':output_dir.name,
-            'manifest_sha256':sha256_file(output_dir/'batch-manifest.json'),
-            'validated_json_sha256':checksums['validated'],
-            'source_answers_sha256':checksums['source_answers'],
-            'source_solutions_sha256':checksums['source_solutions'],
-            'dropped_json_sha256':checksums['dropped'],
-            'status':'VALIDATED',
-            'instruction':'Import must consume this exact batch directory/artifact and reverify all checksums; do not re-extract the source PDF.',
+    if status == 'VALIDATED':
+        write_json(output_dir / 'IMPORT_READY.json', {
+            'run_id': output_dir.name,
+            'manifest_sha256': sha256_file(output_dir / 'batch-manifest.json'),
+            'validated_json_sha256': checksums['validated'],
+            'source_answers_sha256': checksums['source_answers'],
+            'source_solutions_sha256': checksums['source_solutions'],
+            'dropped_json_sha256': checksums['dropped'],
+            'status': 'VALIDATED',
+            'instruction': 'Import must consume this exact batch directory/artifact and reverify all checksums; do not re-extract the source PDF.',
         })
+
+
+def _build_batch(config, output_dir: Path, timeout_seconds: int):
+    source_hash = sha256_file(config.source_pdf)
+    questions, assets, extraction_issues, page_count = _run_extraction(config, output_dir, timeout_seconds)
+
+    status, issues, review_status, review_issues, review_template = _validate_batch(
+        config, questions, extraction_issues, page_count, source_hash
+    )
+
+    _serialize_batch(
+        config, output_dir, source_hash, status, questions, assets, issues,
+        page_count, review_status, review_issues, review_template
+    )
+
     return status
 
 def run(config_path:Path,output_root:Path,max_pages:int=50,timeout_seconds:int=1200,force_reextract:bool=False)->int:
