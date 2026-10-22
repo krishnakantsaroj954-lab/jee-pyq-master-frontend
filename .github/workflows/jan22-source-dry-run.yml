@@ -5,20 +5,24 @@ on:
     branches:
       - fix/jan22-scan-ocr-dry-run-20261022
     paths:
-      - "cEDaK5Wn5ILe4nOdotd6.pdf"
       - "representative-config.json"
       - "run-dry-run.sh"
+      - "scripts/prepare_jan22_source_pdf.py"
       - "scripts/verify_jan22_source.py"
+      - "data/quarantine/2026-01-22-shift1/asset-manifest.json"
+      - "data/quarantine/2026-01-22-shift1/images/pages/**"
       - ".github/workflows/jan22-source-dry-run.yml"
       - "pipeline/jee_pyq_pipeline/**"
       - "pyproject.toml"
   pull_request:
     branches: [main]
     paths:
-      - "cEDaK5Wn5ILe4nOdotd6.pdf"
       - "representative-config.json"
       - "run-dry-run.sh"
+      - "scripts/prepare_jan22_source_pdf.py"
       - "scripts/verify_jan22_source.py"
+      - "data/quarantine/2026-01-22-shift1/asset-manifest.json"
+      - "data/quarantine/2026-01-22-shift1/images/pages/**"
       - ".github/workflows/jan22-source-dry-run.yml"
       - "pipeline/jee_pyq_pipeline/**"
       - "pyproject.toml"
@@ -32,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Checkout exact source and pipeline revision
+      - name: Checkout pipeline and pinned Jan 22 source-page bundle
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -51,19 +55,22 @@ jobs:
       - name: Run parser and validation tests
         run: python -m pytest -q
 
-      - name: Verify exact Jan 22 source PDF identity
+      - name: Verify 24 pinned source-page JPEGs and prepare OCR derivative
         id: source
         continue-on-error: true
-        run: python scripts/verify_jan22_source.py
+        shell: bash
+        run: |
+          python scripts/prepare_jan22_source_pdf.py
+          python scripts/verify_jan22_source.py
 
-      - name: Run real-PDF OCR extraction (no D1 import)
+      - name: Run real-paper OCR extraction (no D1 import)
         if: steps.source.outcome == 'success' && steps.source.outputs.verified == 'true'
         shell: bash
         run: |
           set -o pipefail
           ./run-dry-run.sh 2>&1 | tee /tmp/jan22-dry-run.log
 
-      - name: Summarize the source gate and extraction result
+      - name: Summarize source gate and extraction status
         if: always()
         shell: bash
         run: |
@@ -72,47 +79,45 @@ jobs:
           from pathlib import Path
 
           summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
-          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
-          config = json.loads(Path("representative-config.json").read_text(encoding="utf-8"))
-          if not pdf.is_file():
-              summary.write_text("## Jan 22 source-gated dry run\n\n**BLOCKED:** source PDF is missing.\n", encoding="utf-8")
-              raise SystemExit(0)
-
-          import hashlib
-          actual = hashlib.sha256(pdf.read_bytes()).hexdigest()
-          expected = config.get("expected_source_sha256", "")
+          config_path = Path("representative-config.json")
+          config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.is_file() else {}
+          manifest_path = Path("data/quarantine/2026-01-22-shift1/asset-manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+          prepared_path = Path("pipeline-output/source/22jan-source-page-verification.json")
+          prepared = json.loads(prepared_path.read_text(encoding="utf-8")) if prepared_path.is_file() else {}
+          original_hash = manifest.get("source_pdf_sha256", "")
+          expected_hash = config.get("expected_source_sha256", "")
           lines = [
               "## JEE Main · 22 January 2026 · Shift 1",
               "",
-              f"- Source SHA-256: `{actual}`",
-              f"- Pinned SHA-256: `{expected}`",
-              f"- Source match: **{'PASS' if actual == expected else 'BLOCKED — MISMATCH'}**",
+              f"- Original source PDF recorded in bundle: `{prepared.get('original_source_pdf', 'BPD4dLYdvGj7xm8cDL66.pdf')}`",
+              f"- Original SHA-256 in bundle manifest: `{original_hash or 'missing'}`",
+              f"- Config SHA-256 pin matches manifest: **{'PASS' if expected_hash == original_hash and bool(expected_hash) else 'BLOCKED'}**",
+              f"- Pinned source-page JPEGs verified: **{prepared.get('page_assets_verified', 0)}/24**",
+              f"- OCR derivative PDF SHA-256: `{prepared.get('ocr_derivative_pdf_sha256', 'not created')}`",
+              "- OCR derivative is not byte-identical to the original PDF.",
               "- Production import / D1 writes: **NOT PERFORMED**",
           ]
-          if actual != expected:
-              lines += [
-                  "",
-                  "The OCR extraction was intentionally skipped because the source PDF bytes do not match the pinned Jan 22 bundle. Do not change the expected hash to force a pass."
-              ]
-          batches = sorted(
-              Path("pipeline-output").glob("jan22-run-*/*/batch-manifest.json")
-          )
+          batches = sorted(Path("pipeline-output").glob("jan22-run-*/*/batch-manifest.json"))
           if batches:
               manifest_path = batches[-1]
-              manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+              batch_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
               batch = manifest_path.parent
-              lines += ["", f"- Batch directory: `{batch}`", f"- Pipeline status: **{manifest.get('status', 'UNKNOWN')}**"]
+              report_path = batch / "validation-report.json"
+              report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.is_file() else {}
+              lines += ["", f"- Batch directory: `{batch}`", f"- Pipeline status: **{batch_manifest.get('status', 'UNKNOWN')}**"]
               for name in ("validated", "review_required", "quarantined", "rejected", "dropped"):
                   data_path = batch / f"{name}.json"
                   count = len(json.loads(data_path.read_text(encoding="utf-8"))) if data_path.is_file() else 0
                   lines.append(f"- {name}: {count}")
+              lines.append(f"- Per-question review gate: **{report.get('review_gate', {}).get('status', 'UNKNOWN')}**")
           else:
               lines += ["", "- Extraction output: **not created**"]
           summary.write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
 
-      - name: Fail closed if the intended source PDF did not match
+      - name: Fail closed if source pages failed verification
         if: steps.source.outputs.verified != 'true'
         run: |
-          echo "Source identity mismatch: no OCR extraction was performed. Check the verifier log and use the exact PDF whose SHA-256 is pinned in the Jan 22 source bundle." >&2
+          echo "The pinned Jan 22 source-page bundle did not pass verification; extraction was not permitted." >&2
           exit 1
