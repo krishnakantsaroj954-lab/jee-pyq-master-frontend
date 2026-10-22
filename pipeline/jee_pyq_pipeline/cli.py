@@ -257,8 +257,7 @@ def _build_batch(config,output_dir:Path,timeout_seconds:int):
         })
     return status
 
-def run(config_path:Path,output_root:Path,max_pages:int=50,timeout_seconds:int=1200,force_reextract:bool=False)->int:
-    config=load(config_path)
+def execute_pipeline(config,output_root:Path,max_pages:int=50,timeout_seconds:int=1200,force_reextract:bool=False)->int:
     selected_pages=config.page_range[1]-config.page_range[0]+1
     if selected_pages>max_pages:
         raise ValueError(f'Selected scope exceeds max-pages={max_pages}')
@@ -296,6 +295,10 @@ def run(config_path:Path,output_root:Path,max_pages:int=50,timeout_seconds:int=1
     print(out)
     return 0 if status=='VALIDATED' else 2
 
+def run(config_path:Path,output_root:Path,max_pages:int=50,timeout_seconds:int=1200,force_reextract:bool=False)->int:
+    config=load(config_path)
+    return execute_pipeline(config, output_root, max_pages, timeout_seconds, force_reextract)
+
 def main(argv=None):
     p=argparse.ArgumentParser(description='Fail-closed representative JEE PYQ PDF pipeline (no D1 import)')
     p.add_argument('--config',required=True,type=Path)
@@ -307,7 +310,8 @@ def main(argv=None):
     try:
         if args.max_pages<1 or args.timeout_seconds<1:
             raise ValueError('max-pages and timeout-seconds must be positive')
-        return run(args.config,args.output,args.max_pages,args.timeout_seconds,args.force_reextract)
+        config = load(args.config)
+        return execute_pipeline(config,args.output,args.max_pages,args.timeout_seconds,args.force_reextract)
     except Exception as e:
         print(f'EARLY FAIL: {e}',file=sys.stderr)
         return 2
