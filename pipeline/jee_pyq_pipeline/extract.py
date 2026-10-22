@@ -751,6 +751,7 @@ _NUMBERED_SECTION_LABEL = re.compile(
     re.I,
 )
 
+_HEADER_MARKER = re.compile(r'(?<!\d)(\d{1,3})\s*[.):,](?=\s|$)')
 
 def _question_header_candidate(text: str, bounds: list[float], page_width: float, expected_number: int | None = None):
     """Recognize printed question numbers, while excluding numbered Answer/Solution rows."""
@@ -784,8 +785,7 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     # Examples from the source scan include "1 2. The value...", "I 46. ...",
     # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
     # only short OCR debris / one stray digit before the expected printed number.
-    marker = re.compile(r'(?<!\d)(\d{1,3})\s*[.):,](?=\s|$)')
-    for match in marker.finditer(text[:40]):
+    for match in _HEADER_MARKER.finditer(text[:40]):
         if _NUMBERED_SECTION_LABEL.match(text[match.end():]):
             return None, None
         number = int(match.group(1))
