@@ -1,5 +1,5 @@
 {
-  "source_pdf": "cEDaK5Wn5ILe4nOdotd6.pdf",
+  "source_pdf": "pipeline-output/source/22jan-source-pages-reconstructed.pdf",
   "release": "2026-01-22-shift1",
   "exam": "JEE-MAIN",
   "year": 2026,
@@ -122,5 +122,5 @@
     }
   ],
   "expected_source_sha256": "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3",
-  "source_identity_note": "Exact byte-level source match required against the source SHA recorded in the existing 22 Jan 2026 Shift 1 bundle metadata; OCR/visual review still required."
+  "source_identity_note": "Original source metadata is pinned in data/quarantine/2026-01-22-shift1/asset-manifest.json. scripts/prepare_jan22_source_pdf.py verifies the SHA-256 of all 24 source-page JPEGs against that manifest, then creates a derivative scan PDF for OCR. The derivative is not byte-identical to the original PDF; all OCR output still requires human source review."
 }
