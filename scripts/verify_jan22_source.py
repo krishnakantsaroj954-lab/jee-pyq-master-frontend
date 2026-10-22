@@ -50,8 +50,10 @@ def main() -> int:
 
     with fitz.open(pdf_path) as document:
         page_count = len(document)
-        scan_pages = sum(1 for page in document if not page.get_text("words"))
-        image_pages = sum(1 for page in document if page.get_image_info(xrefs=True))
+        # Probe only the cover page here. Image enumeration for every embedded scan
+        # can be expensive and is not required to prove source identity; the actual
+        # extractor performs per-page image/OCR handling after the hash gate passes.
+        first_page_has_selectable_text = bool(document[0].get_text("words")) if page_count else False
 
     expected_keys = (
         [f"Mathematics:{n}" for n in range(1, 26)]
@@ -88,7 +90,7 @@ def main() -> int:
     print(f"PDF: {pdf_path}")
     print(f"Actual SHA-256:   {actual_hash}")
     print(f"Expected SHA-256: {expected_hash}")
-    print(f"PDF pages: {page_count}; pages with no selectable text: {scan_pages}; pages containing image placements: {image_pages}")
+    print(f"PDF pages: {page_count}; first-page selectable text: {'yes' if first_page_has_selectable_text else 'no (scan/OCR path expected)'}")
     print("Identity: " + ("PASS" if not config_errors else "BLOCKED"))
     for error in config_errors:
         print(f"- {error}")
@@ -98,8 +100,7 @@ def main() -> int:
         "verified": "true" if verified else "false",
         "source_sha256": actual_hash,
         "page_count": str(page_count),
-        "scan_pages": str(scan_pages),
-        "image_pages": str(image_pages),
+        "first_page_has_selectable_text": "true" if first_page_has_selectable_text else "false",
         "reason": "pass" if verified else "source_identity_or_config_mismatch",
     })
     if not verified:
