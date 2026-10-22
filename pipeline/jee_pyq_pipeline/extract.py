@@ -296,18 +296,18 @@ def _ocr_clip_words(page, page_no: int, clip, dpi: int) -> list[tuple]:
                 input=png,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                check=False,
+                check=True,
                 timeout=120,
             )
+        except subprocess.CalledProcessError as error:
+            detail = error.stderr.decode("utf-8", errors="replace")[-1200:]
+            raise RuntimeError(
+                f"Tesseract region OCR failed on source page {page_no} (PSM {psm}): {detail}"
+            ) from None
         except Exception as error:
             raise RuntimeError(
                 f"Tesseract region OCR failed on source page {page_no} (PSM {psm})"
             ) from error
-        if result.returncode != 0:
-            detail = result.stderr.decode("utf-8", errors="replace")[-1200:]
-            raise RuntimeError(
-                f"Tesseract region OCR failed on source page {page_no} (PSM {psm}): {detail}"
-            )
         return result.stdout
 
     def parse_tsv(payload: bytes) -> tuple[list[tuple], bool]:
