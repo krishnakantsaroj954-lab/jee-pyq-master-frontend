@@ -1,27 +1,31 @@
-# Pipeline status — 16 October 2026
+# Pipeline status — 22 October 2026
 
-## Fixed and merged to `main`
+## Repair in progress: exact Jan 22 source dry run
 
-- Removed the fake 75-record generator that had fabricated question text, generic options, guessed answers, and placeholder solutions instead of reading the source PDF.
-- Restored source-grounded PDF parsing with page geometry, two-column layout handling, OCR fallback, source answer/solution marker splitting, subject-aware question keys, source-specific question-type ranges, and bounded question/solution crop association.
-- Added strict checks for paper scope/count, duplicate IDs and question keys, malformed options, missing/ambiguous answers, absent source solutions, invalid source lineage/bounds, notation damage, placeholder content, and required images.
-- Added a per-question source-review manifest bound to the source PDF SHA-256, paper identity, and extracted-record fingerprint.
-- The automatic parser now remains `REVIEW_REQUIRED` even when structural checks pass. `IMPORT_READY.json` requires a complete review approval; uncertain data stays quarantined.
-- Kept source-marked dropped-question records with `Dropped` status rather than silently removing them.
-- Replaced the old CI workflow's false claim that a fixed synthetic 75-question run was green with a test-only workflow. CI makes no production writes, deploys nothing, and uploads no large artifacts.
+The existing dry-run script was not correctly targeted to the paper the user asked to extract:
+- It searched for selectable-text markers for **28 January 2026**, so a scanned/image-only PDF could be rejected before the OCR fallback ever ran.
+- It wrote/remade a generic config using the wrong paper identity and assumed subject-local question numbering, while the currently staged 75-question paper follows global question numbering: Mathematics 1–25, Physics 26–50, Chemistry 51–75.
+- It used `rm -rf pipeline-output`, which could erase prior review evidence.
+- It treated the expected review-required CLI exit as an early shell failure and looked for output manifests at the wrong directory level.
 
-## Automated verification
+The repair on branch `fix/jan22-scan-ocr-dry-run-20261022`:
+- Pins the run to `cEDaK5Wn5ILe4nOdotd6.pdf` and the 22 January 2026 Shift 1 identity.
+- Uses the known 24-page paper scope and explicit global question-number/MCQ/numerical ranges.
+- Checks the PDF's SHA-256 against the existing Jan 22 bundle metadata before OCR; a mismatch blocks extraction instead of silently using a different paper.
+- Allows OCR for scanned pages rather than requiring selectable text.
+- Preserves old pipeline output and reports `VALIDATED`, `REVIEW_REQUIRED`, or `QUARANTINED` results without importing to Cloudflare/D1.
+- Adds a GitHub Actions real-PDF dry-run job, with no large artifact upload.
 
-- Pull request #13 was merged on 16 October 2026.
-- GitHub Actions run **190** completed successfully. The parser/source-validation/review-gate/watermark test step passed; the run executed 61 tests.
-- This proves the tested code paths and fixtures pass. It does **not** prove any real paper's question text, answers, solutions, or image crops are correct.
+## Source gate
 
-## What remains unverified
+Expected PDF SHA-256, recorded in the existing Jan 22 bundle metadata:
 
-**The real-paper extraction is not certified complete.** The exact intended 16 MB PDF has not been re-run and visually reviewed here with the repaired parser. Before a paper can be marked ready, confirm the exact PDF's identity and SHA-256, run a dry extraction, inspect the validation report and question count/scope, compare every question/options/answer/solution/image against the same source PDF, and complete its content-bound review manifest. Do not substitute a different date or shift. Missing or uncertain items must remain quarantined.
+`7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3`
 
-The user-facing website/API/database also require separate verification; this is only the source/PDF pipeline.
+The real OCR extraction may only run if the checked-in PDF bytes match this value and the 24-page/configuration checks pass. If the root PDF does not match, the pipeline must stop; do not rename the file or change the expected hash to force a pass. The actual hash and exact mismatch will be reported by CI.
 
-## Production boundary
+## Verification boundary
 
-No Cloudflare Worker code, D1 database/table, secret, production import, or deployment was changed. Do not treat this pipeline repair or green unit tests as a completed website or as a production-ready PYQ corpus.
+Unit-test success proves code paths/fixtures, not the accuracy of a real paper. Even after a successful OCR run, every question, option, answer, solution, dropped label, page/source association, and crop must be checked against the original PDF. The parser's output should remain `REVIEW_REQUIRED` or `QUARANTINED` until the content-bound per-question source review is complete.
+
+No production import, D1 write, Worker code change, or data deployment is part of this repair.
