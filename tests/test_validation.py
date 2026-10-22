@@ -1008,3 +1008,11 @@ def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
         assert [call.args[0][6] for call in run.call_args_list] == ["6", "4"]
     finally:
         doc.close()
+
+from unittest.mock import Mock
+
+def test_has_center_divider_exception():
+    page = Mock()
+    page.get_pixmap.side_effect = Exception("Mocked exception")
+
+    assert _has_center_divider(page) is False
