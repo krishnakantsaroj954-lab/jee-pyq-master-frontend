@@ -4,8 +4,18 @@ import hashlib
 import io
 import re
 import subprocess
+from dataclasses import dataclass
+from typing import Any
 from pathlib import Path
 from .models import Asset, Issue, Question
+
+@dataclass
+class CropContext:
+    doc: Any
+    blocks: list[dict]
+    asset_dir: Path
+    source_hash: str
+    dpi_by_page: dict[int, int]
 from .util import safe_normalize, sha256_file
 
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
@@ -584,16 +594,15 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
     return cropped
 
 
-def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
-                       blocks:list[dict], block_index:int, asset_dir:Path,
-                       source_hash:str, kind:str, dpi_by_page:dict[int,int])->list[Asset]:
+def _crop_scan_regions(ctx:CropContext, block:dict, rows:list[tuple[int,str,list[float]]],
+                       block_index:int, kind:str)->list[Asset]:
     """Render bounded question/source-solution crops; keep column continuations separate."""
     fitz = _fitz()
     cropped = []
     for page_no in sorted({row[0] for row in rows}):
-        if page_no < 1 or page_no > len(doc):
+        if page_no < 1 or page_no > len(ctx.doc):
             continue
-        page = doc[page_no - 1]
+        page = ctx.doc[page_no - 1]
         page_width, page_height = float(page.rect.width), float(page.rect.height)
         midpoint = page_width * 0.5
         page_rows = [row for row in rows if row[0] == page_no]
@@ -622,7 +631,7 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             # continue from the bottom of the left column to the top of the right;
             # joining both extents would create an almost-full-width screenshot.
             column_rows = []
-            for other in blocks:
+            for other in ctx.blocks:
                 other_rows = [
                     row for row in other.get("rows", [])
                     if row[0] == page_no and side_of(row) == side
@@ -656,7 +665,7 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             elif kind == "solution":
                 region_bottom = max(row[2][3] for row in region_rows)
                 next_top = None
-                for other_index, other in enumerate(blocks):
+                for other_index, other in enumerate(ctx.blocks):
                     if other_index <= block_index:
                         continue
                     other_rows = [
@@ -679,22 +688,22 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
                 continue
             if crop_rect.width >= page_width * 0.85 and crop_rect.height >= page_height * 0.80:
                 continue
-            dpi = max(72, min(150, int(dpi_by_page.get(page_no, 72))))
+            dpi = max(72, min(150, int(ctx.dpi_by_page.get(page_no, 72))))
             payload = page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png")
             digest = hashlib.sha256(payload).hexdigest()
             slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
             key = (
-                f"{source_hash[:16]}/page-{page_no}/"
+                f"{ctx.source_hash[:16]}/page-{page_no}/"
                 f"q-{slug}-{int(block['number']):03d}-{kind}-{side}-{digest[:12]}.png"
             )
-            path = asset_dir / key
+            path = ctx.asset_dir / key
             path.parent.mkdir(parents=True, exist_ok=True)
             if not path.exists():
                 path.write_bytes(payload)
             bounds = [round(crop_rect.x0, 2), round(crop_rect.y0, 2),
                       round(crop_rect.x1, 2), round(crop_rect.y1, 2)]
             cropped.append(Asset(
-                key, page_no, bounds, digest, str(path.relative_to(asset_dir.parent))
+                key, page_no, bounds, digest, str(path.relative_to(ctx.asset_dir.parent))
             ))
     return cropped
 
@@ -1126,6 +1135,13 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     issues=list(header_issues)
     crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
     source_placed_assets = tuple(all_assets)
+    crop_ctx = CropContext(
+        doc=crop_doc,
+        blocks=blocks,
+        asset_dir=asset_dir,
+        source_hash=source_hash,
+        dpi_by_page=scan_dpi_by_page
+    ) if crop_doc is not None else None
 
     for block_index, block in enumerate(blocks):
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
@@ -1179,16 +1195,14 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             if figure_crops:
                 qassets=figure_crops
                 all_assets.extend(figure_crops)
-        if crop_doc is not None:
+        if crop_ctx is not None:
             # A source scan is context, not a question image. Give every record a
             # bounded question crop and a distinct source-solution crop when present.
             question_crops=_crop_scan_regions(
-                crop_doc,block,qrows,blocks,block_index,asset_dir,source_hash,
-                "question",scan_dpi_by_page
+                crop_ctx,block,qrows,block_index,"question"
             )
             solution_crops=_crop_scan_regions(
-                crop_doc,block,srows,blocks,block_index,asset_dir,source_hash,
-                "solution",scan_dpi_by_page
+                crop_ctx,block,srows,block_index,"solution"
             ) if srows else []
             if question_crops:
                 qassets.extend(question_crops)
