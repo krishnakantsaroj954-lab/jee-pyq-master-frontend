@@ -68,7 +68,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./run-dry-run.sh 2>&1 | tee /tmp/jan22-dry-run.log
+          bash ./run-dry-run.sh 2>&1 | tee /tmp/jan22-dry-run.log
 
       - name: Summarize source gate and extraction status
         if: always()
