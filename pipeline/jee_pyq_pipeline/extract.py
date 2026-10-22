@@ -1018,7 +1018,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             words, used_ocr = _page_words(page,page_no,page_image_info)
             if used_ocr:
                 scan_only_pages.add(page_no)
-                scan_dpi_by_page[page_no]=_ocr_dpi(page)
+                scan_dpi_by_page[page_no]=_ocr_dpi(page, page_image_info)
             page_rows=[]
             force_midpoint = used_ocr and _has_center_divider(page)
             for row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
