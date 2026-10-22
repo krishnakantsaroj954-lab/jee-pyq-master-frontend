@@ -2,6 +2,8 @@ from __future__ import annotations
 import csv
 import hashlib
 import io
+import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -992,6 +994,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     page_dimensions={}
     scan_only_pages=set()
     scan_dpi_by_page={}
+    page_diagnostics=[]
     source_hash=sha256_file(config.source_pdf)
     expected=set(config.expected_question_numbers)
     # Only override headings when config explicitly provides a unique subject for
@@ -1013,7 +1016,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 scan_only_pages.add(page_no)
                 scan_dpi_by_page[page_no]=_ocr_dpi(page)
             page_rows=[]
-            force_midpoint = used_ocr and _has_center_divider(page)
+            has_center_divider = used_ocr and _has_center_divider(page)
+            force_midpoint = bool(has_center_divider)
             for row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
                 text=_join_word_tokens(row).strip()
                 if not text:
@@ -1021,6 +1025,24 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 subject=_subject_line(text)
                 bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
                 page_rows.append((text,bounds,subject))
+            if os.environ.get("JEE_PYQ_OCR_DIAGNOSTICS") == "1":
+                candidates=[]
+                for row_text,row_bounds,_row_subject in page_rows:
+                    _candidate_match,_candidate_number = _question_header_candidate(
+                        row_text,row_bounds,float(page.rect.width),None
+                    )
+                    if _candidate_number is not None:
+                        candidates.append({"number":_candidate_number,"text":row_text[:180],"x0":round(float(row_bounds[0]),1),"y0":round(float(row_bounds[1]),1)})
+                page_diagnostics.append({
+                    "page":page_no,
+                    "used_ocr":used_ocr,
+                    "dpi":scan_dpi_by_page.get(page_no),
+                    "center_divider":bool(has_center_divider),
+                    "word_count":len(words),
+                    "row_count":len(page_rows),
+                    "header_candidates":candidates,
+                    "first_rows":[row_text[:140] for row_text,_row_bounds,_row_subject in page_rows[:18]],
+                })
             question_y = [
                 bounds[1] for text,bounds,_subject in page_rows
                 if _question_start(text)[1] is not None
@@ -1218,4 +1240,24 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         ))
     if crop_doc is not None:
         crop_doc.close()
+    if os.environ.get("JEE_PYQ_OCR_DIAGNOSTICS") == "1":
+        print("JEE_PYQ_PAGE_DIAGNOSTICS_BEGIN")
+        for diagnostic in page_diagnostics:
+            print("JEE_PYQ_PAGE_DIAGNOSTIC " + json.dumps(diagnostic, ensure_ascii=False, separators=(",", ":")))
+        print("JEE_PYQ_PARSED_BLOCKS " + json.dumps([
+            {
+                "number":q.source_question_number,
+                "subject":q.subject,
+                "status":q.status,
+                "question_text":(q.text or "")[:140],
+                "answer_present":q.answer is not None,
+                "solution_present":bool(q.solution),
+            } for q in questions
+        ], ensure_ascii=False, separators=(",", ":")))
+        print("JEE_PYQ_EXPECTED_HEADERS " + json.dumps({
+            "expected_count":config.expected_question_count,
+            "parsed_count":len(questions),
+            "missing_numbers":sorted(set(expected_number_sequence)-{q.source_question_number for q in questions}),
+            "parsed_numbers":[q.source_question_number for q in questions],
+        }, ensure_ascii=False, separators=(",", ":")))
     return questions,all_assets,issues,page_count
