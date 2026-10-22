@@ -1,0 +1,191 @@
+name: Pinned 28 Jan Shift 1 source dry-run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/representative-source-dryrun.yml"
+      - "cEDaK5Wn5ILe4nOdotd6.pdf"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pyproject.toml"
+      - "representative-config.json"
+
+permissions:
+  contents: read
+
+jobs:
+  source-dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact repository source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install parser and OCR dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Run unit tests
+        run: python -m pytest -q
+
+      - name: Verify exact source PDF and prepare config
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          import fitz
+
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          expected_sha256 = "7f3fbb9b7dc9744ee4702de380c3a664e5a1d3a983aacb3b012b884f739d8bbf"
+          expected_size = 16773729
+          if not pdf.is_file():
+              raise SystemExit(f"Required exact source PDF is missing: {pdf}")
+          size = pdf.stat().st_size
+          sha = hashlib.sha256(pdf.read_bytes()).hexdigest()
+          if size != expected_size or sha != expected_sha256:
+              raise SystemExit(
+                  "SOURCE IDENTITY GATE FAILED: "
+                  f"expected size={expected_size}, sha256={expected_sha256}; "
+                  f"got size={size}, sha256={sha}"
+              )
+
+          doc = fitz.open(pdf)
+          pages = len(doc)
+          if pages != 24:
+              raise SystemExit(f"SOURCE PAGE COUNT GATE FAILED: expected 24, got {pages}")
+          expected = (
+              [f"Physics:{n}" for n in range(1, 26)] +
+              [f"Chemistry:{n}" for n in range(1, 26)] +
+              [f"Mathematics:{n}" for n in range(1, 26)]
+          )
+          config = {
+              "source_pdf": str(pdf),
+              "release": "2026-01",
+              "exam": "JEE-MAIN",
+              "year": 2026,
+              "session": "Session 1 • Jan • 28 Jan • Shift 1",
+              "paper": "Paper 1 • B.E./B.Tech",
+              "subject": "PCM",
+              "page_range": [1, pages],
+              "expected_question_count": 75,
+              "expected_question_numbers": expected,
+              "source_has_solutions": True
+          }
+          Path("representative-config.json").write_text(
+              json.dumps(config, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          print(json.dumps({
+              "source_pdf": pdf.name,
+              "size_bytes": size,
+              "sha256": sha,
+              "page_count": pages,
+              "expected_question_count": len(expected),
+              "production_write": False,
+              "artifact_upload": False
+          }, ensure_ascii=False, indent=2))
+          doc.close()
+          PY
+
+      - name: Diagnose OCR rows and printed question headers before extraction
+        run: |
+          PYTHONPATH=pipeline python - <<'PY'
+          import fitz, json
+          from pathlib import Path
+          from jee_pyq_pipeline.extract import (
+              _page_words, _page_image_info, _lines, _join_word_tokens,
+              _subject_line, _question_header_candidate, _has_center_divider
+          )
+          pdf = Path("cEDaK5Wn5ILe4nOdotd6.pdf")
+          doc = fitz.open(pdf)
+          total_words = 0
+          total_rows = 0
+          total_headers = 0
+          subject_rows = []
+          print("OCR_DIAGNOSTIC_BEGIN")
+          for page_no, page in enumerate(doc, 1):
+              info = _page_image_info(page)
+              words, used_ocr = _page_words(page, page_no, info)
+              total_words += len(words)
+              rows = []
+              force_midpoint = used_ocr and _has_center_divider(page)
+              for word_row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
+                  text = _join_word_tokens(word_row).strip()
+                  if not text:
+                      continue
+                  bounds = [
+                      min(float(w[0]) for w in word_row),
+                      min(float(w[1]) for w in word_row),
+                      max(float(w[2]) for w in word_row),
+                      max(float(w[3]) for w in word_row),
+                  ]
+                  subject = _subject_line(text)
+                  match, number = _question_header_candidate(text, bounds, page.rect.width, None)
+                  rows.append({"text": text[:180], "subject": subject, "number": number, "y": round(bounds[1], 1), "x": round(bounds[0], 1)})
+              headers = [x for x in rows if x["number"] is not None]
+              subjects = [x for x in rows if x["subject"]]
+              total_rows += len(rows)
+              total_headers += len(headers)
+              subject_rows.extend(subjects)
+              print(json.dumps({
+                  "page": page_no, "ocr": used_ocr, "word_count": len(words),
+                  "row_count": len(rows), "header_count": len(headers),
+                  "headers": headers[:5], "subjects": subjects[:4],
+                  "sample_rows": [x["text"] for x in rows[:8]] if page_no <= 3 else []
+              }, ensure_ascii=False))
+          print(json.dumps({"OCR_DIAGNOSTIC_TOTALS": {
+              "pages": len(doc), "words": total_words, "rows": total_rows,
+              "recognized_headers": total_headers,
+              "recognized_subject_headings": subject_rows
+          }}, ensure_ascii=False))
+          print("OCR_DIAGNOSTIC_END")
+          doc.close()
+          PY
+
+      - name: Run exact-source dry extraction (no import)
+        run: |
+          PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
+            --config representative-config.json \
+            --output pipeline-output \
+            --max-pages 150 \
+            --timeout-seconds 1800
+
+      - name: Print extraction diagnostics even when the dry-run fails
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          reports = sorted(Path("pipeline-output").glob("*/validation-report.json"))
+          if not reports:
+              print("NO_VALIDATION_REPORT: extraction did not produce a report.")
+              raise SystemExit(0)
+          report_path = reports[-1]
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          summary = {
+              "report_path": str(report_path),
+              "status": report.get("status"),
+              "counts": report.get("counts"),
+              "status_counts": report.get("status_counts"),
+              "subject_counts": report.get("subject_counts"),
+              "question_type_counts": report.get("question_type_counts"),
+              "blocking_issue_count": report.get("blocking_issue_count"),
+              "review_gate": report.get("review_gate"),
+              "issues": report.get("issues"),
+              "import_ready_exists": (report_path.parent / "IMPORT_READY.json").is_file()
+          }
+          print(json.dumps(summary, ensure_ascii=False, indent=2))
+          Path("run-summary.json").write_text(
+              json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+          )
+          PY
