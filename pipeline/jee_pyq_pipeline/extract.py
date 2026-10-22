@@ -464,6 +464,98 @@ def _x_overlap_ratio(a: list[float], b: list[float]) -> float:
     denom = max(1e-6, min(a[2] - a[0], b[2] - b[0]))
     return overlap / denom
 
+def _find_figure_crop_rect(
+    page, page_no: int, own: list[float],
+    blocks: list[dict], block_index: int,
+    page_graphics_cache: dict[int, list[list[float]]] = None
+):
+    """Identify the bounding box for a figure/diagram associated with a specific question block."""
+    fitz = _fitz()
+    own_cx = (own[0] + own[2]) / 2.0
+    prev_bottom = 0.0
+    next_top = float(page.rect.y1)
+
+    # Limit candidate graphics to the same column and this question's vertical band.
+    for other_index, other in enumerate(blocks):
+        if other_index == block_index or page_no not in other.get("pages", set()):
+            continue
+        obox = _rect_union([r[2] for r in other["rows"] if r[0] == page_no])
+        if obox is None:
+            continue
+        ocx = (obox[0] + obox[2]) / 2.0
+        same_column = (
+            _x_overlap_ratio(own, obox) >= 0.08
+            or abs(own_cx - ocx) <= float(page.rect.width) * 0.30
+        )
+        if not same_column:
+            continue
+        if obox[3] <= own[1] and obox[3] > prev_bottom:
+            prev_bottom = obox[3]
+        if obox[1] >= own[3] and obox[1] < next_top:
+            next_top = obox[1]
+
+    band_top = max(0.0, own[1] - 55.0, prev_bottom + 3.0 if prev_bottom else 0.0)
+    band_bottom = min(float(page.rect.y1), next_top - 3.0, own[3] + 125.0)
+    if band_bottom <= band_top:
+        return None
+
+    graphics: list[list[float]] = []
+    if page_graphics_cache is not None and page_no in page_graphics_cache:
+        graphics = page_graphics_cache[page_no]
+    else:
+        page_dict = page.get_text("dict")
+        for item in page_dict.get("blocks", []):
+            if item.get("type") != 1 or "bbox" not in item:
+                continue
+            b = [float(v) for v in item["bbox"]]
+            graphics.append(b)
+
+        for drawing in page.get_drawings():
+            rect = drawing.get("rect")
+            if rect is None:
+                continue
+            b = [float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)]
+            if b[2] - b[0] >= 2.0 and b[3] - b[1] >= 2.0:
+                graphics.append(b)
+        if page_graphics_cache is not None:
+            page_graphics_cache[page_no] = graphics
+
+    candidates = []
+    for g in graphics:
+        width, height = g[2] - g[0], g[3] - g[1]
+        if width <= 0 or height <= 0:
+            continue
+        # Never allow a whole-page screenshot/scan to become a question image.
+        if width >= float(page.rect.width) * 0.85 and height >= float(page.rect.height) * 0.80:
+            continue
+        cy = (g[1] + g[3]) / 2.0
+        if not (band_top <= cy <= band_bottom):
+            continue
+        gcx = (g[0] + g[2]) / 2.0
+        if abs(gcx - own_cx) > float(page.rect.width) * 0.34 and _x_overlap_ratio(g, own) < 0.05:
+            continue
+        if width * height < 18.0 and max(width, height) < 14.0:
+            continue
+        candidates.append(g)
+
+    figure_bounds = _rect_union(candidates)
+    if figure_bounds is None:
+        return None
+
+    pad = 4.0
+    crop_rect = fitz.Rect(
+        figure_bounds[0] - pad, figure_bounds[1] - pad,
+        figure_bounds[2] + pad, figure_bounds[3] + pad,
+    ) & page.rect
+
+    if crop_rect.is_empty or crop_rect.width <= 0 or crop_rect.height <= 0:
+        return None
+    if crop_rect.width >= float(page.rect.width) * 0.85 and crop_rect.height >= float(page.rect.height) * 0.80:
+        return None
+
+    return crop_rect
+
+
 def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list[float]]],
                            blocks: list[dict], block_index: int, asset_dir: Path,
                            source_hash: str,
@@ -482,83 +574,10 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
             if own is None:
                 continue
 
-            own_cx = (own[0] + own[2]) / 2.0
-            prev_bottom = 0.0
-            next_top = float(page.rect.y1)
-            # Limit candidate graphics to the same column and this question's vertical band.
-            for other_index, other in enumerate(blocks):
-                if other_index == block_index or page_no not in other.get("pages", set()):
-                    continue
-                obox = _rect_union([r[2] for r in other["rows"] if r[0] == page_no])
-                if obox is None:
-                    continue
-                ocx = (obox[0] + obox[2]) / 2.0
-                same_column = (
-                    _x_overlap_ratio(own, obox) >= 0.08
-                    or abs(own_cx - ocx) <= float(page.rect.width) * 0.30
-                )
-                if not same_column:
-                    continue
-                if obox[3] <= own[1] and obox[3] > prev_bottom:
-                    prev_bottom = obox[3]
-                if obox[1] >= own[3] and obox[1] < next_top:
-                    next_top = obox[1]
-
-            band_top = max(0.0, own[1] - 55.0, prev_bottom + 3.0 if prev_bottom else 0.0)
-            band_bottom = min(float(page.rect.y1), next_top - 3.0, own[3] + 125.0)
-            if band_bottom <= band_top:
-                continue
-
-            graphics: list[list[float]] = []
-            if page_graphics_cache is not None and page_no in page_graphics_cache:
-                graphics = page_graphics_cache[page_no]
-            else:
-                page_dict = page.get_text("dict")
-                for item in page_dict.get("blocks", []):
-                    if item.get("type") != 1 or "bbox" not in item:
-                        continue
-                    b = [float(v) for v in item["bbox"]]
-                    graphics.append(b)
-
-                for drawing in page.get_drawings():
-                    rect = drawing.get("rect")
-                    if rect is None:
-                        continue
-                    b = [float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)]
-                    if b[2] - b[0] >= 2.0 and b[3] - b[1] >= 2.0:
-                        graphics.append(b)
-                if page_graphics_cache is not None:
-                    page_graphics_cache[page_no] = graphics
-
-            candidates = []
-            for g in graphics:
-                width, height = g[2] - g[0], g[3] - g[1]
-                if width <= 0 or height <= 0:
-                    continue
-                # Never allow a whole-page screenshot/scan to become a question image.
-                if width >= float(page.rect.width) * 0.85 and height >= float(page.rect.height) * 0.80:
-                    continue
-                cy = (g[1] + g[3]) / 2.0
-                if not (band_top <= cy <= band_bottom):
-                    continue
-                gcx = (g[0] + g[2]) / 2.0
-                if abs(gcx - own_cx) > float(page.rect.width) * 0.34 and _x_overlap_ratio(g, own) < 0.05:
-                    continue
-                if width * height < 18.0 and max(width, height) < 14.0:
-                    continue
-                candidates.append(g)
-
-            figure_bounds = _rect_union(candidates)
-            if figure_bounds is None:
-                continue
-            pad = 4.0
-            crop_rect = fitz.Rect(
-                figure_bounds[0] - pad, figure_bounds[1] - pad,
-                figure_bounds[2] + pad, figure_bounds[3] + pad,
-            ) & page.rect
-            if crop_rect.is_empty or crop_rect.width <= 0 or crop_rect.height <= 0:
-                continue
-            if crop_rect.width >= float(page.rect.width) * 0.85 and crop_rect.height >= float(page.rect.height) * 0.80:
+            crop_rect = _find_figure_crop_rect(
+                page, page_no, own, blocks, block_index, page_graphics_cache
+            )
+            if crop_rect is None:
                 continue
 
             pix = page.get_pixmap(clip=crop_rect, dpi=240, alpha=False)
