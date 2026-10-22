@@ -116,16 +116,9 @@ jobs:
           summary.write_text("\n".join(lines) + "\n", encoding="utf-8")
           PY
 
-      - name: Upload quarantined dry-run evidence for inspection
+      - name: Keep review evidence available in job logs
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: jan22-ocr-dry-run-${{ github.run_id }}
-          path: |
-            pipeline-output/source/22jan-source-page-verification.json
-            pipeline-output/jan22-run-*/
-          if-no-files-found: warn
-          retention-days: 14
+        run: echo "Quarantined records and per-page OCR diagnostics are printed in the preceding extraction step; GitHub Actions artifact uploads are disabled because this repository has exhausted its artifact-storage quota."
 
       - name: Fail closed if source pages failed verification
         if: steps.source.outputs.verified != 'true'
