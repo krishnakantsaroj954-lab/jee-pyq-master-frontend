@@ -788,7 +788,7 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
         if expected_number is not None and number != expected_number:
             continue
         prefix = text[:match.start()].strip()
-        debris = not prefix or bool(re.fullmatch(r'[|Iil!.,;:-]+', prefix)) or bool(re.fullmatch(r'\d{1,3}', prefix))
+        debris = not prefix or bool(re.fullmatch(r'[|Iil!.,;:-]+', prefix)) or bool(re.fullmatch(r'\d', prefix))
         if len(prefix) <= 6 and debris:
             return match, number
     return None, None
