@@ -32,7 +32,7 @@ OUT_ROOT="pipeline-output/jan22-run-$RUN_STAMP"
 mkdir -p "$OUT_ROOT"
 
 set +e
-PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
+JEE_PYQ_OCR_DIAGNOSTICS=1 PYTHONPATH=pipeline python -m jee_pyq_pipeline.cli \
   --config "$CONFIG" \
   --output "$OUT_ROOT" \
   --max-pages 24 \
