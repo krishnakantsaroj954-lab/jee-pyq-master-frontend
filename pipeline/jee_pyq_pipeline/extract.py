@@ -8,6 +8,51 @@ from pathlib import Path
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
 
+def _add_watermark(image_bytes: bytes, text: str = "JEE PYQ MASTER") -> bytes:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        return image_bytes
+
+    try:
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGBA")
+    except Exception:
+        return image_bytes
+
+    try:
+        fnt = ImageFont.load_default()
+    except Exception:
+        fnt = None
+
+    if not fnt:
+        return image_bytes
+
+    txt = Image.new('RGBA', (500, 100), (255,255,255,0))
+    d = ImageDraw.Draw(txt)
+    d.text((0, 0), text, font=fnt, fill=(128, 128, 128, 128))
+
+    bbox = txt.getbbox()
+    if bbox:
+        txt = txt.crop(bbox)
+        target_width = int(img.width * 0.8)
+        if target_width > 0 and txt.width > 0:
+            ratio = target_width / txt.width
+            target_height = int(txt.height * ratio)
+            if target_height > 0:
+                try:
+                    resample = Image.Resampling.LANCZOS
+                except AttributeError:
+                    resample = Image.LANCZOS
+                txt = txt.resize((target_width, target_height), resample)
+
+        x = (img.width - txt.width) // 2
+        y = (img.height - txt.height) // 2
+        img.paste(txt, (x, y), txt)
+
+    buf = io.BytesIO()
+    img.convert("RGB").save(buf, format="PNG")
+    return buf.getvalue()
+
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?:\(\s*([A-D]|[1-4])\s*\)|(?<![\w.])([A-D]|[1-4])\s*[.)](?=\s|$))', re.I)
 ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:(?:[Il]|\d{1,2})\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
@@ -439,9 +484,10 @@ def _assets(page, page_no:int, asset_dir:Path, source_hash:str,
         payload=page.parent.extract_image(xref)
         if not payload:
             continue
-        data=payload['image']
+        new_data = _add_watermark(payload['image'])
+        data = new_data
         digest=hashlib.sha256(data).hexdigest()
-        ext=payload.get('ext','bin')
+        ext = 'png' if new_data != payload['image'] else payload.get('ext', 'bin')
         object_key=f'{source_hash[:16]}/page-{page_no}/image-{n}-{digest[:16]}.{ext}'
         file=asset_dir/object_key
         file.parent.mkdir(parents=True,exist_ok=True)
@@ -556,7 +602,7 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
                 continue
 
             pix = page.get_pixmap(clip=crop_rect, dpi=240, alpha=False)
-            payload = pix.tobytes("png")
+            payload = _add_watermark(pix.tobytes("png"))
             digest = hashlib.sha256(payload).hexdigest()
             slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
             object_key = (
@@ -674,7 +720,7 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             if crop_rect.width >= page_width * 0.85 and crop_rect.height >= page_height * 0.80:
                 continue
             dpi = max(72, min(150, int(dpi_by_page.get(page_no, 72))))
-            payload = page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png")
+            payload = _add_watermark(page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png"))
             digest = hashlib.sha256(payload).hexdigest()
             slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
             key = (
