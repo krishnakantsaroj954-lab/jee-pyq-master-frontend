@@ -584,6 +584,100 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
     return cropped
 
 
+
+def _calculate_region_bounds(page_width: float, page_height: float, midpoint: float,
+                             side: str, region_rows: list, answer_side: list,
+                             blocks: list[dict], block_index: int, page_no: int,
+                             kind: str, side_of) -> tuple[float, float, float, float] | None:
+    region_box = _rect_union([row[2] for row in region_rows])
+    if region_box is None:
+        return None
+
+    column_rows = []
+    for other in blocks:
+        other_rows = [
+            row for row in other.get("rows", [])
+            if row[0] == page_no and side_of(row) == side
+        ]
+        other_box = _rect_union([row[2] for row in other_rows])
+        if other_box is not None:
+            column_rows.extend(other_rows)
+    # Compute horizontal extent from rows on this side only. A solution can
+    # continue from the bottom of the left column to the top of the right;
+    # joining both extents would create an almost-full-width screenshot.
+    column_box = _rect_union([row[2] for row in column_rows]) or region_box
+    x0 = max(0.0, column_box[0] - 12.0)
+    x1 = min(page_width, column_box[2] + 12.0)
+
+    # This source uses two columns separated at the page midpoint. Clip each
+    # crop to its own side so overlapping vertical bands cannot include a
+    # neighboring question or a full-page border in the wrong question asset.
+    column_margin = min(36.0, page_width * 0.03)
+    if side == "left":
+        x0 = max(x0, column_margin)
+        x1 = min(x1, midpoint - 6.0)
+    else:
+        x0 = max(x0, midpoint + 6.0)
+        x1 = min(x1, page_width - column_margin)
+    y0 = max(0.0, min(row[2][1] for row in region_rows) - 8.0)
+    y1 = min(page_height, max(row[2][3] for row in region_rows) + 8.0)
+
+    if kind == "question" and answer_side:
+        answer_top = min(row[2][1] for row in answer_side)
+        if answer_top > y0:
+            # Never allow the question crop to extend into the printed answer row.
+            # min() is essential here: max() can retain an overlapping crop when
+            # OCR has accidentally included the answer row in question-region rows.
+            y1 = min(y1, answer_top - 6.0)
+    elif kind == "solution":
+        region_bottom = max(row[2][3] for row in region_rows)
+        next_top = None
+        for other_index, other in enumerate(blocks):
+            if other_index <= block_index:
+                continue
+            other_rows = [
+                row for row in other.get("rows", [])
+                if row[0] == page_no and side_of(row) == side
+            ]
+            other_box = _rect_union([row[2] for row in other_rows])
+            if other_box is None:
+                continue
+            other_top = min(row[2][1] for row in other_rows)
+            if other_top > region_bottom:
+                next_top = other_top if next_top is None else min(next_top, other_top)
+        if next_top is not None:
+            y1 = min(page_height, next_top - 6.0)
+
+    if x1 <= x0 or y1 <= y0:
+        return None
+    return (x0, y0, x1, y1)
+
+def _extract_asset_from_crop(page, crop_rect, dpi: int, block: dict,
+                             source_hash: str, kind: str, side: str,
+                             page_no: int, asset_dir: Path) -> Asset | None:
+    page_width, page_height = float(page.rect.width), float(page.rect.height)
+    if crop_rect.is_empty or crop_rect.width <= 0 or crop_rect.height <= 0:
+        return None
+    if crop_rect.width >= page_width * 0.85 and crop_rect.height >= page_height * 0.80:
+        return None
+
+    payload = page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png")
+    digest = hashlib.sha256(payload).hexdigest()
+    slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
+    key = (
+        f"{source_hash[:16]}/page-{page_no}/"
+        f"q-{slug}-{int(block['number']):03d}-{kind}-{side}-{digest[:12]}.png"
+    )
+    path = asset_dir / key
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if not path.exists():
+        path.write_bytes(payload)
+    bounds = [round(crop_rect.x0, 2), round(crop_rect.y0, 2),
+              round(crop_rect.x1, 2), round(crop_rect.y1, 2)]
+    return Asset(
+        key, page_no, bounds, digest, str(path.relative_to(asset_dir.parent))
+    )
+
 def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
                        blocks:list[dict], block_index:int, asset_dir:Path,
                        source_hash:str, kind:str, dpi_by_page:dict[int,int])->list[Asset]:
@@ -613,89 +707,23 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             region_rows = list(own_rows)
             if kind == "solution":
                 region_rows.extend(answer_side)
-            region_box = _rect_union([row[2] for row in region_rows])
-            if region_box is None:
-                continue
-            center_x = (region_box[0] + region_box[2]) / 2.0
 
-            # Compute horizontal extent from rows on this side only. A solution can
-            # continue from the bottom of the left column to the top of the right;
-            # joining both extents would create an almost-full-width screenshot.
-            column_rows = []
-            for other in blocks:
-                other_rows = [
-                    row for row in other.get("rows", [])
-                    if row[0] == page_no and side_of(row) == side
-                ]
-                other_box = _rect_union([row[2] for row in other_rows])
-                if other_box is not None:
-                    column_rows.extend(other_rows)
-            column_box = _rect_union([row[2] for row in column_rows]) or region_box
-            x0 = max(0.0, column_box[0] - 12.0)
-            x1 = min(page_width, column_box[2] + 12.0)
-            # This source uses two columns separated at the page midpoint. Clip each
-            # crop to its own side so overlapping vertical bands cannot include a
-            # neighboring question or a full-page border in the wrong question asset.
-            column_margin = min(36.0, page_width * 0.03)
-            if side == "left":
-                x0 = max(x0, column_margin)
-                x1 = min(x1, midpoint - 6.0)
-            else:
-                x0 = max(x0, midpoint + 6.0)
-                x1 = min(x1, page_width - column_margin)
-            y0 = max(0.0, min(row[2][1] for row in region_rows) - 8.0)
-            y1 = min(page_height, max(row[2][3] for row in region_rows) + 8.0)
-
-            if kind == "question" and answer_side:
-                answer_top = min(row[2][1] for row in answer_side)
-                if answer_top > y0:
-                    # Never allow the question crop to extend into the printed answer row.
-                    # min() is essential here: max() can retain an overlapping crop when
-                    # OCR has accidentally included the answer row in question-region rows.
-                    y1 = min(y1, answer_top - 6.0)
-            elif kind == "solution":
-                region_bottom = max(row[2][3] for row in region_rows)
-                next_top = None
-                for other_index, other in enumerate(blocks):
-                    if other_index <= block_index:
-                        continue
-                    other_rows = [
-                        row for row in other.get("rows", [])
-                        if row[0] == page_no and side_of(row) == side
-                    ]
-                    other_box = _rect_union([row[2] for row in other_rows])
-                    if other_box is None:
-                        continue
-                    other_top = min(row[2][1] for row in other_rows)
-                    if other_top > region_bottom:
-                        next_top = other_top if next_top is None else min(next_top, other_top)
-                if next_top is not None:
-                    y1 = min(page_height, next_top - 6.0)
-
-            if x1 <= x0 or y1 <= y0:
-                continue
-            crop_rect = fitz.Rect(x0, y0, x1, y1) & page.rect
-            if crop_rect.is_empty or crop_rect.width <= 0 or crop_rect.height <= 0:
-                continue
-            if crop_rect.width >= page_width * 0.85 and crop_rect.height >= page_height * 0.80:
-                continue
-            dpi = max(72, min(150, int(dpi_by_page.get(page_no, 72))))
-            payload = page.get_pixmap(clip=crop_rect, dpi=dpi, alpha=False).tobytes("png")
-            digest = hashlib.sha256(payload).hexdigest()
-            slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
-            key = (
-                f"{source_hash[:16]}/page-{page_no}/"
-                f"q-{slug}-{int(block['number']):03d}-{kind}-{side}-{digest[:12]}.png"
+            bounds = _calculate_region_bounds(
+                page_width, page_height, midpoint, side, region_rows, answer_side,
+                blocks, block_index, page_no, kind, side_of
             )
-            path = asset_dir / key
-            path.parent.mkdir(parents=True, exist_ok=True)
-            if not path.exists():
-                path.write_bytes(payload)
-            bounds = [round(crop_rect.x0, 2), round(crop_rect.y0, 2),
-                      round(crop_rect.x1, 2), round(crop_rect.y1, 2)]
-            cropped.append(Asset(
-                key, page_no, bounds, digest, str(path.relative_to(asset_dir.parent))
-            ))
+            if bounds is None:
+                continue
+
+            x0, y0, x1, y1 = bounds
+            crop_rect = fitz.Rect(x0, y0, x1, y1) & page.rect
+            dpi = max(72, min(150, int(dpi_by_page.get(page_no, 72))))
+
+            asset = _extract_asset_from_crop(
+                page, crop_rect, dpi, block, source_hash, kind, side, page_no, asset_dir
+            )
+            if asset:
+                cropped.append(asset)
     return cropped
 
 
