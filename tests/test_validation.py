@@ -1024,3 +1024,20 @@ def test_question_header_does_not_accept_repeated_multidigit_solution_number():
     )
     assert number == 2
     assert match is not None
+
+def test_question_header_rejects_bare_number_tokens_as_stems():
+    # A single OCR token near a page heading is insufficient evidence.
+    assert _question_header_candidate(
+        "2", [4.8, 62.0, 14.0, 73.0], 595.276, 2
+    ) == (None, None)
+    assert _question_header_candidate(
+        "2.", [4.8, 62.0, 14.0, 73.0], 595.276, 2
+    ) == (None, None)
+
+    # Printed punctuation may be missing, but the matching question stem must
+    # still be present on that row.
+    match, number = _question_header_candidate(
+        "16 The coefficient of x is:", [35.8, 120.0, 500.0, 140.0], 595.276, 16
+    )
+    assert number == 16
+    assert match is not None
