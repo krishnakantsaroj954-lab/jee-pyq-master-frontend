@@ -982,78 +982,62 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
         return q_text,q_opts,None,solution_text,qrows,srows,'MULTIPLE_ANSWER_MARKERS'
     return q_text,q_opts,answer,solution_text,qrows,srows,None
 
-def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
-    fitz=_fitz()
-    doc=fitz.open(config.source_pdf)
-    page_count=len(doc)
-    all_assets=[]
-    page_assets={}
-    raw=[]
-    page_dimensions={}
-    scan_only_pages=set()
-    scan_dpi_by_page={}
-    source_hash=sha256_file(config.source_pdf)
-    expected=set(config.expected_question_numbers)
-    # Only override headings when config explicitly provides a unique subject for
-    # a printed number; ambiguous per-subject numbering remains heading-led.
-    expected_subject_by_number = _expected_subject_by_number(expected)
-    current_subject=None
-    try:
-        for page_no in range(config.page_range[0],config.page_range[1]+1):
-            if page_no>page_count:
-                return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
-            page=doc[page_no-1]
-            page_dimensions[page_no]=(float(page.rect.width),float(page.rect.height))
-            page_image_info=_page_image_info(page)
-            pa=_assets(page,page_no,asset_dir,source_hash,page_image_info)
-            page_assets[page_no]=pa
-            all_assets.extend(pa)
-            words, used_ocr = _page_words(page,page_no,page_image_info)
-            if used_ocr:
-                scan_only_pages.add(page_no)
-                scan_dpi_by_page[page_no]=_ocr_dpi(page)
-            page_rows=[]
-            force_midpoint = used_ocr and _has_center_divider(page)
-            for row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
-                text=_join_word_tokens(row).strip()
-                if not text:
-                    continue
-                subject=_subject_line(text)
-                bounds=[min(w[0] for w in row),min(w[1] for w in row),max(w[2] for w in row),max(w[3] for w in row)]
-                page_rows.append((text,bounds,subject))
-            question_y = [
-                bounds[1] for text,bounds,_subject in page_rows
-                if _question_start(text)[1] is not None
-            ]
-            headings = sorted(
-                [(bounds[1],subject) for _text,bounds,subject in page_rows if subject],
-                key=lambda item:item[0]
-            )
-            # Subject names may be centered in the right column. Apply a heading
-            # above the first question to the entire page before reading either column.
-            if headings and (not question_y or headings[0][0] <= min(question_y)):
-                current_subject=headings[0][1]
-            for text,bounds,subject in page_rows:
-                if subject:
-                    current_subject=subject
-                raw.append((page_no,text,bounds,current_subject))
-    finally:
-        doc.close()
 
-    expected_number_sequence = sorted(expected_subject_by_number)
-    strict_sequential_numbering = (
-        len(expected_number_sequence) == config.expected_question_count
-        and bool(expected_number_sequence)
-        and expected_number_sequence == list(range(
-            expected_number_sequence[0],
-            expected_number_sequence[0] + len(expected_number_sequence),
-        ))
-    )
+def _extract_pages_raw(doc, config, asset_dir: Path, source_hash: str) -> tuple[list, list[Asset], dict, set, dict, list[Issue]]:
+    page_count = len(doc)
+    all_assets = []
+    raw = []
+    page_dimensions = {}
+    scan_only_pages = set()
+    scan_dpi_by_page = {}
+    current_subject = None
+    issues = []
+    for page_no in range(config.page_range[0], config.page_range[1] + 1):
+        if page_no > page_count:
+            issues.append(Issue('PAGE_RANGE_OUT_OF_BOUNDS', f'Configured page {page_no} does not exist'))
+            return raw, all_assets, page_dimensions, scan_only_pages, scan_dpi_by_page, issues
+        page = doc[page_no - 1]
+        page_dimensions[page_no] = (float(page.rect.width), float(page.rect.height))
+        page_image_info = _page_image_info(page)
+        pa = _assets(page, page_no, asset_dir, source_hash, page_image_info)
+        all_assets.extend(pa)
+        words, used_ocr = _page_words(page, page_no, page_image_info)
+        if used_ocr:
+            scan_only_pages.add(page_no)
+            scan_dpi_by_page[page_no] = _ocr_dpi(page)
+        page_rows = []
+        force_midpoint = used_ocr and _has_center_divider(page)
+        for row in _lines(words, page.rect.width, force_midpoint=force_midpoint):
+            text = _join_word_tokens(row).strip()
+            if not text:
+                continue
+            subject = _subject_line(text)
+            bounds = [min(w[0] for w in row), min(w[1] for w in row), max(w[2] for w in row), max(w[3] for w in row)]
+            page_rows.append((text, bounds, subject))
+        question_y = [
+            bounds[1] for text, bounds, _subject in page_rows
+            if _question_start(text)[1] is not None
+        ]
+        headings = sorted(
+            [(bounds[1], subject) for _text, bounds, subject in page_rows if subject],
+            key=lambda item: item[0]
+        )
+        # Subject names may be centered in the right column. Apply a heading
+        # above the first question to the entire page before reading either column.
+        if headings and (not question_y or headings[0][0] <= min(question_y)):
+            current_subject = headings[0][1]
+        for text, bounds, subject in page_rows:
+            if subject:
+                current_subject = subject
+            raw.append((page_no, text, bounds, current_subject))
+    return raw, all_assets, page_dimensions, scan_only_pages, scan_dpi_by_page, issues
+
+def _group_raw_into_blocks(raw: list, expected_number_sequence: list[int], expected_subject_by_number: dict, strict_sequential_numbering: bool, page_dimensions: dict) -> tuple[list, list[Issue]]:
     next_expected_index = 0
     header_issues: list[Issue] = []
-    blocks=[]
-    current=None
-    for raw_index,(page,text,bounds,subject) in enumerate(raw):
+    blocks = []
+    current = None
+    for raw_index, (page, text, bounds, subject) in enumerate(raw):
         expected_next = (
             expected_number_sequence[next_expected_index]
             if strict_sequential_numbering and next_expected_index < len(expected_number_sequence)
@@ -1062,7 +1046,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         page_width = page_dimensions.get(page, (0.0, 0.0))[0]
         match, number = _question_header_candidate(text, bounds, page_width, expected_next)
         if number is None and strict_sequential_numbering and expected_next is not None:
-            if _infer_missing_top_question_header(raw,raw_index,expected_next,page_dimensions,expected_subject_by_number):
+            if _infer_missing_top_question_header(raw, raw_index, expected_next, page_dimensions, expected_subject_by_number):
                 # The source has a distinct top-of-column stem, then its own Answer
                 # and Solution markers, followed by the next numbered question. The
                 # printed number itself was missed by OCR; keep the stem text intact.
@@ -1107,115 +1091,174 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         if number is not None and subject is not None:
             if current:
                 blocks.append(current)
-            current={'number':number,'subject':subject,'rows':[(page,text[match.end():].strip(),bounds)],'pages':{page}}
+            current = {'number': number, 'subject': subject, 'rows': [(page, text[match.end():].strip(), bounds)], 'pages': {page}}
             continue
         if current:
-            current['rows'].append((page,text,bounds))
+            current['rows'].append((page, text, bounds))
             current['pages'].add(page)
     if current:
         blocks.append(current)
+    return blocks, header_issues
 
-    questions=[]
-    issues=list(header_issues)
-    crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
-    source_placed_assets = tuple(all_assets)
-
-    for block_index, block in enumerate(blocks):
-        q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
-        if split_error:
-            issues.append(Issue('MULTIPLE_ANSWER_MARKERS',f'Question {block["subject"]}:{block["number"]} has multiple answer markers'))
-        qpages=sorted({r[0] for r in qrows})
-        spages=sorted({r[0] for r in srows})
-        if not qpages:
-            qpages=sorted(block['pages'])
-        if qrows:
-            q_bounds=[
-                min(r[2][0] for r in qrows),min(r[2][1] for r in qrows),
-                max(r[2][2] for r in qrows),max(r[2][3] for r in qrows),
-            ]
-        else:
-            issues.append(Issue(
-                'EMPTY_QUESTION_TEXT',
-                f'Question {block["subject"]}:{block["number"]} has no question-region text before the answer/solution section',
-            ))
-            fallback_bounds = _rect_union([r[2] for r in block['rows']])
-            q_bounds = fallback_bounds or [0.0, 0.0, 1.0, 1.0]
-        s_bounds=None
-        if srows:
-            s_bounds=[
-                min(r[2][0] for r in srows),min(r[2][1] for r in srows),
-                max(r[2][2] for r in srows),max(r[2][3] for r in srows),
-            ]
-        qassets=[]
-        sassets=[]
-        for asset in source_placed_assets:
-            if asset.page in qpages:
-                ax=asset.bounds
-                bx=q_bounds
-                pad=16.0
-                test=[bx[0]-pad,bx[1]-pad,bx[2]+pad,bx[3]+pad]
-                if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
-                    qassets.append(asset)
-            if s_bounds and asset.page in spages:
-                pad=40.0
-                test=[s_bounds[0]-pad,s_bounds[1]-pad,s_bounds[2]+pad,s_bounds[3]+pad]
-                ax=asset.bounds
-                if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
-                    sassets.append(asset)
-        qassets={ (a.object_key,tuple(a.bounds)):a for a in qassets }.values()
-        sassets={ (a.object_key,tuple(a.bounds)):a for a in sassets }.values()
-        qassets=list(qassets)
-        sassets=list(sassets)
-        requires_figure=bool(FIGURE.search(q_text))
-        if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
-            figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash)
-            if figure_crops:
-                qassets=figure_crops
-                all_assets.extend(figure_crops)
-        if crop_doc is not None:
-            # A source scan is context, not a question image. Give every record a
-            # bounded question crop and a distinct source-solution crop when present.
-            question_crops=_crop_scan_regions(
-                crop_doc,block,qrows,blocks,block_index,asset_dir,source_hash,
-                "question",scan_dpi_by_page
-            )
-            solution_crops=_crop_scan_regions(
-                crop_doc,block,srows,blocks,block_index,asset_dir,source_hash,
-                "solution",scan_dpi_by_page
-            ) if srows else []
-            if question_crops:
-                qassets.extend(question_crops)
-                all_assets.extend(question_crops)
-            if solution_crops:
-                sassets.extend(solution_crops)
-                all_assets.extend(solution_crops)
-        # Explicit section bands in the source-paper config outrank OCR heuristics.
-        # Incomplete options/answers still fail structural validation below.
-        configured_type = _question_type_from_ranges(
-            int(block['number']), getattr(config, 'question_type_ranges', ())
-        )
-        if configured_type is not None:
-            question_type = configured_type
-        # Otherwise retain content-based classification, without inventing missing fields.
-        elif len(q_opts)==4 and set(q_opts) in (set('ABCD'),set('1234')):
-            question_type='MCQ'
-        elif not q_opts and answer is not None and re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?',str(answer).strip()):
-            question_type='NUMERICAL'
-        else:
-            question_type='UNKNOWN'
-        dropped=bool(re.search(r'\b(?:question\s+(?:has\s+been\s+)?dropped|dropped\s+(?:question|by\s+NTA|from\s+evaluation)|question\s+is\s+dropped)\b',q_text+' '+solution_text,re.I))
-        qid=f'{source_hash[:16]}-{block["subject"].lower()}-q-{block["number"]:03d}'
-        solution=None
-        if solution_text:
-            solution={'text':solution_text,'pages':spages,'source_reference':{
-                'source_document':config.source_pdf.name,
-                'source_sha256':source_hash,
-            }}
-        questions.append(Question(
-            qid,block['number'],q_text,q_opts,answer,qpages,q_bounds,
-            {'source_sha256':source_hash,'source_document':config.source_pdf.name,'source_release':config.release},
-            qassets,solution,requires_figure,'Dropped' if dropped else 'VALIDATED',[],block['subject'],None,question_type,sassets
+def _build_question_from_block(block, block_index, blocks, config, scan_only_pages, source_placed_assets, asset_dir, source_hash, crop_doc, scan_dpi_by_page):
+    q_text, q_opts, answer, solution_text, qrows, srows, split_error = _split_source_sections(block['rows'])
+    block_issues = []
+    if split_error:
+        block_issues.append(Issue('MULTIPLE_ANSWER_MARKERS', f'Question {block["subject"]}:{block["number"]} has multiple answer markers'))
+    qpages = sorted({r[0] for r in qrows})
+    spages = sorted({r[0] for r in srows})
+    if not qpages:
+        qpages = sorted(block['pages'])
+    if qrows:
+        q_bounds = [
+            min(r[2][0] for r in qrows), min(r[2][1] for r in qrows),
+            max(r[2][2] for r in qrows), max(r[2][3] for r in qrows),
+        ]
+    else:
+        block_issues.append(Issue(
+            'EMPTY_QUESTION_TEXT',
+            f'Question {block["subject"]}:{block["number"]} has no question-region text before the answer/solution section',
         ))
+        fallback_bounds = _rect_union([r[2] for r in block['rows']])
+        q_bounds = fallback_bounds or [0.0, 0.0, 1.0, 1.0]
+    s_bounds = None
+    if srows:
+        s_bounds = [
+            min(r[2][0] for r in srows), min(r[2][1] for r in srows),
+            max(r[2][2] for r in srows), max(r[2][3] for r in srows),
+        ]
+    qassets = []
+    sassets = []
+    for asset in source_placed_assets:
+        if asset.page in qpages:
+            ax = asset.bounds
+            bx = q_bounds
+            pad = 16.0
+            test = [bx[0]-pad, bx[1]-pad, bx[2]+pad, bx[3]+pad]
+            if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
+                qassets.append(asset)
+        if s_bounds and asset.page in spages:
+            pad = 40.0
+            test = [s_bounds[0]-pad, s_bounds[1]-pad, s_bounds[2]+pad, s_bounds[3]+pad]
+            ax = asset.bounds
+            if not (ax[2]<test[0] or ax[0]>test[2] or ax[3]<test[1] or ax[1]>test[3]):
+                sassets.append(asset)
+    qassets = {(a.object_key, tuple(a.bounds)): a for a in qassets}.values()
+    sassets = {(a.object_key, tuple(a.bounds)): a for a in sassets}.values()
+    qassets = list(qassets)
+    sassets = list(sassets)
+    requires_figure = bool(FIGURE.search(q_text))
+    new_assets = []
+    if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
+        figure_crops = _crop_question_figures(config, block, qrows, blocks, block_index, asset_dir, source_hash)
+        if figure_crops:
+            qassets = figure_crops
+            new_assets.extend(figure_crops)
     if crop_doc is not None:
-        crop_doc.close()
-    return questions,all_assets,issues,page_count
+        # A source scan is context, not a question image. Give every record a
+        # bounded question crop and a distinct source-solution crop when present.
+        question_crops = _crop_scan_regions(
+            crop_doc, block, qrows, blocks, block_index, asset_dir, source_hash,
+            "question", scan_dpi_by_page
+        )
+        solution_crops = _crop_scan_regions(
+            crop_doc, block, srows, blocks, block_index, asset_dir, source_hash,
+            "solution", scan_dpi_by_page
+        ) if srows else []
+        if question_crops:
+            qassets.extend(question_crops)
+            new_assets.extend(question_crops)
+        if solution_crops:
+            sassets.extend(solution_crops)
+            new_assets.extend(solution_crops)
+
+    # Explicit section bands in the source-paper config outrank OCR heuristics.
+    # Incomplete options/answers still fail structural validation below.
+    configured_type = _question_type_from_ranges(
+        int(block['number']), getattr(config, 'question_type_ranges', ())
+    )
+    if configured_type is not None:
+        question_type = configured_type
+    # Otherwise retain content-based classification, without inventing missing fields.
+    elif len(q_opts) == 4 and set(q_opts) in (set('ABCD'), set('1234')):
+        question_type = 'MCQ'
+    elif not q_opts and answer is not None and re.fullmatch(r'-?\d+(?:\.\d+)?(?:\s*/\s*-?\d+(?:\.\d+)?)?', str(answer).strip()):
+        question_type = 'NUMERICAL'
+    else:
+        question_type = 'UNKNOWN'
+
+    dropped = bool(re.search(r'\b(?:question\s+(?:has\s+been\s+)?dropped|dropped\s+(?:question|by\s+NTA|from\s+evaluation)|question\s+is\s+dropped)\b', q_text + ' ' + solution_text, re.I))
+    qid = f'{source_hash[:16]}-{block["subject"].lower()}-q-{block["number"]:03d}'
+    solution = None
+    if solution_text:
+        solution = {'text': solution_text, 'pages': spages, 'source_reference': {
+            'source_document': config.source_pdf.name,
+            'source_sha256': source_hash,
+        }}
+    question = Question(
+        qid, block['number'], q_text, q_opts, answer, qpages, q_bounds,
+        {'source_sha256': source_hash, 'source_document': config.source_pdf.name, 'source_release': config.release},
+        qassets, solution, requires_figure, 'Dropped' if dropped else 'VALIDATED', [], block['subject'], None, question_type, sassets
+    )
+    return question, block_issues, new_assets
+
+def _process_blocks_into_questions(blocks, config, scan_only_pages, all_assets, asset_dir, source_hash, scan_dpi_by_page):
+    questions = []
+    issues = []
+    crop_doc = _fitz().open(config.source_pdf) if scan_only_pages else None
+    source_placed_assets = tuple(all_assets)
+    try:
+        for block_index, block in enumerate(blocks):
+            question, block_issues, new_assets = _build_question_from_block(
+                block, block_index, blocks, config, scan_only_pages, source_placed_assets, asset_dir, source_hash, crop_doc, scan_dpi_by_page
+            )
+            questions.append(question)
+            issues.extend(block_issues)
+            all_assets.extend(new_assets)
+    finally:
+        if crop_doc is not None:
+            crop_doc.close()
+    return questions, all_assets, issues
+
+
+def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
+    fitz=_fitz()
+    doc=fitz.open(config.source_pdf)
+    page_count = len(doc)
+    source_hash = sha256_file(config.source_pdf)
+    expected = set(config.expected_question_numbers)
+    # Only override headings when config explicitly provides a unique subject for
+    # a printed number; ambiguous per-subject numbering remains heading-led.
+    expected_subject_by_number = _expected_subject_by_number(expected)
+
+    try:
+        raw, all_assets, page_dimensions, scan_only_pages, scan_dpi_by_page, issues = _extract_pages_raw(
+            doc, config, asset_dir, source_hash
+        )
+    finally:
+        doc.close()
+
+    if any(issue.code == 'PAGE_RANGE_OUT_OF_BOUNDS' for issue in issues):
+        return [], [], issues, page_count
+
+    expected_number_sequence = sorted(expected_subject_by_number)
+    strict_sequential_numbering = (
+        len(expected_number_sequence) == config.expected_question_count
+        and bool(expected_number_sequence)
+        and expected_number_sequence == list(range(
+            expected_number_sequence[0],
+            expected_number_sequence[0] + len(expected_number_sequence),
+        ))
+    )
+
+    blocks, header_issues = _group_raw_into_blocks(
+        raw, expected_number_sequence, expected_subject_by_number, strict_sequential_numbering, page_dimensions
+    )
+    issues.extend(header_issues)
+
+    questions, all_assets, block_issues = _process_blocks_into_questions(
+        blocks, config, scan_only_pages, all_assets, asset_dir, source_hash, scan_dpi_by_page
+    )
+    issues.extend(block_issues)
+
+    return questions, all_assets, issues, page_count
