@@ -1,27 +1,33 @@
-# Pipeline status — 16 October 2026
+# Pipeline status — 22 October 2026
 
-## Fixed and merged to `main`
+## Repair in progress: Jan 22 Shift 1 source and OCR dry run
 
-- Removed the fake 75-record generator that had fabricated question text, generic options, guessed answers, and placeholder solutions instead of reading the source PDF.
-- Restored source-grounded PDF parsing with page geometry, two-column layout handling, OCR fallback, source answer/solution marker splitting, subject-aware question keys, source-specific question-type ranges, and bounded question/solution crop association.
-- Added strict checks for paper scope/count, duplicate IDs and question keys, malformed options, missing/ambiguous answers, absent source solutions, invalid source lineage/bounds, notation damage, placeholder content, and required images.
-- Added a per-question source-review manifest bound to the source PDF SHA-256, paper identity, and extracted-record fingerprint.
-- The automatic parser now remains `REVIEW_REQUIRED` even when structural checks pass. `IMPORT_READY.json` requires a complete review approval; uncertain data stays quarantined.
-- Kept source-marked dropped-question records with `Dropped` status rather than silently removing them.
-- Replaced the old CI workflow's false claim that a fixed synthetic 75-question run was green with a test-only workflow. CI makes no production writes, deploys nothing, and uploads no large artifacts.
+The previous dry-run config was wrong for this source and could not safely run:
+- Repository-root `cEDaK5Wn5ILe4nOdotd6.pdf` is **28 January 2026 Shift 1**, not the requested 22 January paper.
+- The source audit and the checked-in Jan 22 manifest identify the correct original as `BPD4dLYdvGj7xm8cDL66.pdf`, SHA-256 `7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3`.
+- The exact original PDF is present in the conversation Library and its bytes were checked against that SHA-256; its cover explicitly says **22 January 2026 Shift 1**.
+- The correct original PDF is not present in the GitHub repository. The repo does, however, contain 24 full source-page JPEGs plus `asset-manifest.json`, whose page-by-page byte sizes and hashes were created for that original PDF.
+- The initial SHA guard correctly stopped extraction instead of reading the wrong Jan 28 paper.
 
-## Automated verification
+## Fix on branch `fix/jan22-scan-ocr-dry-run-20261022`
 
-- Pull request #13 was merged on 16 October 2026.
-- GitHub Actions run **190** completed successfully. The parser/source-validation/review-gate/watermark test step passed; the run executed 61 tests.
-- This proves the tested code paths and fixtures pass. It does **not** prove any real paper's question text, answers, solutions, or image crops are correct.
+The branch now:
+1. Does not use or rename the wrong repository-root PDF.
+2. Verifies all 24 Jan 22 source-page JPEGs against their pinned SHA-256 values and confirms the manifest's original PDF SHA-256.
+3. Reconstructs a temporary **OCR derivative PDF** from those verified page images. This generated PDF is expressly not treated as byte-identical to the original PDF.
+4. Points the representative config to that derivative, with 24 pages, 75 global question numbers in source order (Mathematics 1–25, Physics 26–50, Chemistry 51–75), and source section type bands (MCQ 1–20 etc.).
+5. Runs parser tests plus a real-paper OCR dry run, preserves previous batch/review evidence, and writes no data to Cloudflare/D1.
+6. Keeps the whole dataset read-only/unapproved until every question, option, answer, solution, dropped status and image association is verified against the source.
 
-## What remains unverified
+## Original source identity
 
-**The real-paper extraction is not certified complete.** The exact intended 16 MB PDF has not been re-run and visually reviewed here with the repaired parser. Before a paper can be marked ready, confirm the exact PDF's identity and SHA-256, run a dry extraction, inspect the validation report and question count/scope, compare every question/options/answer/solution/image against the same source PDF, and complete its content-bound review manifest. Do not substitute a different date or shift. Missing or uncertain items must remain quarantined.
+- Original file recorded by the Jan 22 bundle: `BPD4dLYdvGj7xm8cDL66.pdf`
+- Original SHA-256: `7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3`
+- Source-page count: 24
+- Page-image verification: must pass all 24 pinned hashes before the OCR step starts.
 
-The user-facing website/API/database also require separate verification; this is only the source/PDF pipeline.
+## Verification boundary
 
-## Production boundary
+Passing the source-page checksum gate proves that the expected bundle page files are unchanged relative to the checked-in asset manifest; the manifest records the original PDF hash. OCR text, math notation, options, answer/solution association and figures are still untrusted until human review. The pipeline must remain `REVIEW_REQUIRED` / `QUARANTINED` until source review is complete and a content-bound review manifest is approved.
 
-No Cloudflare Worker code, D1 database/table, secret, production import, or deployment was changed. Do not treat this pipeline repair or green unit tests as a completed website or as a production-ready PYQ corpus.
+No production import, D1 write, Worker code change, or verified-data promotion is part of this repair.

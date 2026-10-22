@@ -1,0 +1,127 @@
+name: JEE Main Jan 22 source-gated OCR dry run
+
+on:
+  push:
+    branches:
+      - fix/jan22-scan-ocr-dry-run-20261022
+    paths:
+      - "representative-config.json"
+      - "run-dry-run.sh"
+      - "scripts/prepare_jan22_source_pdf.py"
+      - "scripts/verify_jan22_source.py"
+      - "data/quarantine/2026-01-22-shift1/asset-manifest.json"
+      - "data/quarantine/2026-01-22-shift1/images/pages/**"
+      - ".github/workflows/jan22-source-dry-run.yml"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pyproject.toml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "representative-config.json"
+      - "run-dry-run.sh"
+      - "scripts/prepare_jan22_source_pdf.py"
+      - "scripts/verify_jan22_source.py"
+      - "data/quarantine/2026-01-22-shift1/asset-manifest.json"
+      - "data/quarantine/2026-01-22-shift1/images/pages/**"
+      - ".github/workflows/jan22-source-dry-run.yml"
+      - "pipeline/jee_pyq_pipeline/**"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-gated-dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout pipeline and pinned Jan 22 source-page bundle
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install OCR engine and package
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[test]"
+
+      - name: Run parser and validation tests
+        run: python -m pytest -q
+
+      - name: Verify 24 pinned source-page JPEGs and prepare OCR derivative
+        id: source
+        continue-on-error: true
+        shell: bash
+        run: |
+          python scripts/prepare_jan22_source_pdf.py
+          python scripts/verify_jan22_source.py
+
+      - name: Run real-paper OCR extraction (no D1 import)
+        if: steps.source.outcome == 'success' && steps.source.outputs.verified == 'true'
+        shell: bash
+        run: |
+          set -o pipefail
+          bash ./run-dry-run.sh 2>&1 | tee /tmp/jan22-dry-run.log
+
+      - name: Summarize source gate and extraction status
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          summary = Path(os.environ["GITHUB_STEP_SUMMARY"])
+          config_path = Path("representative-config.json")
+          config = json.loads(config_path.read_text(encoding="utf-8")) if config_path.is_file() else {}
+          manifest_path = Path("data/quarantine/2026-01-22-shift1/asset-manifest.json")
+          manifest = json.loads(manifest_path.read_text(encoding="utf-8")) if manifest_path.is_file() else {}
+          prepared_path = Path("pipeline-output/source/22jan-source-page-verification.json")
+          prepared = json.loads(prepared_path.read_text(encoding="utf-8")) if prepared_path.is_file() else {}
+          original_hash = manifest.get("source_pdf_sha256", "")
+          expected_hash = config.get("expected_source_sha256", "")
+          lines = [
+              "## JEE Main · 22 January 2026 · Shift 1",
+              "",
+              f"- Original source PDF recorded in bundle: `{prepared.get('original_source_pdf', 'BPD4dLYdvGj7xm8cDL66.pdf')}`",
+              f"- Original SHA-256 in bundle manifest: `{original_hash or 'missing'}`",
+              f"- Config SHA-256 pin matches manifest: **{'PASS' if expected_hash == original_hash and bool(expected_hash) else 'BLOCKED'}**",
+              f"- Pinned source-page JPEGs verified: **{prepared.get('page_assets_verified', 0)}/24**",
+              f"- OCR derivative PDF SHA-256: `{prepared.get('ocr_derivative_pdf_sha256', 'not created')}`",
+              "- OCR derivative is not byte-identical to the original PDF.",
+              "- Production import / D1 writes: **NOT PERFORMED**",
+          ]
+          batches = sorted(Path("pipeline-output").glob("jan22-run-*/*/batch-manifest.json"))
+          if batches:
+              manifest_path = batches[-1]
+              batch_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+              batch = manifest_path.parent
+              report_path = batch / "validation-report.json"
+              report = json.loads(report_path.read_text(encoding="utf-8")) if report_path.is_file() else {}
+              lines += ["", f"- Batch directory: `{batch}`", f"- Pipeline status: **{batch_manifest.get('status', 'UNKNOWN')}**"]
+              for name in ("validated", "review_required", "quarantined", "rejected", "dropped"):
+                  data_path = batch / f"{name}.json"
+                  count = len(json.loads(data_path.read_text(encoding="utf-8"))) if data_path.is_file() else 0
+                  lines.append(f"- {name}: {count}")
+              lines.append(f"- Per-question review gate: **{report.get('review_gate', {}).get('status', 'UNKNOWN')}**")
+          else:
+              lines += ["", "- Extraction output: **not created**"]
+          summary.write_text("\n".join(lines) + "\n", encoding="utf-8")
+          PY
+
+      - name: Keep review evidence available in job logs
+        if: always()
+        run: echo "Quarantined records and per-page OCR diagnostics are printed in the preceding extraction step; GitHub Actions artifact uploads are disabled because this repository has exhausted its artifact-storage quota."
+
+      - name: Fail closed if source pages failed verification
+        if: steps.source.outputs.verified != 'true'
+        run: |
+          echo "The pinned Jan 22 source-page bundle did not pass verification; extraction was not permitted." >&2
+          exit 1
