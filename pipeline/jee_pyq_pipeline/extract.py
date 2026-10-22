@@ -580,7 +580,7 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
 
 def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
                        blocks:list[dict], block_index:int, asset_dir:Path,
-                       source_hash:str, kind:str, dpi_by_page:dict[int,int])->list[Asset]:
+                       source_hash:str, kind:str, dpi_by_page:dict[int,int], scan_layout_data:dict=None)->list[Asset]:
     """Render bounded question/source-solution crops; keep column continuations separate."""
     fitz = _fitz()
     cropped = []
@@ -615,16 +615,20 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             # Compute horizontal extent from rows on this side only. A solution can
             # continue from the bottom of the left column to the top of the right;
             # joining both extents would create an almost-full-width screenshot.
-            column_rows = []
-            for other in blocks:
-                other_rows = [
-                    row for row in other.get("rows", [])
-                    if row[0] == page_no and side_of(row) == side
-                ]
-                other_box = _rect_union([row[2] for row in other_rows])
-                if other_box is not None:
-                    column_rows.extend(other_rows)
-            column_box = _rect_union([row[2] for row in column_rows]) or region_box
+            if scan_layout_data is not None and page_no in scan_layout_data and side in scan_layout_data[page_no]:
+                column_box = scan_layout_data[page_no][side]["column_box"] or region_box
+            else:
+                column_rows = []
+                for other in blocks:
+                    other_rows = [
+                        row for row in other.get("rows", [])
+                        if row[0] == page_no and side_of(row) == side
+                    ]
+                    other_box = _rect_union([row[2] for row in other_rows])
+                    if other_box is not None:
+                        column_rows.extend(other_rows)
+                column_box = _rect_union([row[2] for row in column_rows]) or region_box
+
             x0 = max(0.0, column_box[0] - 12.0)
             x1 = min(page_width, column_box[2] + 12.0)
             # This source uses two columns separated at the page midpoint. Clip each
@@ -650,19 +654,26 @@ def _crop_scan_regions(doc, block:dict, rows:list[tuple[int,str,list[float]]],
             elif kind == "solution":
                 region_bottom = max(row[2][3] for row in region_rows)
                 next_top = None
-                for other_index, other in enumerate(blocks):
-                    if other_index <= block_index:
-                        continue
-                    other_rows = [
-                        row for row in other.get("rows", [])
-                        if row[0] == page_no and side_of(row) == side
-                    ]
-                    other_box = _rect_union([row[2] for row in other_rows])
-                    if other_box is None:
-                        continue
-                    other_top = min(row[2][1] for row in other_rows)
-                    if other_top > region_bottom:
-                        next_top = other_top if next_top is None else min(next_top, other_top)
+                if scan_layout_data is not None and page_no in scan_layout_data and side in scan_layout_data[page_no]:
+                    for other_index, other_top in scan_layout_data[page_no][side]["block_tops"]:
+                        if other_index <= block_index:
+                            continue
+                        if other_top > region_bottom:
+                            next_top = other_top if next_top is None else min(next_top, other_top)
+                else:
+                    for other_index, other in enumerate(blocks):
+                        if other_index <= block_index:
+                            continue
+                        other_rows = [
+                            row for row in other.get("rows", [])
+                            if row[0] == page_no and side_of(row) == side
+                        ]
+                        other_box = _rect_union([row[2] for row in other_rows])
+                        if other_box is None:
+                            continue
+                        other_top = min(row[2][1] for row in other_rows)
+                        if other_top > region_bottom:
+                            next_top = other_top if next_top is None else min(next_top, other_top)
                 if next_top is not None:
                     y1 = min(page_height, next_top - 6.0)
 
@@ -1120,6 +1131,46 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
     source_placed_assets = tuple(all_assets)
 
+    scan_layout_data = {}
+    if crop_doc is not None:
+        precomputed_side_data = {}
+        for block_index, block in enumerate(blocks):
+            for row in block.get("rows", []):
+                page_no = row[0]
+                if page_no < 1 or page_no > len(crop_doc):
+                    continue
+                page = crop_doc[page_no - 1]
+                midpoint = float(page.rect.width) * 0.5
+                center = (float(row[2][0]) + float(row[2][2])) / 2.0
+                side = "left" if center < midpoint else "right"
+
+                if page_no not in precomputed_side_data:
+                    precomputed_side_data[page_no] = {"left": {}, "right": {}}
+
+                if block_index not in precomputed_side_data[page_no][side]:
+                    precomputed_side_data[page_no][side][block_index] = []
+
+                precomputed_side_data[page_no][side][block_index].append(row)
+
+        for page_no, side_dict in precomputed_side_data.items():
+            scan_layout_data[page_no] = {}
+            for side, blocks_dict in side_dict.items():
+                all_rows = []
+                block_tops = []
+                for b_idx, r_list in blocks_dict.items():
+                    all_rows.extend(r_list)
+                    b_top = min(r[2][1] for r in r_list)
+                    block_tops.append((b_idx, b_top))
+
+                column_box = _rect_union([r[2] for r in all_rows]) if all_rows else None
+                block_tops.sort(key=lambda x: x[0])
+
+                scan_layout_data[page_no][side] = {
+                    "column_box": column_box,
+                    "block_tops": block_tops
+                }
+
+
     for block_index, block in enumerate(blocks):
         q_text,q_opts,answer,solution_text,qrows,srows,split_error=_split_source_sections(block['rows'])
         if split_error:
@@ -1177,11 +1228,11 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
             # bounded question crop and a distinct source-solution crop when present.
             question_crops=_crop_scan_regions(
                 crop_doc,block,qrows,blocks,block_index,asset_dir,source_hash,
-                "question",scan_dpi_by_page
+                "question",scan_dpi_by_page,scan_layout_data
             )
             solution_crops=_crop_scan_regions(
                 crop_doc,block,srows,blocks,block_index,asset_dir,source_hash,
-                "solution",scan_dpi_by_page
+                "solution",scan_dpi_by_page,scan_layout_data
             ) if srows else []
             if question_crops:
                 qassets.extend(question_crops)
