@@ -988,7 +988,8 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
         return q_text,q_opts,None,solution_text,qrows,srows,'MULTIPLE_ANSWER_MARKERS'
     return q_text,q_opts,answer,solution_text,qrows,srows,None
 
-def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
+
+def _read_pages(config, asset_dir, source_hash, expected_subject_by_number):
     fitz=_fitz()
     page_graphics_cache = {}
     doc=fitz.open(config.source_pdf)
@@ -999,16 +1000,14 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     page_dimensions={}
     scan_only_pages=set()
     scan_dpi_by_page={}
-    source_hash=sha256_file(config.source_pdf)
-    expected=set(config.expected_question_numbers)
-    # Only override headings when config explicitly provides a unique subject for
-    # a printed number; ambiguous per-subject numbering remains heading-led.
-    expected_subject_by_number = _expected_subject_by_number(expected)
     current_subject=None
+    issues = []
+
     try:
         for page_no in range(config.page_range[0],config.page_range[1]+1):
             if page_no>page_count:
-                return [],[],[Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist')],page_count
+                issues.append(Issue('PAGE_RANGE_OUT_OF_BOUNDS',f'Configured page {page_no} does not exist'))
+                return None, None, None, None, None, None, issues, page_count
             page=doc[page_no-1]
             page_dimensions[page_no]=(float(page.rect.width),float(page.rect.height))
             page_image_info=_page_image_info(page)
@@ -1047,6 +1046,9 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     finally:
         doc.close()
 
+    return raw, page_dimensions, all_assets, scan_only_pages, scan_dpi_by_page, page_graphics_cache, issues, page_count
+
+def _build_blocks(raw, config, page_dimensions, expected_subject_by_number):
     expected_number_sequence = sorted(expected_subject_by_number)
     strict_sequential_numbering = (
         len(expected_number_sequence) == config.expected_question_count
@@ -1122,8 +1124,12 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
     if current:
         blocks.append(current)
 
+    return blocks, header_issues
+
+def _process_blocks(blocks, config, asset_dir, source_hash, all_assets, scan_only_pages, scan_dpi_by_page, page_graphics_cache, header_issues):
     questions=[]
     issues=list(header_issues)
+    fitz=_fitz()
     crop_doc = fitz.open(config.source_pdf) if scan_only_pages else None
     source_placed_assets = tuple(all_assets)
 
@@ -1225,4 +1231,22 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         ))
     if crop_doc is not None:
         crop_doc.close()
-    return questions,all_assets,issues,page_count
+    return questions,all_assets,issues
+
+def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
+    source_hash=sha256_file(config.source_pdf)
+    expected=set(config.expected_question_numbers)
+    # Only override headings when config explicitly provides a unique subject for
+    # a printed number; ambiguous per-subject numbering remains heading-led.
+    expected_subject_by_number = _expected_subject_by_number(expected)
+
+    raw, page_dimensions, all_assets, scan_only_pages, scan_dpi_by_page, page_graphics_cache, early_issues, page_count = _read_pages(config, asset_dir, source_hash, expected_subject_by_number)
+
+    if raw is None:
+        return [], [], early_issues, page_count
+
+    blocks, header_issues = _build_blocks(raw, config, page_dimensions, expected_subject_by_number)
+
+    questions, final_assets, issues = _process_blocks(blocks, config, asset_dir, source_hash, all_assets, scan_only_pages, scan_dpi_by_page, page_graphics_cache, header_issues)
+
+    return questions, final_assets, issues, page_count
