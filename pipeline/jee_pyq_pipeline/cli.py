@@ -74,7 +74,7 @@ def _check_review_manifest(config, questions, source_hash):
         ], template
     try:
         manifest = json.loads(config.review_manifest.read_text(encoding='utf-8'))
-    except Exception as error:
+    except (json.JSONDecodeError, OSError) as error:
         return False, 'INVALID', [
             {'code': 'REVIEW_MANIFEST_UNREADABLE', 'message': f'Could not parse review_manifest: {error}'}
         ], template
