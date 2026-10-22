@@ -25,7 +25,12 @@ jobs:
 
       - name: Execute D1 SQL
         run: |
-          npx wrangler d1 execute jee-pyq-master --remote --file=${{ github.event.inputs.sql_file }}
+          if [ ! -f "$SQL_FILE" ]; then
+            echo "Error: SQL file '$SQL_FILE' not found."
+            exit 1
+          fi
+          npx wrangler d1 execute jee-pyq-master --remote --file="$SQL_FILE"
         env:
+          SQL_FILE: ${{ github.event.inputs.sql_file }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
