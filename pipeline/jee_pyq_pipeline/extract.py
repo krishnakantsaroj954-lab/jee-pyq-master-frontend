@@ -5,8 +5,18 @@ import io
 import re
 import subprocess
 from pathlib import Path
+from dataclasses import dataclass
+from typing import Any
 from .models import Asset, Issue, Question
 from .util import safe_normalize, sha256_file
+
+
+@dataclass(frozen=True)
+class ExtractionContext:
+    config: Any
+    asset_dir: Path
+    source_hash: str
+    page_graphics_cache: dict[int, list[list[float]]]
 
 QUESTION_START = re.compile(r'^(?:Q(?:uestion)?\.?\s*)?(\d{1,3})\s*[.):,](?:\s|$)', re.I)
 OPTION_LABEL = re.compile(r'(?:\(\s*([A-D]|[1-4])\s*\)|(?<![\w.])([A-D]|[1-4])\s*[.)](?=\s|$))', re.I)
@@ -464,14 +474,12 @@ def _x_overlap_ratio(a: list[float], b: list[float]) -> float:
     denom = max(1e-6, min(a[2] - a[0], b[2] - b[0]))
     return overlap / denom
 
-def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list[float]]],
-                           blocks: list[dict], block_index: int, asset_dir: Path,
-                           source_hash: str,
-                           page_graphics_cache: dict[int, list[list[float]]] = None) -> list[Asset]:
+def _crop_question_figures(ctx: ExtractionContext, block: dict, qrows: list[tuple[int, str, list[float]]],
+                           blocks: list[dict], block_index: int) -> list[Asset]:
     """Render only bounded, nearby figure/diagram regions; never attach a full PDF page."""
     fitz = _fitz()
     cropped: list[Asset] = []
-    doc = fitz.open(config.source_pdf)
+    doc = fitz.open(ctx.config.source_pdf)
     try:
         for page_no in sorted({r[0] for r in qrows}):
             if page_no < 1 or page_no > len(doc):
@@ -510,8 +518,8 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
                 continue
 
             graphics: list[list[float]] = []
-            if page_graphics_cache is not None and page_no in page_graphics_cache:
-                graphics = page_graphics_cache[page_no]
+            if ctx.page_graphics_cache is not None and page_no in ctx.page_graphics_cache:
+                graphics = ctx.page_graphics_cache[page_no]
             else:
                 page_dict = page.get_text("dict")
                 for item in page_dict.get("blocks", []):
@@ -527,8 +535,8 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
                     b = [float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)]
                     if b[2] - b[0] >= 2.0 and b[3] - b[1] >= 2.0:
                         graphics.append(b)
-                if page_graphics_cache is not None:
-                    page_graphics_cache[page_no] = graphics
+                if ctx.page_graphics_cache is not None:
+                    ctx.page_graphics_cache[page_no] = graphics
 
             candidates = []
             for g in graphics:
@@ -566,10 +574,10 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
             digest = hashlib.sha256(payload).hexdigest()
             slug = re.sub(r"[^a-z0-9-]+", "-", str(block["subject"]).lower()).strip("-")
             object_key = (
-                f"{source_hash[:16]}/page-{page_no}/"
+                f"{ctx.source_hash[:16]}/page-{page_no}/"
                 f"q-{slug}-{int(block['number']):03d}-figure-{digest[:12]}.png"
             )
-            file_path = asset_dir / object_key
+            file_path = ctx.asset_dir / object_key
             file_path.parent.mkdir(parents=True, exist_ok=True)
             if not file_path.exists():
                 file_path.write_bytes(payload)
@@ -577,7 +585,7 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
                       round(crop_rect.x1, 2), round(crop_rect.y1, 2)]
             cropped.append(Asset(
                 object_key, page_no, bounds, digest,
-                str(file_path.relative_to(asset_dir.parent)),
+                str(file_path.relative_to(ctx.asset_dir.parent)),
             ))
     finally:
         doc.close()
@@ -1175,7 +1183,8 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         sassets=list(sassets)
         requires_figure=bool(FIGURE.search(q_text))
         if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
-            figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash,page_graphics_cache)
+            ctx = ExtractionContext(config, asset_dir, source_hash, page_graphics_cache)
+            figure_crops=_crop_question_figures(ctx,block,qrows,blocks,block_index)
             if figure_crops:
                 qassets=figure_crops
                 all_assets.extend(figure_crops)
