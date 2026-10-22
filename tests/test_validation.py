@@ -9,7 +9,8 @@ from jee_pyq_pipeline.extract import (
     _question_type_from_ranges, _sequence_header_gap,
 )
 from jee_pyq_pipeline.validate import validate
-from jee_pyq_pipeline.cli import _build_batch
+from jee_pyq_pipeline.cli import _build_batch, _check_review_manifest, _paper_identity, _question_fingerprint, _required_review_checks
+import json
 
 def cfg(tmp_path, expected=1, subject='Physics', solutions=False):
     return SimpleNamespace(
@@ -836,6 +837,277 @@ def test_missing_numbered_header_does_not_swallow_all_later_source_questions(tmp
     assert "COUNT_MISMATCH" in {
         issue.code for issue in validate(config, questions, page_count)
     }
+
+
+
+def test_check_review_manifest_missing_manifest(tmp_path):
+    c = cfg(tmp_path)
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    c.review_manifest = None
+    q = question()
+    ok, status, errors, template = _check_review_manifest(c, [q], 'a'*64)
+    assert not ok
+    assert status == 'PENDING'
+    assert len(errors) == 1
+    assert errors[0]['code'] == 'SOURCE_REVIEW_NOT_APPROVED'
+
+def test_check_review_manifest_file_not_found(tmp_path):
+    c = cfg(tmp_path)
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    c.review_manifest = tmp_path / 'missing.json'
+    q = question()
+    ok, status, errors, template = _check_review_manifest(c, [q], 'a'*64)
+    assert not ok
+    assert status == 'INVALID'
+    assert len(errors) == 1
+    assert errors[0]['code'] == 'REVIEW_MANIFEST_MISSING'
+
+def test_check_review_manifest_invalid_json(tmp_path):
+    c = cfg(tmp_path)
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.review_manifest.write_text("invalid json")
+    q = question()
+    ok, status, errors, template = _check_review_manifest(c, [q], 'a'*64)
+    assert not ok
+    assert status == 'INVALID'
+    assert len(errors) == 1
+    assert errors[0]['code'] == 'REVIEW_MANIFEST_UNREADABLE'
+
+def _valid_manifest_template(c, questions, source_hash):
+    return {
+        'format': 'jee-pyq-source-review/v1',
+        'source_pdf_sha256': source_hash,
+        'paper_identity': _paper_identity(c),
+        'instructions': '...',
+        'questions': [
+            {
+                'id': q.id,
+                'extracted_sha256': _question_fingerprint(q),
+                'review_status': 'verified',
+                'reviewer': 'test_user',
+                'reviewed_at': '2025-02-21T00:00:00Z',
+                'checks': {name: True for name in _required_review_checks(q, c.source_has_solutions)},
+            }
+            for q in questions
+        ],
+    }
+
+def test_check_review_manifest_invalid_format(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['format'] = 'invalid/format'
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_MANIFEST_FORMAT' in {e['code'] for e in errors}
+
+def test_check_review_manifest_source_mismatch(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['source_pdf_sha256'] = 'b'*64
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_SOURCE_MISMATCH' in {e['code'] for e in errors}
+
+def test_check_review_manifest_identity_mismatch(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['paper_identity']['year'] = 2026
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_IDENTITY_MISMATCH' in {e['code'] for e in errors}
+
+def test_check_review_manifest_questions_not_list(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'] = {}
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_QUESTIONS_MISSING' in {e['code'] for e in errors}
+
+def test_check_review_manifest_entry_invalid(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'].append({'not_id': 'id-2'})
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_ENTRY_INVALID' in {e['code'] for e in errors}
+
+def test_check_review_manifest_duplicate_entry(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'].append(manifest['questions'][0])
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_ENTRY_DUPLICATE' in {e['code'] for e in errors}
+
+def test_check_review_manifest_scope_mismatch(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q1 = question(id='id-1')
+    q2 = question(id='id-2')
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q1], source_hash)
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q1, q2], source_hash)
+    assert not ok
+    assert 'REVIEW_SCOPE_MISMATCH' in {e['code'] for e in errors}
+
+def test_check_review_manifest_content_mismatch(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'][0]['extracted_sha256'] = 'wrong_hash'
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_CONTENT_MISMATCH' in {e['code'] for e in errors}
+
+def test_check_review_manifest_not_verified(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'][0]['review_status'] = 'pending'
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'QUESTION_NOT_REVIEWED' in {e['code'] for e in errors}
+
+def test_check_review_manifest_audit_missing(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'][0]['reviewer'] = ''
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_AUDIT_FIELDS_MISSING' in {e['code'] for e in errors}
+
+def test_check_review_manifest_checks_incomplete(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    manifest['questions'][0]['checks']['images'] = False
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert not ok
+    assert 'REVIEW_CHECKS_INCOMPLETE' in {e['code'] for e in errors}
+
+def test_check_review_manifest_valid(tmp_path):
+    c = cfg(tmp_path)
+    c.review_manifest = tmp_path / 'manifest.json'
+    c.exam = 'JEE-MAIN'
+    c.year = 2025
+    c.session = '1'
+    c.paper = '1'
+    c.release = 'test'
+    q = question()
+    source_hash = 'a'*64
+    manifest = _valid_manifest_template(c, [q], source_hash)
+    c.review_manifest.write_text(json.dumps(manifest))
+    ok, status, errors, template = _check_review_manifest(c, [q], source_hash)
+    assert ok
+    assert status == 'APPROVED'
+    assert len(errors) == 0
 
 
 
