@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Verify the exact pinned 22 Jan 2026 Shift 1 PDF before any OCR extraction.
+"""Verify the pinned Jan 22 source-page bundle and its generated OCR derivative.
 
-This check intentionally fails closed: matching filename or page count alone is not
-proof that a PDF is the expected paper. The SHA-256 is taken from the already
-reviewed bundle metadata; content verification is still required after extraction.
+The repository root PDF is a different paper (Jan 28) and is intentionally not used.
+This gate confirms the existing 24 source-page JPEGs match their checksums in the
+Jan 22 asset manifest and that the OCR derivative was built from those exact pages.
+It does NOT claim that the derivative PDF is byte-identical to the original source PDF.
 """
 from __future__ import annotations
 
@@ -13,9 +14,20 @@ import os
 import sys
 from pathlib import Path
 
-
 CONFIG_PATH = Path("representative-config.json")
+MANIFEST_PATH = Path("data/quarantine/2026-01-22-shift1/asset-manifest.json")
+REPORT_PATH = Path("pipeline-output/source/22jan-source-page-verification.json")
+EXPECTED_ORIGINAL_PDF = "BPD4dLYdvGj7xm8cDL66.pdf"
+EXPECTED_ORIGINAL_SHA256 = "7d633fea3bf16857bc4c477d80b2a3eb2535603b54f665c3d683b777f02f52f3"
 EXPECTED_PAGE_COUNT = 24
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def write_output(values: dict[str, str]) -> None:
@@ -27,33 +39,29 @@ def write_output(values: dict[str, str]) -> None:
 
 
 def main() -> int:
+    errors = []
     if not CONFIG_PATH.is_file():
-        print(f"BLOCKED: config file missing: {CONFIG_PATH}", file=sys.stderr)
-        write_output({"verified": "false", "reason": "config_missing"})
-        return 2
+        errors.append(f"config missing: {CONFIG_PATH}")
+        config = {}
+    else:
+        config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
 
-    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    pdf_path = Path(config["source_pdf"])
-    if not pdf_path.is_file():
-        print(f"BLOCKED: expected source PDF is missing: {pdf_path}", file=sys.stderr)
-        write_output({"verified": "false", "reason": "pdf_missing"})
-        return 2
+    if not MANIFEST_PATH.is_file():
+        errors.append(f"Jan 22 asset manifest missing: {MANIFEST_PATH}")
+        manifest = {}
+    else:
+        manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
 
     expected_hash = str(config.get("expected_source_sha256", "")).lower()
-    actual_hash = hashlib.sha256(pdf_path.read_bytes()).hexdigest()
-    try:
-        import fitz
-    except ImportError:
-        print("BLOCKED: PyMuPDF is not installed; cannot inspect PDF.", file=sys.stderr)
-        write_output({"verified": "false", "reason": "pymupdf_missing"})
-        return 2
-
-    with fitz.open(pdf_path) as document:
-        page_count = len(document)
-        # Probe only the cover page here. Image enumeration for every embedded scan
-        # can be expensive and is not required to prove source identity; the actual
-        # extractor performs per-page image/OCR handling after the hash gate passes.
-        first_page_has_selectable_text = bool(document[0].get_text("words")) if page_count else False
+    manifest_hash = str(manifest.get("source_pdf_sha256", "")).lower()
+    if config.get("release") != "2026-01-22-shift1":
+        errors.append("release identity is not 2026-01-22-shift1")
+    if config.get("exam") != "JEE-MAIN" or config.get("year") != 2026:
+        errors.append("exam/year identity does not match JEE Main 2026")
+    if "22 January 2026" not in config.get("session", "") or "Shift 1" not in config.get("session", ""):
+        errors.append("session identity does not match 22 January 2026 Shift 1")
+    if config.get("expected_question_count") != 75:
+        errors.append("expected question count must be 75")
 
     expected_keys = (
         [f"Mathematics:{n}" for n in range(1, 26)]
@@ -68,46 +76,95 @@ def main() -> int:
         {"start": 51, "end": 70, "type": "MCQ"},
         {"start": 71, "end": 75, "type": "NUMERICAL"},
     ]
-    config_errors = []
-    if config.get("release") != "2026-01-22-shift1":
-        config_errors.append("release identity is not 2026-01-22-shift1")
-    if config.get("exam") != "JEE-MAIN" or config.get("year") != 2026:
-        config_errors.append("exam/year identity does not match JEE Main 2026")
-    if "22 January 2026" not in config.get("session", "") or "Shift 1" not in config.get("session", ""):
-        config_errors.append("session identity does not match 22 January 2026 Shift 1")
-    if config.get("expected_question_count") != 75:
-        config_errors.append("expected question count must be 75")
     if config.get("expected_question_numbers") != expected_keys:
-        config_errors.append("question-number-to-subject mapping must be 1–25 Maths, 26–50 Physics, 51–75 Chemistry")
+        errors.append("question-number mapping must be Mathematics 1–25, Physics 26–50, Chemistry 51–75")
     if config.get("question_type_ranges") != expected_ranges:
-        config_errors.append("MCQ/numerical source-number ranges do not match the paper configuration")
-    if config.get("page_range") != [1, EXPECTED_PAGE_COUNT] or page_count != EXPECTED_PAGE_COUNT:
-        config_errors.append(f"expected exactly {EXPECTED_PAGE_COUNT} configured/source pages; config={config.get('page_range')} PDF={page_count}")
-    if actual_hash != expected_hash:
-        config_errors.append("PDF SHA-256 differs from the pinned source hash in the existing Jan 22 bundle metadata")
+        errors.append("MCQ/numerical source-number bands do not match the paper")
+    if manifest.get("paper_id") != "jee-main-2026-01-22-s1":
+        errors.append("asset manifest paper_id is not the pinned Jan 22 Shift 1")
+    if manifest.get("asset_count") != 50:
+        errors.append("asset manifest asset_count is not 50")
+    if expected_hash != EXPECTED_ORIGINAL_SHA256 or manifest_hash != EXPECTED_ORIGINAL_SHA256:
+        errors.append("config and pinned bundle manifest must both match the original Jan 22 PDF SHA-256")
+
+    page_entries = {
+        item.get("path"): item for item in manifest.get("assets", [])
+        if isinstance(item, dict)
+    }
+    if len([p for p in page_entries if p.startswith("images/pages/page_") and p.endswith(".jpg")]) != EXPECTED_PAGE_COUNT:
+        errors.append("asset manifest does not contain exactly 24 numbered source-page JPEGs")
+    source_dir = Path("data/quarantine/2026-01-22-shift1")
+    verified_pages = 0
+    for page_no in range(1, EXPECTED_PAGE_COUNT + 1):
+        rel = f"images/pages/page_{page_no:02d}.jpg"
+        entry = page_entries.get(rel)
+        path = source_dir / rel
+        if entry is None or not path.is_file():
+            errors.append(f"source page missing: {rel}")
+            continue
+        if path.stat().st_size != entry.get("bytes") or sha256(path) != entry.get("sha256"):
+            errors.append(f"source page SHA-256/size mismatch: {rel}")
+        else:
+            verified_pages += 1
+    if verified_pages != EXPECTED_PAGE_COUNT:
+        errors.append(f"only {verified_pages}/{EXPECTED_PAGE_COUNT} source-page JPEGs verified")
+
+    if not REPORT_PATH.is_file():
+        errors.append(f"generated-page verification report missing: {REPORT_PATH}; run scripts/prepare_jan22_source_pdf.py first")
+        prepared = {}
+    else:
+        prepared = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+
+    pdf_path = Path(config.get("source_pdf", ""))
+    if not pdf_path.is_file():
+        errors.append(f"verified OCR derivative PDF is missing: {pdf_path}")
+        actual_derivative_sha = ""
+        page_count = 0
+    else:
+        actual_derivative_sha = sha256(pdf_path)
+        try:
+            import fitz
+            with fitz.open(pdf_path) as document:
+                page_count = len(document)
+        except Exception as error:
+            errors.append(f"cannot read generated OCR derivative PDF: {error}")
+            page_count = 0
+        if page_count != EXPECTED_PAGE_COUNT:
+            errors.append(f"generated OCR derivative has {page_count} pages; expected {EXPECTED_PAGE_COUNT}")
+    if prepared.get("status") != "VERIFIED_PAGE_IMAGES":
+        errors.append("source-page preparation report is not verified")
+    if prepared.get("original_source_pdf_sha256_from_manifest") != EXPECTED_ORIGINAL_SHA256:
+        errors.append("preparation report is not tied to the pinned original source PDF SHA-256")
+    if prepared.get("ocr_derivative_pdf") != str(pdf_path):
+        errors.append("preparation report derivative path does not match representative-config.json")
+    if prepared.get("ocr_derivative_pdf_sha256") != actual_derivative_sha:
+        errors.append("generated OCR derivative hash differs from preparation report")
 
     print("=== JEE Main · 22 January 2026 · Shift 1 · source gate ===")
-    print(f"PDF: {pdf_path}")
-    print(f"Actual SHA-256:   {actual_hash}")
-    print(f"Expected SHA-256: {expected_hash}")
-    print(f"PDF pages: {page_count}; first-page selectable text: {'yes' if first_page_has_selectable_text else 'no (scan/OCR path expected)'}")
-    print("Identity: " + ("PASS" if not config_errors else "BLOCKED"))
-    for error in config_errors:
+    print(f"Original PDF recorded in bundle: {EXPECTED_ORIGINAL_PDF}")
+    print(f"Original PDF SHA-256 (bundle metadata): {manifest_hash}")
+    print(f"Verified source-page JPEGs: {verified_pages}/{EXPECTED_PAGE_COUNT}")
+    print(f"OCR derivative PDF: {pdf_path}")
+    print(f"OCR derivative SHA-256: {actual_derivative_sha or 'unavailable'}")
+    print(f"OCR derivative pages: {page_count}")
+    print("Identity: " + ("PASS" if not errors else "BLOCKED"))
+    for error in errors:
         print(f"- {error}")
 
-    verified = not config_errors
+    verified = not errors
     write_output({
         "verified": "true" if verified else "false",
-        "source_sha256": actual_hash,
+        "source_sha256": manifest_hash,
+        "derived_pdf_sha256": actual_derivative_sha,
         "page_count": str(page_count),
-        "first_page_has_selectable_text": "true" if first_page_has_selectable_text else "false",
-        "reason": "pass" if verified else "source_identity_or_config_mismatch",
+        "verified_source_pages": str(verified_pages),
+        "reason": "pass" if verified else "source_page_or_config_mismatch",
     })
     if not verified:
-        print("No extraction was run. Do not override this gate by renaming the PDF or editing the expected hash.")
+        print("No OCR extraction should run. Do not change pinned hashes to force a pass.")
         return 2
 
-    print("Source gate passed. This confirms file identity only, not the accuracy of extracted questions/answers/solutions.")
+    print("Source gate passed for the checksum-verified page-image derivative. This does not certify extracted text/answers/solutions.")
     return 0
 
 
