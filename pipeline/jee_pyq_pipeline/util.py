@@ -17,6 +17,9 @@ def write_json(path: Path, value: object) -> str:
     path.write_bytes(canonical_json(value))
     return sha256_file(path)
 
+_MULTI_SPACE_RE = re.compile(r'[ \t]+')
+_SINGLE_NEWLINE_RE = re.compile(r'(?<!\n)\n(?!\n)')
+
 def safe_normalize(text: str) -> str:
     # Only machine-artifact whitespace normalization; source tokens are retained.
-    return re.sub(r'[ \t]+', ' ', re.sub(r'(?<!\n)\n(?!\n)', ' ', text)).strip()
+    return _MULTI_SPACE_RE.sub(' ', _SINGLE_NEWLINE_RE.sub(' ', text)).strip()
