@@ -137,6 +137,16 @@ def _build_batch(config,output_dir:Path,timeout_seconds:int):
     signal.alarm(timeout_seconds)
     try:
         questions,assets,extraction_issues,page_count=extract(config,output_dir/'assets')
+    except TimeoutError as e:
+        from .models import Issue
+        questions = []
+        assets = []
+        page_count = 0
+        extraction_issues = [Issue(
+            code='EXTRACTION_TIMEOUT',
+            message=str(e),
+            blocking=True
+        )]
     finally:
         signal.alarm(0)
         signal.signal(signal.SIGALRM,prior)
