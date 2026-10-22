@@ -13,6 +13,7 @@ OPTION_LABEL = re.compile(r'(?:\(\s*([A-D]|[1-4])\s*\)|(?<![\w.])([A-D]|[1-4])\s
 ANSWER_MARKER = re.compile(r'^\s*[\]\[|!.,;:_\-]*\s*(?:(?:[Il]|\d{1,2})\s+(?=ans(?:wer)?\s*\.?\s*(?:[:\-]|\([^)]{1,12}\)|[-+]?\d))\s*)?(?:answer|ans\s*\.?|correct\s+answer)\s*[:\-]?\s*', re.I)
 SOLUTION_MARKER = re.compile(r'^\s*(?:solution|sol\s*[.,;])(?=\s|[:\-]|$)\s*[:\-]?\s*', re.I)
 FIGURE = re.compile(r'\b(fig(?:ure)?|diagram|graph|circuit|plot|schematic)\b|\b(shown|following)\s+(?:below|above|is|are)\b', re.I)
+CUE = re.compile(r'\\bchoose\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b|\\bselect\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b', re.I)
 SUBJECTS = {
     'PHYSICS':'Physics',
     'CHEMISTRY':'Chemistry',
@@ -909,7 +910,6 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
         matches.append((match.start(),match.end(),label))
     valid_groups=[]
     expected_sets=(set('ABCD'),set('1234'))
-    cue=re.compile(r'\\bchoose\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b|\\bselect\\s+(?:the\\s+)?correct\\s+(?:option|answer)\\b',re.I)
     for start_index,(start,end,label) in enumerate(matches):
         expected=next((labels for labels in expected_sets if label in labels),None)
         if expected is None:
@@ -925,7 +925,7 @@ def _split_options(rows:list[tuple[int,str,list[float]]])->tuple[str,dict[str,st
             if seen==expected:
                 # If a "choose correct option" instruction follows this group,
                 # these labels belong to the statement list, not the choices.
-                if cue.search(flat[group[-1][1]:]):
+                if CUE.search(flat[group[-1][1]:]):
                     break
                 valid_groups.append((start_index,group))
                 break
