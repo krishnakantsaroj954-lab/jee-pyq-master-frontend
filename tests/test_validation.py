@@ -3,7 +3,7 @@ from types import SimpleNamespace
 from jee_pyq_pipeline.models import Question
 from jee_pyq_pipeline.extract import (
     extract, _assets, _parse_answer, _split_options, _split_source_sections,
-    _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions,
+    _page_words, _question_start, _lines, _ocr_dpi, _crop_scan_regions, CropContext,
     _clean_ocr_words, _join_word_tokens, _expected_subject_by_number, _column_split_x,
     _question_header_candidate, _infer_missing_top_question_header, _has_center_divider, _ocr_clip_words,
     _question_type_from_ranges, _sequence_header_gap,
@@ -527,13 +527,12 @@ def test_scan_crop_helper_produces_separate_bounded_question_and_solution_region
         'rows':[(1,'2. Next question',[100,800,450,830])],
     }
     asset_dir=tmp_path/'assets'
+    ctx = CropContext(doc=pdf, blocks=[block,next_block], asset_dir=asset_dir, source_hash='a'*64, dpi_by_page={1:72})
     question_assets=_crop_scan_regions(
-        pdf,block,[block['rows'][0]],[block,next_block],0,asset_dir,'a'*64,
-        'question',{1:72}
+        ctx,block,[block['rows'][0]],0,'question'
     )
     solution_assets=_crop_scan_regions(
-        pdf,block,[block['rows'][2]],[block,next_block],0,asset_dir,'a'*64,
-        'solution',{1:72}
+        ctx,block,[block['rows'][2]],0,'solution'
     )
     assert len(question_assets)==1
     assert len(solution_assets)==1
@@ -584,9 +583,10 @@ def test_solution_continuation_across_columns_uses_separate_narrow_crops(tmp_pat
         'subject':'Mathematics','number':3,'pages':{1},
         'rows':[(1,'3. Next question',[600,200,900,230])],
     }
+    ctx = CropContext(doc=pdf, blocks=[block,next_block], asset_dir=tmp_path/'assets', source_hash='b'*64, dpi_by_page={1:72})
     assets=_crop_scan_regions(
-        pdf,block,[block['rows'][2],block['rows'][3]],
-        [block,next_block],0,tmp_path/'assets','b'*64,'solution',{1:72}
+        ctx,block,[block['rows'][2],block['rows'][3]],
+        0,'solution'
     )
     assert len(assets)==2
     left=[asset for asset in assets if asset.bounds[0]<500]
@@ -901,16 +901,13 @@ def test_question_crop_is_clamped_before_answer_even_if_ocr_rows_overlap(tmp_pat
         # has leaked into the question-region rows, although its label is known.
         "rows": [question_row, answer_row, solution_row],
     }
+    ctx = CropContext(doc=doc, blocks=[block], asset_dir=tmp_path/"assets", source_hash="a"*64, dpi_by_page={1: 72})
     crops = _crop_scan_regions(
-        doc,
+        ctx,
         block,
         [question_row, answer_row],
-        [block],
         0,
-        tmp_path / "assets",
-        "a" * 64,
         "question",
-        {1: 72},
     )
     doc.close()
 
