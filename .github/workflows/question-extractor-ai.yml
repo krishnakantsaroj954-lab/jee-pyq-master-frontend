@@ -1,0 +1,122 @@
+name: Experimental QuestionExtractorAI PDF crops
+
+on:
+  workflow_dispatch:
+    inputs:
+      pdf_path:
+        description: Repository-relative path to the PDF
+        required: true
+        type: string
+        default: cEDaK5Wn5ILe4nOdotd6.pdf
+      paper_type:
+        description: "Layout type: 1 (number leads question), 2 (two-column/SAT), 3 (number aligned with question)"
+        required: true
+        type: choice
+        options: ["1", "2", "3"]
+        default: "2"
+      top_percent:
+        description: Percentage to ignore at the top of every page
+        required: true
+        type: string
+        default: "0"
+      bottom_percent:
+        description: Percentage to ignore at the bottom of every page
+        required: true
+        type: string
+        default: "0"
+  push:
+    branches:
+      - "test/question-extractor-ai-github-runner"
+    paths:
+      - ".github/workflows/question-extractor-ai.yml"
+      - "pipeline/question_extractor_ai/**"
+      - "cEDaK5Wn5ILe4nOdotd6.pdf"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: question-extractor-ai-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  crop-questions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PDF_PATH: ${{ inputs.pdf_path || 'cEDaK5Wn5ILe4nOdotd6.pdf' }}
+      PAPER_TYPE: ${{ inputs.paper_type || '2' }}
+      TOP_PERCENT: ${{ inputs.top_percent || '0' }}
+      BOTTOM_PERCENT: ${{ inputs.bottom_percent || '0' }}
+    steps:
+      - name: Check out the selected test branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poppler and Python dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes poppler-utils
+          python -m pip install --upgrade pip
+          python -m pip install "numpy<2" opencv-python-headless==4.10.0.84 imutils==0.5.4 pdf2image==1.17.0 Pillow
+
+      - name: Get the pinned QuestionExtractorAI source
+        run: |
+          git clone https://github.com/TaroAndMulan/QuestionExtractorAI.git "$RUNNER_TEMP/QuestionExtractorAI"
+          git -C "$RUNNER_TEMP/QuestionExtractorAI" checkout --detach 6206db58972bb4a06cf7d8e1294a89cd6c2fd729
+
+      - name: Detect candidate boxes and make compact review sheets
+        run: |
+          python pipeline/question_extractor_ai/extract_with_crops.py \
+            --pdf "$PDF_PATH" \
+            --extractor-dir "$RUNNER_TEMP/QuestionExtractorAI" \
+            --output-dir question-extractor-output \
+            --type "$PAPER_TYPE" \
+            --kernel 15 5 \
+            --top "$TOP_PERCENT" \
+            --bottom "$BOTTOM_PERCENT" \
+            --dpi 160
+          python pipeline/question_extractor_ai/make_review_sheets.py \
+            --input-dir question-extractor-output \
+            --review-dir question-extractor-output/review
+          cat question-extractor-output/review/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Save compact review files on this test branch
+        if: success()
+        env:
+          REVIEW_DIR: qa-artifacts/question-extractor-ai-review
+        run: |
+          mkdir -p "$REVIEW_DIR"
+          cp question-extractor-output/review/page_overview.jpg "$REVIEW_DIR/"
+          cp question-extractor-output/review/candidate_crop_overview.jpg "$REVIEW_DIR/"
+          cp question-extractor-output/review/manifest.json "$REVIEW_DIR/"
+          cp question-extractor-output/review/summary.md "$REVIEW_DIR/"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$REVIEW_DIR"
+          if git diff --cached --quiet; then
+            echo "No changes to compact review files."
+          else
+            git commit -m "chore: update experimental crop review sheets"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
+
+      - name: Fail closed when geometry checks reject the candidates
+        if: success()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report_path = Path("question-extractor-output/review/manifest.json")
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          if report.get("qualityStatus") == "REJECTED":
+              print("::error::QuestionExtractorAI geometry QA rejected the output. Review the saved contact sheets; do not import these candidates.")
+              raise SystemExit(1)
+          print("Geometry checks raised no blocking warning. Human review is still required before any use.")
+          PY
