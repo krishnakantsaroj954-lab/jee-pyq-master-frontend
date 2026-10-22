@@ -760,11 +760,17 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
         return None, None
 
     direct_match, direct_number = _question_start(text)
-    if direct_match is not None and _NUMBERED_SECTION_LABEL.match(text[direct_match.end():]):
-        # Some pages print the question number again beside its answer, e.g.
-        # "10. Ans. ()". That is not a new question boundary: the actual stem
-        # may be at the top of the next column/page.
-        return None, None
+    if direct_match is not None:
+        suffix = text[direct_match.end():].strip()
+        if _NUMBERED_SECTION_LABEL.match(text[direct_match.end():]):
+            # Some pages print the question number again beside its answer, e.g.
+            # "10. Ans. ()". That is not a new question boundary: the actual stem
+            # may be at the top of the next column/page.
+            return None, None
+        if direct_number is not None and not suffix:
+            # A bare OCR token such as "2." at the page top is not enough evidence
+            # to create a question block. In this scan, true stems share the header row.
+            direct_match, direct_number = None, None
     if direct_number is not None and (expected_number is None or direct_number == expected_number):
         return direct_match, direct_number
 
@@ -775,7 +781,12 @@ def _question_header_candidate(text: str, bounds: list[float], page_width: float
     if expected_number is not None:
         expected_prefix = re.match(rf'^\s*({re.escape(str(expected_number))})\b', text)
         if expected_prefix and not _NUMBERED_SECTION_LABEL.match(text[expected_prefix.end():]):
-            return expected_prefix, expected_number
+            remainder = text[expected_prefix.end():].strip(" \\t|!.,;:-_")
+            # Accept punctuation lost by OCR only when the same row also contains
+            # a visible stem. Bare digits and border debris near the page top must
+            # never consume the next expected question number.
+            if len(remainder) >= 3 and re.search(r'[A-Za-z]', remainder):
+                return expected_prefix, expected_number
 
     # Examples from the source scan include "1 2. The value...", "I 46. ...",
     # "| 50. ..." and "| 75. ...". Search only the first 40 characters and allow
@@ -1249,7 +1260,10 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
                 "number":q.source_question_number,
                 "subject":q.subject,
                 "status":q.status,
+                "pages":q.pages,
+                "bounds":[round(float(v),1) for v in q.bounds],
                 "question_text":(q.text or "")[:140],
+                "option_keys":sorted(q.options),
                 "answer_present":q.answer is not None,
                 "solution_present":bool(q.solution),
             } for q in questions
