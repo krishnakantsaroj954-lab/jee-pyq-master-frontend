@@ -1008,3 +1008,19 @@ def test_ocr_clip_words_retries_tsv_contamination_with_psm4(tmp_path):
         assert [call.args[0][6] for call in run.call_args_list] == ["6", "4"]
     finally:
         doc.close()
+
+
+def test_question_header_does_not_accept_repeated_multidigit_solution_number():
+    # On Jan 22 source page 5, an OCR solution line "60 60:" looked like
+    # question 60 and caused the parser to skip from Mathematics Q15 to
+    # Chemistry Q60. A multi-digit token before the marker is not OCR debris.
+    assert _question_header_candidate(
+        "60 60:", [351.5, 491.9, 382.0, 504.0], 595.276, None
+    ) == (None, None)
+
+    # Preserve the known one-digit-drift recovery used for noisy scan headers.
+    match, number = _question_header_candidate(
+        "1 2. The value of the series is:", [21.0, 228.0, 500.0, 245.0], 595.276, 2
+    )
+    assert number == 2
+    assert match is not None
