@@ -466,7 +466,8 @@ def _x_overlap_ratio(a: list[float], b: list[float]) -> float:
 
 def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list[float]]],
                            blocks: list[dict], block_index: int, asset_dir: Path,
-                           source_hash: str) -> list[Asset]:
+                           source_hash: str,
+                           page_graphics_cache: dict[int, list[list[float]]] = None) -> list[Asset]:
     """Render only bounded, nearby figure/diagram regions; never attach a full PDF page."""
     fitz = _fitz()
     cropped: list[Asset] = []
@@ -509,20 +510,25 @@ def _crop_question_figures(config, block: dict, qrows: list[tuple[int, str, list
                 continue
 
             graphics: list[list[float]] = []
-            page_dict = page.get_text("dict")
-            for item in page_dict.get("blocks", []):
-                if item.get("type") != 1 or "bbox" not in item:
-                    continue
-                b = [float(v) for v in item["bbox"]]
-                graphics.append(b)
-
-            for drawing in page.get_drawings():
-                rect = drawing.get("rect")
-                if rect is None:
-                    continue
-                b = [float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)]
-                if b[2] - b[0] >= 2.0 and b[3] - b[1] >= 2.0:
+            if page_graphics_cache is not None and page_no in page_graphics_cache:
+                graphics = page_graphics_cache[page_no]
+            else:
+                page_dict = page.get_text("dict")
+                for item in page_dict.get("blocks", []):
+                    if item.get("type") != 1 or "bbox" not in item:
+                        continue
+                    b = [float(v) for v in item["bbox"]]
                     graphics.append(b)
+
+                for drawing in page.get_drawings():
+                    rect = drawing.get("rect")
+                    if rect is None:
+                        continue
+                    b = [float(rect.x0), float(rect.y0), float(rect.x1), float(rect.y1)]
+                    if b[2] - b[0] >= 2.0 and b[3] - b[1] >= 2.0:
+                        graphics.append(b)
+                if page_graphics_cache is not None:
+                    page_graphics_cache[page_no] = graphics
 
             candidates = []
             for g in graphics:
@@ -984,6 +990,7 @@ def _split_source_sections(rows:list[tuple[int,str,list[float]]]):
 
 def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue],int]:
     fitz=_fitz()
+    page_graphics_cache = {}
     doc=fitz.open(config.source_pdf)
     page_count=len(doc)
     all_assets=[]
@@ -1168,7 +1175,7 @@ def extract(config, asset_dir:Path)->tuple[list[Question],list[Asset],list[Issue
         sassets=list(sassets)
         requires_figure=bool(FIGURE.search(q_text))
         if requires_figure and not any(page_no in scan_only_pages for page_no in qpages):
-            figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash)
+            figure_crops=_crop_question_figures(config,block,qrows,blocks,block_index,asset_dir,source_hash,page_graphics_cache)
             if figure_crops:
                 qassets=figure_crops
                 all_assets.extend(figure_crops)
