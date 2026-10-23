@@ -1,0 +1,105 @@
+name: Temporary read-only capture of deployed frontend Worker source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/capture-live-frontend-worker.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read deployed Worker source (no deployment or production writes)
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os, re, sys, json, pathlib, subprocess
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError
+          account = os.environ.get("CF_ACCOUNT_ID", "")
+          token = os.environ.get("CF_API_TOKEN", "")
+          if not account or not token:
+              raise SystemExit("Cloudflare account/token secrets are not configured.")
+          url = "https://api.cloudflare.com/client/v4/accounts/" + account + "/workers/scripts/jee-pyq-master-frontend"
+          req = Request(url, headers={"Authorization": "Bearer " + token, "Accept": "*/*"})
+          try:
+              with urlopen(req, timeout=30) as response:
+                  content_type = response.headers.get("Content-Type", "")
+                  body = response.read()
+                  status = response.status
+          except HTTPError as e:
+              print("Cloudflare source read returned HTTP", e.code)
+              print(e.read(1200).decode("utf-8", "replace"))
+              raise SystemExit(1)
+          print("Worker source read HTTP", status, "| content type:", content_type, "| bytes:", len(body))
+          if not body or status != 200:
+              raise SystemExit("No source body returned.")
+          out = pathlib.Path("frontend_worker_snapshot")
+          out.mkdir(exist_ok=True)
+          if "multipart/" in content_type.lower():
+              boundary_match = re.search(r'boundary="?([^";]+)', content_type, re.I)
+              if not boundary_match:
+                  raise SystemExit("Multipart response has no boundary.")
+              boundary = ("--" + boundary_match.group(1)).encode()
+              chunks = body.split(boundary)
+              written = 0
+              for chunk in chunks:
+                  chunk = chunk.strip(b"\r\n-")
+                  if not chunk or b"\r\n\r\n" not in chunk:
+                      continue
+                  head, payload = chunk.split(b"\r\n\r\n", 1)
+                  if payload.endswith(b"\r\n"):
+                      payload = payload[:-2]
+                  headers = head.decode("utf-8", "replace")
+                  disp = re.search(r'content-disposition:.*?name="([^"]+)"(?:;\s*filename="([^"]+)")?', headers, re.I)
+                  if not disp:
+                      continue
+                  field = disp.group(1)
+                  filename = disp.group(2) or field
+                  filename = pathlib.Path(filename.replace("\\", "/")).name
+                  if filename in ("metadata", "metadata.json"):
+                      filename = "metadata.json"
+                  if not re.fullmatch(r"[A-Za-z0-9_.@+-]{1,150}", filename):
+                      filename = "part_" + str(written) + ".bin"
+                  if not pathlib.Path(filename).suffix and "json" in headers.lower():
+                      filename += ".json"
+                  (out / filename).write_bytes(payload)
+                  written += 1
+                  print("Captured part:", filename, "| bytes:", len(payload))
+              if written == 0:
+                  raise SystemExit("No source parts could be parsed from multipart response.")
+          else:
+              # Some Worker configurations return a single source body.
+              filename = "worker_source.txt" if "json" in content_type.lower() else "index.js"
+              (out / filename).write_bytes(body)
+              print("Captured single source body:", filename)
+          readme = """# Deployed frontend Worker source snapshot
+
+Read-only copy retrieved from the currently deployed Cloudflare Worker `jee-pyq-master-frontend`.
+
+This snapshot was captured for safe source inspection before making a UI change. The workflow did not deploy, update, or write to the Cloudflare Worker or D1 database. Check the metadata and each source file before editing.
+"""
+          (out / "README.md").write_text(readme, encoding="utf-8")
+          PY
+
+      - name: Save source snapshot to a separate audit branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --orphan audit/live-frontend-source-20261023
+          git rm -rf . >/dev/null 2>&1 || true
+          git add frontend_worker_snapshot
+          git commit -m "Capture deployed frontend Worker source for safe UI update"
+          git push origin HEAD:audit/live-frontend-source-20261023
