@@ -1,0 +1,3 @@
+## 2026-10-23 - Avoid full-page PDF rasterization for local region checks
+**Learning:** PyMuPDF's `page.get_pixmap()` can be a major performance bottleneck if used on the entire page when only a small region is actually needed. In `_has_center_divider`, rasterizing a full 72 DPI page to check a narrow central gutter was dominating the extraction pipeline's execution time (taking over 50% of the extraction time per page for a simple check).
+**Action:** Always use the `clip` parameter (`fitz.Rect(x0, y0, x1, y1)`) when calling `get_pixmap` if only analyzing a specific area of the page. This drastically reduces memory usage, rasterization time, and loop iteration overhead since the resulting pixmap is perfectly cropped to the region of interest.

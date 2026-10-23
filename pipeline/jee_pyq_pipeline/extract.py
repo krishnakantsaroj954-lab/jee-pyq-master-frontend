@@ -103,25 +103,38 @@ def _clean_ocr_words(words: list[tuple], width: float, height: float) -> list[tu
 def _has_center_divider(page) -> bool:
     """Detect a long, dark vertical separator near the midpoint of a scanned page."""
     try:
-        pix = page.get_pixmap(dpi=72, alpha=False)
+        fitz = _fitz()
+        width = float(page.rect.width)
+        height = float(page.rect.height)
+        midpoint = width / 2.0
+        radius = max(3.0, width * 0.006)
+
+        # Clip the pixmap to the central gutter to avoid expensive full-page rasterization.
+        y0_orig = height * 0.12
+        y1_orig = height * 0.95
+        x0_orig = midpoint - radius
+        x1_orig = midpoint + radius + 1
+
+        clip_rect = fitz.Rect(x0_orig, y0_orig, x1_orig, y1_orig) & page.rect
+
+        pix = page.get_pixmap(dpi=72, clip=clip_rect, alpha=False)
     except Exception:
         return False
-    width, height, channels = int(pix.width), int(pix.height), int(pix.n)
-    if width < 100 or height < 100 or channels < 3:
+
+    pix_width, pix_height, channels = int(pix.width), int(pix.height), int(pix.n)
+    if pix_width < 1 or pix_height < 1 or channels < 3:
         return False
+
     samples = pix.samples
-    midpoint = width // 2
-    radius = max(3, int(width * 0.006))
-    y0, y1 = int(height * 0.12), int(height * 0.95)
-    if y1 <= y0:
-        return False
+
     required_fraction = 0.35
-    required_run = int(height * 0.25)
-    for x in range(max(0, midpoint - radius), min(width, midpoint + radius + 1)):
+    required_run = int(page.rect.height * 0.25)
+
+    for x in range(pix_width):
         dark_count = 0
         longest_run = run = gap = 0
-        for y in range(y0, y1):
-            offset = (y * width + x) * channels
+        for y in range(pix_height):
+            offset = (y * pix_width + x) * channels
             is_dark = (samples[offset] + samples[offset + 1] + samples[offset + 2]) / 3 < 170
             if is_dark:
                 dark_count += 1
@@ -133,7 +146,7 @@ def _has_center_divider(page) -> bool:
                 if gap > 2:
                     run = 0
                     gap = 0
-        if dark_count / (y1 - y0) >= required_fraction and longest_run >= required_run:
+        if dark_count / pix_height >= required_fraction and longest_run >= required_run:
             return True
     return False
 
