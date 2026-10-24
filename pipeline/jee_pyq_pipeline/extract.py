@@ -170,8 +170,10 @@ def _word_rows(words: list[tuple]) -> list[list[tuple]]:
         if not rows:
             rows.append([word])
             continue
-        anchor_values = sorted(float(item[1]) for item in rows[-1])
-        anchor = anchor_values[len(anchor_values) // 2]
+        # The list rows[-1] is built by iterating over `ordered`, which is sorted by Y.
+        # Thus, the Y values in rows[-1] are already in sorted order. We can avoid
+        # an O(N log N) re-sort on every iteration and pick the median in O(1).
+        anchor = float(rows[-1][len(rows[-1]) // 2][1])
         if abs(float(word[1]) - anchor) > tolerance:
             rows.append([word])
         else:
