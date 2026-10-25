@@ -68,7 +68,7 @@ jobs:
           size = 50
           batches = [statements[i:i+size] for i in range(0, len(statements), size)]
           for n, batch in enumerate(batches, 1):
-              (out / f"batch-{n:03d}.sql").write_text("\\n".join(batch), encoding="utf-8")
+              (out / f"batch-{n:03d}.sql").write_text("\n".join(batch), encoding="utf-8")
           print(f"Generated {len(statements)} SQL statements in {len(batches)} batches (max {size} statements/batch).")
           PY
 
