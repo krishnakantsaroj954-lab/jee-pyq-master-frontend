@@ -32,7 +32,7 @@ jobs:
           test -n "$CF_TOKEN" || { echo "::error::CLOUDFLARE_API_TOKEN missing"; exit 1; }
           echo "Required Cloudflare secrets are present."
 
-      - name: Read-only D1 schema and data completeness audit
+      - name: Read-only D1 data completeness audit
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -48,6 +48,7 @@ jobs:
             }]
           }
           JSON
+          echo "----- Question completeness metrics -----"
           SQL="SELECT 'questions_total' AS metric, CAST(COUNT(*) AS TEXT) AS value FROM questions
           UNION ALL SELECT 'demo_questions', CAST(COUNT(*) AS TEXT) FROM questions WHERE is_demo = 1
           UNION ALL SELECT 'non_demo_questions', CAST(COUNT(*) AS TEXT) FROM questions WHERE is_demo = 0
@@ -57,8 +58,11 @@ jobs:
           UNION ALL SELECT 'questions_without_image_record', CAST(COUNT(*) AS TEXT) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_images i WHERE i.question_id=q.id)
           UNION ALL SELECT 'questions_with_fewer_than_4_options', CAST(COUNT(*) AS TEXT) FROM questions q WHERE (SELECT COUNT(*) FROM question_options o WHERE o.question_id=q.id) < 4
           UNION ALL SELECT 'questions_without_options', CAST(COUNT(*) AS TEXT) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_options o WHERE o.question_id=q.id)
-          UNION ALL SELECT 'questions_without_session', CAST(COUNT(*) AS TEXT) FROM questions WHERE session_id IS NULL
-          UNION ALL SELECT 'option_rows', CAST(COUNT(*) AS TEXT) FROM question_options
+          UNION ALL SELECT 'questions_without_session', CAST(COUNT(*) AS TEXT) FROM questions WHERE session_id IS NULL;"
+          npx --yes wrangler@4 d1 execute jee-pyq-master --remote --config "$RUNNER_TEMP/wrangler.jsonc" --json --command "$SQL"
+
+          echo "----- Related-table row counts -----"
+          SQL="SELECT 'option_rows' AS metric, CAST(COUNT(*) AS TEXT) AS value FROM question_options
           UNION ALL SELECT 'solution_rows', CAST(COUNT(*) AS TEXT) FROM solutions
           UNION ALL SELECT 'image_rows', CAST(COUNT(*) AS TEXT) FROM question_images
           UNION ALL SELECT 'year_rows', CAST(COUNT(*) AS TEXT) FROM years
