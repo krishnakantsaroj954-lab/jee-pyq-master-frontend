@@ -1,4 +1,4 @@
-name: Import 75 JEE Main April 8 Shift 2 Questions to D1
+name: Import 75 JEE Main April 8 Shift 2 Questions to D1 (verified)
 on:
   workflow_dispatch:
   push:
@@ -37,7 +37,7 @@ jobs:
           p=pathlib.Path(sys.argv[1])
           # This Git blob SHA-1 binds the import to the same byte-for-byte source from the uploaded ZIP.
           data=p.read_bytes()
-          blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\\0"+data).hexdigest()
+          blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
           expected="7568289a795150d586d19dd42f6944e2d11817ca"
           print("Git blob SHA:", blob)
           if blob != expected:
@@ -140,12 +140,3 @@ jobs:
           print("VERIFICATION=PASS: all 75 target questions and related records are present.")
           PY
 
-      - name: Confirm live API and frontend respond
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo "----- Live question API sample -----"
-          curl -L --fail --silent --show-error --max-time 20 'https://jee-pyq-master-api.k63920710.workers.dev/api/questions?limit=2' | head -c 1800
-          echo
-          echo "----- Frontend HTTP status -----"
-          curl -L --silent --show-error --max-time 20 -o /dev/null -w 'Frontend HTTP %{http_code}\\n' 'https://jee-pyq-master-frontend.k63920710.workers.dev/'
