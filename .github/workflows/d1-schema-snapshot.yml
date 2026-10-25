@@ -1,0 +1,25 @@
+name: Read-Only D1 Schema Snapshot
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch live API schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --max-time 20 'https://jee-pyq-master-api.k63920710.workers.dev/api/schema' -o schema.json
+          python - <<'PY'
+          import json
+          d=json.load(open("schema.json"))
+          print("table_count:", d.get("table_count"))
+          for t in d.get("schema", []):
+              print("\\nTABLE:", t.get("name"))
+              print("COLUMNS:", [(c.get("name"), c.get("type"), c.get("notnull"), c.get("dflt_value"), c.get("pk")) for c in t.get("columns", [])])
+              print("FOREIGN_KEYS:", t.get("foreign_keys", []))
+          PY
