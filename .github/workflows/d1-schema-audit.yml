@@ -13,17 +13,51 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Check required secrets are available
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::CLOUDFLARE_ACCOUNT_ID is missing or unavailable to this workflow."
+            exit 1
+          fi
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is missing or unavailable to this workflow."
+            exit 1
+          fi
+          echo "Both required secret values are present (values are not printed)."
+
+      - name: Create temporary Wrangler config for the existing D1 database
+        run: |
+          cat > "$RUNNER_TEMP/wrangler.jsonc" <<'JSON'
+          {
+            "name": "d1-read-only-schema-audit",
+            "compatibility_date": "2026-10-25",
+            "d1_databases": [
+              {
+                "binding": "DB",
+                "database_name": "jee-pyq-master",
+                "database_id": "2e1d7706-156f-409a-8e5d-8c4284e3d9c3"
+              }
+            ]
+          }
+          JSON
+          echo "Created temporary config for read-only audit; no Worker will be deployed."
+
       - name: Run read-only D1 schema query
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
-          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CLOUDFLARE_API_TOKEN" ]; then
-            echo "::error::Cloudflare secrets are missing or unavailable to this workflow."
-            exit 1
-          fi
-          npx --yes wrangler@4 d1 execute jee-pyq-master --remote --command "SELECT name, sql FROM sqlite_master WHERE type = 'table' ORDER BY name;"
+          npx --yes wrangler@4 d1 execute jee-pyq-master \
+            --remote \
+            --config "$RUNNER_TEMP/wrangler.jsonc" \
+            --json \
+            --command "SELECT name, sql FROM sqlite_master WHERE type = 'table' ORDER BY name;"
