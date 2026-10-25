@@ -2,6 +2,11 @@ name: Read-only D1 Schema Audit
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/d1-schema-audit.yml'
 
 permissions:
   contents: read
