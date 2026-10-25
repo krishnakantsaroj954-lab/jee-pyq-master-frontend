@@ -49,27 +49,26 @@ jobs:
           }
           JSON
           echo "----- Question completeness metrics -----"
-          SQL="SELECT 'questions_total' AS metric, CAST(COUNT(*) AS TEXT) AS value FROM questions
-          UNION ALL SELECT 'demo_questions', CAST(COUNT(*) AS TEXT) FROM questions WHERE is_demo = 1
-          UNION ALL SELECT 'non_demo_questions', CAST(COUNT(*) AS TEXT) FROM questions WHERE is_demo = 0
-          UNION ALL SELECT 'blank_question_text', CAST(COUNT(*) AS TEXT) FROM questions WHERE TRIM(COALESCE(question_text,'')) = ''
-          UNION ALL SELECT 'blank_correct_answer', CAST(COUNT(*) AS TEXT) FROM questions WHERE TRIM(COALESCE(correct_answer,'')) = ''
-          UNION ALL SELECT 'missing_solution_inline_or_table', CAST(COUNT(*) AS TEXT) FROM questions q WHERE TRIM(COALESCE(q.solution,'')) = '' AND NOT EXISTS (SELECT 1 FROM solutions s WHERE s.question_id=q.id AND TRIM(COALESCE(s.solution_text,'')) <> '')
-          UNION ALL SELECT 'questions_without_image_record', CAST(COUNT(*) AS TEXT) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_images i WHERE i.question_id=q.id)
-          UNION ALL SELECT 'questions_with_fewer_than_4_options', CAST(COUNT(*) AS TEXT) FROM questions q WHERE (SELECT COUNT(*) FROM question_options o WHERE o.question_id=q.id) < 4
-          UNION ALL SELECT 'questions_without_options', CAST(COUNT(*) AS TEXT) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_options o WHERE o.question_id=q.id)
-          UNION ALL SELECT 'questions_without_session', CAST(COUNT(*) AS TEXT) FROM questions WHERE session_id IS NULL;"
-          npx --yes wrangler@4 d1 execute jee-pyq-master --remote --config "$RUNNER_TEMP/wrangler.jsonc" --json --command "$SQL"
-
-          echo "----- Related-table row counts -----"
-          SQL="SELECT 'option_rows' AS metric, CAST(COUNT(*) AS TEXT) AS value FROM question_options
-          UNION ALL SELECT 'solution_rows', CAST(COUNT(*) AS TEXT) FROM solutions
-          UNION ALL SELECT 'image_rows', CAST(COUNT(*) AS TEXT) FROM question_images
-          UNION ALL SELECT 'year_rows', CAST(COUNT(*) AS TEXT) FROM years
-          UNION ALL SELECT 'subject_rows', CAST(COUNT(*) AS TEXT) FROM subjects
-          UNION ALL SELECT 'session_rows', CAST(COUNT(*) AS TEXT) FROM sessions
-          UNION ALL SELECT 'import_runs', CAST(COUNT(*) AS TEXT) FROM import_runs
-          UNION ALL SELECT 'import_errors', CAST(COUNT(*) AS TEXT) FROM import_errors;"
+          SQL="SELECT json_object(
+            'questions_total',(SELECT COUNT(*) FROM questions),
+            'demo_questions',(SELECT COUNT(*) FROM questions WHERE is_demo=1),
+            'non_demo_questions',(SELECT COUNT(*) FROM questions WHERE is_demo=0),
+            'blank_question_text',(SELECT COUNT(*) FROM questions WHERE TRIM(COALESCE(question_text,''))=''),
+            'blank_correct_answer',(SELECT COUNT(*) FROM questions WHERE TRIM(COALESCE(correct_answer,''))=''),
+            'missing_solution_inline_or_table',(SELECT COUNT(*) FROM questions q WHERE TRIM(COALESCE(q.solution,''))='' AND NOT EXISTS (SELECT 1 FROM solutions s WHERE s.question_id=q.id AND TRIM(COALESCE(s.solution_text,''))<>'')),
+            'questions_without_image_record',(SELECT COUNT(*) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_images i WHERE i.question_id=q.id)),
+            'questions_with_fewer_than_4_options',(SELECT COUNT(*) FROM questions q WHERE (SELECT COUNT(*) FROM question_options o WHERE o.question_id=q.id)<4),
+            'questions_without_options',(SELECT COUNT(*) FROM questions q WHERE NOT EXISTS (SELECT 1 FROM question_options o WHERE o.question_id=q.id)),
+            'questions_without_session',(SELECT COUNT(*) FROM questions WHERE session_id IS NULL),
+            'option_rows',(SELECT COUNT(*) FROM question_options),
+            'solution_rows',(SELECT COUNT(*) FROM solutions),
+            'image_rows',(SELECT COUNT(*) FROM question_images),
+            'year_rows',(SELECT COUNT(*) FROM years),
+            'subject_rows',(SELECT COUNT(*) FROM subjects),
+            'session_rows',(SELECT COUNT(*) FROM sessions),
+            'import_runs',(SELECT COUNT(*) FROM import_runs),
+            'import_errors',(SELECT COUNT(*) FROM import_errors)
+          ) AS audit;"
           npx --yes wrangler@4 d1 execute jee-pyq-master --remote --config "$RUNNER_TEMP/wrangler.jsonc" --json --command "$SQL"
 
           echo "----- Question counts by subject and year -----"
