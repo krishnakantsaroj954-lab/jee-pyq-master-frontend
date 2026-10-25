@@ -1,3 +1,4 @@
+# Re-run the read-only D1 audit after refreshing the Cloudflare API token.
 name: Read-only D1 Schema Audit
 
 on:
