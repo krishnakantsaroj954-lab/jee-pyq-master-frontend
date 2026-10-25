@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEE PYQ Master · Admin Import</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#172033;background:#f4f7fb}
+*{box-sizing:border-box}body{margin:0}.top{background:#111c3a;color:white;padding:22px max(18px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:800}.brand span{color:#7cb7ff}.tag{font-size:12px;background:#26375f;padding:7px 10px;border-radius:999px}
+main{max-width:1100px;margin:26px auto;padding:0 16px}.intro h1{margin:0 0 8px;font-size:clamp(25px,4vw,34px)}.muted{color:#65718a;line-height:1.55}.notice{background:#fff8e8;border:1px solid #f2d28c;color:#78500b;padding:13px 15px;border-radius:12px;margin:18px 0}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.card{background:white;border:1px solid #e2e8f2;border-radius:16px;padding:18px;box-shadow:0 4px 18px #13254b08}.card h2{font-size:17px;margin:0 0 14px}.drop{border:2px dashed #b7c8e4;border-radius:13px;padding:25px 15px;text-align:center;background:#f9fbff}.drop strong{display:block;margin-bottom:6px}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer;background:#185adb;color:white}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:#eaf0fb;color:#23406e}.btn.green{background:#087e62}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f5f8fd;border-radius:12px;padding:13px}.stat b{display:block;font-size:24px}.stat span{font-size:12px;color:#65718a}.status{margin-top:14px;font-size:14px;line-height:1.55;white-space:pre-wrap}.good{color:#087e62}.bad{color:#b42318}.warn{color:#996515}textarea,input[type=text]{width:100%;padding:10px;border:1px solid #d6dfed;border-radius:9px;font:inherit}.tablewrap{overflow:auto;margin-top:14px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid #edf0f6;vertical-align:top}th{background:#f7f9fd;color:#51617d}.pill{display:inline-block;background:#edf3ff;color:#234b9a;padding:4px 7px;border-radius:7px;font-size:11px}
+footer{max-width:1100px;margin:20px auto 40px;padding:0 16px;color:#7a8599;font-size:12px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.top{padding:18px}.stats{grid-template-columns:repeat(3,1fr)}.card{padding:15px}}
+</style></head>
+<body>
+<header class="top"><div class="brand">JEE <span>PYQ MASTER</span> <span style="color:#fff;font-weight:500">/ Admin</span></div><div class="tag">DATA INTAKE WORKSPACE</div></header>
+<main>
+<section class="intro"><h1>Dataset Import</h1><p class="muted">JSON dataset ko pehle validate aur preview karo. Validation source correctness ka proof nahi hai; sirf format aur required fields check hote hain.</p></section>
+<div class="notice"><b>Safety:</b> Is first version mein live D1 write connected nahi hai. Yeh page file ko browser mein validate karta hai aur checked JSON export deta hai. Database import tabhi enable hoga jab secured admin authentication aur server-side import endpoint verified honge.</div>
+<div class="grid">
+<section class="card"><h2>01 · Select dataset</h2>
+<div class="drop"><strong>JSON dataset choose karo</strong><div class="muted">Expected: JSON array ya { "questions": [...] }</div><br><input id="file" type="file" accept=".json,application/json"></div>
+<div id="filename" class="muted" style="margin-top:10px">No file selected</div>
+<div class="actions"><button id="validate" class="btn" disabled>Validate dataset</button><button id="reset" class="btn secondary">Reset</button></div>
+<div id="status" class="status">File select karne ke baad validation run karo.</div></section>
+<section class="card"><h2>02 · Validation summary</h2><div class="stats"><div class="stat"><b id="total">—</b><span>Records</span></div><div class="stat"><b id="valid">—</b><span>Structurally valid</span></div><div class="stat"><b id="issues">—</b><span>Blocking issues</span></div></div>
+<div id="summary" class="status muted">Abhi koi dataset check nahi hua.</div>
+<div class="actions"><button id="export" class="btn green" disabled>Download validated JSON</button></div></section>
+</div>
+<section class="card" style="margin-top:16px"><h2>03 · Record preview</h2><p class="muted">First 10 records. Full question text, options, answer, solution aur image reference ko source ke against alag se verify karna zaroori hai.</p><div id="preview" class="tablewrap muted">Preview validation ke baad yahan dikhega.</div></section>
+</main><footer>JEE PYQ Master · Admin import workspace · No credentials are requested or stored by this page.</footer>
+<script>
+const $=id=>document.getElementById(id);let parsed=null,validated=null;
+const first=(o,keys)=>{for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null&&o[k]!=="")return o[k]}return null};
+function asText(v){if(typeof v==="string")return v.trim();if(typeof v==="number")return String(v);return ""}
+function normalizeRoot(data){if(Array.isArray(data))return data;if(data&&Array.isArray(data.questions))return data.questions;if(data&&Array.isArray(data.records))return data.records;throw Error('Root JSON must be an array, or an object with a "questions" or "records" array.')}
+function optionCount(q){const v=first(q,["options","question_options","choices"]);if(Array.isArray(v))return v.filter(x=>x!==null&&x!=="").length;if(v&&typeof v==="object")return Object.values(v).filter(x=>x!==null&&x!=="").length;return 0}
+function validate(data){const records=normalizeRoot(data);const seen=new Set();const rows=[];let blocking=0,warnings=0;
+records.forEach((q,i)=>{const errs=[],warn=[];if(!q||typeof q!=="object"||Array.isArray(q)){errs.push("Record is not an object")}else{
+const id=asText(first(q,["id","question_id","uid"]));const text=asText(first(q,["question_text","question","text","statement","content"]));const subject=asText(first(q,["subject"]));const chapter=asText(first(q,["chapter","chapter_name"]));const exam=asText(first(q,["exam","exam_name"]));const year=first(q,["year"]);const answer=first(q,["correct_answer","answer","correct_option","answer_key","correctAnswer"]);const sol=asText(first(q,["solution","solution_text","explanation","detailed_solution"]));
+if(!id)errs.push("Missing id");else if(seen.has(id))errs.push("Duplicate id: "+id);else seen.add(id);
+if(!text)errs.push("Missing question text");if(!subject)errs.push("Missing subject");if(!chapter)errs.push("Missing chapter");if(!exam)errs.push("Missing exam");if(!year||!Number.isFinite(Number(year)))errs.push("Missing/invalid year");
+if(optionCount(q)<2)errs.push("Options missing or fewer than 2");if(answer===null)errs.push("Correct answer missing");
+if(!sol)warn.push("Solution missing");if(!first(q,["image","image_url","image_path","imageUrl","diagram","question_image","image_ref"]))warn.push("Image/diagram reference absent (verify if required)");
+}
+blocking+=errs.length;warnings+=warn.length;rows.push({index:i+1,q,errs,warn});});
+return {records,rows,blocking,warnings,valid:rows.filter(x=>!x.errs.length).length}}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function render(){if(!validated)return;$("total").textContent=validated.records.length;$("valid").textContent=validated.valid;$("issues").textContent=validated.blocking;$("summary").innerHTML=validated.blocking===0?'<span class="good">No structural blockers found.</span>':'<span class="bad">Blocking issues found. Export is disabled until fixed.</span>';
+$("summary").innerHTML+= '<br>'+validated.warnings+' warnings (mainly missing solutions/images). A clean format check does not certify correctness.';
+const shown=validated.rows.slice(0,10);$("preview").innerHTML='<table><thead><tr><th>#</th><th>ID</th><th>Subject / Chapter</th><th>Options</th><th>Answer</th><th>Check</th></tr></thead><tbody>'+shown.map(r=>{const q=r.q||{};return '<tr><td>'+r.index+'</td><td>'+esc(first(q,["id","question_id","uid"])||"—")+'</td><td>'+esc(first(q,["subject"])||"—")+'<br><span class="muted">'+esc(first(q,["chapter","chapter_name"])||"—")+'</span></td><td>'+optionCount(q)+'</td><td>'+esc(first(q,["correct_answer","answer","correct_option","answer_key","correctAnswer"])??"—")+'</td><td>'+(r.errs.length?'<span class="bad">'+esc(r.errs.join("; "))+'</span>':'<span class="good">Structure OK</span>')+(r.warn.length?'<br><span class="warn">'+esc(r.warn.join("; "))+'</span>':'')+'</td></tr>'}).join("")+'</tbody></table>'+(validated.rows.length>10?'<p class="muted">Showing 10 of '+validated.rows.length+' records.</p>':'');
+$("export").disabled=validated.blocking>0;
+}
+$("file").addEventListener("change",async e=>{const f=e.target.files[0];parsed=null;validated=null;$("validate").disabled=!f;$("export").disabled=true;$("filename").textContent=f?f.name+" · "+(f.size/1024).toFixed(1)+" KB":"No file selected";$("status").textContent=f?"File selected. Press Validate dataset.":"No file selected";$("preview").textContent="Preview validation ke baad yahan dikhega.";if(f&&f.size>50*1024*1024){$("status").innerHTML='<span class="bad">File exceeds 50 MB browser preview limit.</span>';$("validate").disabled=true}});
+$("validate").addEventListener("click",async()=>{const f=$("file").files[0];if(!f)return;$("status").textContent="Reading and validating…";try{parsed=JSON.parse(await f.text());validated=validate(parsed);render();$("status").innerHTML=validated.blocking===0?'<span class="good">Validation complete. Structural blockers: 0.</span>':'<span class="bad">Validation complete. '+validated.blocking+' blocking issue(s) found.</span>';if(validated.blocking===0)$("status").innerHTML+='<br><span class="warn">This is not a live database import and does not verify source accuracy.</span>'}catch(e){validated=null;$("total").textContent=$("valid").textContent=$("issues").textContent="—";$("summary").textContent="Validation could not complete.";$("preview").textContent="No preview available.";$("export").disabled=true;$("status").innerHTML='<span class="bad">Invalid JSON or unsupported schema: '+esc(e.message)+'</span>'}});
+$("export").addEventListener("click",()=>{if(!validated||validated.blocking)return;const blob=new Blob([JSON.stringify(parsed,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="jee-pyq-validated.json";a.click();URL.revokeObjectURL(url)});
+$("reset").addEventListener("click",()=>{parsed=validated=null;$("file").value="";$("filename").textContent="No file selected";$("validate").disabled=true;$("export").disabled=true;$("total").textContent=$("valid").textContent=$("issues").textContent="—";$("summary").textContent="Abhi koi dataset check nahi hua.";$("status").textContent="File select karne ke baad validation run karo.";$("preview").textContent="Preview validation ke baad yahan dikhega."});
+</script></body></html>
