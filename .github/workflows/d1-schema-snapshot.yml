@@ -1,8 +1,6 @@
 name: Read-Only D1 Schema Snapshot
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 permissions:
   contents: read
 jobs:
