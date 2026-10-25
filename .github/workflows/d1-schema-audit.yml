@@ -56,6 +56,12 @@ jobs:
           JSON
           echo "Created temporary config for read-only audit; no Worker will be deployed."
 
+      - name: Verify Cloudflare token identity
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: npx --yes wrangler@4 whoami
+
       - name: Run read-only D1 schema query
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
