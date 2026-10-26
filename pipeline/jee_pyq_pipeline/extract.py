@@ -31,7 +31,32 @@ def _fitz():
 def _page_image_info(page) -> list[dict]:
     """Return only image placements actually painted on this page."""
     try:
-        return page.get_image_info(xrefs=True)
+        # get_image_info(xrefs=True) computes the MD5 hash for EVERY drawn image, which is very slow (~4s per page).
+        # We can just fetch the image placements without xrefs initially, and look them up.
+        info = page.get_image_info(xrefs=False)
+        if not info:
+            return []
+
+        images = page.get_images()
+        for item in info:
+            item.setdefault('xref', 0)
+            w, h = item.get('width'), item.get('height')
+            if w is None or h is None:
+                continue
+            candidates = [img for img in images if img[2] == w and img[3] == h]
+            if len(candidates) == 1:
+                item['xref'] = candidates[0][0]
+            elif len(candidates) > 1:
+                for cand in candidates:
+                    xref = cand[0]
+                    rects = page.get_image_rects(xref)
+                    for r in rects:
+                        if abs(r.x0 - item['bbox'][0]) < 1 and abs(r.y0 - item['bbox'][1]) < 1:
+                            item['xref'] = xref
+                            break
+                    if item.get('xref') != 0:
+                        break
+        return info
     except (AttributeError, TypeError):
         return []
 
