@@ -1,0 +1,142 @@
+name: Import 75 JEE Main April 8 Shift 2 Questions to D1 (verified)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/d1-import-75q.yml"
+permissions:
+  contents: read
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate the exact source JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="data/imports/jee_main_2026_04_08_shift_2_all_75_questions.json"
+          test -s "$FILE"
+          echo "7568289a795150d586d19dd42f6944e2d11817ca  $FILE" > "$RUNNER_TEMP/expected-git-blob.txt"
+          python - "$FILE" <<'PY'
+          import hashlib, json, pathlib, sys
+          p = pathlib.Path(sys.argv[1])
+          data = json.loads(p.read_text(encoding="utf-8"))
+          assert isinstance(data, list) and len(data) == 75, f"Expected 75 questions, got {len(data) if isinstance(data,list) else type(data).__name__}"
+          assert len({q.get("id") for q in data}) == 75, "Question IDs are missing or duplicate"
+          print("Exact source loaded:", len(data), "records; bytes:", p.stat().st_size)
+          print("SHA256:", hashlib.sha256(p.read_bytes()).hexdigest())
+          print("Subject counts:", {s: sum(q.get("subject")==s for q in data) for s in ("Mathematics","Physics","Chemistry")})
+          PY
+          python - "$FILE" <<'PY'
+          import hashlib, pathlib, sys
+          p=pathlib.Path(sys.argv[1])
+          # This Git blob SHA-1 binds the import to the same byte-for-byte source from the uploaded ZIP.
+          data=p.read_bytes()
+          blob=hashlib.sha1(b"blob "+str(len(data)).encode()+b"\0"+data).hexdigest()
+          expected="7568289a795150d586d19dd42f6944e2d11817ca"
+          print("Git blob SHA:", blob)
+          if blob != expected:
+              raise SystemExit("Source JSON changed from the uploaded/verified file; refusing D1 writes.")
+          PY
+
+      - name: Build SQL using the existing D1 schema
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/import_jee_json_to_d1.py \
+            data/imports/jee_main_2026_04_08_shift_2_all_75_questions.json \
+            "$RUNNER_TEMP/jee-import.sql"
+          python - "$RUNNER_TEMP/jee-import.sql" "$RUNNER_TEMP/sql-batches" <<'PY'
+          import pathlib, sqlite3, sys
+          source = pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")
+          out = pathlib.Path(sys.argv[2])
+          out.mkdir(parents=True, exist_ok=True)
+          statements, buffer = [], ""
+          for line in source.splitlines(keepends=True):
+              buffer += line
+              if sqlite3.complete_statement(buffer):
+                  if buffer.strip():
+                      statements.append(buffer)
+                  buffer = ""
+          if buffer.strip():
+              raise SystemExit("Could not split generated SQL safely; refusing writes.")
+          size = 50
+          batches = [statements[i:i+size] for i in range(0, len(statements), size)]
+          for n, batch in enumerate(batches, 1):
+              (out / f"batch-{n:03d}.sql").write_text("\n".join(batch), encoding="utf-8")
+          print(f"Generated {len(statements)} SQL statements in {len(batches)} batches (max {size} statements/batch).")
+          PY
+
+      - name: Apply import to the existing Cloudflare D1 database
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/wrangler.jsonc" <<'JSON'
+          {
+            "name": "jee-pyq-master-d1-import",
+            "compatibility_date": "2026-10-25",
+            "d1_databases": [{
+              "binding": "DB",
+              "database_name": "jee-pyq-master",
+              "database_id": "2e1d7706-156f-409a-8e5d-8c4284e3d9c3"
+            }]
+          }
+          JSON
+          files=("$RUNNER_TEMP"/sql-batches/batch-*.sql)
+          echo "Submitting ${#files[@]} SQL batches to the existing D1 database."
+          for file in "${files[@]}"; do
+            echo "Applying $(basename "$file")"
+            npx --yes wrangler@4 d1 execute jee-pyq-master --remote --config "$RUNNER_TEMP/wrangler.jsonc" --file "$file"
+          done
+          echo "All generated SQL batches were submitted."
+
+      - name: Verify D1 data after write
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/wrangler.jsonc" <<'JSON'
+          {
+            "name": "jee-pyq-master-d1-import-verify",
+            "compatibility_date": "2026-10-25",
+            "d1_databases": [{
+              "binding": "DB",
+              "database_name": "jee-pyq-master",
+              "database_id": "2e1d7706-156f-409a-8e5d-8c4284e3d9c3"
+            }]
+          }
+          JSON
+          SQL="WITH target AS (SELECT id FROM questions WHERE id LIKE 'jm-2026-04-08-s2-q%')
+          SELECT
+            (SELECT COUNT(*) FROM target) AS target_questions,
+            (SELECT COUNT(*) FROM question_options WHERE question_id IN (SELECT id FROM target)) AS target_options,
+            (SELECT COUNT(*) FROM solutions WHERE question_id IN (SELECT id FROM target)) AS target_solutions,
+            (SELECT COUNT(*) FROM question_images WHERE question_id IN (SELECT id FROM target)) AS target_images,
+            (SELECT COUNT(*) FROM question_tags WHERE question_id IN (SELECT id FROM target)) AS target_tag_links,
+            (SELECT COUNT(*) FROM questions WHERE id IN (SELECT id FROM target) AND TRIM(COALESCE(question_text,''))='') AS blank_question_text,
+            (SELECT COUNT(*) FROM questions WHERE id IN (SELECT id FROM target) AND TRIM(COALESCE(correct_answer,''))='') AS blank_answers,
+            (SELECT COUNT(*) FROM questions q WHERE q.id IN (SELECT id FROM target) AND q.question_type='MCQ_SINGLE' AND (SELECT COUNT(*) FROM question_options o WHERE o.question_id=q.id)<>4) AS mcq_with_wrong_option_count;"
+          npx --yes wrangler@4 d1 execute jee-pyq-master --remote --config "$RUNNER_TEMP/wrangler.jsonc" --json --command "$SQL" > "$RUNNER_TEMP/verify.json"
+          cat "$RUNNER_TEMP/verify.json"
+          python - "$RUNNER_TEMP/verify.json" <<'PY'
+          import json, sys
+          result=json.load(open(sys.argv[1], encoding="utf-8"))
+          row=result[0]["results"][0]
+          expected={"target_questions":75,"target_options":240,"target_solutions":75,"target_images":22,"target_tag_links":354,"blank_question_text":0,"blank_answers":0,"mcq_with_wrong_option_count":0}
+          print("POST-IMPORT VERIFICATION:", json.dumps(row, indent=2))
+          for key, value in expected.items():
+              if row.get(key) != value:
+                  raise SystemExit(f"VERIFICATION FAILED: {key}={row.get(key)}, expected {value}")
+          print("VERIFICATION=PASS: all 75 target questions and related records are present.")
+          PY
+
