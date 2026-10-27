@@ -1,7 +1,21 @@
-# Legacy workspace notice
+# Legacy workspace archive — do not deploy or import
 
-This repository is the old source/PDF extraction pipeline. It is not the website frontend, admin panel, API, or deployment target. The new frontend and admin panel must be built from the next ZIP/code the owner uploads, not copied from this repository.
+This is the old source/PDF extraction workspace. It is not the future website frontend, admin panel, API, or deployment target. The next ZIP/code uploaded by the owner is the source of truth for future frontend/admin work.
 
-The existing pipeline source has review and quarantine safeguards, so it is preserved rather than mass-deleted without a verified file inventory. Do not treat any past extraction output as approved PYQ data. A paper is usable only after exact-source visual review and explicit approval.
+## Moved out of active paths
 
-Do not deploy this repository, write to Cloudflare, or import into D1 as part of future frontend work. Keep any identified legacy PDFs/JSON/output batches quarantined and separate from the new active frontend.
+- `legacy-imports/jee_main_2026_04_08_shift_2_all_75_questions.json` — old April Shift 2 export.
+- `legacy-pdfs/cEDaK5Wn5ILe4nOdotd6.pdf` — old pipeline test PDF.
+- `legacy-workflows/d1-import-75q.yml` and `legacy-workflows/import_jee_json_to_d1.py` — old workflow/script that could write an old dataset to the existing D1 database.
+- `legacy-workflows/d1-schema-audit.yml` — old production schema/data audit workflow.
+- `legacy-workflows/unpack-jan22-image-bundle.yml` and `legacy-workflows/build_jan22_question_image_crops.py` — old paper-specific image-bundle workflow and crop script.
+
+The files above are preserved for recovery/reference, but the workflow copies under this folder are no longer active GitHub Actions workflows.
+
+## Existing quarantined bundle
+
+`data/quarantine/2026-01-22-shift1/` remains in its already separate quarantine location. It contains an old Jan 22 Shift 1 JSON and associated page/crop images/manifests. It is explicitly **NOT PRODUCTION READY** and must not be served, published, or imported into D1.
+
+## Boundaries
+
+The remaining pipeline source and test-only CI are kept as historical/reference code. No Cloudflare Worker, API source, D1 table, database record, secret, or deployment was changed by this cleanup. Do not deploy this repository or run an old import workflow for future frontend work.
