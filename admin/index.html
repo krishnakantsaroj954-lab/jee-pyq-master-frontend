@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEE PYQ Master · Admin Import</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#172033;background:#f4f7fb}
+*{box-sizing:border-box}body{margin:0}.top{background:#111c3a;color:white;padding:22px max(18px,calc((100vw - 1100px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:800}.brand span{color:#7cb7ff}.tag{font-size:12px;background:#26375f;padding:7px 10px;border-radius:999px}
+main{max-width:1100px;margin:26px auto;padding:0 16px}.intro h1{margin:0 0 8px;font-size:clamp(25px,4vw,34px)}.muted{color:#65718a;line-height:1.55}.notice{background:#fff8e8;border:1px solid #f2d28c;color:#78500b;padding:13px 15px;border-radius:12px;margin:18px 0}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.card{background:white;border:1px solid #e2e8f2;border-radius:16px;padding:18px;box-shadow:0 4px 18px #13254b08}.card h2{font-size:17px;margin:0 0 14px}.drop{border:2px dashed #b7c8e4;border-radius:13px;padding:25px 15px;text-align:center;background:#f9fbff}.drop strong{display:block;margin-bottom:6px}.btn{border:0;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer;background:#185adb;color:white}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.secondary{background:#eaf0fb;color:#23406e}.btn.green{background:#087e62}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.stat{background:#f5f8fd;border-radius:12px;padding:13px}.stat b{display:block;font-size:24px}.stat span{font-size:12px;color:#65718a}.status{margin-top:14px;font-size:14px;line-height:1.55;white-space:pre-wrap}.good{color:#087e62}.bad{color:#b42318}.warn{color:#996515}textarea,input[type=text],input[type=url],input[type=password]{width:100%;padding:10px;border:1px solid #d6dfed;border-radius:9px;font:inherit;background:white}.field{display:block;font-size:13px;font-weight:700;color:#394863;margin-bottom:12px}.field small{display:block;font-weight:400;color:#718099;margin:6px 0 0;line-height:1.45}.settings{display:grid;grid-template-columns:1fr 1fr;gap:12px}.remote-status{white-space:pre-wrap;line-height:1.55;margin-top:12px;font-size:14px}.tablewrap{overflow:auto;margin-top:14px}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid #edf0f6;vertical-align:top}th{background:#f7f9fd;color:#51617d}.pill{display:inline-block;background:#edf3ff;color:#234b9a;padding:4px 7px;border-radius:7px;font-size:11px}
+footer{max-width:1100px;margin:20px auto 40px;padding:0 16px;color:#7a8599;font-size:12px}
+@media(max-width:760px){.grid,.settings{grid-template-columns:1fr}.top{padding:18px}.stats{grid-template-columns:repeat(3,1fr)}.card{padding:15px}}
+</style></head>
+<body>
+<header class="top"><div class="brand">JEE <span>PYQ MASTER</span> <span style="color:#fff;font-weight:500">/ Admin</span></div><div class="tag">DATA INTAKE WORKSPACE</div></header>
+<main>
+<section class="intro"><h1>Dataset Import</h1><p class="muted">JSON dataset ko pehle validate aur preview karo. Validation source correctness ka proof nahi hai; sirf format aur required fields check hote hain.</p></section>
+<div class="notice"><b>Safety:</b> Live import tabhi chalega jab protected admin API routes deployed hon aur server par <code>ADMIN_IMPORT_TOKEN</code> aur exact <code>ADMIN_ALLOWED_ORIGIN</code> configure hon. Token browser storage mein save nahi hota.</div>
+
+<section class="card" style="margin-bottom:16px"><h2>Live D1 connection · protected</h2>
+<div class="settings">
+<label class="field">Deployed API base URL
+<input id="apiBase" type="url" placeholder="https://your-existing-api-worker.workers.dev" autocomplete="off">
+<small>Sirf Worker ka base URL, endpoint path nahi.</small></label>
+<label class="field">Admin import token
+<input id="apiToken" type="password" placeholder="Enter server-configured token" autocomplete="new-password">
+<small>Token GitHub ya browser storage mein save nahi hota.</small></label>
+</div>
+<div class="muted">Is admin page ka origin: <code id="pageOrigin"></code>. Worker secret <code>ADMIN_ALLOWED_ORIGIN</code> mein yahi exact origin set hona chahiye.</div>
+<div class="actions"><button id="remoteValidate" class="btn secondary" disabled>Validate against D1</button><button id="importD1" class="btn green" disabled>Import new records to D1</button><button id="clearToken" class="btn secondary">Clear token</button></div>
+<div id="remoteStatus" class="remote-status muted">File select aur local validation ke baad deployed API ke saath validation kar sakte ho. Live import se pehle server-side endpoint ka deployed hona zaroori hai.</div>
+</section>
+<div class="grid">
+<section class="card"><h2>01 · Select dataset</h2>
+<div class="drop"><strong>JSON dataset choose karo</strong><div class="muted">Expected: JSON array ya { "questions": [...] }</div><br><input id="file" type="file" accept=".json,application/json"></div>
+<div id="filename" class="muted" style="margin-top:10px">No file selected</div>
+<div class="actions"><button id="validate" class="btn" disabled>Validate dataset</button><button id="reset" class="btn secondary">Reset</button></div>
+<div id="status" class="status">File select karne ke baad validation run karo.</div></section>
+<section class="card"><h2>02 · Validation summary</h2><div class="stats"><div class="stat"><b id="total">—</b><span>Records</span></div><div class="stat"><b id="valid">—</b><span>Structurally valid</span></div><div class="stat"><b id="issues">—</b><span>Blocking issues</span></div></div>
+<div id="summary" class="status muted">Abhi koi dataset check nahi hua.</div>
+<div class="actions"><button id="export" class="btn green" disabled>Download validated JSON</button></div></section>
+</div>
+<section class="card" style="margin-top:16px"><h2>03 · Record preview</h2><p class="muted">First 10 records. Full question text, options, answer, solution aur image reference ko source ke against alag se verify karna zaroori hai.</p><div id="preview" class="tablewrap muted">Preview validation ke baad yahan dikhega.</div></section>
+</main><footer>JEE PYQ Master · Admin import workspace · No credentials are requested or stored by this page.</footer>
+<script>
+const $=id=>document.getElementById(id);let parsed=null,validated=null,remoteReady=false;let latestFileKey="";$("pageOrigin").textContent=window.location.origin;
+const first=(o,keys)=>{for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null&&o[k]!=="")return o[k]}return null};
+function asText(v){if(typeof v==="string")return v.trim();if(typeof v==="number")return String(v);return ""}
+function normalizeRoot(data){if(Array.isArray(data))return data;if(data&&Array.isArray(data.questions))return data.questions;if(data&&Array.isArray(data.records))return data.records;throw Error('Root JSON must be an array, or an object with a "questions" or "records" array.')}
+function optionCount(q){let v=first(q,["options","question_options","choices"]);if(typeof v==="string"){try{v=JSON.parse(v)}catch{return 0}}if(Array.isArray(v))return v.filter(x=>x!==null&&x!=="").length;if(v&&typeof v==="object")return Object.values(v).filter(x=>x!==null&&x!=="").length;return 0}
+function validate(data){const records=normalizeRoot(data);const seen=new Set();const rows=[];let blocking=0,warnings=0;
+records.forEach((q,i)=>{const errs=[],warn=[];if(!q||typeof q!=="object"||Array.isArray(q)){errs.push("Record is not an object")}else{
+const id=asText(first(q,["id","question_id","uid"]));const text=asText(first(q,["question_text","question","text","statement","content"]));const subject=asText(first(q,["subject"]));const chapter=asText(first(q,["chapter","chapter_name"]));const exam=asText(first(q,["exam","exam_name"]));const year=first(q,["year"]);const session=first(q,["session","session_name"]);const date=first(q,["date","exam_date"]);const shift=first(q,["shift","shift_number"]);const paper=first(q,["paper","paper_number","paper_no"]);const answer=first(q,["correct_answer","answer","correct_option","answer_key","correctAnswer"]);const solValue=first(q,["solution","solution_text","explanation","detailed_solution"]);const sol=typeof solValue==="string"?solValue.trim():(solValue&&typeof solValue==="object"?(asText(solValue.text||solValue.solution_text||solValue.explanation||solValue.content)||(Array.isArray(solValue.steps)?solValue.steps.map(asText).filter(Boolean).join(" "):"")):"");const dropped=q.status==="Dropped"||q.dropped===true||q.is_dropped===true;
+if(!id)errs.push("Missing id");else if(seen.has(id))errs.push("Duplicate id: "+id);else seen.add(id);
+if(!text)errs.push("Missing question text");if(!subject)errs.push("Missing subject");if(!chapter)errs.push("Missing chapter");if(!exam)errs.push("Missing exam");if(!year||!Number.isFinite(Number(year)))errs.push("Missing/invalid year");if(session===null||session===undefined||session==="")errs.push("Missing session");if(date===null||date===undefined||date==="")errs.push("Missing exam date");if(shift===null||shift===undefined||shift==="")errs.push("Missing shift");if(paper===null||paper===undefined||paper==="")errs.push("Missing paper number");
+if(optionCount(q)<2)errs.push("Options missing or fewer than 2");if(answer===null&&!dropped)errs.push("Correct answer missing");
+if(!sol&&!dropped)errs.push("Solution missing");if(!first(q,["image","image_url","image_path","imageUrl","diagram","question_image","image_ref"]))warn.push("Image/diagram reference absent (verify if required)");
+}
+blocking+=errs.length;warnings+=warn.length;rows.push({index:i+1,q,errs,warn});});
+return {records,rows,blocking,warnings,valid:rows.filter(x=>!x.errs.length).length}}
+function esc(s){return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function render(){if(!validated)return;$("total").textContent=validated.records.length;$("valid").textContent=validated.valid;$("issues").textContent=validated.blocking;$("summary").innerHTML=validated.blocking===0?'<span class="good">No structural blockers found.</span>':'<span class="bad">Blocking issues found. Export is disabled until fixed.</span>';
+$("summary").innerHTML+= '<br>'+validated.warnings+' warnings (mainly missing solutions/images). A clean format check does not certify correctness.';
+const shown=validated.rows.slice(0,10);$("preview").innerHTML='<table><thead><tr><th>#</th><th>ID</th><th>Subject / Chapter</th><th>Options</th><th>Answer</th><th>Check</th></tr></thead><tbody>'+shown.map(r=>{const q=r.q||{};return '<tr><td>'+r.index+'</td><td>'+esc(first(q,["id","question_id","uid"])||"—")+'</td><td>'+esc(first(q,["subject"])||"—")+'<br><span class="muted">'+esc(first(q,["chapter","chapter_name"])||"—")+'</span></td><td>'+optionCount(q)+'</td><td>'+esc(first(q,["correct_answer","answer","correct_option","answer_key","correctAnswer"])??"—")+'</td><td>'+(r.errs.length?'<span class="bad">'+esc(r.errs.join("; "))+'</span>':'<span class="good">Structure OK</span>')+(r.warn.length?'<br><span class="warn">'+esc(r.warn.join("; "))+'</span>':'')+'</td></tr>'}).join("")+'</tbody></table>'+(validated.rows.length>10?'<p class="muted">Showing 10 of '+validated.rows.length+' records.</p>':'');
+$("export").disabled=validated.blocking>0;
+}
+$("file").addEventListener("change",async e=>{const f=e.target.files[0];parsed=null;validated=null;remoteReady=false;latestFileKey=f?(f.name+":"+f.size+":"+f.lastModified):"";$("remoteValidate").disabled=true;$("importD1").disabled=true;$("remoteStatus").textContent="Dataset validation pending.";$("validate").disabled=!f;$("export").disabled=true;$("filename").textContent=f?f.name+" · "+(f.size/1024).toFixed(1)+" KB":"No file selected";$("status").textContent=f?"File selected. Press Validate dataset.":"No file selected";$("preview").textContent="Preview validation ke baad yahan dikhega.";if(f&&f.size>50*1024*1024){$("status").innerHTML='<span class="bad">File exceeds 50 MB browser preview limit.</span>';$("validate").disabled=true}});
+$("validate").addEventListener("click",async()=>{const f=$("file").files[0];if(!f)return;remoteReady=false;$("remoteValidate").disabled=true;$("importD1").disabled=true;$("remoteStatus").textContent="Local validation changed; run server validation again.";$("status").textContent="Reading and validating…";try{parsed=JSON.parse(await f.text());validated=validate(parsed);render();$("remoteValidate").disabled=validated.blocking>0;$("status").innerHTML=validated.blocking===0?'<span class="good">Validation complete. Structural blockers: 0.</span>':'<span class="bad">Validation complete. '+validated.blocking+' blocking issue(s) found.</span>';if(validated.blocking===0)$("status").innerHTML+='<br><span class="warn">This is not a live database import and does not verify source accuracy.</span>'}catch(e){validated=null;$("total").textContent=$("valid").textContent=$("issues").textContent="—";$("summary").textContent="Validation could not complete.";$("preview").textContent="No preview available.";$("export").disabled=true;$("status").innerHTML='<span class="bad">Invalid JSON or unsupported schema: '+esc(e.message)+'</span>'}});
+$("export").addEventListener("click",()=>{if(!validated||validated.blocking)return;const blob=new Blob([JSON.stringify(parsed,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="jee-pyq-validated.json";a.click();URL.revokeObjectURL(url)});
+
+async function callAdminApi(path){
+ const base=$("apiBase").value.trim().replace(/\/+$/,"");
+ const token=$("apiToken").value;
+ if(!/^https:\/\//i.test(base))throw new Error("API base URL https:// se shuru hona chahiye.");
+ if(!token)throw new Error("Admin token enter karo. Token server ke ADMIN_IMPORT_TOKEN secret se match hona chahiye.");
+ const response=await fetch(base+path,{method:"POST",headers:{"content-type":"application/json","authorization":"Bearer "+token},body:JSON.stringify(parsed)});
+ let data;try{data=await response.json()}catch{data={error:"API ne JSON response nahi diya."}}
+ if(!response.ok && !data.error && !data.message)data.error="HTTP "+response.status;
+ return {response,data};
+}
+$("remoteValidate").addEventListener("click",async()=>{
+ if(!validated||validated.blocking>0||!parsed){$("remoteStatus").textContent="Pehle local validation pass karna zaroori hai.";return}
+ remoteReady=false;$("importD1").disabled=true;$("remoteValidate").disabled=true;$("remoteStatus").textContent="D1 schema aur existing IDs ke against validation chal rahi hai…";
+ try{
+  const result=await callAdminApi("/api/admin/import/validate");const d=result.data;
+  if(result.response.ok&&d.success===true){
+   remoteReady=Number(d.structurally_planned_records||0)>0;$("importD1").disabled=!remoteReady;
+   $("remoteStatus").innerHTML='<span class="good">Server validation pass.</span>\nRecords: '+esc(d.total_records)+'\nReady to insert: '+esc(d.structurally_planned_records)+'\nAlready in D1 (will skip): '+esc(d.duplicate_existing_count)+'\nWarnings: '+esc(d.warning_count)+'\nNo database writes were done by validation.';
+   if(!remoteReady)$("remoteStatus").innerHTML+='<br><span class="warn">All IDs may already exist; nothing new to insert.</span>';
+  }else{
+   const issues=Array.isArray(d.issues)?d.issues.slice(0,8).map(x=>'#'+x.index+' '+(x.id||'')+': '+(x.errors||[]).join('; ')).join('\n'):"";
+   $("remoteStatus").innerHTML='<span class="bad">Server validation blocked (HTTP '+result.response.status+').</span>\n'+esc(d.error||'Please inspect the validation response.')+'\n'+esc(issues);
+  }
+ }catch(e){$("remoteStatus").innerHTML='<span class="bad">API connection failed.</span>\n'+esc(e.message)+'\nCheck that admin routes are deployed, URL is correct, token is configured, and ADMIN_ALLOWED_ORIGIN equals this page origin.'}
+ finally{$("remoteValidate").disabled=!(validated&&validated.blocking===0&&parsed)}
+});
+$("importD1").addEventListener("click",async()=>{
+ if(!remoteReady||!parsed||!validated||validated.blocking>0){$("remoteStatus").textContent="Import se pehle server validation pass honi chahiye.";return}
+ if(!window.confirm("Validated new questions ko D1 mein insert karna hai? Existing IDs overwrite nahi honge."))return;
+ remoteReady=false;$("importD1").disabled=true;$("remoteValidate").disabled=true;$("remoteStatus").textContent="D1 import chal raha hai…";
+ try{
+  const result=await callAdminApi("/api/admin/import");const d=result.data;
+  $("remoteStatus").innerHTML=(d.success?'<span class="good">Import request complete.</span>':'<span class="bad">Import completed with failures or was rejected.</span>')+'\nTotal: '+esc(d.total_records)+'\nImported: '+esc(d.imported||0)+'\nSkipped existing: '+esc(d.skipped_existing||d.duplicate_existing_count||0)+'\nFailed: '+esc(d.failed||0)+'\n';
+  if(Array.isArray(d.results)){const bad=d.results.filter(x=>x.status==="failed").slice(0,8);if(bad.length)$("remoteStatus").innerHTML+='\nFailures:\n'+esc(bad.map(x=>x.id+': '+x.error).join('\n'))}
+  if(!result.response.ok)$("remoteStatus").innerHTML+='\nHTTP '+result.response.status+' · '+esc(d.error||'See response details.');
+  $("remoteStatus").innerHTML+='\nRefresh website data and verify imported records before publishing them.';
+ }catch(e){$("remoteStatus").innerHTML='<span class="bad">Import request failed.</span>\n'+esc(e.message)+'\nDataset ka final status API/DB se check karo before retrying.'}
+ finally{$("remoteValidate").disabled=!(validated&&validated.blocking===0&&parsed)}
+});
+$("clearToken").addEventListener("click",()=>{$("apiToken").value="";remoteReady=false;$("importD1").disabled=true;$("remoteStatus").textContent="Admin token cleared from this page."});
+$("apiBase").addEventListener("input",()=>{remoteReady=false;$("importD1").disabled=true});
+$("apiToken").addEventListener("input",()=>{remoteReady=false;$("importD1").disabled=true});
+
+$("reset").addEventListener("click",()=>{parsed=validated=null;remoteReady=false;$("file").value="";$("remoteValidate").disabled=true;$("importD1").disabled=true;$("remoteStatus").textContent="File select aur local validation ke baad deployed API ke saath validation kar sakte ho.";$("filename").textContent="No file selected";$("validate").disabled=true;$("export").disabled=true;$("total").textContent=$("valid").textContent=$("issues").textContent="—";$("summary").textContent="Abhi koi dataset check nahi hua.";$("status").textContent="File select karne ke baad validation run karo.";$("preview").textContent="Preview validation ke baad yahan dikhega."});
+</script></body></html>
